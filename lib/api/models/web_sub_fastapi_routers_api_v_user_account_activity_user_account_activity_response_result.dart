@@ -16,12 +16,10 @@ class WebSubFastapiRoutersApiVUserAccountActivityUserAccountActivityResponseResu
   });
 
   factory WebSubFastapiRoutersApiVUserAccountActivityUserAccountActivityResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserAccountActivityUserAccountActivityResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 总活动数量
   @JsonKey(name: 'total_count')
   final int totalCount;
@@ -31,6 +29,5 @@ class WebSubFastapiRoutersApiVUserAccountActivityUserAccountActivityResponseResu
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserAccountActivityUserAccountActivityResponseResultToJson(
-        this,
-      );
+          this);
 }

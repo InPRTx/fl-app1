@@ -17,9 +17,9 @@ class UserServicesShareAccountResponse {
   });
 
   factory UserServicesShareAccountResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesShareAccountResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesShareAccountResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 
@@ -27,8 +27,7 @@ class UserServicesShareAccountResponse {
   final String message;
 
   /// 用户共享账户信息
-  final WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountResponseResult
-  result;
+  final WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountResponseResult result;
 
   Map<String, Object?> toJson() =>
       _$UserServicesShareAccountResponseToJson(this);

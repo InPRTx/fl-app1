@@ -8,11 +8,14 @@ part 'error_response.g.dart';
 
 @JsonSerializable()
 class ErrorResponse {
-  const ErrorResponse({this.isSuccess, this.message});
+  const ErrorResponse({
+    this.isSuccess,
+    this.message,
+  });
 
   factory ErrorResponse.fromJson(Map<String, Object?> json) =>
       _$ErrorResponseFromJson(json);
-
+  
   @JsonKey(name: 'is_success')
   final bool? isSuccess;
   final String? message;

@@ -133,6 +133,7 @@ export 'models/user_wallet_recharge_recharge_id_response.dart';
 export 'models/user_wallet_recharge_result.dart';
 export 'models/user_wallet_result.dart';
 export 'models/validation_error.dart';
+export 'models/version_response_model.dart';
 export 'models/vmess_config.dart';
 export 'models/vpn_type_enum.dart';
 export 'models/vpn_type_list_enum.dart';
@@ -169,3 +170,4 @@ export 'models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 export 'models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
 // Root client
 export 'rest_client.dart';
+

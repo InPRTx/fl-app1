@@ -10,11 +10,13 @@ part 'post_add_alive_ip_model.g.dart';
 
 @JsonSerializable()
 class PostAddAliveIpModel {
-  const PostAddAliveIpModel({required this.data});
+  const PostAddAliveIpModel({
+    required this.data,
+  });
 
   factory PostAddAliveIpModel.fromJson(Map<String, Object?> json) =>
       _$PostAddAliveIpModelFromJson(json);
-
+  
   final List<PostAddAliveIpDataModel> data;
 
   Map<String, Object?> toJson() => _$PostAddAliveIpModelToJson(this);

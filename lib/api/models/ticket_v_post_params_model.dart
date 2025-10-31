@@ -8,11 +8,14 @@ part 'ticket_v_post_params_model.g.dart';
 
 @JsonSerializable()
 class TicketVPostParamsModel {
-  const TicketVPostParamsModel({required this.title, required this.content});
+  const TicketVPostParamsModel({
+    required this.title,
+    required this.content,
+  });
 
   factory TicketVPostParamsModel.fromJson(Map<String, Object?> json) =>
       _$TicketVPostParamsModelFromJson(json);
-
+  
   /// 工单标题
   final String title;
 

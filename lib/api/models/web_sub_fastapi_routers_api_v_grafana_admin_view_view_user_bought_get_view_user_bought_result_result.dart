@@ -17,12 +17,10 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtRes
   });
 
   factory WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtResultResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtResultResultFromJson(
-        json,
-      );
-
+          json);
+  
   @JsonKey(name: 'bought_list')
   final List<ResultBought> boughtList;
   @JsonKey(name: 'shop_list')
@@ -30,6 +28,5 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtRes
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtResultResultToJson(
-        this,
-      );
+          this);
 }

@@ -16,12 +16,10 @@ class WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountRe
   });
 
   factory WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 共享账户总数
   @JsonKey(name: 'total_accounts')
   final int totalAccounts;
@@ -32,6 +30,5 @@ class WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountRe
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserServicesShareAccountUserServicesShareAccountResponseResultToJson(
-        this,
-      );
+          this);
 }

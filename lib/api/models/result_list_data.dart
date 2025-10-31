@@ -10,10 +10,10 @@ part 'result_list_data.g.dart';
 class ResultListData {
   const ResultListData({
     required this.id,
+    required this.createdAt,
     this.userName = '',
     this.email = '',
     this.moneyAmount = '0.00',
-    this.createdAt = '注册时间',
     this.isEnable = true,
   });
 
@@ -33,6 +33,8 @@ class ResultListData {
   /// 用户余额
   @JsonKey(name: 'money_amount')
   final String moneyAmount;
+
+  /// 注册时间
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
 

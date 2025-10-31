@@ -9,8 +9,9 @@ part of 'captcha_key_model.dart';
 CaptchaKeyModel _$CaptchaKeyModelFromJson(Map<String, dynamic> json) =>
     CaptchaKeyModel(
       message: json['message'] as String,
-      captchaKeyType: CaptchaKeyTypeEnum.fromJson(
-        json['captcha_key_type'] as String,
+      captchaKeyType: $enumDecode(
+        _$CaptchaKeyTypeEnumEnumMap,
+        json['captcha_key_type'],
       ),
       tiago2CapKeyId: json['tiago2_cap_key_id'] as String,
       captchaKey: json['captcha_key'] as String?,
@@ -31,5 +32,4 @@ const _$CaptchaKeyTypeEnumEnumMap = {
   CaptchaKeyTypeEnum.register: 'register',
   CaptchaKeyTypeEnum.login: 'login',
   CaptchaKeyTypeEnum.test: 'test',
-  CaptchaKeyTypeEnum.$unknown: r'$unknown',
 };

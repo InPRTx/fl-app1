@@ -10,11 +10,13 @@ part 'post_traffic_model.g.dart';
 
 @JsonSerializable()
 class PostTrafficModel {
-  const PostTrafficModel({required this.data});
+  const PostTrafficModel({
+    required this.data,
+  });
 
   factory PostTrafficModel.fromJson(Map<String, Object?> json) =>
       _$PostTrafficModelFromJson(json);
-
+  
   final List<PostTrafficDataModel> data;
 
   Map<String, Object?> toJson() => _$PostTrafficModelToJson(this);

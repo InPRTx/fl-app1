@@ -13,17 +13,15 @@ class WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel {
   });
 
   factory WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel.fromJson(
-    Map<String, Object?> json,
-  ) => _$WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModelFromJson(
-    json,
-  );
-
+      Map<String, Object?> json) =>
+      _$WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModelFromJson(
+          json);
+  
   /// 刷新令牌
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModelToJson(
-        this,
-      );
+          this);
 }

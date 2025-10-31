@@ -14,9 +14,9 @@ class UserServicesLinkTokenResetResponse {
   });
 
   factory UserServicesLinkTokenResetResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesLinkTokenResetResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesLinkTokenResetResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

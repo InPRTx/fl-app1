@@ -13,16 +13,13 @@ class WebSubFastapiRoutersApiVAdminApiAnnouncementAnnouncementUpdateResponseResu
   });
 
   factory WebSubFastapiRoutersApiVAdminApiAnnouncementAnnouncementUpdateResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVAdminApiAnnouncementAnnouncementUpdateResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   final bool success;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVAdminApiAnnouncementAnnouncementUpdateResponseResultToJson(
-        this,
-      );
+          this);
 }

@@ -13,9 +13,9 @@ OldServiceShop _$OldServiceShopFromJson(Map<String, dynamic> json) =>
       moneyAmount: json['money_amount'] as String,
       contentExtra: json['content_extra'] as String,
       shopGroupId: (json['shop_group_id'] as num?)?.toInt() ?? 0,
-      shopType: json['shop_type'] == null
-          ? ShopTypeEnum.mainPackage
-          : ShopTypeEnum.fromJson(json['shop_type']),
+      shopType:
+          $enumDecodeNullable(_$ShopTypeEnumEnumMap, json['shop_type']) ??
+          ShopTypeEnum.mainPackage,
       isAutoResetBandwidth: json['is_auto_reset_bandwidth'] as bool? ?? false,
       isEnable: json['is_enable'] as bool? ?? true,
       isCannotNewPurchase: json['is_cannot_new_purchase'] as bool? ?? false,
@@ -59,9 +59,8 @@ Map<String, dynamic> _$OldServiceShopToJson(OldServiceShop instance) =>
     };
 
 const _$ShopTypeEnumEnumMap = {
-  ShopTypeEnum.undefined0: '[main_package]',
-  ShopTypeEnum.undefined1: '[additional_package]',
-  ShopTypeEnum.undefined2: '[checkin_package]',
+  ShopTypeEnum.mainPackage: 'main_package',
+  ShopTypeEnum.additionalPackage: 'additional_package',
+  ShopTypeEnum.checkinPackage: 'checkin_package',
   ShopTypeEnum.debuffPackage: 'debuff_package',
-  ShopTypeEnum.$unknown: r'$unknown',
 };

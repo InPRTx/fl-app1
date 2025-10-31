@@ -14,18 +14,15 @@ class WebSubFastapiRoutersApiVUserSystemAnnouncementsAnnouncementsGetResultModel
   });
 
   factory WebSubFastapiRoutersApiVUserSystemAnnouncementsAnnouncementsGetResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserSystemAnnouncementsAnnouncementsGetResultModelResultFromJson(
-        json,
-      );
-
+          json);
+  
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   final String content;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserSystemAnnouncementsAnnouncementsGetResultModelResultToJson(
-        this,
-      );
+          this);
 }

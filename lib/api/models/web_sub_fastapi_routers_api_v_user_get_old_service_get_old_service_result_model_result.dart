@@ -19,12 +19,10 @@ class WebSubFastapiRoutersApiVUserGetOldServiceGetOldServiceResultModelResult {
   });
 
   factory WebSubFastapiRoutersApiVUserGetOldServiceGetOldServiceResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserGetOldServiceGetOldServiceResultModelResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 服务ID
   @JsonKey(name: 'service_id')
   final int serviceId;
@@ -55,6 +53,5 @@ class WebSubFastapiRoutersApiVUserGetOldServiceGetOldServiceResultModelResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserGetOldServiceGetOldServiceResultModelResultToJson(
-        this,
-      );
+          this);
 }

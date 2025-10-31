@@ -15,9 +15,9 @@ class UserServicesOldCheckinGetResponse {
   });
 
   factory UserServicesOldCheckinGetResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesOldCheckinGetResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesOldCheckinGetResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

@@ -11,11 +11,16 @@ part 'node_config.g.dart';
 
 @JsonSerializable()
 class NodeConfig {
-  const NodeConfig({this.host, this.port, this.vmessConfig, this.ssrConfig});
+  const NodeConfig({
+    this.host,
+    this.port,
+    this.vmessConfig,
+    this.ssrConfig,
+  });
 
   factory NodeConfig.fromJson(Map<String, Object?> json) =>
       _$NodeConfigFromJson(json);
-
+  
   final String? host;
   final int? port;
   @JsonKey(name: 'vmess_config')

@@ -15,12 +15,10 @@ class WebSubFastapiRoutersApiVUserCrispDataCrispDataResultModelResult {
   });
 
   factory WebSubFastapiRoutersApiVUserCrispDataCrispDataResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserCrispDataCrispDataResultModelResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 用户邮箱
   @JsonKey(name: 'user_email')
   final String userEmail;
@@ -35,6 +33,5 @@ class WebSubFastapiRoutersApiVUserCrispDataCrispDataResultModelResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserCrispDataCrispDataResultModelResultToJson(
-        this,
-      );
+          this);
 }

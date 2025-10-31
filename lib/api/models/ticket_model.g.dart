@@ -12,7 +12,7 @@ TicketModel _$TicketModelFromJson(Map<String, dynamic> json) => TicketModel(
   updatedAt: DateTime.parse(json['updated_at'] as String),
   title: json['title'] as String,
   content: json['content'] as String,
-  ticketStatus: TicketStatus.fromJson(json['ticket_status'] as String),
+  ticketStatus: $enumDecode(_$TicketStatusEnumMap, json['ticket_status']),
   messageData:
       (json['message_data'] as List<dynamic>?)
           ?.map(
@@ -38,5 +38,4 @@ const _$TicketStatusEnumMap = {
   TicketStatus.processing: 'processing',
   TicketStatus.resolved: 'resolved',
   TicketStatus.closed: 'closed',
-  TicketStatus.$unknown: r'$unknown',
 };

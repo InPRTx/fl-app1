@@ -17,9 +17,9 @@ class UserServicesSubscribeLogAreaTimeAxisResponse {
   });
 
   factory UserServicesSubscribeLogAreaTimeAxisResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesSubscribeLogAreaTimeAxisResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesSubscribeLogAreaTimeAxisResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

@@ -7,26 +7,9 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonEnum()
 enum WebSubFastapiRoutersVEmbyFunctionSqlTableEnum {
   @JsonValue('link')
-  link('link'),
+  link,
   @JsonValue('user')
-  user('user'),
+  user,
   @JsonValue('version')
-  version('version'),
-
-  /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
-  $unknown(null);
-
-  const WebSubFastapiRoutersVEmbyFunctionSqlTableEnum(this.json);
-
-  factory WebSubFastapiRoutersVEmbyFunctionSqlTableEnum.fromJson(String json) =>
-      values.firstWhere((e) => e.json == json, orElse: () => $unknown);
-
-  final String? json;
-
-  @override
-  String toString() => json ?? super.toString();
-
-  /// Returns all defined enum values excluding the $unknown value.
-  static List<WebSubFastapiRoutersVEmbyFunctionSqlTableEnum>
-  get $valuesDefined => values.where((value) => value != $unknown).toList();
+  version,
 }

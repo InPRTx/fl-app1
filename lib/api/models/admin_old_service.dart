@@ -15,11 +15,11 @@ class AdminOldService {
     required this.userLevelExpireIn,
     this.ssBandwidthYesterdayUsedSize = 0,
     this.userLevel = 0,
-    this.nodeSpeedLimit = 0.0,
     this.nodeConnector = 0,
-    this.autoResetDay = false,
+    this.autoResetDay = 0,
     this.autoResetBandwidth = 0.0,
     this.ssLastUsedTime,
+    this.nodeSpeedLimit,
     this.lastCheckInTime,
   });
 

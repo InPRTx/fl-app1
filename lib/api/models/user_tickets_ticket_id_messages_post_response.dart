@@ -15,9 +15,9 @@ class UserTicketsTicketIdMessagesPostResponse {
   });
 
   factory UserTicketsTicketIdMessagesPostResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserTicketsTicketIdMessagesPostResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserTicketsTicketIdMessagesPostResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

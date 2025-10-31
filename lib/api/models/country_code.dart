@@ -7,526 +7,509 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonEnum()
 enum CountryCode {
   @JsonValue('AF')
-  af('AF'),
+  af,
   @JsonValue('AX')
-  ax('AX'),
+  ax,
   @JsonValue('AL')
-  al('AL'),
+  al,
   @JsonValue('DZ')
-  dz('DZ'),
+  dz,
 
   /// The name has been replaced because it contains a keyword. Original name: `AS`.
   @JsonValue('AS')
-  valueAs('AS'),
+  valueAs,
   @JsonValue('AD')
-  ad('AD'),
+  ad,
   @JsonValue('AO')
-  ao('AO'),
+  ao,
   @JsonValue('AI')
-  ai('AI'),
+  ai,
   @JsonValue('AQ')
-  aq('AQ'),
+  aq,
   @JsonValue('AG')
-  ag('AG'),
+  ag,
   @JsonValue('AR')
-  ar('AR'),
+  ar,
   @JsonValue('AM')
-  am('AM'),
+  am,
   @JsonValue('AW')
-  aw('AW'),
+  aw,
   @JsonValue('AU')
-  au('AU'),
+  au,
   @JsonValue('AT')
-  at('AT'),
+  at,
   @JsonValue('AZ')
-  az('AZ'),
+  az,
   @JsonValue('BS')
-  bs('BS'),
+  bs,
   @JsonValue('BH')
-  bh('BH'),
+  bh,
   @JsonValue('BD')
-  bd('BD'),
+  bd,
   @JsonValue('BB')
-  bb('BB'),
+  bb,
   @JsonValue('BY')
-  by('BY'),
+  by,
   @JsonValue('BE')
-  be('BE'),
+  be,
   @JsonValue('BZ')
-  bz('BZ'),
+  bz,
   @JsonValue('BJ')
-  bj('BJ'),
+  bj,
   @JsonValue('BM')
-  bm('BM'),
+  bm,
   @JsonValue('BT')
-  bt('BT'),
+  bt,
   @JsonValue('BO')
-  bo('BO'),
+  bo,
   @JsonValue('BQ')
-  bq('BQ'),
+  bq,
   @JsonValue('BA')
-  ba('BA'),
+  ba,
   @JsonValue('BW')
-  bw('BW'),
+  bw,
   @JsonValue('BV')
-  bv('BV'),
+  bv,
   @JsonValue('BR')
-  br('BR'),
+  br,
   @JsonValue('IO')
-  io('IO'),
+  io,
   @JsonValue('BN')
-  bn('BN'),
+  bn,
   @JsonValue('BG')
-  bg('BG'),
+  bg,
   @JsonValue('BF')
-  bf('BF'),
+  bf,
   @JsonValue('BI')
-  bi('BI'),
+  bi,
   @JsonValue('CV')
-  cv('CV'),
+  cv,
   @JsonValue('KH')
-  kh('KH'),
+  kh,
   @JsonValue('CM')
-  cm('CM'),
+  cm,
   @JsonValue('CA')
-  ca('CA'),
+  ca,
   @JsonValue('KY')
-  ky('KY'),
+  ky,
   @JsonValue('CF')
-  cf('CF'),
+  cf,
   @JsonValue('TD')
-  td('TD'),
+  td,
   @JsonValue('CL')
-  cl('CL'),
+  cl,
   @JsonValue('CN')
-  cn('CN'),
+  cn,
   @JsonValue('CX')
-  cx('CX'),
+  cx,
   @JsonValue('CC')
-  cc('CC'),
+  cc,
   @JsonValue('CO')
-  co('CO'),
+  co,
   @JsonValue('KM')
-  km('KM'),
+  km,
   @JsonValue('CG')
-  cg('CG'),
+  cg,
   @JsonValue('CD')
-  cd('CD'),
+  cd,
   @JsonValue('CK')
-  ck('CK'),
+  ck,
   @JsonValue('CR')
-  cr('CR'),
+  cr,
   @JsonValue('CI')
-  ci('CI'),
+  ci,
   @JsonValue('HR')
-  hr('HR'),
+  hr,
   @JsonValue('CU')
-  cu('CU'),
+  cu,
   @JsonValue('CW')
-  cw('CW'),
+  cw,
   @JsonValue('CY')
-  cy('CY'),
+  cy,
   @JsonValue('CZ')
-  cz('CZ'),
+  cz,
   @JsonValue('DK')
-  dk('DK'),
+  dk,
   @JsonValue('DJ')
-  dj('DJ'),
+  dj,
   @JsonValue('DM')
-  dm('DM'),
+  dm,
 
   /// The name has been replaced because it contains a keyword. Original name: `DO`.
   @JsonValue('DO')
-  valueDo('DO'),
+  valueDo,
   @JsonValue('EC')
-  ec('EC'),
+  ec,
   @JsonValue('EG')
-  eg('EG'),
+  eg,
   @JsonValue('SV')
-  sv('SV'),
+  sv,
   @JsonValue('GQ')
-  gq('GQ'),
+  gq,
   @JsonValue('ER')
-  er('ER'),
+  er,
   @JsonValue('EE')
-  ee('EE'),
+  ee,
   @JsonValue('SZ')
-  sz('SZ'),
+  sz,
   @JsonValue('ET')
-  et('ET'),
+  et,
   @JsonValue('FK')
-  fk('FK'),
+  fk,
   @JsonValue('FO')
-  fo('FO'),
+  fo,
   @JsonValue('FJ')
-  fj('FJ'),
+  fj,
   @JsonValue('FI')
-  fi('FI'),
+  fi,
   @JsonValue('FR')
-  fr('FR'),
+  fr,
   @JsonValue('GF')
-  gf('GF'),
+  gf,
   @JsonValue('PF')
-  pf('PF'),
+  pf,
   @JsonValue('TF')
-  tf('TF'),
+  tf,
   @JsonValue('GA')
-  ga('GA'),
+  ga,
   @JsonValue('GM')
-  gm('GM'),
+  gm,
   @JsonValue('GE')
-  ge('GE'),
+  ge,
   @JsonValue('DE')
-  de('DE'),
+  de,
   @JsonValue('GH')
-  gh('GH'),
+  gh,
   @JsonValue('GI')
-  gi('GI'),
+  gi,
   @JsonValue('GR')
-  gr('GR'),
+  gr,
   @JsonValue('GL')
-  gl('GL'),
+  gl,
   @JsonValue('GD')
-  gd('GD'),
+  gd,
   @JsonValue('GP')
-  gp('GP'),
+  gp,
   @JsonValue('GU')
-  gu('GU'),
+  gu,
   @JsonValue('GT')
-  gt('GT'),
+  gt,
   @JsonValue('GG')
-  gg('GG'),
+  gg,
   @JsonValue('GN')
-  gn('GN'),
+  gn,
   @JsonValue('GW')
-  gw('GW'),
+  gw,
   @JsonValue('GY')
-  gy('GY'),
+  gy,
   @JsonValue('HT')
-  ht('HT'),
+  ht,
   @JsonValue('HM')
-  hm('HM'),
+  hm,
   @JsonValue('VA')
-  va('VA'),
+  va,
   @JsonValue('HN')
-  hn('HN'),
+  hn,
   @JsonValue('HK')
-  hk('HK'),
+  hk,
   @JsonValue('HU')
-  hu('HU'),
+  hu,
 
   /// The name has been replaced because it contains a keyword. Original name: `IS`.
   @JsonValue('IS')
-  valueIs('IS'),
+  valueIs,
 
   /// The name has been replaced because it contains a keyword. Original name: `IN`.
   @JsonValue('IN')
-  valueIn('IN'),
+  valueIn,
   @JsonValue('ID')
-  id('ID'),
+  id,
   @JsonValue('IR')
-  ir('IR'),
+  ir,
   @JsonValue('IQ')
-  iq('IQ'),
+  iq,
   @JsonValue('IE')
-  ie('IE'),
+  ie,
   @JsonValue('IM')
-  im('IM'),
+  im,
   @JsonValue('IL')
-  il('IL'),
+  il,
   @JsonValue('IT')
-  it('IT'),
+  it,
   @JsonValue('JM')
-  jm('JM'),
+  jm,
   @JsonValue('JP')
-  jp('JP'),
+  jp,
   @JsonValue('JE')
-  je('JE'),
+  je,
   @JsonValue('JO')
-  jo('JO'),
+  jo,
   @JsonValue('KZ')
-  kz('KZ'),
+  kz,
   @JsonValue('KE')
-  ke('KE'),
+  ke,
   @JsonValue('KI')
-  ki('KI'),
+  ki,
   @JsonValue('KP')
-  kp('KP'),
+  kp,
   @JsonValue('KR')
-  kr('KR'),
+  kr,
   @JsonValue('KW')
-  kw('KW'),
+  kw,
   @JsonValue('KG')
-  kg('KG'),
+  kg,
   @JsonValue('LA')
-  la('LA'),
+  la,
   @JsonValue('LV')
-  lv('LV'),
+  lv,
   @JsonValue('LB')
-  lb('LB'),
+  lb,
   @JsonValue('LS')
-  ls('LS'),
+  ls,
   @JsonValue('LR')
-  lr('LR'),
+  lr,
   @JsonValue('LY')
-  ly('LY'),
+  ly,
   @JsonValue('LI')
-  li('LI'),
+  li,
   @JsonValue('LT')
-  lt('LT'),
+  lt,
   @JsonValue('LU')
-  lu('LU'),
+  lu,
   @JsonValue('MO')
-  mo('MO'),
+  mo,
   @JsonValue('MG')
-  mg('MG'),
+  mg,
   @JsonValue('MW')
-  mw('MW'),
+  mw,
   @JsonValue('MY')
-  my('MY'),
+  my,
   @JsonValue('MV')
-  mv('MV'),
+  mv,
   @JsonValue('ML')
-  ml('ML'),
+  ml,
   @JsonValue('MT')
-  mt('MT'),
+  mt,
   @JsonValue('MH')
-  mh('MH'),
+  mh,
   @JsonValue('MQ')
-  mq('MQ'),
+  mq,
   @JsonValue('MR')
-  mr('MR'),
+  mr,
   @JsonValue('MU')
-  mu('MU'),
+  mu,
   @JsonValue('YT')
-  yt('YT'),
+  yt,
   @JsonValue('MX')
-  mx('MX'),
+  mx,
   @JsonValue('FM')
-  fm('FM'),
+  fm,
   @JsonValue('MD')
-  md('MD'),
+  md,
   @JsonValue('MC')
-  mc('MC'),
+  mc,
   @JsonValue('MN')
-  mn('MN'),
+  mn,
   @JsonValue('ME')
-  me('ME'),
+  me,
   @JsonValue('MS')
-  ms('MS'),
+  ms,
   @JsonValue('MA')
-  ma('MA'),
+  ma,
   @JsonValue('MZ')
-  mz('MZ'),
+  mz,
   @JsonValue('MM')
-  mm('MM'),
+  mm,
   @JsonValue('NA')
-  na('NA'),
+  na,
   @JsonValue('NR')
-  nr('NR'),
+  nr,
   @JsonValue('NP')
-  np('NP'),
+  np,
   @JsonValue('NL')
-  nl('NL'),
+  nl,
   @JsonValue('NC')
-  nc('NC'),
+  nc,
   @JsonValue('NZ')
-  nz('NZ'),
+  nz,
   @JsonValue('NI')
-  ni('NI'),
+  ni,
   @JsonValue('NE')
-  ne('NE'),
+  ne,
   @JsonValue('NG')
-  ng('NG'),
+  ng,
   @JsonValue('NU')
-  nu('NU'),
+  nu,
   @JsonValue('NF')
-  nf('NF'),
+  nf,
   @JsonValue('MK')
-  mk('MK'),
+  mk,
   @JsonValue('MP')
-  mp('MP'),
+  mp,
   @JsonValue('NO')
-  no('NO'),
+  no,
   @JsonValue('OM')
-  om('OM'),
+  om,
   @JsonValue('PK')
-  pk('PK'),
+  pk,
   @JsonValue('PW')
-  pw('PW'),
+  pw,
   @JsonValue('PS')
-  ps('PS'),
+  ps,
   @JsonValue('PA')
-  pa('PA'),
+  pa,
   @JsonValue('PG')
-  pg('PG'),
+  pg,
   @JsonValue('PY')
-  py('PY'),
+  py,
   @JsonValue('PE')
-  pe('PE'),
+  pe,
   @JsonValue('PH')
-  ph('PH'),
+  ph,
   @JsonValue('PN')
-  pn('PN'),
+  pn,
   @JsonValue('PL')
-  pl('PL'),
+  pl,
   @JsonValue('PT')
-  pt('PT'),
+  pt,
   @JsonValue('PR')
-  pr('PR'),
+  pr,
   @JsonValue('QA')
-  qa('QA'),
+  qa,
   @JsonValue('RE')
-  re('RE'),
+  re,
   @JsonValue('RO')
-  ro('RO'),
+  ro,
   @JsonValue('RU')
-  ru('RU'),
+  ru,
   @JsonValue('RW')
-  rw('RW'),
+  rw,
   @JsonValue('BL')
-  bl('BL'),
+  bl,
   @JsonValue('SH')
-  sh('SH'),
+  sh,
   @JsonValue('KN')
-  kn('KN'),
+  kn,
   @JsonValue('LC')
-  lc('LC'),
+  lc,
   @JsonValue('MF')
-  mf('MF'),
+  mf,
   @JsonValue('PM')
-  pm('PM'),
+  pm,
   @JsonValue('VC')
-  vc('VC'),
+  vc,
   @JsonValue('WS')
-  ws('WS'),
+  ws,
   @JsonValue('SM')
-  sm('SM'),
+  sm,
   @JsonValue('ST')
-  st('ST'),
+  st,
   @JsonValue('SA')
-  sa('SA'),
+  sa,
   @JsonValue('SN')
-  sn('SN'),
+  sn,
   @JsonValue('RS')
-  rs('RS'),
+  rs,
   @JsonValue('SC')
-  sc('SC'),
+  sc,
   @JsonValue('SL')
-  sl('SL'),
+  sl,
   @JsonValue('SG')
-  sg('SG'),
+  sg,
   @JsonValue('SX')
-  sx('SX'),
+  sx,
   @JsonValue('SK')
-  sk('SK'),
+  sk,
   @JsonValue('SI')
-  si('SI'),
+  si,
   @JsonValue('SB')
-  sb('SB'),
+  sb,
   @JsonValue('SO')
-  so('SO'),
+  so,
   @JsonValue('ZA')
-  za('ZA'),
+  za,
   @JsonValue('GS')
-  gs('GS'),
+  gs,
   @JsonValue('SS')
-  ss('SS'),
+  ss,
   @JsonValue('ES')
-  es('ES'),
+  es,
   @JsonValue('LK')
-  lk('LK'),
+  lk,
   @JsonValue('SD')
-  sd('SD'),
+  sd,
   @JsonValue('SR')
-  sr('SR'),
+  sr,
   @JsonValue('SJ')
-  sj('SJ'),
+  sj,
   @JsonValue('SE')
-  se('SE'),
+  se,
   @JsonValue('CH')
-  ch('CH'),
+  ch,
   @JsonValue('SY')
-  sy('SY'),
+  sy,
   @JsonValue('TW')
-  tw('TW'),
+  tw,
   @JsonValue('TJ')
-  tj('TJ'),
+  tj,
   @JsonValue('TZ')
-  tz('TZ'),
+  tz,
   @JsonValue('TH')
-  th('TH'),
+  th,
   @JsonValue('TL')
-  tl('TL'),
+  tl,
   @JsonValue('TG')
-  tg('TG'),
+  tg,
   @JsonValue('TK')
-  tk('TK'),
+  tk,
   @JsonValue('TO')
-  to('TO'),
+  to,
   @JsonValue('TT')
-  tt('TT'),
+  tt,
   @JsonValue('TN')
-  tn('TN'),
+  tn,
   @JsonValue('TR')
-  tr('TR'),
+  tr,
   @JsonValue('TM')
-  tm('TM'),
+  tm,
   @JsonValue('TC')
-  tc('TC'),
+  tc,
   @JsonValue('TV')
-  tv('TV'),
+  tv,
   @JsonValue('UG')
-  ug('UG'),
+  ug,
   @JsonValue('UA')
-  ua('UA'),
+  ua,
   @JsonValue('AE')
-  ae('AE'),
+  ae,
   @JsonValue('GB')
-  gb('GB'),
+  gb,
   @JsonValue('UM')
-  um('UM'),
+  um,
   @JsonValue('US')
-  us('US'),
+  us,
   @JsonValue('UY')
-  uy('UY'),
+  uy,
   @JsonValue('UZ')
-  uz('UZ'),
+  uz,
   @JsonValue('VU')
-  vu('VU'),
+  vu,
   @JsonValue('VE')
-  ve('VE'),
+  ve,
   @JsonValue('VN')
-  vn('VN'),
+  vn,
   @JsonValue('VG')
-  vg('VG'),
+  vg,
   @JsonValue('VI')
-  vi('VI'),
+  vi,
   @JsonValue('WF')
-  wf('WF'),
+  wf,
   @JsonValue('EH')
-  eh('EH'),
+  eh,
   @JsonValue('YE')
-  ye('YE'),
+  ye,
   @JsonValue('ZM')
-  zm('ZM'),
+  zm,
   @JsonValue('ZW')
-  zw('ZW'),
-
-  /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
-  $unknown(null);
-
-  const CountryCode(this.json);
-
-  factory CountryCode.fromJson(String json) =>
-      values.firstWhere((e) => e.json == json, orElse: () => $unknown);
-
-  final String? json;
-
-  @override
-  String toString() => json ?? super.toString();
-
-  /// Returns all defined enum values excluding the $unknown value.
-  static List<CountryCode> get $valuesDefined =>
-      values.where((value) => value != $unknown).toList();
+  zw,
 }

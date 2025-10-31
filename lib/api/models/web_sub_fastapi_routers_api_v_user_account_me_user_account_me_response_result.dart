@@ -20,12 +20,10 @@ class WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResult {
   });
 
   factory WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 用户ID
   @JsonKey(name: 'user_id')
   final int userId;
@@ -59,6 +57,5 @@ class WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResultToJson(
-        this,
-      );
+          this);
 }

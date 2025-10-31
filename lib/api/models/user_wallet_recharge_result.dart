@@ -10,17 +10,19 @@ part 'user_wallet_recharge_result.g.dart';
 
 @JsonSerializable()
 class UserWalletRechargeResult {
-  const UserWalletRechargeResult({required this.result, this.message = '获取成功'});
+  const UserWalletRechargeResult({
+    required this.result,
+    this.message = '获取成功',
+  });
 
   factory UserWalletRechargeResult.fromJson(Map<String, Object?> json) =>
       _$UserWalletRechargeResultFromJson(json);
-
+  
   /// 响应消息
   final String message;
 
   /// 用户充值信息
-  final WebSubFastapiRoutersApiVUserWalletRechargeIndexUserWalletRechargeResultResult
-  result;
+  final WebSubFastapiRoutersApiVUserWalletRechargeIndexUserWalletRechargeResultResult result;
 
   Map<String, Object?> toJson() => _$UserWalletRechargeResultToJson(this);
 }

@@ -14,9 +14,9 @@ class UserAccountPasswordChangeRequest {
   });
 
   factory UserAccountPasswordChangeRequest.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserAccountPasswordChangeRequestFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserAccountPasswordChangeRequestFromJson(json);
+  
   /// 当前密码
   @JsonKey(name: 'current_password')
   final String currentPassword;

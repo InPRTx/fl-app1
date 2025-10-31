@@ -8,11 +8,13 @@ part 'total_node_list.g.dart';
 
 @JsonSerializable()
 class TotalNodeList {
-  const TotalNodeList({required this.dataStartAts});
+  const TotalNodeList({
+    required this.dataStartAts,
+  });
 
   factory TotalNodeList.fromJson(Map<String, Object?> json) =>
       _$TotalNodeListFromJson(json);
-
+  
   @JsonKey(name: 'data_start_ats')
   final List<DateTime> dataStartAts;
 

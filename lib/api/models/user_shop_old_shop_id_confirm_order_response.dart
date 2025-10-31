@@ -15,9 +15,9 @@ class UserShopOldShopIdConfirmOrderResponse {
   });
 
   factory UserShopOldShopIdConfirmOrderResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserShopOldShopIdConfirmOrderResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserShopOldShopIdConfirmOrderResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

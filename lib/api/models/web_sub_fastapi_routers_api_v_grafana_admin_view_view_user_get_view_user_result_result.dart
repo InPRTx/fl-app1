@@ -17,12 +17,10 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult {
   });
 
   factory WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResultFromJson(
-        json,
-      );
-
+          json);
+  
   @JsonKey(name: 'user_v2')
   final AdminUserV userV2;
   @JsonKey(name: 'old_service')
@@ -30,6 +28,5 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResultToJson(
-        this,
-      );
+          this);
 }

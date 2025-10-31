@@ -7,24 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonEnum()
 enum LoginWebVersionEnum {
   @JsonValue('v1')
-  v1('v1'),
+  v1,
   @JsonValue('v2')
-  v2('v2'),
-
-  /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
-  $unknown(null);
-
-  const LoginWebVersionEnum(this.json);
-
-  factory LoginWebVersionEnum.fromJson(String json) =>
-      values.firstWhere((e) => e.json == json, orElse: () => $unknown);
-
-  final String? json;
-
-  @override
-  String toString() => json ?? super.toString();
-
-  /// Returns all defined enum values excluding the $unknown value.
-  static List<LoginWebVersionEnum> get $valuesDefined =>
-      values.where((value) => value != $unknown).toList();
+  v2,
 }

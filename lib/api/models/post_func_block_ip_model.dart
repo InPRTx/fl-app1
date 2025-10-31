@@ -10,11 +10,13 @@ part 'post_func_block_ip_model.g.dart';
 
 @JsonSerializable()
 class PostFuncBlockIpModel {
-  const PostFuncBlockIpModel({required this.data});
+  const PostFuncBlockIpModel({
+    required this.data,
+  });
 
   factory PostFuncBlockIpModel.fromJson(Map<String, Object?> json) =>
       _$PostFuncBlockIpModelFromJson(json);
-
+  
   final List<PostFuncBlockIpDataModel> data;
 
   Map<String, Object?> toJson() => _$PostFuncBlockIpModelToJson(this);

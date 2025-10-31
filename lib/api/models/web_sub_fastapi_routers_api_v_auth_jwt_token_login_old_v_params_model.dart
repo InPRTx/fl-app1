@@ -14,9 +14,9 @@ class WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel {
   });
 
   factory WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel.fromJson(
-    Map<String, Object?> json,
-  ) => _$WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModelFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModelFromJson(json);
+  
   /// 访问令牌
   @JsonKey(name: 'access_token')
   final String? accessToken;

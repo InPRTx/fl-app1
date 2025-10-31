@@ -7,26 +7,9 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonEnum()
 enum VpnTypeListEnum {
   @JsonValue('ssr')
-  ssr('ssr'),
+  ssr,
   @JsonValue('vmess')
-  vmess('vmess'),
+  vmess,
   @JsonValue('ssr_vmess')
-  ssrVmess('ssr_vmess'),
-
-  /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
-  $unknown(null);
-
-  const VpnTypeListEnum(this.json);
-
-  factory VpnTypeListEnum.fromJson(String json) =>
-      values.firstWhere((e) => e.json == json, orElse: () => $unknown);
-
-  final String? json;
-
-  @override
-  String toString() => json ?? super.toString();
-
-  /// Returns all defined enum values excluding the $unknown value.
-  static List<VpnTypeListEnum> get $valuesDefined =>
-      values.where((value) => value != $unknown).toList();
+  ssrVmess,
 }

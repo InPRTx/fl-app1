@@ -97,6 +97,7 @@ import '../models/user_wallet_cd_key_response.dart';
 import '../models/user_wallet_recharge_recharge_id_response.dart';
 import '../models/user_wallet_recharge_result.dart';
 import '../models/user_wallet_result.dart';
+import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
@@ -120,7 +121,7 @@ abstract class FallbackClient {
 
   /// Get Version
   @GET('/v1/version')
-  Future<void> getVersionV1VersionGet();
+  Future<VersionResponseModel> getVersionV1VersionGet();
 
   /// Get Db Version
   @GET('/v1/version_db')
@@ -132,8 +133,8 @@ abstract class FallbackClient {
   @GET('/v1/emby_function')
   Future<void> embyFunctionV1EmbyFunctionGet({
     @Query('api_key') required String apiKey,
-    @Query('sql_table')
-    required WebSubFastapiRoutersVEmbyFunctionSqlTableEnum sqlTable,
+    @Query(
+        'sql_table') required WebSubFastapiRoutersVEmbyFunctionSqlTableEnum sqlTable,
     @Query('sql_table_user_id') int? sqlTableUserId,
     @Query('sql_table_link_token') String? sqlTableLinkToken,
   });
@@ -144,8 +145,8 @@ abstract class FallbackClient {
   @GET('/v1/casino_function')
   Future<void> casinoFunctionV1CasinoFunctionGet({
     @Query('api_key') required String apiKey,
-    @Query('sql_table')
-    required WebSubFastapiRoutersVCasinoFunctionSqlTableEnum sqlTable,
+    @Query(
+        'sql_table') required WebSubFastapiRoutersVCasinoFunctionSqlTableEnum sqlTable,
     @Query('sql_table_telegram_id') String? sqlTableTelegramId,
     @Query('sql_table_add_transfer_enable') int? sqlTableAddTransferEnable,
     @Query('type_mode') TypeModeEnum? typeMode,
@@ -241,7 +242,9 @@ abstract class FallbackClient {
 
   /// Get Node Info
   @GET('/v1/mod_mu/nodes/{id}/info')
-  Future<void> getNodeInfoV1ModMuNodesIdInfoGet({@Path('id') required int id});
+  Future<void> getNodeInfoV1ModMuNodesIdInfoGet({
+    @Path('id') required int id,
+  });
 
   /// Post Nodes Info
   @POST('/v1/mod_mu/nodes/{id}/info')
@@ -301,15 +304,17 @@ abstract class FallbackClient {
 
   /// Clickhouse Import User Traffic Raw
   @GET('/v1/mod_mu/clickhouse_import_user_traffic_raw')
-  Future<void>
-  clickhouseImportUserTrafficRawV1ModMuClickhouseImportUserTrafficRawGet({
+  Future<
+      void> clickhouseImportUserTrafficRawV1ModMuClickhouseImportUserTrafficRawGet(
+      {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
   /// Clickhouse Import Mod Mu User Alive Ip
   @GET('/v1/mod_mu/clickhouse_import_mod_mu_user_alive_ip')
-  Future<void>
-  clickhouseImportModMuUserAliveIpV1ModMuClickhouseImportModMuUserAliveIpGet({
+  Future<
+      void> clickhouseImportModMuUserAliveIpV1ModMuClickhouseImportModMuUserAliveIpGet(
+      {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -351,8 +356,9 @@ abstract class FallbackClient {
 
   /// Clickhouse Import Clickhouse Import User Data History
   @GET('/v1/mod_mu/clickhouse_import_user_data_history')
-  Future<void>
-  clickhouseImportClickhouseImportUserDataHistoryV1ModMuClickhouseImportUserDataHistoryGet({
+  Future<
+      void> clickhouseImportClickhouseImportUserDataHistoryV1ModMuClickhouseImportUserDataHistoryGet(
+      {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -365,8 +371,9 @@ abstract class FallbackClient {
 
   /// Get Clickhouse Import User Traffic Log Total
   @GET('/v1/mod_mu/clickhouse_import_user_traffic_log_total')
-  Future<void>
-  getClickhouseImportUserTrafficLogTotalV1ModMuClickhouseImportUserTrafficLogTotalGet({
+  Future<
+      void> getClickhouseImportUserTrafficLogTotalV1ModMuClickhouseImportUserTrafficLogTotalGet(
+      {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -406,8 +413,9 @@ abstract class FallbackClient {
     @Query('created_at_unix') required int createdAtUnix,
     @Query('valid_token') required String validToken,
     @Query('input_data') required String inputData,
-    @Query('login_web_version')
-    LoginWebVersionEnum? loginWebVersion = LoginWebVersionEnum.v1,
+    @Query(
+        'login_web_version') LoginWebVersionEnum? loginWebVersion = LoginWebVersionEnum
+        .v1,
   });
 
   /// Get Admin Total Node D
@@ -419,8 +427,9 @@ abstract class FallbackClient {
 
   /// Get User By Month Calendar Pie
   @GET('/v1/total/traffic/user_by_month_calendar_pie/{token_uuid}')
-  Future<void>
-  getUserByMonthCalendarPieV1TotalTrafficUserByMonthCalendarPieTokenUuidGet({
+  Future<
+      void> getUserByMonthCalendarPieV1TotalTrafficUserByMonthCalendarPieTokenUuidGet(
+      {
     @Path('token_uuid') required String tokenUuid,
     @Query('year_month') String? yearMonth,
   });
@@ -441,8 +450,8 @@ abstract class FallbackClient {
 
   /// Get Announcement
   @GET('/v1/admin/announcement')
-  Future<SystemMetaDataAnnouncementModel>
-  getAnnouncementV1AdminAnnouncementGet({
+  Future<SystemMetaDataAnnouncementModel> getAnnouncementV1AdminAnnouncementGet(
+      {
     @Query('ann_type') required AnnouncementEnum annType,
   });
 
@@ -503,8 +512,9 @@ abstract class FallbackClient {
 
   /// Post Request Ip Ban Task Insert
   @POST('/v1/admin/request_ip_ban_task_insert')
-  Future<ErrorResponse>
-  postRequestIpBanTaskInsertV1AdminRequestIpBanTaskInsertPost({
+  Future<
+      ErrorResponse> postRequestIpBanTaskInsertV1AdminRequestIpBanTaskInsertPost(
+      {
     @Query('ip_cidr') required String ipCidr,
     @Query('task_end_at') required DateTime taskEndAt,
     @Query('ban_context') String? banContext = '管理员禁封IP',
@@ -514,8 +524,8 @@ abstract class FallbackClient {
 
   /// Post Request Ip Ban Task Unban
   @POST('/v1/admin/request_ip_ban_task_unban')
-  Future<ErrorResponse>
-  postRequestIpBanTaskUnbanV1AdminRequestIpBanTaskUnbanPost({
+  Future<
+      ErrorResponse> postRequestIpBanTaskUnbanV1AdminRequestIpBanTaskUnbanPost({
     @Query('ip_cidr') required String ipCidr,
   });
 
@@ -694,8 +704,9 @@ abstract class FallbackClient {
     @Path('token') required String token,
     @Query('is_node_extend') bool? isNodeExtend,
     @Query('manual_link_group') int? manualLinkGroup,
-    @Query('client_type')
-    SubLinkClientTypeEnum? clientType = SubLinkClientTypeEnum.auto,
+    @Query(
+        'client_type') SubLinkClientTypeEnum? clientType = SubLinkClientTypeEnum
+        .auto,
     @Query('is_remark_emoji') bool? isRemarkEmoji = true,
     @Query('is_proxy_mode') bool? isProxyMode = false,
     @Query('filename') String? filename = 'V2RayN',
@@ -752,8 +763,9 @@ abstract class FallbackClient {
   ///
   /// 更新系统公告接口.
   @POST('/api/v2/admin_api/announcement')
-  Future<AnnouncementUpdateResponse>
-  updateAnnouncementApiV2AdminApiAnnouncementPost({
+  Future<
+      AnnouncementUpdateResponse> updateAnnouncementApiV2AdminApiAnnouncementPost(
+      {
     @Query('ann_type') required AnnouncementEnum annType,
     @Body() String? body = '',
   });
@@ -778,8 +790,8 @@ abstract class FallbackClient {
   ///
   /// 管理员替换用户邮箱接口.
   @GET('/api/v2/admin_api/replace_user_email')
-  Future<ReplaceEmailResponse>
-  replaceUserEmailApiV2AdminApiReplaceUserEmailGet({
+  Future<ReplaceEmailResponse> replaceUserEmailApiV2AdminApiReplaceUserEmailGet(
+      {
     @Query('user_id') required int userId,
     @Query('user_old_email') required String userOldEmail,
     @Query('user_new_email') required String userNewEmail,
@@ -797,15 +809,17 @@ abstract class FallbackClient {
 
   /// Post Request Email Code
   @POST('/api/v2/auth/account_register/request-email-code')
-  Future<ErrorResponse>
-  postRequestEmailCodeApiV2AuthAccountRegisterRequestEmailCodePost({
+  Future<
+      ErrorResponse> postRequestEmailCodeApiV2AuthAccountRegisterRequestEmailCodePost(
+      {
     @Body() required RequestEmailCodeParamsModel body,
   });
 
   /// Post Check Invite Code
   @POST('/api/v2/auth/account_register/check-invite-code')
-  Future<ErrorResponse>
-  postCheckInviteCodeApiV2AuthAccountRegisterCheckInviteCodePost({
+  Future<
+      ErrorResponse> postCheckInviteCodeApiV2AuthAccountRegisterCheckInviteCodePost(
+      {
     @Body() required CheckInviteCodeParamsModel body,
   });
 
@@ -817,32 +831,31 @@ abstract class FallbackClient {
 
   /// Post Request Email Code
   @POST('/api/v2/auth/account_reset_password/request-email-code')
-  Future<ErrorResponse>
-  postRequestEmailCodeApiV2AuthAccountResetPasswordRequestEmailCodePost({
+  Future<
+      ErrorResponse> postRequestEmailCodeApiV2AuthAccountResetPasswordRequestEmailCodePost(
+      {
     @Body() required RequestEmailCodeParamsModel body,
   });
 
   /// Login Post
   @POST('/api/v2/auth/account_login/login')
   Future<LoginPostResultModel> loginPostApiV2AuthAccountLoginLoginPost({
-    @Body()
-    required WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body,
+    @Body() required WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body,
   });
 
   /// Post Jwt Access Refresh
   @POST('/api/v2/auth/jwt_token/jwt_access_refresh')
-  Future<RefreshPostResultModel>
-  postJwtAccessRefreshApiV2AuthJwtTokenJwtAccessRefreshPost({
-    @Body()
-    required WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel body,
+  Future<
+      RefreshPostResultModel> postJwtAccessRefreshApiV2AuthJwtTokenJwtAccessRefreshPost(
+      {
+        @Body() required WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel body,
   });
 
   /// Post Login Old V1
   @POST('/api/v2/auth/jwt_token/login_old_v1')
-  Future<PostLoginOldVResultModel>
-  postLoginOldV1ApiV2AuthJwtTokenLoginOldV1Post({
-    @Body()
-    required WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel body,
+  Future<
+      PostLoginOldVResultModel> postLoginOldV1ApiV2AuthJwtTokenLoginOldV1Post({
+    @Body() required WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel body,
   });
 
   /// Get User Link Group
@@ -856,8 +869,9 @@ abstract class FallbackClient {
   ///
   /// 获取系统公告信息.
   @GET('/api/v2/user/system/announcements')
-  Future<AnnouncementsGetResultModel>
-  getAnnouncementsApiV2UserSystemAnnouncementsGet({
+  Future<
+      AnnouncementsGetResultModel> getAnnouncementsApiV2UserSystemAnnouncementsGet(
+      {
     @Query('ann_type') AnnouncementEnum? annType = AnnouncementEnum.indexAnn,
   });
 
@@ -884,22 +898,25 @@ abstract class FallbackClient {
 
   /// User Tickets Ticket Id Edit Status
   @PUT('/api/v2/user/tickets-v2/{ticket_id}/edit-status')
-  Future<UserTicketsTicketIdEditStatusResponse>
-  userTicketsTicketIdEditStatusApiV2UserTicketsV2TicketIdEditStatusPut({
+  Future<
+      UserTicketsTicketIdEditStatusResponse> userTicketsTicketIdEditStatusApiV2UserTicketsV2TicketIdEditStatusPut(
+      {
     @Path('ticket_id') required int ticketId,
   });
 
   /// User Tickets Ticket Id Messages Get
   @GET('/api/v2/user/tickets-v2/{ticket_id}/messages')
-  Future<UserTicketsTicketIdMessagesGetResponse>
-  userTicketsTicketIdMessagesGetApiV2UserTicketsV2TicketIdMessagesGet({
+  Future<
+      UserTicketsTicketIdMessagesGetResponse> userTicketsTicketIdMessagesGetApiV2UserTicketsV2TicketIdMessagesGet(
+      {
     @Path('ticket_id') required int ticketId,
   });
 
   /// Ticket Id Send Messages
   @POST('/api/v2/user/tickets-v2/{ticket_id}/send_messages')
-  Future<UserTicketsTicketIdMessagesPostResponse>
-  ticketIdSendMessagesApiV2UserTicketsV2TicketIdSendMessagesPost({
+  Future<
+      UserTicketsTicketIdMessagesPostResponse> ticketIdSendMessagesApiV2UserTicketsV2TicketIdSendMessagesPost(
+      {
     @Path('ticket_id') required int ticketId,
   });
 
@@ -907,35 +924,35 @@ abstract class FallbackClient {
   ///
   /// 获取用户账户活动记录接口.
   @GET('/api/v2/user/account/activity')
-  Future<UserAccountActivityResponse>
-  userAccountActivityApiV2UserAccountActivityGet();
+  Future<
+      UserAccountActivityResponse> userAccountActivityApiV2UserAccountActivityGet();
 
   /// User Account Edit Email
   @POST('/api/v2/user/account/edit-email')
-  Future<UserAccountEditEmailResponse>
-  userAccountEditEmailApiV2UserAccountEditEmailPost();
+  Future<
+      UserAccountEditEmailResponse> userAccountEditEmailApiV2UserAccountEditEmailPost();
 
   /// User Account Edit Password
   @POST('/api/v2/user/account/edit-password')
-  Future<UserAccountEditPasswordResponse>
-  userAccountEditPasswordApiV2UserAccountEditPasswordPost();
+  Future<
+      UserAccountEditPasswordResponse> userAccountEditPasswordApiV2UserAccountEditPasswordPost();
 
   /// User Account Edit Profile
   @POST('/api/v2/user/account/edit-profile')
-  Future<UserAccountEditProfileResponse>
-  userAccountEditProfileApiV2UserAccountEditProfilePost();
+  Future<
+      UserAccountEditProfileResponse> userAccountEditProfileApiV2UserAccountEditProfilePost();
 
   /// User Account Link Telegram
   @GET('/api/v2/user/account/link/telegram')
-  Future<UserAccountLinkTelegramResponse>
-  userAccountLinkTelegramApiV2UserAccountLinkTelegramGet();
+  Future<
+      UserAccountLinkTelegramResponse> userAccountLinkTelegramApiV2UserAccountLinkTelegramGet();
 
   /// User Account Login Ip Log.
   ///
   /// 获取用户登录IP日志.
   @GET('/api/v2/user/account/login-ip-log')
-  Future<UserAccountLoginIpLogResponse>
-  userAccountLoginIpLogApiV2UserAccountLoginIpLogGet();
+  Future<
+      UserAccountLoginIpLogResponse> userAccountLoginIpLogApiV2UserAccountLoginIpLogGet();
 
   /// User Account Me.
   ///
@@ -947,15 +964,16 @@ abstract class FallbackClient {
   ///
   /// 获取用户安全设置信息.
   @GET('/api/v2/user/account/security')
-  Future<UserAccountSecurityGetResponse>
-  userAccountSecurityGetApiV2UserAccountSecurityGet();
+  Future<
+      UserAccountSecurityGetResponse> userAccountSecurityGetApiV2UserAccountSecurityGet();
 
   /// User Account Security Post.
   ///
   /// 更新用户安全设置.
   @POST('/api/v2/user/account/security')
-  Future<UserAccountSecurityPostResponse>
-  userAccountSecurityPostApiV2UserAccountSecurityPost({
+  Future<
+      UserAccountSecurityPostResponse> userAccountSecurityPostApiV2UserAccountSecurityPost(
+      {
     @Body() required UserAccountSecurityPostRequest body,
   });
 
@@ -963,8 +981,9 @@ abstract class FallbackClient {
   ///
   /// 修改用户密码.
   @POST('/api/v2/user/account/change-password')
-  Future<UserAccountPasswordChangeResponse>
-  userAccountChangePasswordApiV2UserAccountChangePasswordPost({
+  Future<
+      UserAccountPasswordChangeResponse> userAccountChangePasswordApiV2UserAccountChangePasswordPost(
+      {
     @Body() required UserAccountPasswordChangeRequest body,
   });
 
@@ -972,8 +991,8 @@ abstract class FallbackClient {
   ///
   /// 获取用户登录历史.
   @GET('/api/v2/user/account/login-history')
-  Future<UserAccountLoginHistoryResponse>
-  userAccountLoginHistoryApiV2UserAccountLoginHistoryGet();
+  Future<
+      UserAccountLoginHistoryResponse> userAccountLoginHistoryApiV2UserAccountLoginHistoryGet();
 
   /// User Invite.
   ///
@@ -987,13 +1006,13 @@ abstract class FallbackClient {
 
   /// User Services Ss Password
   @GET('/api/v2/user/services/ss-password/')
-  Future<UserServicesSsPasswordResponse>
-  userServicesSsPasswordApiV2UserServicesSsPasswordGet();
+  Future<
+      UserServicesSsPasswordResponse> userServicesSsPasswordApiV2UserServicesSsPasswordGet();
 
   /// User Services Ss Password Reset
   @POST('/api/v2/user/services/ss-password/reset')
-  Future<UserServicesSsPasswordResetResponse>
-  userServicesSsPasswordResetApiV2UserServicesSsPasswordResetPost();
+  Future<
+      UserServicesSsPasswordResetResponse> userServicesSsPasswordResetApiV2UserServicesSsPasswordResetPost();
 
   /// User Services Subscribe Log Area Time Axis.
   ///
@@ -1001,8 +1020,9 @@ abstract class FallbackClient {
   ///
   /// [limit] - 数据条数限制.
   @GET('/api/v2/user/services/subscribe-log/area-time-axis')
-  Future<UserServicesSubscribeLogAreaTimeAxisResponse>
-  userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet({
+  Future<
+      UserServicesSubscribeLogAreaTimeAxisResponse> userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet(
+      {
     @Query('limit') int? limit = 10000,
   });
 
@@ -1012,8 +1032,9 @@ abstract class FallbackClient {
   ///
   /// [yearMonth] - 年月格式：YYYY-MM.
   @GET('/api/v2/user/services/subscribe-log/calendar-pie')
-  Future<UserServicesSubscribeLogCalendarPieResponse>
-  userServicesSubscribeLogCalendarPieApiV2UserServicesSubscribeLogCalendarPieGet({
+  Future<
+      UserServicesSubscribeLogCalendarPieResponse> userServicesSubscribeLogCalendarPieApiV2UserServicesSubscribeLogCalendarPieGet(
+      {
     @Query('year_month') String? yearMonth,
   });
 
@@ -1025,50 +1046,53 @@ abstract class FallbackClient {
   ///
   /// [offset] - 数据偏移量.
   @GET('/api/v2/user/services/subscribe-log/detail-record')
-  Future<UserServicesSubscribeLogDetailRecordResponse>
-  userServicesSubscribeLogDetailRecordApiV2UserServicesSubscribeLogDetailRecordGet({
+  Future<
+      UserServicesSubscribeLogDetailRecordResponse> userServicesSubscribeLogDetailRecordApiV2UserServicesSubscribeLogDetailRecordGet(
+      {
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit,
   });
 
   /// User Services Audit Record
   @GET('/api/v2/user/services/audit/record')
-  Future<UserServicesAuditRecordResponse>
-  userServicesAuditRecordApiV2UserServicesAuditRecordGet();
+  Future<
+      UserServicesAuditRecordResponse> userServicesAuditRecordApiV2UserServicesAuditRecordGet();
 
   /// User Services Audit Rule
   @GET('/api/v2/user/services/audit/rule')
-  Future<UserServicesAuditRuleResponse>
-  userServicesAuditRuleApiV2UserServicesAuditRuleGet();
+  Future<
+      UserServicesAuditRuleResponse> userServicesAuditRuleApiV2UserServicesAuditRuleGet();
 
   /// User Services Link Token
   @GET('/api/v2/user/services/link-token/link-token/')
-  Future<UserServicesLinkTokenResponse>
-  userServicesLinkTokenApiV2UserServicesLinkTokenLinkTokenGet();
+  Future<
+      UserServicesLinkTokenResponse> userServicesLinkTokenApiV2UserServicesLinkTokenLinkTokenGet();
 
   /// User Services Link Token Reset
   @POST('/api/v2/user/services/link-token/link-token/reset')
-  Future<UserServicesLinkTokenResetResponse>
-  userServicesLinkTokenResetApiV2UserServicesLinkTokenLinkTokenResetPost();
+  Future<
+      UserServicesLinkTokenResetResponse> userServicesLinkTokenResetApiV2UserServicesLinkTokenLinkTokenResetPost();
 
   /// User Services Nodes.
   ///
   /// 获取用户可用节点列表接口.
   @GET('/api/v2/user/services/nodes/')
-  Future<UserServicesNodesResponse>
-  userServicesNodesApiV2UserServicesNodesGet();
+  Future<
+      UserServicesNodesResponse> userServicesNodesApiV2UserServicesNodesGet();
 
   /// User Services Nodes Node Id
   @GET('/api/v2/user/services/nodes/{node_id}/')
-  Future<UserServicesNodesNodeIdResponse>
-  userServicesNodesNodeIdApiV2UserServicesNodesNodeIdGet({
+  Future<
+      UserServicesNodesNodeIdResponse> userServicesNodesNodeIdApiV2UserServicesNodesNodeIdGet(
+      {
     @Path('node_id') required int nodeId,
   });
 
   /// User Services Nodes Node Id
   @GET('/api/v2/user/services/{node_id}/')
-  Future<UserServicesNodesNodeIdResponse>
-  userServicesNodesNodeIdApiV2UserServicesNodeIdGet({
+  Future<
+      UserServicesNodesNodeIdResponse> userServicesNodesNodeIdApiV2UserServicesNodeIdGet(
+      {
     @Path('node_id') required int nodeId,
   });
 
@@ -1076,25 +1100,27 @@ abstract class FallbackClient {
   ///
   /// 获取用户共享账户信息接口.
   @GET('/api/v2/user/services/share-account/')
-  Future<UserServicesShareAccountResponse>
-  userServicesShareAccountApiV2UserServicesShareAccountGet();
+  Future<
+      UserServicesShareAccountResponse> userServicesShareAccountApiV2UserServicesShareAccountGet();
 
   /// User Services Old Bill
   @GET('/api/v2/user/services-old/bill/')
-  Future<UserServicesOldBillResponse>
-  userServicesOldBillApiV2UserServicesOldBillGet();
+  Future<
+      UserServicesOldBillResponse> userServicesOldBillApiV2UserServicesOldBillGet();
 
   /// User Services Old Bill Service Id
   @GET('/api/v2/user/services-old/bill/{service_id}/')
-  Future<UserServicesOldBillServiceIdResponse>
-  userServicesOldBillServiceIdApiV2UserServicesOldBillServiceIdGet({
+  Future<
+      UserServicesOldBillServiceIdResponse> userServicesOldBillServiceIdApiV2UserServicesOldBillServiceIdGet(
+      {
     @Path('service_id') required int serviceId,
   });
 
   /// User Services Old Bill Service Id Enable Auto Renewal
   @GET('/api/v2/user/services-old/bill/{service_id}/enable-auto-renewal')
-  Future<UserServicesOldBillServiceIdEnableAutoRenewalResponse>
-  userServicesOldBillServiceIdEnableAutoRenewalApiV2UserServicesOldBillServiceIdEnableAutoRenewalGet({
+  Future<
+      UserServicesOldBillServiceIdEnableAutoRenewalResponse> userServicesOldBillServiceIdEnableAutoRenewalApiV2UserServicesOldBillServiceIdEnableAutoRenewalGet(
+      {
     @Path('service_id') required int serviceId,
   });
 
@@ -1102,15 +1128,15 @@ abstract class FallbackClient {
   ///
   /// 获取签到历史列表.
   @GET('/api/v2/user/services-old/checkin/')
-  Future<UserServicesOldCheckinGetResponse>
-  userServicesOldCheckinGetApiV2UserServicesOldCheckinGet();
+  Future<
+      UserServicesOldCheckinGetResponse> userServicesOldCheckinGetApiV2UserServicesOldCheckinGet();
 
   /// User Services Old Checkin Post.
   ///
   /// 立即签到.
   @POST('/api/v2/user/services-old/checkin/')
-  Future<UserServicesOldCheckinPostResponse>
-  userServicesOldCheckinPostApiV2UserServicesOldCheckinPost();
+  Future<
+      UserServicesOldCheckinPostResponse> userServicesOldCheckinPostApiV2UserServicesOldCheckinPost();
 
   /// User Services Old.
   ///
@@ -1126,22 +1152,25 @@ abstract class FallbackClient {
 
   /// User Shop Old Shop Id Confirm Order
   @POST('/api/v2/user/shop-old/{shop_id}/confirm-order')
-  Future<UserShopOldShopIdConfirmOrderResponse>
-  userShopOldShopIdConfirmOrderApiV2UserShopOldShopIdConfirmOrderPost({
+  Future<
+      UserShopOldShopIdConfirmOrderResponse> userShopOldShopIdConfirmOrderApiV2UserShopOldShopIdConfirmOrderPost(
+      {
     @Path('shop_id') required int shopId,
   });
 
   /// User Shop Old Shop Id Pre Order
   @POST('/api/v2/user/shop-old/{shop_id}/pre-order')
-  Future<UserShopOldShopIdPreOrderResponse>
-  userShopOldShopIdPreOrderApiV2UserShopOldShopIdPreOrderPost({
+  Future<
+      UserShopOldShopIdPreOrderResponse> userShopOldShopIdPreOrderApiV2UserShopOldShopIdPreOrderPost(
+      {
     @Path('shop_id') required int shopId,
   });
 
   /// Get Shop Id Info
   @GET('/api/v2/user/shop-old/{shop_id}/info')
-  Future<UserShopOldShopIdConfirmOrderResult>
-  getShopIdInfoApiV2UserShopOldShopIdInfoGet({
+  Future<
+      UserShopOldShopIdConfirmOrderResult> getShopIdInfoApiV2UserShopOldShopIdInfoGet(
+      {
     @Path('shop_id') required int shopId,
   });
 
@@ -1151,16 +1180,17 @@ abstract class FallbackClient {
   ///
   /// [offset] - 数据偏移量.
   @GET('/api/v2/user/wallet/recharge/')
-  Future<UserWalletRechargeResult>
-  userWalletRechargeApiV2UserWalletRechargeGet({
+  Future<UserWalletRechargeResult> userWalletRechargeApiV2UserWalletRechargeGet(
+      {
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit,
   });
 
   /// User Wallet Recharge Recharge Id
   @POST('/api/v2/user/wallet/recharge/{recharge_id}/')
-  Future<UserWalletRechargeRechargeIdResponse>
-  userWalletRechargeRechargeIdApiV2UserWalletRechargeRechargeIdPost({
+  Future<
+      UserWalletRechargeRechargeIdResponse> userWalletRechargeRechargeIdApiV2UserWalletRechargeRechargeIdPost(
+      {
     @Path('recharge_id') required int rechargeId,
   });
 
@@ -1170,8 +1200,9 @@ abstract class FallbackClient {
 
   /// User Wallet Cd Key Cd Key
   @POST('/api/v2/user/wallet/cd-key/{cd_key}/')
-  Future<UserWalletCdKeyCdKeyResponse>
-  userWalletCdKeyCdKeyApiV2UserWalletCdKeyCdKeyPost({
+  Future<
+      UserWalletCdKeyCdKeyResponse> userWalletCdKeyCdKeyApiV2UserWalletCdKeyCdKeyPost(
+      {
     @Path('cd_key') required String cdKey,
   });
 
@@ -1185,8 +1216,8 @@ abstract class FallbackClient {
   ///
   /// 获取用户购买记录.
   @GET('/api/v2/user/wallet/purchase-records')
-  Future<PurchaseRecordsResult>
-  getUserPurchaseRecordsApiV2UserWalletPurchaseRecordsGet();
+  Future<
+      PurchaseRecordsResult> getUserPurchaseRecordsApiV2UserWalletPurchaseRecordsGet();
 
   /// Get Index.
   ///
@@ -1235,8 +1266,9 @@ abstract class FallbackClient {
 
   /// Get Service Old Shop
   @GET('/api/v2/grafana_admin_view/service_old_shop')
-  Future<GetServiceOldShopResult>
-  getServiceOldShopApiV2GrafanaAdminViewServiceOldShopGet({
+  Future<
+      GetServiceOldShopResult> getServiceOldShopApiV2GrafanaAdminViewServiceOldShopGet(
+      {
     @Query('q') String? q,
   });
 
@@ -1251,8 +1283,9 @@ abstract class FallbackClient {
 
   /// Get View User Bought
   @GET('/api/v2/grafana_admin_view/view_user_bought')
-  Future<GetViewUserBoughtResult>
-  getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet({
+  Future<
+      GetViewUserBoughtResult> getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet(
+      {
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
@@ -1261,8 +1294,9 @@ abstract class FallbackClient {
 
   /// Get User Data History Ch
   @GET('/api/v2/grafana_admin_view/user_data_history_ch')
-  Future<UserDataHistoryResponse>
-  getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet({
+  Future<
+      UserDataHistoryResponse> getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet(
+      {
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
@@ -1280,8 +1314,9 @@ abstract class FallbackClient {
 
   /// Get User Traffic Log User Traffic
   @GET('/api/v2/grafana_view/user_traffic_log_user_traffic')
-  Future<void>
-  getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet({
+  Future<
+      void> getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet(
+      {
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
@@ -1334,8 +1369,9 @@ abstract class FallbackClient {
     @Path('token') required String token,
     @Query('is_node_extend') bool? isNodeExtend,
     @Query('manual_link_group') int? manualLinkGroup,
-    @Query('client_type')
-    SubLinkClientTypeEnum? clientType = SubLinkClientTypeEnum.auto,
+    @Query(
+        'client_type') SubLinkClientTypeEnum? clientType = SubLinkClientTypeEnum
+        .auto,
     @Query('is_remark_emoji') bool? isRemarkEmoji = true,
     @Query('is_proxy_mode') bool? isProxyMode = false,
     @Query('filename') String? filename = 'V2RayN',

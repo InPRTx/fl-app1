@@ -8,7 +8,11 @@ import 'fallback/fallback_client.dart';
 
 /// FastAPI `v2505.12.1`
 class RestClient {
-  RestClient(Dio dio, {String? baseUrl}) : _dio = dio, _baseUrl = baseUrl;
+  RestClient(Dio dio, {
+    String? baseUrl,
+  })
+      : _dio = dio,
+        _baseUrl = baseUrl;
 
   final Dio _dio;
   final String? _baseUrl;

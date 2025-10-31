@@ -15,9 +15,9 @@ class UserShopOldShopIdPreOrderResponse {
   });
 
   factory UserShopOldShopIdPreOrderResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserShopOldShopIdPreOrderResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserShopOldShopIdPreOrderResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

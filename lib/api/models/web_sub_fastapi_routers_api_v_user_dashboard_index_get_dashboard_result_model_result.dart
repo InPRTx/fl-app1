@@ -22,12 +22,10 @@ class WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResult {
   });
 
   factory WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 用户ID
   @JsonKey(name: 'user_id')
   final int userId;
@@ -61,6 +59,5 @@ class WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResultToJson(
-        this,
-      );
+          this);
 }

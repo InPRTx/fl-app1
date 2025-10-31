@@ -14,9 +14,9 @@ class UserServicesSsPasswordResetResponse {
   });
 
   factory UserServicesSsPasswordResetResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesSsPasswordResetResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesSsPasswordResetResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

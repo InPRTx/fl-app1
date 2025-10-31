@@ -15,9 +15,9 @@ class UserTicketsTicketIdEditStatusResponse {
   });
 
   factory UserTicketsTicketIdEditStatusResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserTicketsTicketIdEditStatusResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserTicketsTicketIdEditStatusResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

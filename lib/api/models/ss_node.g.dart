@@ -12,12 +12,12 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
   nodeConfig: NodeConfig.fromJson(json['node_config'] as Map<String, dynamic>),
   priority: (json['priority'] as num?)?.toInt() ?? 60000,
   isEnable: json['is_enable'] as bool? ?? true,
-  iso3166Code: json['iso3166_code'] == null
-      ? CountryCode.ar
-      : CountryCode.fromJson(json['iso3166_code'] as String),
-  vpnType: json['vpn_type'] == null
-      ? VpnTypeEnum.vmess
-      : VpnTypeEnum.fromJson(json['vpn_type'] as String),
+  iso3166Code:
+      $enumDecodeNullable(_$CountryCodeEnumMap, json['iso3166_code']) ??
+      CountryCode.ar,
+  vpnType:
+      $enumDecodeNullable(_$VpnTypeEnumEnumMap, json['vpn_type']) ??
+      VpnTypeEnum.vmess,
   nodeRate: json['node_rate'] as String? ?? '1.00',
   nodeLevel: (json['node_level'] as num?)?.toInt() ?? 0,
   isHideNode: json['is_hide_node'] as bool? ?? false,
@@ -304,7 +304,6 @@ const _$CountryCodeEnumMap = {
   CountryCode.ye: 'YE',
   CountryCode.zm: 'ZM',
   CountryCode.zw: 'ZW',
-  CountryCode.$unknown: r'$unknown',
 };
 
 const _$VpnTypeEnumEnumMap = {
@@ -320,5 +319,4 @@ const _$VpnTypeEnumEnumMap = {
   VpnTypeEnum.shadowsocks: 'shadowsocks',
   VpnTypeEnum.shadowsocksr: 'shadowsocksr',
   VpnTypeEnum.hysteria2: 'hysteria2',
-  VpnTypeEnum.$unknown: r'$unknown',
 };

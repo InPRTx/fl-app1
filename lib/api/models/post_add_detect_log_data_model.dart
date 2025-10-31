@@ -8,11 +8,14 @@ part 'post_add_detect_log_data_model.g.dart';
 
 @JsonSerializable()
 class PostAddDetectLogDataModel {
-  const PostAddDetectLogDataModel({required this.userId, required this.listId});
+  const PostAddDetectLogDataModel({
+    required this.userId,
+    required this.listId,
+  });
 
   factory PostAddDetectLogDataModel.fromJson(Map<String, Object?> json) =>
       _$PostAddDetectLogDataModelFromJson(json);
-
+  
   @JsonKey(name: 'user_id')
   final int userId;
   @JsonKey(name: 'list_id')

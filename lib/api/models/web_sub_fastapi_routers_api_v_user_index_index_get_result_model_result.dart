@@ -17,11 +17,10 @@ class WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResult {
   });
 
   factory WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) => _$WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResultFromJson(
-    json,
-  );
-
+      Map<String, Object?> json) =>
+      _$WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResultFromJson(
+          json);
+  
   /// 用户ID
   @JsonKey(name: 'user_id')
   final int userId;

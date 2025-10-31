@@ -8,11 +8,14 @@ part 'ss_node_user_group_host_dict.g.dart';
 
 @JsonSerializable()
 class SsNodeUserGroupHostDict {
-  const SsNodeUserGroupHostDict({required this.host, this.port});
+  const SsNodeUserGroupHostDict({
+    required this.host,
+    this.port,
+  });
 
   factory SsNodeUserGroupHostDict.fromJson(Map<String, Object?> json) =>
       _$SsNodeUserGroupHostDictFromJson(json);
-
+  
   final String host;
   final int? port;
 

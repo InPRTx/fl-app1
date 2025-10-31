@@ -8,11 +8,13 @@ part 'check_invite_code_params_model.g.dart';
 
 @JsonSerializable()
 class CheckInviteCodeParamsModel {
-  const CheckInviteCodeParamsModel({this.inviteCode});
+  const CheckInviteCodeParamsModel({
+    this.inviteCode,
+  });
 
   factory CheckInviteCodeParamsModel.fromJson(Map<String, Object?> json) =>
       _$CheckInviteCodeParamsModelFromJson(json);
-
+  
   /// 邀请码
   @JsonKey(name: 'invite_code')
   final String? inviteCode;

@@ -7,56 +7,39 @@ import 'package:json_annotation/json_annotation.dart';
 @JsonEnum()
 enum SubLinkClientTypeEnum {
   @JsonValue('Mixed')
-  mixed('Mixed'),
+  mixed,
   @JsonValue('AUTO')
-  auto('AUTO'),
+  auto,
   @JsonValue('Clash')
-  clash('Clash'),
+  clash,
   @JsonValue('ClashR')
-  clashR('ClashR'),
+  clashR,
   @JsonValue('Quantumult')
-  quantumult('Quantumult'),
+  quantumult,
   @JsonValue('QuantumultX')
-  quantumultX('QuantumultX'),
+  quantumultX,
   @JsonValue('Loon')
-  loon('Loon'),
+  loon,
   @JsonValue('Mellow')
-  mellow('Mellow'),
+  mellow,
   @JsonValue('SIP002')
-  sip002('SIP002'),
+  sip002,
   @JsonValue('SIP008')
-  sip008('SIP008'),
+  sip008,
   @JsonValue('SSD')
-  ssd('SSD'),
+  ssd,
   @JsonValue('SSR')
-  ssr('SSR'),
+  ssr,
   @JsonValue('Surfboard')
-  surfboard('Surfboard'),
+  surfboard,
   @JsonValue('Surge2')
-  surge2('Surge2'),
+  surge2,
   @JsonValue('Surge3')
-  surge3('Surge3'),
+  surge3,
   @JsonValue('Surge4')
-  surge4('Surge4'),
+  surge4,
   @JsonValue('Trojan')
-  trojan('Trojan'),
+  trojan,
   @JsonValue('V2Ray')
-  v2Ray('V2Ray'),
-
-  /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
-  $unknown(null);
-
-  const SubLinkClientTypeEnum(this.json);
-
-  factory SubLinkClientTypeEnum.fromJson(String json) =>
-      values.firstWhere((e) => e.json == json, orElse: () => $unknown);
-
-  final String? json;
-
-  @override
-  String toString() => json ?? super.toString();
-
-  /// Returns all defined enum values excluding the $unknown value.
-  static List<SubLinkClientTypeEnum> get $valuesDefined =>
-      values.where((value) => value != $unknown).toList();
+  v2Ray,
 }

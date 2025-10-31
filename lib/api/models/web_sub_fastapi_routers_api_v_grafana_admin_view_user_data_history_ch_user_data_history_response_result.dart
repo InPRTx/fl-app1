@@ -13,17 +13,14 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewUserDataHistoryChUserDataHistoryRe
   });
 
   factory WebSubFastapiRoutersApiVGrafanaAdminViewUserDataHistoryChUserDataHistoryResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewUserDataHistoryChUserDataHistoryResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   @JsonKey(name: 'user_id')
   final int userId;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewUserDataHistoryChUserDataHistoryResponseResultToJson(
-        this,
-      );
+          this);
 }

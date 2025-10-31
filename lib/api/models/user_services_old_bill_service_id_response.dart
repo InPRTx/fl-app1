@@ -15,9 +15,9 @@ class UserServicesOldBillServiceIdResponse {
   });
 
   factory UserServicesOldBillServiceIdResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesOldBillServiceIdResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesOldBillServiceIdResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

@@ -16,12 +16,10 @@ class WebSubFastapiRoutersApiVUserTicketsVIndexTicketVGetResultModelResult {
   });
 
   factory WebSubFastapiRoutersApiVUserTicketsVIndexTicketVGetResultModelResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserTicketsVIndexTicketVGetResultModelResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 工单总数
   @JsonKey(name: 'total_count')
   final int totalCount;
@@ -31,6 +29,5 @@ class WebSubFastapiRoutersApiVUserTicketsVIndexTicketVGetResultModelResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserTicketsVIndexTicketVGetResultModelResultToJson(
-        this,
-      );
+          this);
 }

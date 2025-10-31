@@ -17,9 +17,9 @@ class UserServicesSubscribeLogDetailRecordResponse {
   });
 
   factory UserServicesSubscribeLogDetailRecordResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesSubscribeLogDetailRecordResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesSubscribeLogDetailRecordResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import 'api/models/version_response_model.dart';
+import 'api/rest_client.dart';
+
 /// 页面：调用 GET /v1/version 并显示返回结果。
 /// 说明/假设：默认 baseUrl 为 http://127.0.0.1:8000（常见 FastAPI 本地地址），
 /// 可以在页面里修改并点击“Fetch”来请求其他地址。
@@ -40,24 +43,16 @@ class _VersionPageState extends State<VersionPage> {
     final Dio dio = Dio(BaseOptions(baseUrl: baseUrl));
 
     try {
-      final response = await dio.get('/v1/version');
-      final data = response.data;
-      String text;
-      if (data == null) {
-        text = 'empty response (null)';
-      } else if (data is String) {
-        text = data;
-      } else {
-        // Could be Map or List
-        try {
-          text = const JsonEncoder.withIndent('  ').convert(data);
-        } catch (_) {
-          text = data.toString();
-        }
-      }
+      // Use the generated RestClient + FallbackClient to call the API so the
+      // response is parsed into VersionResponseModel automatically.
+      final rest = RestClient(dio, baseUrl: baseUrl);
+      final VersionResponseModel model = await rest.fallback
+          .getVersionV1VersionGet();
 
       setState(() {
-        _result = 'Request: ${dio.options.baseUrl}/v1/version\n\n' + text;
+        _result =
+            'Request: ${dio.options.baseUrl}/v1/version\n\n' +
+            'version: ${model.data}';
       });
     } on DioException catch (e) {
       // Provide verbose debug info to help troubleshooting

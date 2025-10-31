@@ -18,9 +18,9 @@ class WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel {
   });
 
   factory WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel.fromJson(
-    Map<String, Object?> json,
-  ) => _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelFromJson(json);
+  
   final String email;
   final String password;
 

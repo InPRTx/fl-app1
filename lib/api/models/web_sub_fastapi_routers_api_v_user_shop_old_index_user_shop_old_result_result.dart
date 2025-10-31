@@ -15,17 +15,14 @@ class WebSubFastapiRoutersApiVUserShopOldIndexUserShopOldResultResult {
   });
 
   factory WebSubFastapiRoutersApiVUserShopOldIndexUserShopOldResultResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserShopOldIndexUserShopOldResultResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 商品列表
   final Map<String, TrialPlanModel> products;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserShopOldIndexUserShopOldResultResultToJson(
-        this,
-      );
+          this);
 }

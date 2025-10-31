@@ -11,17 +11,17 @@ class SystemMetaDataAnnouncementModel {
   const SystemMetaDataAnnouncementModel({
     required this.htmlText,
     required this.markdownText,
-    this.createdAt = '2025-10-31T10:54:37.521179+08:00',
-    this.updatedAt = '2025-10-31T10:54:37.521209+08:00',
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory SystemMetaDataAnnouncementModel.fromJson(Map<String, Object?> json) =>
       _$SystemMetaDataAnnouncementModelFromJson(json);
 
   @JsonKey(name: 'created_at')
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
   @JsonKey(name: 'html_text')
   final String htmlText;
   @JsonKey(name: 'markdown_text')

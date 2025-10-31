@@ -15,9 +15,9 @@ class UserServicesOldBillServiceIdEnableAutoRenewalResponse {
   });
 
   factory UserServicesOldBillServiceIdEnableAutoRenewalResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesOldBillServiceIdEnableAutoRenewalResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesOldBillServiceIdEnableAutoRenewalResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

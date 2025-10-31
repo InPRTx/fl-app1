@@ -15,9 +15,9 @@ class UserWalletRechargeRechargeIdResponse {
   });
 
   factory UserWalletRechargeRechargeIdResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserWalletRechargeRechargeIdResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserWalletRechargeRechargeIdResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

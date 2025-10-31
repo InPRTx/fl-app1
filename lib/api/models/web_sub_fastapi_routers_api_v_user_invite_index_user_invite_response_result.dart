@@ -20,12 +20,10 @@ class WebSubFastapiRoutersApiVUserInviteIndexUserInviteResponseResult {
   });
 
   factory WebSubFastapiRoutersApiVUserInviteIndexUserInviteResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserInviteIndexUserInviteResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 邀请码
   @JsonKey(name: 'invite_code')
   final String inviteCode;
@@ -52,6 +50,5 @@ class WebSubFastapiRoutersApiVUserInviteIndexUserInviteResponseResult {
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserInviteIndexUserInviteResponseResultToJson(
-        this,
-      );
+          this);
 }

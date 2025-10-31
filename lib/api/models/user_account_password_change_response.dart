@@ -14,9 +14,9 @@ class UserAccountPasswordChangeResponse {
   });
 
   factory UserAccountPasswordChangeResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserAccountPasswordChangeResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserAccountPasswordChangeResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

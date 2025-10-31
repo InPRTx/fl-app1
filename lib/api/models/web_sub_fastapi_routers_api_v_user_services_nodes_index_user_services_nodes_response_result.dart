@@ -17,12 +17,10 @@ class WebSubFastapiRoutersApiVUserServicesNodesIndexUserServicesNodesResponseRes
   });
 
   factory WebSubFastapiRoutersApiVUserServicesNodesIndexUserServicesNodesResponseResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserServicesNodesIndexUserServicesNodesResponseResultFromJson(
-        json,
-      );
-
+          json);
+  
   /// 节点总数
   @JsonKey(name: 'total_nodes')
   final int totalNodes;
@@ -37,6 +35,5 @@ class WebSubFastapiRoutersApiVUserServicesNodesIndexUserServicesNodesResponseRes
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserServicesNodesIndexUserServicesNodesResponseResultToJson(
-        this,
-      );
+          this);
 }

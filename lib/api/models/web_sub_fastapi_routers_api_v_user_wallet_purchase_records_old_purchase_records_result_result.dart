@@ -19,12 +19,10 @@ class WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultR
   });
 
   factory WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultResult.fromJson(
-    Map<String, Object?> json,
-  ) =>
+      Map<String, Object?> json) =>
       _$WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultResultFromJson(
-        json,
-      );
-
+          json);
+  
   final String id;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
@@ -39,6 +37,5 @@ class WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultR
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultResultToJson(
-        this,
-      );
+          this);
 }

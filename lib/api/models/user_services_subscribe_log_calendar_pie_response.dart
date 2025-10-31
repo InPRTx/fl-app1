@@ -17,9 +17,9 @@ class UserServicesSubscribeLogCalendarPieResponse {
   });
 
   factory UserServicesSubscribeLogCalendarPieResponse.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserServicesSubscribeLogCalendarPieResponseFromJson(json);
-
+      Map<String, Object?> json) =>
+      _$UserServicesSubscribeLogCalendarPieResponseFromJson(json);
+  
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 

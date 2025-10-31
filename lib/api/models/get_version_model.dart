@@ -8,11 +8,13 @@ part 'get_version_model.g.dart';
 
 @JsonSerializable()
 class GetVersionModel {
-  const GetVersionModel({required this.version});
+  const GetVersionModel({
+    required this.version,
+  });
 
   factory GetVersionModel.fromJson(Map<String, Object?> json) =>
       _$GetVersionModelFromJson(json);
-
+  
   final String version;
 
   Map<String, Object?> toJson() => _$GetVersionModelToJson(this);

@@ -10,11 +10,13 @@ part 'post_add_detect_log_model.g.dart';
 
 @JsonSerializable()
 class PostAddDetectLogModel {
-  const PostAddDetectLogModel({required this.data});
+  const PostAddDetectLogModel({
+    required this.data,
+  });
 
   factory PostAddDetectLogModel.fromJson(Map<String, Object?> json) =>
       _$PostAddDetectLogModelFromJson(json);
-
+  
   final List<PostAddDetectLogDataModel> data;
 
   Map<String, Object?> toJson() => _$PostAddDetectLogModelToJson(this);
