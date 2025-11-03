@@ -103,6 +103,8 @@ import '../models/vpn_type_list_enum.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
 
@@ -1292,7 +1294,10 @@ abstract class FallbackClient {
 
   /// Get User Old Service
   @GET('/api/v2/low_admin_api/user_old_service/{user_id}')
-  Future<void> getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet({
+  Future<
+    WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
+  >
+  getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet({
     @Path('user_id') required int userId,
   });
 
@@ -1307,7 +1312,8 @@ abstract class FallbackClient {
 
   /// Get User V2
   @GET('/api/v2/low_admin_api/user_v2/{user_id}')
-  Future<void> getUserV2ApiV2LowAdminApiUserV2UserIdGet({
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse>
+  getUserV2ApiV2LowAdminApiUserV2UserIdGet({
     @Path('user_id') required int userId,
   });
 

@@ -8,7 +8,7 @@ part of 'fallback_client.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
 class _FallbackClient implements FallbackClient {
   _FallbackClient(this._dio, {this.baseUrl, this.errorLogger});
@@ -73,7 +73,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late VersionResponseModel _value;
     try {
       _value = VersionResponseModel.fromJson(_result.data!);
@@ -793,7 +793,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -849,7 +849,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -1266,7 +1266,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late SystemMetaDataAnnouncementModel _value;
     try {
       _value = SystemMetaDataAnnouncementModel.fromJson(_result.data!);
@@ -1415,7 +1415,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -1444,7 +1444,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -1512,7 +1512,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -1542,7 +1542,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2343,7 +2343,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2372,7 +2372,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late AnnouncementResponse _value;
     try {
       _value = AnnouncementResponse.fromJson(_result.data!);
@@ -2404,7 +2404,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late AnnouncementUpdateResponse _value;
     try {
       _value = AnnouncementUpdateResponse.fromJson(_result.data!);
@@ -2490,7 +2490,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ReplaceEmailResponse _value;
     try {
       _value = ReplaceEmailResponse.fromJson(_result.data!);
@@ -2539,7 +2539,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late AuthRegisterResponse _value;
     try {
       _value = AuthRegisterResponse.fromJson(_result.data!);
@@ -2570,7 +2570,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2601,7 +2601,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2631,7 +2631,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2662,7 +2662,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2692,7 +2692,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late LoginPostResultModel _value;
     try {
       _value = LoginPostResultModel.fromJson(_result.data!);
@@ -2723,7 +2723,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late RefreshPostResultModel _value;
     try {
       _value = RefreshPostResultModel.fromJson(_result.data!);
@@ -2754,7 +2754,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late PostLoginOldVResultModel _value;
     try {
       _value = PostLoginOldVResultModel.fromJson(_result.data!);
@@ -2811,7 +2811,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late AnnouncementsGetResultModel _value;
     try {
       _value = AnnouncementsGetResultModel.fromJson(_result.data!);
@@ -2842,7 +2842,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late TicketVGetResultModel _value;
     try {
       _value = TicketVGetResultModel.fromJson(_result.data!);
@@ -2872,7 +2872,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
@@ -2902,7 +2902,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserTicketsTicketIdEditStatusResponse _value;
     try {
       _value = UserTicketsTicketIdEditStatusResponse.fromJson(_result.data!);
@@ -2932,7 +2932,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserTicketsTicketIdMessagesGetResponse _value;
     try {
       _value = UserTicketsTicketIdMessagesGetResponse.fromJson(_result.data!);
@@ -2962,7 +2962,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserTicketsTicketIdMessagesPostResponse _value;
     try {
       _value = UserTicketsTicketIdMessagesPostResponse.fromJson(_result.data!);
@@ -2990,7 +2990,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountActivityResponse _value;
     try {
       _value = UserAccountActivityResponse.fromJson(_result.data!);
@@ -3018,7 +3018,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountEditEmailResponse _value;
     try {
       _value = UserAccountEditEmailResponse.fromJson(_result.data!);
@@ -3046,7 +3046,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountEditPasswordResponse _value;
     try {
       _value = UserAccountEditPasswordResponse.fromJson(_result.data!);
@@ -3074,7 +3074,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountEditProfileResponse _value;
     try {
       _value = UserAccountEditProfileResponse.fromJson(_result.data!);
@@ -3102,7 +3102,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountLinkTelegramResponse _value;
     try {
       _value = UserAccountLinkTelegramResponse.fromJson(_result.data!);
@@ -3130,7 +3130,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountLoginIpLogResponse _value;
     try {
       _value = UserAccountLoginIpLogResponse.fromJson(_result.data!);
@@ -3157,7 +3157,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountMeResponse _value;
     try {
       _value = UserAccountMeResponse.fromJson(_result.data!);
@@ -3185,7 +3185,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountSecurityGetResponse _value;
     try {
       _value = UserAccountSecurityGetResponse.fromJson(_result.data!);
@@ -3216,7 +3216,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountSecurityPostResponse _value;
     try {
       _value = UserAccountSecurityPostResponse.fromJson(_result.data!);
@@ -3247,7 +3247,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountPasswordChangeResponse _value;
     try {
       _value = UserAccountPasswordChangeResponse.fromJson(_result.data!);
@@ -3275,7 +3275,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserAccountLoginHistoryResponse _value;
     try {
       _value = UserAccountLoginHistoryResponse.fromJson(_result.data!);
@@ -3302,7 +3302,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserInviteResponse _value;
     try {
       _value = UserInviteResponse.fromJson(_result.data!);
@@ -3330,7 +3330,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserInviteRecordResponse _value;
     try {
       _value = UserInviteRecordResponse.fromJson(_result.data!);
@@ -3358,7 +3358,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesSsPasswordResponse _value;
     try {
       _value = UserServicesSsPasswordResponse.fromJson(_result.data!);
@@ -3386,7 +3386,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesSsPasswordResetResponse _value;
     try {
       _value = UserServicesSsPasswordResetResponse.fromJson(_result.data!);
@@ -3421,7 +3421,7 @@ class _FallbackClient implements FallbackClient {
         baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
       ),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesSubscribeLogAreaTimeAxisResponse _value;
     try {
       _value = UserServicesSubscribeLogAreaTimeAxisResponse.fromJson(
@@ -3458,7 +3458,7 @@ class _FallbackClient implements FallbackClient {
         baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
       ),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesSubscribeLogCalendarPieResponse _value;
     try {
       _value = UserServicesSubscribeLogCalendarPieResponse.fromJson(
@@ -3499,7 +3499,7 @@ class _FallbackClient implements FallbackClient {
         baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
       ),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesSubscribeLogDetailRecordResponse _value;
     try {
       _value = UserServicesSubscribeLogDetailRecordResponse.fromJson(
@@ -3529,7 +3529,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesAuditRecordResponse _value;
     try {
       _value = UserServicesAuditRecordResponse.fromJson(_result.data!);
@@ -3557,7 +3557,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesAuditRuleResponse _value;
     try {
       _value = UserServicesAuditRuleResponse.fromJson(_result.data!);
@@ -3585,7 +3585,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesLinkTokenResponse _value;
     try {
       _value = UserServicesLinkTokenResponse.fromJson(_result.data!);
@@ -3613,7 +3613,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesLinkTokenResetResponse _value;
     try {
       _value = UserServicesLinkTokenResetResponse.fromJson(_result.data!);
@@ -3641,7 +3641,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesNodesResponse _value;
     try {
       _value = UserServicesNodesResponse.fromJson(_result.data!);
@@ -3671,7 +3671,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesNodesNodeIdResponse _value;
     try {
       _value = UserServicesNodesNodeIdResponse.fromJson(_result.data!);
@@ -3701,7 +3701,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesNodesNodeIdResponse _value;
     try {
       _value = UserServicesNodesNodeIdResponse.fromJson(_result.data!);
@@ -3729,7 +3729,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesShareAccountResponse _value;
     try {
       _value = UserServicesShareAccountResponse.fromJson(_result.data!);
@@ -3757,7 +3757,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldBillResponse _value;
     try {
       _value = UserServicesOldBillResponse.fromJson(_result.data!);
@@ -3787,7 +3787,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldBillServiceIdResponse _value;
     try {
       _value = UserServicesOldBillServiceIdResponse.fromJson(_result.data!);
@@ -3821,7 +3821,7 @@ class _FallbackClient implements FallbackClient {
         baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
       ),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldBillServiceIdEnableAutoRenewalResponse _value;
     try {
       _value = UserServicesOldBillServiceIdEnableAutoRenewalResponse.fromJson(
@@ -3851,7 +3851,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldCheckinGetResponse _value;
     try {
       _value = UserServicesOldCheckinGetResponse.fromJson(_result.data!);
@@ -3879,7 +3879,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldCheckinPostResponse _value;
     try {
       _value = UserServicesOldCheckinPostResponse.fromJson(_result.data!);
@@ -3907,7 +3907,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserServicesOldResponse _value;
     try {
       _value = UserServicesOldResponse.fromJson(_result.data!);
@@ -3934,7 +3934,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserShopOldResult _value;
     try {
       _value = UserShopOldResult.fromJson(_result.data!);
@@ -3964,7 +3964,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserShopOldShopIdConfirmOrderResponse _value;
     try {
       _value = UserShopOldShopIdConfirmOrderResponse.fromJson(_result.data!);
@@ -3994,7 +3994,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserShopOldShopIdPreOrderResponse _value;
     try {
       _value = UserShopOldShopIdPreOrderResponse.fromJson(_result.data!);
@@ -4022,7 +4022,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserShopOldShopIdConfirmOrderResult _value;
     try {
       _value = UserShopOldShopIdConfirmOrderResult.fromJson(_result.data!);
@@ -4057,7 +4057,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserWalletRechargeResult _value;
     try {
       _value = UserWalletRechargeResult.fromJson(_result.data!);
@@ -4087,7 +4087,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserWalletRechargeRechargeIdResponse _value;
     try {
       _value = UserWalletRechargeRechargeIdResponse.fromJson(_result.data!);
@@ -4115,7 +4115,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserWalletCdKeyResponse _value;
     try {
       _value = UserWalletCdKeyResponse.fromJson(_result.data!);
@@ -4145,7 +4145,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserWalletCdKeyCdKeyResponse _value;
     try {
       _value = UserWalletCdKeyCdKeyResponse.fromJson(_result.data!);
@@ -4172,7 +4172,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserWalletResult _value;
     try {
       _value = UserWalletResult.fromJson(_result.data!);
@@ -4200,7 +4200,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late PurchaseRecordsResult _value;
     try {
       _value = PurchaseRecordsResult.fromJson(_result.data!);
@@ -4227,7 +4227,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetDashboardResultModel _value;
     try {
       _value = GetDashboardResultModel.fromJson(_result.data!);
@@ -4254,7 +4254,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late IndexGetResultModel _value;
     try {
       _value = IndexGetResultModel.fromJson(_result.data!);
@@ -4281,7 +4281,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetMeGetResultModel _value;
     try {
       _value = GetMeGetResultModel.fromJson(_result.data!);
@@ -4309,7 +4309,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetOldServiceResultModel _value;
     try {
       _value = GetOldServiceResultModel.fromJson(_result.data!);
@@ -4336,7 +4336,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late CrispDataResultModel _value;
     try {
       _value = CrispDataResultModel.fromJson(_result.data!);
@@ -4396,7 +4396,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetSearchUserResult _value;
     try {
       _value = GetSearchUserResult.fromJson(_result.data!);
@@ -4425,7 +4425,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetServiceOldShopResult _value;
     try {
       _value = GetServiceOldShopResult.fromJson(_result.data!);
@@ -4463,7 +4463,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetViewUserResult _value;
     try {
       _value = GetViewUserResult.fromJson(_result.data!);
@@ -4502,7 +4502,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetViewUserBoughtResult _value;
     try {
       _value = GetViewUserBoughtResult.fromJson(_result.data!);
@@ -4541,7 +4541,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late UserDataHistoryResponse _value;
     try {
       _value = UserDataHistoryResponse.fromJson(_result.data!);
@@ -4614,14 +4614,20 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<void> getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet({
+  Future<
+      WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
+  >
+  getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet({
     required int userId,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
+    final _options =
+    _setStreamType<
+        WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
+    >(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -4629,9 +4635,24 @@ class _FallbackClient implements FallbackClient {
         queryParameters: queryParameters,
         data: _data,
       )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+          .copyWith(
+        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+      ),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
+    _value;
+    try {
+      _value =
+          WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
+              .fromJson(
+            _result.data!,
+          );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -4658,14 +4679,16 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<void> getUserV2ApiV2LowAdminApiUserV2UserIdGet({
-    required int userId,
-  }) async {
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse>
+  getUserV2ApiV2LowAdminApiUserV2UserIdGet({required int userId}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
+    final _options =
+    _setStreamType<
+        WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
+    >(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -4673,9 +4696,24 @@ class _FallbackClient implements FallbackClient {
         queryParameters: queryParameters,
         data: _data,
       )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+          .copyWith(
+        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+      ),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
+    _value;
+    try {
+      _value =
+          WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
+              .fromJson(
+            _result.data!,
+          );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -4698,7 +4736,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late CaptchaKeyModel _value;
     try {
       _value = CaptchaKeyModel.fromJson(_result.data!);
@@ -4725,7 +4763,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetCsrfTokenResult _value;
     try {
       _value = GetCsrfTokenResult.fromJson(_result.data!);
@@ -4752,7 +4790,7 @@ class _FallbackClient implements FallbackClient {
       )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
     late GetVersionModel _value;
     try {
       _value = GetVersionModel.fromJson(_result.data!);
