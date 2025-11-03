@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/auth/account_login/login_page.dart';
-import 'pages/low_admin/user_v2.dart';
-import 'version_page.dart';
+import 'routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,35 +33,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // Use onGenerateRoute to support path-like routes such as
-      // /low_admin/user_v2/123
-      onGenerateRoute: (settings) {
-        final name = settings.name ?? '';
-        // Match /low_admin/user_v2/<id>
-        final userV2Prefix = '/low_admin/user_v2/';
-        if (name.startsWith(userV2Prefix)) {
-          final idPart = name.substring(userV2Prefix.length);
-          final id = int.tryParse(idPart);
-          if (id != null) {
-            return MaterialPageRoute(
-              settings: settings,
-              builder: (context) => UserV2Page(userId: id),
-            );
-          }
-        }
-
-        // Fallback to named routes
-        switch (name) {
-          case '/login':
-            return MaterialPageRoute(
-                builder: (c) => const LoginPage(), settings: settings);
-          case '/version':
-            return MaterialPageRoute(
-                builder: (c) => const VersionPage(), settings: settings);
-          default:
-            return null; // let Flutter show unknown route
-        }
-      },
+      // centralized routes and generator
+      routes: routes,
+      onGenerateRoute: onGenerateRoute,
     );
   }
 }
