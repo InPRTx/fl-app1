@@ -35,10 +35,34 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/version': (context) => const VersionPage(),
-        '/low_admin/user_v2': (context) => const UserV2Page(),
+      // Use onGenerateRoute to support path-like routes such as
+      // /low_admin/user_v2/123
+      onGenerateRoute: (settings) {
+        final name = settings.name ?? '';
+        // Match /low_admin/user_v2/<id>
+        final userV2Prefix = '/low_admin/user_v2/';
+        if (name.startsWith(userV2Prefix)) {
+          final idPart = name.substring(userV2Prefix.length);
+          final id = int.tryParse(idPart);
+          if (id != null) {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => UserV2Page(userId: id),
+            );
+          }
+        }
+
+        // Fallback to named routes
+        switch (name) {
+          case '/login':
+            return MaterialPageRoute(
+                builder: (c) => const LoginPage(), settings: settings);
+          case '/version':
+            return MaterialPageRoute(
+                builder: (c) => const VersionPage(), settings: settings);
+          default:
+            return null; // let Flutter show unknown route
+        }
       },
     );
   }

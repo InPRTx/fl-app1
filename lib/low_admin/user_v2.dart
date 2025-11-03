@@ -6,14 +6,16 @@ import 'package:fl_app1/api/export.dart';
 import 'package:flutter/material.dart';
 
 class UserV2Page extends StatefulWidget {
-  const UserV2Page({super.key});
+  // userId is provided from the route path, e.g. /low_admin/user_v2/123
+  final int userId;
+
+  const UserV2Page({super.key, required this.userId});
 
   @override
   State<UserV2Page> createState() => _UserV2PageState();
 }
 
 class _UserV2PageState extends State<UserV2Page> {
-  final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   bool? _isEnable;
@@ -31,18 +33,8 @@ class _UserV2PageState extends State<UserV2Page> {
 
   void _setLoading(bool v) => setState(() => _loading = v);
 
-  int? _parseUserId() {
-    final t = _userIdController.text.trim();
-    if (t.isEmpty) return null;
-    return int.tryParse(t);
-  }
-
   Future<void> _callGetOldService() async {
-    final id = _parseUserId();
-    if (id == null) {
-      _showSnack('请输入有效的用户 ID');
-      return;
-    }
+    final id = widget.userId;
     _setLoading(true);
     try {
       // Use generated fallback client
@@ -61,11 +53,7 @@ class _UserV2PageState extends State<UserV2Page> {
   }
 
   Future<void> _callGetUserV2() async {
-    final id = _parseUserId();
-    if (id == null) {
-      _showSnack('请输入有效的用户 ID');
-      return;
-    }
+    final id = widget.userId;
     _setLoading(true);
     try {
       final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
@@ -88,11 +76,7 @@ class _UserV2PageState extends State<UserV2Page> {
   }
 
   Future<void> _callPatchUserV2() async {
-    final id = _parseUserId();
-    if (id == null) {
-      _showSnack('请输入有效的用户 ID');
-      return;
-    }
+    final id = widget.userId;
 
     final telegram = int.tryParse(_telegramIdController.text.trim());
 
@@ -158,7 +142,6 @@ class _UserV2PageState extends State<UserV2Page> {
 
   @override
   void dispose() {
-    _userIdController.dispose();
     _emailController.dispose();
     _userNameController.dispose();
     _telegramIdController.dispose();
@@ -179,23 +162,12 @@ class _UserV2PageState extends State<UserV2Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('user_v2')),
+      appBar: AppBar(title: Text('user_v2 - id: ${widget.userId}')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('User ID'),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _userIdController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '例如: 123',
-              ),
-            ),
-            const SizedBox(height: 12),
             Row(
               children: [
                 ElevatedButton(
