@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import 'api/base_url.dart';
 import 'api/models/version_response_model.dart';
 import 'api/rest_client.dart';
 
@@ -20,7 +21,7 @@ class _VersionPageState extends State<VersionPage> {
   // Default to http://10.0.2.2:8000 which maps to host localhost from Android AVD.
   // Change this back to http://127.0.0.1:8000 for iOS simulator or when using adb reverse / physical device.
   final TextEditingController _baseUrlController = TextEditingController(
-    text: 'http://127.0.0.1:8000',
+    text: kDefaultBaseUrl,
   );
   String? _result;
   String? _error;
@@ -113,9 +114,9 @@ class _VersionPageState extends State<VersionPage> {
             const SizedBox(height: 8),
             TextField(
               controller: _baseUrlController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'http://127.0.0.1:8000',
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: kDefaultBaseUrl,
               ),
               keyboardType: TextInputType.url,
             ),
