@@ -1,144 +1,42 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/base_url.dart';
-import 'package:fl_app1/api/export.dart';
+import 'package:fl_app1/api/models/admin_old_service.dart';
+import 'package:fl_app1/api/models/admin_user_v.dart';
+import 'package:fl_app1/api/models/param_model_patch.dart';
+import 'package:fl_app1/api/rest_client.dart';
 import 'package:flutter/material.dart';
 
 class UserV2Page extends StatefulWidget {
-  // userId is provided from the route path, e.g. /low_admin/user_v2/123
-  final int userId;
-
   const UserV2Page({super.key, required this.userId});
+
+  final int userId;
 
   @override
   State<UserV2Page> createState() => _UserV2PageState();
 }
 
 class _UserV2PageState extends State<UserV2Page> {
+  bool _isLoading = true;
+  bool _isSaving = false;
+  String? _error;
+
+  // Data from APIs
+  AdminUserV? _userV;
+  AdminOldService? _oldService;
+
+  // Controllers for editable fields (userV)
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-  bool? _isEnable;
   final TextEditingController _telegramIdController = TextEditingController();
-  bool? _isEmailVerify;
+  bool _isEnable = false;
+  bool _isEmailVerify = false;
   DateTime? _expireIn;
 
-  String _output = '';
-  bool _loading = false;
-
-  RestClient get _rest {
-    final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
-    return RestClient(dio, baseUrl: kDefaultBaseUrl);
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
   }
-
-  void _setLoading(bool v) => setState(() => _loading = v);
-
-  Future<void> _callGetOldService() async {
-    final id = widget.userId;
-    _setLoading(true);
-    try {
-      // Use generated fallback client
-      await _rest.fallback
-          .getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet(userId: id);
-      setState(() {
-        _output = '调用完成（没有返回体）';
-      });
-    } on DioException catch (e) {
-      setState(() {
-        _output = _formatDioError(e);
-      });
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _callGetUserV2() async {
-    final id = widget.userId;
-    _setLoading(true);
-    try {
-      final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
-      final resp = await dio.get('/api/v2/low_admin_api/user_v2/$id');
-      final data = resp.data;
-      if (data is Map) {
-        final obj = AdminUserV.fromJson(Map<String, dynamic>.from(data));
-        _output = const JsonEncoder.withIndent('  ').convert(obj.toJson());
-      } else {
-        _output = data?.toString() ?? '<empty>';
-      }
-      setState(() {});
-    } on DioException catch (e) {
-      setState(() {
-        _output = _formatDioError(e);
-      });
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> _callPatchUserV2() async {
-    final id = widget.userId;
-
-    final telegram = int.tryParse(_telegramIdController.text.trim());
-
-    final body = ParamModelPatch(
-      email: _emailController.text.trim().isEmpty
-          ? null
-          : _emailController.text.trim(),
-      userName: _userNameController.text.trim().isEmpty
-          ? null
-          : _userNameController.text.trim(),
-      isEnable: _isEnable,
-      telegramId: telegram,
-      isEmailVerify: _isEmailVerify,
-      userAccountExpireIn: _expireIn,
-    );
-
-    _setLoading(true);
-    try {
-      // Use generated fallback client
-      await _rest.fallback.patchUserV2ApiV2LowAdminApiUserV2UserIdPatch(
-        userId: id,
-        body: body,
-      );
-      _showSnack('更新完成');
-      setState(() {
-        _output = 'Patch success (no returned body)';
-      });
-    } on DioException catch (e) {
-      setState(() {
-        _output = _formatDioError(e);
-      });
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  String _formatDioError(DioException e) {
-    final req = e.requestOptions;
-    final uri = req.uri.toString();
-    final type = e.type.name;
-    String message = e.message ?? e.toString();
-    final resp = e.response;
-    String respText = '';
-    if (resp != null) {
-      final body = resp.data;
-      try {
-        respText = const JsonEncoder.withIndent('  ').convert(body);
-      } catch (_) {
-        respText = body?.toString() ?? '<empty>';
-      }
-      message = 'HTTP ${resp.statusCode}\n$respText';
-    }
-
-    final sb = StringBuffer();
-    sb.writeln('DioException: $type');
-    sb.writeln('URI: $uri');
-    sb.writeln('Message: $message');
-    return sb.toString();
-  }
-
-  void _showSnack(String m) =>
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
   @override
   void dispose() {
@@ -148,127 +46,278 @@ class _UserV2PageState extends State<UserV2Page> {
     super.dispose();
   }
 
-  Future<void> _pickExpireIn() async {
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
+    final rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
+
+    try {
+      // Call both endpoints concurrently
+      final results = await Future.wait([
+        rest.fallback.getUserV2ApiV2LowAdminApiUserV2UserIdGet(
+            userId: widget.userId),
+        rest.fallback.getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet(
+            userId: widget.userId),
+      ]);
+
+      final userResp = results[0] as dynamic;
+      final oldServiceResp = results[1] as dynamic;
+
+      // Extract results (generated models wrap result in `.result`)
+      final AdminUserV? user = userResp.result as AdminUserV?;
+      final AdminOldService? old = oldServiceResp.result as AdminOldService?;
+
+      setState(() {
+        _userV = user;
+        _oldService = old;
+
+        if (user != null) {
+          _emailController.text = user.email;
+          _userNameController.text = user.userName;
+          _telegramIdController.text = user.telegramId?.toString() ?? '';
+          _isEnable = user.isEnable;
+          _isEmailVerify = user.isEmailVerify;
+          _expireIn = user.userAccountExpireIn;
+        }
+
+        _isLoading = false;
+      });
+    } on DioException catch (e) {
+      setState(() {
+        _isLoading = false;
+        _error = _formatDioError(e);
+      });
+    } catch (e, st) {
+      setState(() {
+        _isLoading = false;
+        _error = '$e\n$st';
+      });
+    }
+  }
+
+  String _formatDioError(DioException e) {
+    final req = e.requestOptions;
+    final uri = req.uri.toString();
+    String message = e.message ?? e.toString();
+    final resp = e.response;
+    if (resp != null) {
+      final body = resp.data;
+      try {
+        message = 'HTTP ${resp.statusCode}\n${body?.toString() ?? '<empty>'}';
+      } catch (_) {
+        message = 'HTTP ${resp.statusCode}\n<non-string response>';
+      }
+    }
+    return 'DioException: ${e.type.name}\nURI: $uri\nMessage: $message';
+  }
+
+  Future<void> _saveChanges() async {
+    if (_userV == null) return;
+
+    setState(() => _isSaving = true);
+
+    final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
+    final rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
+
+    // Build ParamModelPatch: only include fields that changed
+    String email = _emailController.text.trim();
+    String username = _userNameController.text.trim();
+    int? telegramId = _telegramIdController.text
+        .trim()
+        .isEmpty
+        ? null
+        : int.tryParse(_telegramIdController.text.trim());
+
+    final ParamModelPatch body = ParamModelPatch(
+      email: email == _userV!.email ? null : email,
+      userName: username == _userV!.userName ? null : username,
+      isEnable: _isEnable == _userV!.isEnable ? null : _isEnable,
+      telegramId: telegramId == _userV!.telegramId ? null : telegramId,
+      isEmailVerify: _isEmailVerify == _userV!.isEmailVerify
+          ? null
+          : _isEmailVerify,
+      userAccountExpireIn: _expireIn == _userV!.userAccountExpireIn
+          ? null
+          : _expireIn,
+    );
+
+    try {
+      await rest.fallback.patchUserV2ApiV2LowAdminApiUserV2UserIdPatch(
+        userId: widget.userId,
+        body: body,
+      );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('保存成功'), backgroundColor: Colors.green),
+      );
+
+      // Reload to reflect server-side changes
+      await _loadData();
+    } on DioException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(_formatDioError(e)), backgroundColor: Colors.red),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+      );
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
+  }
+
+  Future<void> _pickExpireIn(BuildContext context) async {
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
       initialDate: _expireIn ?? now,
-      firstDate: DateTime(now.year - 5),
-      lastDate: DateTime(now.year + 5),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
     );
-    if (picked != null) setState(() => _expireIn = picked);
+    if (picked != null) {
+      setState(() => _expireIn = picked);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('user_v2 - id: ${widget.userId}')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: _loading ? null : _callGetOldService,
-                  child: const Text('Get Old Service'),
+      appBar: AppBar(title: const Text('用户详情（可编辑）')),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _error != null
+            ? Center(
+            child: Text(_error!, style: const TextStyle(color: Colors.red)))
+            : SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // User V2 box
+              Card(
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('User V2',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight
+                              .bold)),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(labelText: '邮箱'),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _userNameController,
+                        decoration: const InputDecoration(labelText: '用户名'),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Text('是否启用'),
+                          const Spacer(),
+                          Switch(
+                            value: _isEnable,
+                            onChanged: (v) => setState(() => _isEnable = v),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Text('邮箱已验证'),
+                          const Spacer(),
+                          Switch(
+                            value: _isEmailVerify,
+                            onChanged: (v) =>
+                                setState(() => _isEmailVerify = v),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _telegramIdController,
+                        decoration: const InputDecoration(
+                            labelText: 'Telegram ID'),
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Text('账户过期时间'),
+                          const SizedBox(width: 12),
+                          Text(_expireIn != null ? _expireIn!
+                              .toIso8601String()
+                              .split('T')
+                              .first : '未设置'),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () => _pickExpireIn(context),
+                            child: const Text('选择'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: _loading ? null : _callGetUserV2,
-                  child: const Text('Get User V2'),
-                ),
-              ],
-            ),
-            const Divider(),
-            const Text('Patch fields (leave empty to skip)'),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _userNameController,
-              decoration: const InputDecoration(labelText: 'User name'),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Text('Is enable:'),
-                const SizedBox(width: 8),
-                DropdownButton<bool?>(
-                  value: _isEnable,
-                  items: const [
-                    DropdownMenuItem<bool?>(value: null, child: Text('Skip')),
-                    DropdownMenuItem<bool?>(value: true, child: Text('True')),
-                    DropdownMenuItem<bool?>(value: false, child: Text('False')),
-                  ],
-                  onChanged: (v) => setState(() => _isEnable = v),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _telegramIdController,
-              decoration: const InputDecoration(labelText: 'Telegram ID'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Text('Is email verify:'),
-                const SizedBox(width: 8),
-                DropdownButton<bool?>(
-                  value: _isEmailVerify,
-                  items: const [
-                    DropdownMenuItem<bool?>(value: null, child: Text('Skip')),
-                    DropdownMenuItem<bool?>(value: true, child: Text('True')),
-                    DropdownMenuItem<bool?>(value: false, child: Text('False')),
-                  ],
-                  onChanged: (v) => setState(() => _isEmailVerify = v),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Text('Expire in:'),
-                const SizedBox(width: 8),
-                Text(_expireIn == null ? 'Skip' : _expireIn!.toIso8601String()),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: _pickExpireIn,
-                  child: const Text('Pick'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: _loading ? null : _callPatchUserV2,
-              child: const Text('Patch User V2'),
-            ),
-            const Divider(),
-            const Text('Output'),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(6),
               ),
-              child: _loading
-                  ? const SizedBox(
-                      height: 32,
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  : Text(_output.isEmpty ? '<空>' : _output),
-            ),
-          ],
+
+              const SizedBox(height: 12),
+
+              // Old Service box (readonly fields but in its own Card)
+              Card(
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Old Service',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight
+                              .bold)),
+                      const SizedBox(height: 8),
+                      if (_oldService == null) const Text('无旧版服务数据')
+                      else
+                        ...[
+                          Text('到期: ${_oldService!
+                              .userLevelExpireIn
+                          }'),
+                        ],
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              ElevatedButton.icon(
+                onPressed: _isSaving ? null : _saveChanges,
+                icon: _isSaving ? const SizedBox(width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: Colors.white)) : const Icon(
+                    Icons.save),
+                label: const Text('保存'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
