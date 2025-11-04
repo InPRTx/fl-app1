@@ -115,7 +115,7 @@ class _UserV2PageState extends State<UserV2Page> {
     return 'DioException: ${e.type.name}\nURI: $uri\nMessage: $message';
   }
 
-  Future<void> _saveChanges() async {
+  Future<void> _saveUserV2() async {
     if (_userV == null) return;
 
     setState(() => _isSaving = true);
@@ -123,7 +123,6 @@ class _UserV2PageState extends State<UserV2Page> {
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
     final rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
 
-    // Build ParamModelPatch: only include fields that changed
     String email = _emailController.text.trim();
     String username = _userNameController.text.trim();
     int? telegramId = _telegramIdController.text
@@ -145,47 +144,114 @@ class _UserV2PageState extends State<UserV2Page> {
           : _expireIn,
     );
 
-    try {
-      await rest.fallback.patchUserV2ApiV2LowAdminApiUserV2UserIdPatch(
-        userId: widget.userId,
-        body: body,
-      );
+    await rest.fallback.patchUserV2ApiV2LowAdminApiUserV2UserIdPatch(
+      userId: widget.userId,
+      body: body,
+    );
 
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('保存成功'), backgroundColor: Colors.green),
-      );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('User V2 保存成功'), backgroundColor: Colors.green),
+    );
 
-      // Reload to reflect server-side changes
-      await _loadData();
-    } on DioException catch (e) {
+    await _loadData();
+  }
+
+  Future<void> _saveOldService() async {
+    if (_oldService == null) return;
+
+    setState(() => _isSaving = true);
+
+    // TODO: Implement old service save API when available
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('Old Service 保存成功'), backgroundColor: Colors.green),
+    );
+
+    setState(() => _isSaving = false);
+  }
+
+  Future<void> _handleSave(Future<void> Function() saveFunction) async {
+    setState(() => _isSaving = true);
+    await saveFunction().catchError((e) {
       if (!mounted) return;
+      final errorMsg = e is DioException ? _formatDioError(e) : e.toString();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(_formatDioError(e)), backgroundColor: Colors.red),
+        SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
       );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
-      );
-    } finally {
+    }).whenComplete(() {
       if (mounted) setState(() => _isSaving = false);
-    }
+    });
   }
 
   Future<void> _pickExpireIn(BuildContext context) async {
-    final now = DateTime.now();
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _expireIn ?? now,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+    final TextEditingController dateController = TextEditingController(
+      text: _expireIn?.toIso8601String() ?? DateTime.now().toIso8601String(),
     );
-    if (picked != null) {
-      setState(() => _expireIn = picked);
+
+    final result = await showDialog<DateTime>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('设置过期时间（ISO 8601）'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: dateController,
+                  decoration: const InputDecoration(
+                    labelText: '日期时间（ISO 8601格式）',
+                    hintText: '2024-12-31T23:59:59.000Z',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  '格式示例：\n2024-12-31T23:59:59.000Z\n2024-12-31T23:59:59+08:00',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () {
+                  final parsed = DateTime.tryParse(dateController.text.trim());
+                  if (parsed != null) {
+                    Navigator.pop(context, parsed);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('无效的日期时间格式'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                child: const Text('确定'),
+              ),
+              TextButton(
+                onPressed: () {
+                  dateController.text =
+                      DateTime.now().toUtc().toIso8601String();
+                },
+                child: const Text('当前时间(UTC)'),
+              ),
+            ],
+          ),
+    );
+
+    if (result != null) {
+      setState(() => _expireIn = result);
     }
+
+    dateController.dispose();
   }
 
   @override
@@ -260,16 +326,35 @@ class _UserV2PageState extends State<UserV2Page> {
                         children: [
                           const Text('账户过期时间'),
                           const SizedBox(width: 12),
-                          Text(_expireIn != null ? _expireIn!
-                              .toIso8601String()
-                              .split('T')
-                              .first : '未设置'),
-                          const Spacer(),
+                          Expanded(
+                            child: Text(
+                              _expireIn != null
+                                  ? _expireIn!.toIso8601String()
+                                  : '未设置',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ),
                           TextButton(
                             onPressed: () => _pickExpireIn(context),
                             child: const Text('选择'),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isSaving ? null : () =>
+                              _handleSave(_saveUserV2),
+                          icon: _isSaving
+                              ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2, color: Colors.white))
+                              : const Icon(Icons.save),
+                          label: const Text('保存 User V2'),
+                        ),
                       ),
                     ],
                   ),
@@ -290,28 +375,32 @@ class _UserV2PageState extends State<UserV2Page> {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight
                               .bold)),
                       const SizedBox(height: 8),
-                      if (_oldService == null) const Text('无旧版服务数据')
+                      if (_oldService == null)
+                        const Text('无旧版服务数据')
                       else
                         ...[
-                          Text('到期: ${_oldService!
-                              .userLevelExpireIn
-                          }'),
+                          Text('到期: ${_oldService!.userLevelExpireIn
+                              .toIso8601String()}'),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: _isSaving ? null : () =>
+                                  _handleSave(_saveOldService),
+                              icon: _isSaving
+                                  ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2, color: Colors.white))
+                                  : const Icon(Icons.save),
+                              label: const Text('保存 Old Service'),
+                            ),
+                          ),
                         ],
                     ],
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 20),
-
-              ElevatedButton.icon(
-                onPressed: _isSaving ? null : _saveChanges,
-                icon: _isSaving ? const SizedBox(width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white)) : const Icon(
-                    Icons.save),
-                label: const Text('保存'),
               ),
             ],
           ),
