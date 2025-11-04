@@ -7,9 +7,9 @@
 String addClientTypeToUrl(String baseUrl, String clientType) {
   final uri = Uri.tryParse(baseUrl);
   if (uri != null) {
-    final params = Map<String, dynamic>.from(uri.queryParameters);
-    params['client_type'] = clientType;
-    return uri.replace(queryParameters: params).toString();
+    return uri.replace(
+      queryParameters: {...uri.queryParameters, 'client_type': clientType},
+    ).toString();
   }
   
   // URL解析失败时使用简单拼接，需要编码参数值
@@ -24,9 +24,9 @@ String addClientTypeToUrl(String baseUrl, String clientType) {
 String addSSRTypeToUrl(String baseUrl) {
   final uri = Uri.tryParse(baseUrl);
   if (uri != null) {
-    final params = Map<String, dynamic>.from(uri.queryParameters);
-    params['vpn_type'] = 'ssr';
-    return uri.replace(queryParameters: params).toString();
+    return uri.replace(
+      queryParameters: {...uri.queryParameters, 'vpn_type': 'ssr'},
+    ).toString();
   }
   
   // URL解析失败时使用简单拼接（ssr是常量，无需编码）

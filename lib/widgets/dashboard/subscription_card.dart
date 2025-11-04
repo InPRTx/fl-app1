@@ -3,6 +3,11 @@ import 'package:fl_app1/utils/clipboard_utils.dart';
 import 'package:fl_app1/utils/subscription_utils.dart';
 import 'package:flutter/material.dart';
 
+// 常量定义
+const double _kTabContentMaxHeightFactor = 0.5;
+const double _kTabContentMinHeight = 300.0;
+const double _kContainerOpacity = 0.5;
+
 /// 订阅卡片组件
 class SubscriptionCard extends StatefulWidget {
   const SubscriptionCard({
@@ -239,8 +244,8 @@ class _SubscriptionCardState extends State<SubscriptionCard>
                 // Tab内容
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.5,
-                    minHeight: 300,
+                    maxHeight: MediaQuery.of(context).size.height * _kTabContentMaxHeightFactor,
+                    minHeight: _kTabContentMinHeight,
                   ),
                   child: TabBarView(
                     controller: _tabController,
@@ -277,7 +282,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+              color: theme.colorScheme.primaryContainer.withOpacity(_kContainerOpacity),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -424,7 +429,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+              color: theme.colorScheme.primaryContainer.withOpacity(_kContainerOpacity),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
