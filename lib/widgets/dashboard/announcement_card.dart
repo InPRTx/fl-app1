@@ -49,9 +49,7 @@ class AnnouncementCard extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Text(
               content,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.5,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
             ),
           ),
         ],

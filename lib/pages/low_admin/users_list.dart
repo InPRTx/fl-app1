@@ -46,9 +46,9 @@ class _UsersListPageState extends State<UsersListPage> {
 
     final result = await _restClient.fallback
         .getUserV2ApiV2LowAdminApiUserV2Get(
-      q: query.isEmpty ? null : query,
-      sqlStmtLimit: 50,
-    );
+          q: query.isEmpty ? null : query,
+          sqlStmtLimit: 50,
+        );
 
     setState(() {
       _isLoading = false;
@@ -125,9 +125,7 @@ class _UsersListPageState extends State<UsersListPage> {
               ),
             ),
           const SizedBox(height: 16),
-          Expanded(
-            child: _buildContent(),
-          ),
+          Expanded(child: _buildContent()),
         ],
       ),
     );
@@ -223,19 +221,13 @@ class _UsersListPageState extends State<UsersListPage> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Theme
-                        .of(context)
-                        .colorScheme
-                        .primary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Text(
                       user.userName.isNotEmpty
                           ? user.userName[0].toUpperCase()
                           : 'U',
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .onPrimary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -248,8 +240,7 @@ class _UsersListPageState extends State<UsersListPage> {
                         Row(
                           children: [
                             Text(
-                              user.userName.isEmpty ? '未设置用户名' : user
-                                  .userName,
+                              user.userName.isEmpty ? '未设置用户名' : user.userName,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -290,21 +281,14 @@ class _UsersListPageState extends State<UsersListPage> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: Colors.grey[400],
-                  ),
+                  Icon(Icons.chevron_right, color: Colors.grey[400]),
                 ],
               ),
               const Divider(height: 24),
               Row(
                 children: [
                   Expanded(
-                    child: _buildInfoItem(
-                      Icons.tag,
-                      'ID',
-                      user.id.toString(),
-                    ),
+                    child: _buildInfoItem(Icons.tag, 'ID', user.id.toString()),
                   ),
                   Expanded(
                     child: _buildInfoItem(
@@ -339,20 +323,14 @@ class _UsersListPageState extends State<UsersListPage> {
             const SizedBox(width: 4),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
           ],
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           overflow: TextOverflow.ellipsis,
         ),
       ],

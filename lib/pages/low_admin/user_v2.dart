@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 class UserV2Page extends StatefulWidget {
   final int userId;
 
-  const UserV2Page({
-    super.key,
-    required this.userId,
-  });
+  const UserV2Page({super.key, required this.userId});
 
   @override
   State<UserV2Page> createState() => _UserV2PageState();
@@ -55,10 +52,12 @@ class _UserV2PageState extends State<UserV2Page> {
     setState(() {
       _isLoading = false;
       _userV2Data =
-          (results[0] as WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse)
+          (results[0]
+                  as WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse)
               .result;
       _userOldServiceData =
-          (results[1] as WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse)
+          (results[1]
+                  as WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse)
               .result;
     });
   }
@@ -98,8 +97,7 @@ class _UserV2PageState extends State<UserV2Page> {
       data: body,
     );
 
-    if (response.statusCode == 200 &&
-        response.data?['is_success'] == true) {
+    if (response.statusCode == 200 && response.data?['is_success'] == true) {
       await _loadUserData();
       return true;
     }
@@ -153,8 +151,7 @@ class _UserV2PageState extends State<UserV2Page> {
       data: body,
     );
 
-    if (response.statusCode == 200 &&
-        response.data?['is_success'] == true) {
+    if (response.statusCode == 200 && response.data?['is_success'] == true) {
       await _loadUserData();
       return true;
     }
@@ -177,39 +174,38 @@ class _UserV2PageState extends State<UserV2Page> {
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
           ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _errorMessage!,
-              style: TextStyle(color: Colors.red[700]),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadUserData,
-              child: const Text('重试'),
-            ),
-          ],
-        ),
-      )
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _errorMessage!,
+                    style: TextStyle(color: Colors.red[700]),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _loadUserData,
+                    child: const Text('重试'),
+                  ),
+                ],
+              ),
+            )
           : RefreshIndicator(
-        onRefresh: _loadUserData,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            EditableUserV2InfoCard(
-              userData: _userV2Data,
-              onFieldUpdate: _updateUserV2Field,
+              onRefresh: _loadUserData,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  EditableUserV2InfoCard(
+                    userData: _userV2Data,
+                    onFieldUpdate: _updateUserV2Field,
+                  ),
+                  const SizedBox(height: 16),
+                  EditableUserOldServiceCard(
+                    serviceData: _userOldServiceData,
+                    onFieldUpdate: _updateUserOldServiceField,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            EditableUserOldServiceCard(
-              serviceData: _userOldServiceData,
-              onFieldUpdate: _updateUserOldServiceField,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
-

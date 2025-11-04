@@ -185,9 +185,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           decoration: BoxDecoration(
                             color: theme.colorScheme.errorContainer,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: theme.colorScheme.error,
-                            ),
+                            border: Border.all(color: theme.colorScheme.error),
                           ),
                           child: Row(
                             children: [
@@ -290,8 +288,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme
-                                    .surfaceContainerHighest,
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(16),
                                   topRight: Radius.circular(16),
@@ -308,9 +306,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                     '好货铺子',
                                     style: theme.textTheme.titleMedium
                                         ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: theme.colorScheme.onSurface,
-                                    ),
+                                          fontWeight: FontWeight.w600,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -336,13 +334,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                           (context, error, stackTrace) {
                                             return Container(
                                               height: 150,
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .surfaceContainerHighest,
                                               child: Center(
                                                 child: Icon(
                                                   Icons.image_not_supported,
                                                   size: 50,
-                                                  color: theme.colorScheme
+                                                  color: theme
+                                                      .colorScheme
                                                       .onSurfaceVariant,
                                                 ),
                                               ),
@@ -358,10 +358,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                         'https://hhpz.store',
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: theme.colorScheme
-                                            .primary,
-                                        foregroundColor: theme.colorScheme
-                                            .onPrimary,
+                                        backgroundColor:
+                                            theme.colorScheme.primary,
+                                        foregroundColor:
+                                            theme.colorScheme.onPrimary,
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 12,
                                         ),

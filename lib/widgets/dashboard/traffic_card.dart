@@ -87,8 +87,10 @@ class TrafficCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: _getColorForPercentage(usagePercentage,
-                                theme),
+                            color: _getColorForPercentage(
+                              usagePercentage,
+                              theme,
+                            ),
                           ),
                         ),
                       ],
@@ -99,8 +101,8 @@ class TrafficCard extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: usagePercentage,
                         minHeight: 12,
-                        backgroundColor: theme.colorScheme
-                            .surfaceContainerHighest,
+                        backgroundColor:
+                            theme.colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           _getColorForPercentage(usagePercentage, theme),
                         ),
@@ -245,11 +247,13 @@ class TrafficCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTrafficInfo(BuildContext context,
-      String label,
-      String value,
-      IconData icon,
-      Color color,) {
+  Widget _buildTrafficInfo(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     final theme = Theme.of(context);
 
     return Container(
@@ -289,4 +293,3 @@ class TrafficCard extends StatelessWidget {
     return theme.colorScheme.primary;
   }
 }
-

@@ -5,11 +5,7 @@ import 'package:fl_app1/utils/auth/auth_interceptor.dart';
 
 /// Creates a REST client with authentication interceptor
 RestClient createAuthenticatedClient() {
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: kDefaultBaseUrl,
-    ),
-  );
+  final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
 
   // 添加认证拦截器，自动在所有请求中添加 token
   dio.interceptors.add(AuthInterceptor());

@@ -244,7 +244,9 @@ class _SubscriptionCardState extends State<SubscriptionCard>
                 // Tab内容
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * _kTabContentMaxHeightFactor,
+                    maxHeight:
+                        MediaQuery.of(context).size.height *
+                        _kTabContentMaxHeightFactor,
                     minHeight: _kTabContentMinHeight,
                   ),
                   child: TabBarView(
@@ -282,7 +284,9 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(_kContainerOpacity),
+              color: theme.colorScheme.primaryContainer.withOpacity(
+                _kContainerOpacity,
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -306,7 +310,10 @@ class _SubscriptionCardState extends State<SubscriptionCard>
 
           // 客户端类型选择（universal和ssr除外）
           if (config.supportedClients.length > 1) ...[
-            const Text('选择客户端类型', style: TextStyle(fontWeight: FontWeight.w600)),
+            const Text(
+              '选择客户端类型',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -343,7 +350,9 @@ class _SubscriptionCardState extends State<SubscriptionCard>
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.outline),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -361,7 +370,8 @@ class _SubscriptionCardState extends State<SubscriptionCard>
                     ),
                     onPressed: () {
                       setState(() {
-                        _manualVisibility[os] = !(_manualVisibility[os] ?? false);
+                        _manualVisibility[os] =
+                            !(_manualVisibility[os] ?? false);
                       });
                     },
                     tooltip: isVisible ? '隐藏链接' : '显示链接',
@@ -429,16 +439,16 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(_kContainerOpacity),
+              color: theme.colorScheme.primaryContainer.withOpacity(
+                _kContainerOpacity,
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
                 Icon(Icons.settings, color: theme.colorScheme.primary),
                 const SizedBox(width: 12),
-                const Expanded(
-                  child: Text('连接配置密码'),
-                ),
+                const Expanded(child: Text('连接配置密码')),
               ],
             ),
           ),
@@ -466,10 +476,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           const SizedBox(height: 16),
 
           // 密码使用说明
-          const Text(
-            '密码使用说明：',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
+          const Text('密码使用说明：', style: TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           _buildInfoItem('• Shadowsocks密码用于SS协议连接'),
           _buildInfoItem('• VMess密码用于V2Ray协议连接'),
@@ -518,10 +525,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
   Widget _buildInfoItem(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 13),
-      ),
+      child: Text(text, style: const TextStyle(fontSize: 13)),
     );
   }
 

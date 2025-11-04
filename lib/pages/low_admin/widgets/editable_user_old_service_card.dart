@@ -90,11 +90,17 @@ class _EditableUserOldServiceCardState
     _initBandwidthControllers('ssUploadSize', service.ssUploadSize);
     _initBandwidthControllers('ssDownloadSize', service.ssDownloadSize);
     _initBandwidthControllers(
-        'ssBandwidthTotalSize', service.ssBandwidthTotalSize);
+      'ssBandwidthTotalSize',
+      service.ssBandwidthTotalSize,
+    );
     _initBandwidthControllers(
-        'ssBandwidthYesterdayUsedSize', service.ssBandwidthYesterdayUsedSize);
+      'ssBandwidthYesterdayUsedSize',
+      service.ssBandwidthYesterdayUsedSize,
+    );
     _initBandwidthControllers(
-        'autoResetBandwidth', service.autoResetBandwidth.toInt());
+      'autoResetBandwidth',
+      service.autoResetBandwidth.toInt(),
+    );
 
     // 初始化节点速率限制的双控制器（Mbps + 原始字节）
     // 即使为空也初始化，确保编辑时可以正常同步
@@ -115,13 +121,9 @@ class _EditableUserOldServiceCardState
 
   void _initBandwidthControllers(String field, int bytes) {
     // 人类可读格式控制器
-    _controllers[field] = TextEditingController(
-      text: _formatBytes(bytes),
-    );
+    _controllers[field] = TextEditingController(text: _formatBytes(bytes));
     // 原始数字控制器
-    _rawControllers[field] = TextEditingController(
-      text: bytes.toString(),
-    );
+    _rawControllers[field] = TextEditingController(text: bytes.toString());
 
     // 添加监听器：人类可读 -> 原始数字
     _controllers[field]!.addListener(() {
@@ -164,9 +166,7 @@ class _EditableUserOldServiceCardState
     final mbps = bytesValue > 0
         ? (bytesValue / 1073741824).toStringAsFixed(2)
         : '';
-    _controllers[field] = TextEditingController(
-      text: mbps,
-    );
+    _controllers[field] = TextEditingController(text: mbps);
     // 原始字节控制器
     _rawControllers[field] = TextEditingController(
       text: bytesValue > 0 ? bytesValue.toString() : '',
@@ -632,57 +632,60 @@ class _EditableUserOldServiceCardState
               Expanded(
                 child: isEditing
                     ? Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _controllers[field],
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 8,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllers[field],
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    labelText: '人类可读',
+                                    hintText: '如: 1.5 GB',
+                                  ),
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               ),
-                              border: OutlineInputBorder(),
-                              labelText: '人类可读',
-                              hintText: '如: 1.5 GB',
-                            ),
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TextField(
-                            controller: _rawControllers[field],
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 8,
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: _rawControllers[field],
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    labelText: '原始字节',
+                                    hintText: '如: 1073741824',
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               ),
-                              border: OutlineInputBorder(),
-                              labelText: '原始字节',
-                              hintText: '如: 1073741824',
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: const TextStyle(fontSize: 14),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
+                        ],
+                      )
                     : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_formatBytes(bytes)),
-                    Text(
-                      '(原始: $bytes 字节)',
-                      style: const TextStyle(fontSize: 11, color: Colors.grey),
-                    ),
-                  ],
-                ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(_formatBytes(bytes)),
+                          Text(
+                            '(原始: $bytes 字节)',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
               ),
               IconButton(
                 icon: Icon(isEditing ? Icons.check : Icons.edit, size: 20),
@@ -722,71 +725,77 @@ class _EditableUserOldServiceCardState
               Expanded(
                 child: isEditing
                     ? Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _controllers[field],
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 8,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _controllers[field],
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Mbps',
+                                    hintText: '如: 100.00',
+                                  ),
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                        decimal: true,
+                                      ),
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               ),
-                              border: OutlineInputBorder(),
-                              labelText: 'Mbps',
-                              hintText: '如: 100.00',
-                            ),
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TextField(
-                            controller: _rawControllers[field],
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 8,
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: _rawControllers[field],
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 8,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    labelText: '原始字节',
+                                    hintText: '如: 107374182400',
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               ),
-                              border: OutlineInputBorder(),
-                              labelText: '原始字节',
-                              hintText: '如: 107374182400',
-                            ),
-                            keyboardType: TextInputType.number,
-                            style: const TextStyle(fontSize: 14),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      '注: 由于技术限制，最低限制为无限制(0)或1Mbps',
-                      style: TextStyle(fontSize: 11, color: Colors.orange),
-                    ),
-                  ],
-                )
+                          const SizedBox(height: 4),
+                          const Text(
+                            '注: 由于技术限制，最低限制为无限制(0)或1Mbps',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ],
+                      )
                     : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      hasValue
-                          ? '${(bytesValue / 1073741824).toStringAsFixed(
-                          2)} Mbps'
-                          : '无限制',
-                    ),
-                    if (hasValue)
-                      Text(
-                        '(原始: $bytesValue 字节)',
-                        style: const TextStyle(
-                            fontSize: 11, color: Colors.grey),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            hasValue
+                                ? '${(bytesValue / 1073741824).toStringAsFixed(2)} Mbps'
+                                : '无限制',
+                          ),
+                          if (hasValue)
+                            Text(
+                              '(原始: $bytesValue 字节)',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey,
+                              ),
+                            ),
+                        ],
                       ),
-                  ],
-                ),
               ),
               IconButton(
                 icon: Icon(isEditing ? Icons.check : Icons.edit, size: 20),

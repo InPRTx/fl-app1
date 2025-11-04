@@ -76,11 +76,7 @@ class SubjectAccess {
 
 @JsonSerializable()
 class SubjectRefresh {
-  const SubjectRefresh({
-    this.userId,
-    this.passwordHash,
-    this.isRememberMe,
-  });
+  const SubjectRefresh({this.userId, this.passwordHash, this.isRememberMe});
 
   factory SubjectRefresh.fromJson(Map<String, dynamic> json) =>
       _$SubjectRefreshFromJson(json);
@@ -96,4 +92,3 @@ class SubjectRefresh {
 
   Map<String, dynamic> toJson() => _$SubjectRefreshToJson(this);
 }
-
