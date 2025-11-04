@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'routes.dart';
 
 void main() {
+  Intl.defaultLocale = 'zh_CN';
   runApp(const MyApp());
 }
 

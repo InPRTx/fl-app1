@@ -115,6 +115,23 @@ class _UserV2PageState extends State<UserV2Page> {
     return 'DioException: ${e.type.name}\nURI: $uri\nMessage: $message';
   }
 
+  String _formatDateTimeWithOffset(DateTime dt) {
+    final local = dt.toLocal();
+    final offset = local.timeZoneOffset;
+    final hours = offset.inHours.abs().toString().padLeft(2, '0');
+    final minutes = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
+    final sign = offset.isNegative ? '-' : '+';
+
+    final year = local.year.toString().padLeft(4, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final day = local.day.toString().padLeft(2, '0');
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+    final second = local.second.toString().padLeft(2, '0');
+
+    return '$year-$month-${day}T$hour:$minute:$second$sign$hours:$minutes';
+  }
+
   Future<void> _saveUserV2() async {
     if (_userV == null) return;
 
@@ -190,7 +207,9 @@ class _UserV2PageState extends State<UserV2Page> {
 
   Future<void> _pickExpireIn(BuildContext context) async {
     final TextEditingController dateController = TextEditingController(
-      text: _expireIn?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      text: _expireIn != null
+          ? _formatDateTimeWithOffset(_expireIn!)
+          : _formatDateTimeWithOffset(DateTime.now()),
     );
 
     final result = await showDialog<DateTime>(
@@ -239,9 +258,9 @@ class _UserV2PageState extends State<UserV2Page> {
               TextButton(
                 onPressed: () {
                   dateController.text =
-                      DateTime.now().toUtc().toIso8601String();
+                      _formatDateTimeWithOffset(DateTime.now());
                 },
-                child: const Text('当前时间(UTC)'),
+                child: const Text('当前时间(本地)'),
               ),
             ],
           ),
@@ -329,7 +348,7 @@ class _UserV2PageState extends State<UserV2Page> {
                           Expanded(
                             child: Text(
                               _expireIn != null
-                                  ? _expireIn!.toIso8601String()
+                                  ? _formatDateTimeWithOffset(_expireIn!)
                                   : '未设置',
                               style: const TextStyle(fontSize: 12),
                             ),
@@ -379,8 +398,8 @@ class _UserV2PageState extends State<UserV2Page> {
                         const Text('无旧版服务数据')
                       else
                         ...[
-                          Text('到期: ${_oldService!.userLevelExpireIn
-                              .toIso8601String()}'),
+                          Text('到期: ${_formatDateTimeWithOffset(
+                              _oldService!.userLevelExpireIn)}'),
                           const SizedBox(height: 12),
                           SizedBox(
                             width: double.infinity,
