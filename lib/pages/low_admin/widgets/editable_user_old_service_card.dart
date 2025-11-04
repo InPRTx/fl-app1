@@ -96,14 +96,16 @@ class _EditableUserOldServiceCardState
     _initBandwidthControllers(
         'autoResetBandwidth', service.autoResetBandwidth.toInt());
 
+    // 初始化节点速率限制的双控制器（Mbps + 原始字节）
+    if (service.nodeSpeedLimit != null && service.nodeSpeedLimit! > 0) {
+      _initSpeedLimitControllers('nodeSpeedLimit', service.nodeSpeedLimit!);
+    }
+
     _controllers['userLevel'] = TextEditingController(
       text: service.userLevel.toString(),
     );
     _controllers['nodeConnector'] = TextEditingController(
       text: service.nodeConnector.toString(),
-    );
-    _controllers['nodeSpeedLimit'] = TextEditingController(
-      text: service.nodeSpeedLimit?.toString() ?? '',
     );
     _controllers['autoResetDay'] = TextEditingController(
       text: service.autoResetDay.toString(),
@@ -146,6 +148,48 @@ class _EditableUserOldServiceCardState
           _controllers[field]!.value = TextEditingValue(
             text: formatted,
             selection: TextSelection.collapsed(offset: formatted.length),
+          );
+        }
+      }
+    });
+  }
+
+  void _initSpeedLimitControllers(String field, int bytesValue) {
+    // Mbps 格式控制器 (bytesValue / 1073741824 = Mbps)
+    final mbps = (bytesValue / 1073741824).toStringAsFixed(2);
+    _controllers[field] = TextEditingController(
+      text: mbps,
+    );
+    // 原始字节控制器
+    _rawControllers[field] = TextEditingController(
+      text: bytesValue.toString(),
+    );
+
+    // 添加监听器：Mbps -> 原始字节
+    _controllers[field]!.addListener(() {
+      if (_editingFields[field] == true) {
+        final mbpsValue = double.tryParse(_controllers[field]!.text) ?? 0;
+        final bytes = (mbpsValue * 1073741824).toInt();
+        if (_rawControllers[field]!.text != bytes.toString()) {
+          _rawControllers[field]!.value = TextEditingValue(
+            text: bytes.toString(),
+            selection: TextSelection.collapsed(offset: bytes
+                .toString()
+                .length),
+          );
+        }
+      }
+    });
+
+    // 添加监听器：原始字节 -> Mbps
+    _rawControllers[field]!.addListener(() {
+      if (_editingFields[field] == true) {
+        final rawValue = int.tryParse(_rawControllers[field]!.text) ?? 0;
+        final mbpsValue = (rawValue / 1073741824).toStringAsFixed(2);
+        if (_controllers[field]!.text != mbpsValue) {
+          _controllers[field]!.value = TextEditingValue(
+            text: mbpsValue,
+            selection: TextSelection.collapsed(offset: mbpsValue.length),
           );
         }
       }
@@ -375,12 +419,10 @@ class _EditableUserOldServiceCardState
               '在线设备数',
               service.nodeConnector.toString(),
             ),
-            _buildEditableInfoRow(
+            _buildDualSpeedLimitRow(
               'nodeSpeedLimit',
               '节点速率限制',
-              service.nodeSpeedLimit != null
-                  ? '${service.nodeSpeedLimit} Mbps'
-                  : '无限制',
+              service.nodeSpeedLimit,
             ),
             _buildEditableInfoRow(
               'autoResetDay',
@@ -600,6 +642,110 @@ class _EditableUserOldServiceCardState
                   ],
                 )
                     : Text(_formatBytes(bytes)),
+              ),
+              IconButton(
+                icon: Icon(isEditing ? Icons.check : Icons.edit, size: 20),
+                onPressed: () => _toggleEdit(field),
+                padding: const EdgeInsets.all(4),
+                constraints: const BoxConstraints(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDualSpeedLimitRow(String field, String label, int? bytesValue) {
+    final isEditing = _editingFields[field] ?? false;
+    final hasValue = bytesValue != null && bytesValue > 0;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 120,
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: isEditing
+                    ? Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _controllers[field],
+                            decoration: const InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 8,
+                              ),
+                              border: OutlineInputBorder(),
+                              labelText: 'Mbps',
+                              hintText: '如: 100.00',
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: TextField(
+                            controller: _rawControllers[field],
+                            decoration: const InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 8,
+                              ),
+                              border: OutlineInputBorder(),
+                              labelText: '原始字节',
+                              hintText: '如: 107374182400',
+                            ),
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '注: 由于技术限制，最低限制为无限制(0)或1Mbps',
+                      style: TextStyle(fontSize: 11, color: Colors.orange),
+                    ),
+                  ],
+                )
+                    : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hasValue
+                          ? '${(bytesValue / 1073741824).toStringAsFixed(
+                          2)} Mbps'
+                          : '无限制',
+                    ),
+                    if (hasValue)
+                      Text(
+                        '(原始: $bytesValue 字节)',
+                        style: const TextStyle(
+                            fontSize: 11, color: Colors.grey),
+                      ),
+                  ],
+                ),
               ),
               IconButton(
                 icon: Icon(isEditing ? Icons.check : Icons.edit, size: 20),
