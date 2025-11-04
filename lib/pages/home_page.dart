@@ -37,17 +37,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => context.push('/login'),
+              onPressed: () => context.go('/login'),
               child: const Text('打开登录页面'),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () => context.push('/version'),
+              onPressed: () => context.go('/version'),
               child: const Text('查看 /v1/version'),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () => context.push('/low_admin/user_v2/3'),
+              onPressed: () => context.go('/low_admin/user_v2/3'),
               child: const Text('查看 /v1/管理员'),
             ),
           ],
