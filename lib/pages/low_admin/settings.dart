@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'low_admin_layout.dart';
+
 class LowAdminSettingsPage extends StatefulWidget {
   const LowAdminSettingsPage({super.key});
 
@@ -14,9 +16,10 @@ class _LowAdminSettingsPageState extends State<LowAdminSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('系统设置')),
-      body: ListView(
+    return LowAdminLayout(
+      title: '系统设置',
+      selectedIndex: 2,
+      child: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           Card(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'low_admin_layout.dart';
+
 class UsersListPage extends StatefulWidget {
   const UsersListPage({super.key});
 
@@ -19,9 +21,10 @@ class _UsersListPageState extends State<UsersListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('用户管理')),
-      body: Column(
+    return LowAdminLayout(
+      title: '用户管理',
+      selectedIndex: 1,
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),

@@ -1,163 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LowAdminHomePage extends StatefulWidget {
+import 'low_admin_layout.dart';
+
+class LowAdminHomePage extends StatelessWidget {
   const LowAdminHomePage({super.key});
 
   @override
-  State<LowAdminHomePage> createState() => _LowAdminHomePageState();
-}
-
-class _LowAdminHomePageState extends State<LowAdminHomePage> {
-  int _selectedIndex = 0;
-
-  final List<NavigationItem> _navItems = [
-    NavigationItem(icon: Icons.dashboard, label: '仪表盘', route: '/low_admin'),
-    NavigationItem(
-      icon: Icons.people,
-      label: '用户管理',
-      route: '/low_admin/users',
-    ),
-    NavigationItem(
-      icon: Icons.settings,
-      label: '设置',
-      route: '/low_admin/settings',
-    ),
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isLargeScreen = constraints.maxWidth >= 768;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('低权限管理后台'),
-            leading: isLargeScreen
-                ? null
-                : IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  ),
-          ),
-          drawer: isLargeScreen ? null : _buildDrawer(context),
-          body: Row(
-            children: [
-              if (isLargeScreen) _buildNavigationRail(),
-              Expanded(child: _buildContent()),
-            ],
-          ),
-        );
-      },
+    return LowAdminLayout(
+      title: '低权限管理后台',
+      selectedIndex: 0,
+      child: _buildContent(context),
     );
   }
 
-  Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(
-                  Icons.admin_panel_settings,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '管理后台',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ..._navItems.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
-            return ListTile(
-              leading: Icon(item.icon),
-              title: Text(item.label),
-              selected: _selectedIndex == index,
-              onTap: () {
-                setState(() => _selectedIndex = index);
-                Navigator.pop(context);
-                if (item.route != null) {
-                  context.go(item.route!);
-                }
-              },
-            );
-          }),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('返回主页'),
-            onTap: () {
-              context.go('/');
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavigationRail() {
-    return NavigationRail(
-      selectedIndex: _selectedIndex,
-      onDestinationSelected: (index) {
-        setState(() => _selectedIndex = index);
-        final item = _navItems[index];
-        if (item.route != null) {
-          context.go(item.route!);
-        }
-      },
-      labelType: NavigationRailLabelType.all,
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Icon(
-          Icons.admin_panel_settings,
-          size: 48,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
-      destinations: _navItems.map((item) {
-        return NavigationRailDestination(
-          icon: Icon(item.icon),
-          label: Text(item.label),
-        );
-      }).toList(),
-      trailing: Expanded(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: IconButton(
-              icon: const Icon(Icons.home),
-              tooltip: '返回主页',
-              onPressed: () {
-                context.go('/');
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -199,10 +57,7 @@ class _LowAdminHomePageState extends State<LowAdminHomePage> {
                   icon: Icons.people,
                   title: '用户管理',
                   description: '查看和编辑用户信息',
-                  onTap: () {
-                    setState(() => _selectedIndex = 1);
-                    context.go('/low_admin/users');
-                  },
+                  onTap: () => context.go('/low_admin/users'),
                 ),
                 _buildQuickActionCard(
                   context: context,
@@ -216,10 +71,7 @@ class _LowAdminHomePageState extends State<LowAdminHomePage> {
                   icon: Icons.settings,
                   title: '系统设置',
                   description: '配置系统参数',
-                  onTap: () {
-                    setState(() => _selectedIndex = 2);
-                    context.go('/low_admin/settings');
-                  },
+                  onTap: () => context.go('/low_admin/settings'),
                 ),
               ],
             ),
@@ -312,16 +164,8 @@ class _LowAdminHomePageState extends State<LowAdminHomePage> {
     controller.dispose();
 
     if (result != null) {
-      if (!mounted) return;
       router.go('/low_admin/user_v2/$result');
     }
   }
 }
 
-class NavigationItem {
-  final IconData icon;
-  final String label;
-  final String? route;
-
-  NavigationItem({required this.icon, required this.label, this.route});
-}
