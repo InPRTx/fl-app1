@@ -5,6 +5,7 @@ import 'package:fl_app1/api/models/admin_user_v.dart';
 import 'package:fl_app1/api/models/param_model_patch.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserV2Page extends StatefulWidget {
   const UserV2Page({super.key, required this.userId});
@@ -116,20 +117,15 @@ class _UserV2PageState extends State<UserV2Page> {
   }
 
   String _formatDateTimeWithOffset(DateTime dt) {
-    final local = dt.toLocal();
-    final offset = local.timeZoneOffset;
+    final formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    final timeStr = formatter.format(dt.toLocal());
+    final offset = dt
+        .toLocal()
+        .timeZoneOffset;
     final hours = offset.inHours.abs().toString().padLeft(2, '0');
     final minutes = (offset.inMinutes.abs() % 60).toString().padLeft(2, '0');
     final sign = offset.isNegative ? '-' : '+';
-
-    final year = local.year.toString().padLeft(4, '0');
-    final month = local.month.toString().padLeft(2, '0');
-    final day = local.day.toString().padLeft(2, '0');
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    final second = local.second.toString().padLeft(2, '0');
-
-    return '$year-$month-${day}T$hour:$minute:$second$sign$hours:$minutes';
+    return '$timeStr$sign$hours:$minutes';
   }
 
   Future<void> _saveUserV2() async {
