@@ -5,6 +5,7 @@ import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_account_lo
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/utils/auth/auth_store.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -135,6 +136,8 @@ class _LoginPageState extends State<LoginPage>
         result.result.refreshToken,
       );
 
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -143,9 +146,12 @@ class _LoginPageState extends State<LoginPage>
                 : '欢迎回来，${_emailController.text}',
           ),
           backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
         ),
       );
-      Navigator.of(context).pop();
+
+      // 跳转到用户仪表板
+      context.go('/user/dashboard');
     } on DioException catch (e) {
       setState(() => _isLoggingIn = false);
 

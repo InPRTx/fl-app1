@@ -171,9 +171,17 @@ class AuthStore extends ChangeNotifier {
   JWTTokenModel? _decodeToken(String token) {
     try {
       final payload = Jwt.parseJwt(token);
+
+      // Validate required fields
+      if (payload['exp'] == null || payload['iat'] == null) {
+        debugPrint('Token missing required fields: $payload');
+        return null;
+      }
+
       return JWTTokenModel.fromJson(payload);
-    } catch (error) {
+    } catch (error, stackTrace) {
       debugPrint('Failed to decode token: $error');
+      debugPrint('Stack trace: $stackTrace');
       return null;
     }
   }

@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:fl_app1/api/base_url.dart';
 import 'package:fl_app1/api/rest_client.dart';
+import 'package:fl_app1/utils/auth/authenticated_client.dart';
 import 'package:fl_app1/widgets/dashboard/announcement_card.dart';
 import 'package:fl_app1/widgets/dashboard/status_card.dart';
 import 'package:fl_app1/widgets/dashboard/subscription_card.dart';
@@ -58,8 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _initApi() {
-    final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
-    _restClient = RestClient(dio, baseUrl: kDefaultBaseUrl);
+    _restClient = createAuthenticatedClient();
   }
 
   Future<void> _fetchDashboardData() async {
