@@ -1,3 +1,4 @@
+import 'package:fl_app1/utils/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
   Intl.defaultLocale = 'zh_CN';
+
+  // Initialize auth store
+  await AuthStore().init();
+
   runApp(const MyApp());
 }
 

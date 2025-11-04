@@ -3,6 +3,7 @@ import 'package:fl_app1/api/base_url.dart';
 import 'package:fl_app1/api/models/login_post_result_model.dart';
 import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import 'package:fl_app1/api/rest_client.dart';
+import 'package:fl_app1/utils/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage>
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _twoFaController = TextEditingController();
+  final AuthStore _authStore = AuthStore();
 
   bool _rememberMe = false;
   bool _isLoggingIn = false;
@@ -126,6 +128,12 @@ class _LoginPageState extends State<LoginPage>
         _triggerShake();
         return;
       }
+
+      // Save tokens to auth store
+      await _authStore.setTokens(
+        result.result.accessToken,
+        result.result.refreshToken,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

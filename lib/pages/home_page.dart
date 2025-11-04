@@ -1,3 +1,4 @@
+import 'package:fl_app1/widgets/auth_status_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,10 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const AuthStatusWidget(),
+            const SizedBox(height: 16),
             const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
@@ -55,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () => context.go('/low_admin/user_v2/3'),
               child: const Text('查看用户详情（示例ID=3）'),
             ),
+            const SizedBox(height: 24),
           ],
         ),
       ),
