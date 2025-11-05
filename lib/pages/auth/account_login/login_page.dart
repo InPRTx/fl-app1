@@ -240,6 +240,8 @@ class _LoginPageState extends State<LoginPage>
                         child: Column(
                           children: [
                             TextFormField(
+                              autovalidateMode: AutovalidateMode
+                                  .onUserInteraction,
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               maxLength: 100,
@@ -261,8 +263,11 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
+                              autovalidateMode: AutovalidateMode
+                                  .onUserInteraction,
                               controller: _passwordController,
                               obscureText: true,
+                              textInputAction: TextInputAction.next,
                               decoration: const InputDecoration(
                                 labelText: '密码',
                                 prefixIcon: Icon(Icons.lock),
@@ -275,6 +280,8 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
+                              autovalidateMode: AutovalidateMode
+                                  .onUserInteraction,
                               controller: _twoFaController,
                               keyboardType: TextInputType.number,
                               maxLength: 6,
@@ -301,7 +308,7 @@ class _LoginPageState extends State<LoginPage>
                                   _twoFaController.text = v.substring(0, 6);
                                   _twoFaController.selection =
                                       TextSelection.fromPosition(
-                                        TextPosition(offset: 6),
+                                        const TextPosition(offset: 6),
                                       );
                                 }
                               },
@@ -313,7 +320,12 @@ class _LoginPageState extends State<LoginPage>
                                   onChanged: (v) =>
                                       setState(() => _rememberMe = v ?? false),
                                 ),
-                                const Text('记住我'),
+                                GestureDetector(
+                                  onTap: () =>
+                                      setState(() =>
+                                      _rememberMe = !_rememberMe),
+                                  child: const Text('记住我'),
+                                ),
                                 const Spacer(),
                               ],
                             ),
