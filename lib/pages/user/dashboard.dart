@@ -141,9 +141,38 @@ class _DashboardPageState extends State<DashboardPage> {
     ).showSnackBar(SnackBar(content: Text('即将打开: $url')));
   }
 
+  int _getStatusGridColumns(double width) {
+    if (width >= 1400) return 4;
+    if (width >= 900) return 2;
+    return 2;
+  }
+
+  double _getStatusGridChildAspectRatio(double width, int columns) {
+    if (columns == 4) return 1.8;
+    if (columns == 2 && width >= 1200) return 1.6;
+    if (columns == 2 && width >= 900) return 1.5;
+    if (width >= 600) return 1.3;
+    return 1.2;
+  }
+
+  double _getMaxContentWidth(double screenWidth) {
+    if (screenWidth >= 1400) return 1200;
+    if (screenWidth >= 1200) return 1000;
+    return double.infinity;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final statusGridColumns = _getStatusGridColumns(screenWidth);
+    final statusGridAspectRatio = _getStatusGridChildAspectRatio(
+        screenWidth, statusGridColumns);
+    final maxContentWidth = _getMaxContentWidth(screenWidth);
+    final isLargeScreen = screenWidth >= 900;
 
     return UserLayout(
       title: '用户主页',
@@ -173,219 +202,258 @@ class _DashboardPageState extends State<DashboardPage> {
                 onRefresh: _fetchDashboardData,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 错误提示
-                      if (_error != null)
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.errorContainer,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: theme.colorScheme.error),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.error,
-                                color: theme.colorScheme.onErrorContainer,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  _error!,
-                                  style: TextStyle(
-                                    color: theme.colorScheme.onErrorContainer,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () {
-                                  setState(() => _error = null);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-
-                      // 状态卡片
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: 1.5,
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: maxContentWidth),
+                      padding: EdgeInsets.all(isLargeScreen ? 24 : 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          StatusCard(
-                            label: '用户等级',
-                            value: _userLevel,
-                            icon: Icons.star,
-                            color: theme.colorScheme.primary,
-                          ),
-                          StatusCard(
-                            label: '账户余额',
-                            value: '¥$_userBalance',
-                            icon: Icons.account_balance_wallet,
-                            color: theme.colorScheme.secondary,
-                          ),
-                          StatusCard(
-                            label: 'IP限制',
-                            value: _onlineIpLimit,
-                            icon: Icons.devices,
-                            color: theme.colorScheme.tertiary,
-                          ),
-                          StatusCard(
-                            label: '连接速度',
-                            value: _connectionSpeed,
-                            icon: Icons.speed,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // 订阅和流量卡片
-                      SubscriptionCard(
-                        subLinks: _subLinks,
-                        shadowsocksPassword: _shadowsocksPassword,
-                        vmessPassword: _vmessPassword,
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      TrafficCard(
-                        totalBytes: _totalBytes,
-                        usedBytes: _usedBytes,
-                        todayUsedBytes: _todayUsedBytes,
-                        expireDate: _expireDate,
-                        onNavigateToShop: _navigateToShop,
-                        onNavigateToDataPackage: _navigateToDataPackage,
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // 公告
-                      AnnouncementCard(content: _announcementContent),
-
-                      const SizedBox(height: 16),
-
-                      // 赞助商广告
-                      Card(
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          // 错误提示
+                          if (_error != null)
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color:
-                                    theme.colorScheme.surfaceContainerHighest,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
+                                color: theme.colorScheme.errorContainer,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: theme.colorScheme.error,
                                 ),
                               ),
                               child: Row(
                                 children: [
                                   Icon(
-                                    Icons.store,
-                                    color: theme.colorScheme.onSurface,
+                                    Icons.error,
+                                    color: theme.colorScheme.onErrorContainer,
                                   ),
                                   const SizedBox(width: 12),
-                                  Text(
-                                    '好货铺子',
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: theme.colorScheme.onSurface,
-                                        ),
+                                  Expanded(
+                                    child: Text(
+                                      _error!,
+                                      style: TextStyle(
+                                        color:
+                                        theme.colorScheme.onErrorContainer,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      setState(() => _error = null);
+                                    },
                                   ),
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '苹果账号/兑换码推荐商家',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      'assets/images/haohuopuzi.webp',
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Container(
-                                              height: 150,
-                                              color: theme
-                                                  .colorScheme
-                                                  .surfaceContainerHighest,
-                                              child: Center(
-                                                child: Icon(
-                                                  Icons.image_not_supported,
-                                                  size: 50,
-                                                  color: theme
-                                                      .colorScheme
-                                                      .onSurfaceVariant,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      onPressed: () => _openExternalLink(
-                                        'https://hhpz.store',
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            theme.colorScheme.primary,
-                                        foregroundColor:
-                                            theme.colorScheme.onPrimary,
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                      ),
-                                      child: const Text('了解更多'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
 
-                      const SizedBox(height: 20),
-                    ],
+                          // 状态卡片
+                          GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: statusGridColumns,
+                            mainAxisSpacing: isLargeScreen ? 16 : 12,
+                            crossAxisSpacing: isLargeScreen ? 16 : 12,
+                            childAspectRatio: statusGridAspectRatio,
+                            children: [
+                              StatusCard(
+                                label: '用户等级',
+                                value: _userLevel,
+                                icon: Icons.star,
+                                color: theme.colorScheme.primary,
+                              ),
+                              StatusCard(
+                                label: '账户余额',
+                                value: '¥$_userBalance',
+                                icon: Icons.account_balance_wallet,
+                                color: theme.colorScheme.secondary,
+                              ),
+                              StatusCard(
+                                label: 'IP限制',
+                                value: _onlineIpLimit,
+                                icon: Icons.devices,
+                                color: theme.colorScheme.tertiary,
+                              ),
+                              StatusCard(
+                                label: '连接速度',
+                                value: _connectionSpeed,
+                                icon: Icons.speed,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: isLargeScreen ? 24 : 20),
+
+                          // 订阅和流量卡片 - 大屏幕时并排显示
+                          if (isLargeScreen)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: SubscriptionCard(
+                                    subLinks: _subLinks,
+                                    shadowsocksPassword: _shadowsocksPassword,
+                                    vmessPassword: _vmessPassword,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: TrafficCard(
+                                    totalBytes: _totalBytes,
+                                    usedBytes: _usedBytes,
+                                    todayUsedBytes: _todayUsedBytes,
+                                    expireDate: _expireDate,
+                                    onNavigateToShop: _navigateToShop,
+                                    onNavigateToDataPackage:
+                                    _navigateToDataPackage,
+                                  ),
+                                ),
+                              ],
+                            )
+                          else
+                            ...[
+                              SubscriptionCard(
+                                subLinks: _subLinks,
+                                shadowsocksPassword: _shadowsocksPassword,
+                                vmessPassword: _vmessPassword,
+                              ),
+                              const SizedBox(height: 16),
+                              TrafficCard(
+                                totalBytes: _totalBytes,
+                                usedBytes: _usedBytes,
+                                todayUsedBytes: _todayUsedBytes,
+                                expireDate: _expireDate,
+                                onNavigateToShop: _navigateToShop,
+                                onNavigateToDataPackage: _navigateToDataPackage,
+                              ),
+                            ],
+
+                          SizedBox(height: isLargeScreen ? 24 : 16),
+
+                          // 公告和赞助商广告 - 大屏幕时并排显示
+                          if (isLargeScreen)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: AnnouncementCard(
+                                    content: _announcementContent,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: _buildSponsorCard(theme),
+                                ),
+                              ],
+                            )
+                          else
+                            ...[
+                              AnnouncementCard(content: _announcementContent),
+                              const SizedBox(height: 16),
+                              _buildSponsorCard(theme),
+                          ],
+
+                          SizedBox(height: isLargeScreen ? 24 : 20),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildSponsorCard(ThemeData theme) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.store,
+                  color: theme.colorScheme.onSurface,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  '好货铺子',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '苹果账号/兑换码推荐商家',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/haohuopuzi.webp',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 150,
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        child: Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 50,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => _openExternalLink('https://hhpz.store'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('了解更多'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

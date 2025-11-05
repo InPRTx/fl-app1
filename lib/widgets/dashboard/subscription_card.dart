@@ -167,7 +167,7 @@ class _SubscriptionCardState extends State<SubscriptionCard>
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
-                    value: _selectedDomain,
+                    initialValue: _selectedDomain,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       prefixIcon: const Icon(Icons.dns),
@@ -284,8 +284,8 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(
-                _kContainerOpacity,
+              color: theme.colorScheme.primaryContainer.withValues(
+                alpha: _kContainerOpacity,
               ),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -439,8 +439,8 @@ class _SubscriptionCardState extends State<SubscriptionCard>
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(
-                _kContainerOpacity,
+              color: theme.colorScheme.primaryContainer.withValues(
+                alpha: _kContainerOpacity,
               ),
               borderRadius: BorderRadius.circular(8),
             ),
