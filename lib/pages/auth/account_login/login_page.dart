@@ -4,6 +4,7 @@ import 'package:fl_app1/api/models/login_post_result_model.dart';
 import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/utils/auth/auth_store.dart';
+import 'package:fl_app1/widgets/simple_layout_with_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -210,9 +211,9 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('登录')),
-      body: Center(
+    return SimpleLayoutWithMenu(
+      title: '登录',
+      child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: AnimatedBuilder(
@@ -241,9 +242,14 @@ class _LoginPageState extends State<LoginPage>
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
+                              maxLength: 100,
+                              autofillHints: const [AutofillHints.email],
+                              textInputAction: TextInputAction.next,
                               decoration: const InputDecoration(
                                 labelText: '邮箱地址',
                                 prefixIcon: Icon(Icons.email),
+                                hintText: 'example@email.com',
+                                counterText: '',
                               ),
                               validator: (v) {
                                 if (v == null || v.isEmpty) {
@@ -271,17 +277,33 @@ class _LoginPageState extends State<LoginPage>
                             TextFormField(
                               controller: _twoFaController,
                               keyboardType: TextInputType.number,
+                              maxLength: 6,
+                              textInputAction: TextInputAction.done,
                               decoration: const InputDecoration(
                                 labelText: '两步验证码 (可选)',
                                 prefixIcon: Icon(Icons.shield),
+                                hintText: '123456',
+                                helperText: '请输入6位数字验证码',
+                                counterText: '',
                               ),
-                              maxLength: 6,
                               validator: (v) {
                                 if (v == null || v.isEmpty) return null;
-                                if (!RegExp(r"^\d{6}$").hasMatch(v)) {
+                                if (v.length != 6) {
                                   return '验证码必须是6位数字';
                                 }
+                                if (!RegExp(r"^\d{6}$").hasMatch(v)) {
+                                  return '验证码只能包含数字';
+                                }
                                 return null;
+                              },
+                              onChanged: (v) {
+                                if (v.length > 6) {
+                                  _twoFaController.text = v.substring(0, 6);
+                                  _twoFaController.selection =
+                                      TextSelection.fromPosition(
+                                        TextPosition(offset: 6),
+                                      );
+                                }
                               },
                             ),
                             Row(

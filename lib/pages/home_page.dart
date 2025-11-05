@@ -1,4 +1,5 @@
 import 'package:fl_app1/widgets/auth_status_widget.dart';
+import 'package:fl_app1/widgets/simple_layout_with_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,12 +15,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: SingleChildScrollView(
+    return SimpleLayoutWithMenu(
+      title: widget.title,
+      child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             const AuthStatusWidget(),
@@ -31,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () => context.go('/user/dashboard'),
-              child: const Text('前往主页'),
+              child: const Text('前往用户首页'),
             ),
             const SizedBox(height: 8),
             ElevatedButton(

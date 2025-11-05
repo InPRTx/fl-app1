@@ -65,12 +65,7 @@ final GoRouter router = GoRouter(
     ),
   ],
   errorBuilder: (context, state) {
-    final dynamic s = state;
-    final loc =
-        (s.location is String
-                ? s.location
-                : (s.uri != null ? s.uri.toString() : '<unknown>'))
-            ?.toString();
+    final loc = state.uri.toString();
     return Scaffold(
       appBar: AppBar(
         title: Text(state.error?.toString() ?? 'Error'),
@@ -105,7 +100,7 @@ final GoRouter router = GoRouter(
             ),
             const SizedBox(height: 8),
             Text(
-              loc ?? '<unknown>',
+              loc,
               style: Theme
                   .of(context)
                   .textTheme
