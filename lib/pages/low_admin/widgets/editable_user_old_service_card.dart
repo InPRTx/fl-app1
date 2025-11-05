@@ -299,6 +299,7 @@ class _EditableUserOldServiceCardState
       initialDate: currentDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
+      locale: const Locale('zh', 'CN'),
     );
 
     if (pickedDate != null && mounted) {
