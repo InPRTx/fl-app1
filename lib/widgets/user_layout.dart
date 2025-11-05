@@ -13,16 +13,35 @@ class UserLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title ?? '用户中心'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: theme.colorScheme.onPrimary,
-        elevation: 0,
-        actions: actions,
-      ),
-      drawer: const UserSidebar(),
-      body: child,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isLargeScreen = constraints.maxWidth >= 768;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(title ?? '用户中心'),
+            backgroundColor: theme.colorScheme.inversePrimary,
+            actions: actions,
+            leading: isLargeScreen
+                ? null
+                : Builder(
+                    builder: (context) => IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    ),
+                  ),
+          ),
+          drawer: isLargeScreen ? null : const UserSidebar(),
+          body: Row(
+            children: [
+              if (isLargeScreen) const UserNavigationRail(),
+              Expanded(child: child),
+            ],
+          ),
+        );
+      },
     );
   }
 }

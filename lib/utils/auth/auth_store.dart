@@ -7,7 +7,6 @@ import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/utils/auth/auth_constants.dart';
 import 'package:fl_app1/utils/auth/jwt_token_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +17,6 @@ class AuthStore extends ChangeNotifier {
 
   AuthStore._internal();
 
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   SharedPreferences? _prefs;
 
   String? _accessJWTToken;
@@ -60,9 +58,9 @@ class AuthStore extends ChangeNotifier {
     _accessJWTTokenPayload = null;
     _refreshJWTTokenPayload = null;
 
-    _prefs?.remove(AuthConstants.accessTokenKey);
-    _prefs?.remove(AuthConstants.accessTokenExpKey);
-    await _secureStorage.delete(key: AuthConstants.refreshTokenKey);
+    // 只需要清理 SharedPreferences 中的 refreshToken
+    await _prefs?.remove(AuthConstants.refreshTokenKey);
+    debugPrint('🗑️ 已清除 SharedPreferences 中的 refreshToken');
 
     notifyListeners();
   }
@@ -156,20 +154,17 @@ class AuthStore extends ChangeNotifier {
   }
 
   Future<void> _refreshThisToken() async {
-    final accessToken = _prefs?.getString(AuthConstants.accessTokenKey);
-    final refreshToken = await _secureStorage.read(
-      key: AuthConstants.refreshTokenKey,
-    );
+    // 刷新令牌从 SharedPreferences 读取
+    final refreshToken = _prefs?.getString(AuthConstants.refreshTokenKey);
     final stopRefresh = _prefs?.getString(AuthConstants.stopRefreshKey);
 
-    debugPrint('🔍 _refreshThisToken: accessToken=${accessToken != null
+    debugPrint('🔍 _refreshThisToken: 访问令牌在内存中=${_accessJWTToken != null
         ? "存在"
         : "不存在"}');
-    debugPrint('🔍 _refreshThisToken: refreshToken=${refreshToken != null
+    debugPrint('🔍 _refreshThisToken: refreshToken从SP读取=${refreshToken != null
         ? "存在"
         : "不存在"}');
 
-    _accessJWTToken = accessToken;
     _refreshJWTToken = refreshToken;
 
     if (stopRefresh == 'true') {
@@ -177,13 +172,15 @@ class AuthStore extends ChangeNotifier {
       return;
     }
 
-    if (accessToken != null) {
-      _accessJWTTokenPayload = _decodeToken(accessToken);
+    // 访问令牌仅在内存中，应用重启后会丢失
+    if (_accessJWTToken != null) {
+      _accessJWTTokenPayload = _decodeToken(_accessJWTToken!);
       debugPrint('🔍 Access token payload 解析: ${_accessJWTTokenPayload != null
           ? "成功"
           : "失败"}');
     } else {
       _accessJWTTokenPayload = null;
+      debugPrint('⚠️ 访问令牌不在内存中（应用重启或首次启动）');
     }
 
     if (refreshToken != null) {
@@ -221,41 +218,30 @@ class AuthStore extends ChangeNotifier {
         ? "存在"
         : "null"}, refreshToken=${refreshToken != null ? "存在" : "null"}');
 
+    // 访问令牌只保存在内存中
     _accessJWTToken = accessToken;
+    if (accessToken != null) {
+      debugPrint('💾 设置内存中的 _accessJWTToken');
+      _accessJWTTokenPayload = _decodeToken(accessToken);
+      debugPrint('💾 解析 accessToken payload: ${_accessJWTTokenPayload != null
+          ? "成功"
+          : "失败"}');
+    } else {
+      _accessJWTTokenPayload = null;
+    }
+
+    // 刷新令牌保存在 SharedPreferences 中
     if (refreshToken != null) {
       _refreshJWTToken = refreshToken;
-      debugPrint('💾 设置内存中的 _refreshJWTToken');
-    }
-
-    if (accessToken != null) {
-      await _prefs?.setString(AuthConstants.accessTokenKey, accessToken);
-      debugPrint('💾 保存 accessToken 到 SharedPreferences');
-
-      final payload = _decodeToken(accessToken);
-      if (payload?.exp != null) {
-        final expDate = DateTime.fromMillisecondsSinceEpoch(
-          payload!.exp * 1000,
-        );
-        await _prefs?.setString(
-          AuthConstants.accessTokenExpKey,
-          expDate.toIso8601String(),
-        );
-        debugPrint('💾 保存 accessToken 过期时间: $expDate');
-      }
+      await _prefs?.setString(AuthConstants.refreshTokenKey, refreshToken);
+      debugPrint('💾 保存 refreshToken 到 SharedPreferences');
+      _refreshJWTTokenPayload = _decodeToken(refreshToken);
+      debugPrint('💾 解析 refreshToken payload: ${_refreshJWTTokenPayload != null
+          ? "成功"
+          : "失败"}');
     } else {
-      await _prefs?.remove(AuthConstants.accessTokenKey);
-      await _prefs?.remove(AuthConstants.accessTokenExpKey);
+      await _prefs?.remove(AuthConstants.refreshTokenKey);
     }
-
-    if (refreshToken != null) {
-      await _secureStorage.write(
-        key: AuthConstants.refreshTokenKey,
-        value: refreshToken,
-      );
-      debugPrint('💾 保存 refreshToken 到 SecureStorage');
-    }
-
-    await _refreshThisToken();
 
     if (accessToken != null && isAuthenticated) {
       _startRefreshTokenTimer();

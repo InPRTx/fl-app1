@@ -188,6 +188,394 @@ final List<SidebarItemMenu> sidebarItemLogin = [
   const SidebarItemMenu(title: '关于我们', icon: Icons.info_outline, to: '/about'),
 ];
 
+// 主要导航项配置
+final List<UserNavigationItem> userNavItems = [
+  UserNavigationItem(
+    icon: Icons.dashboard,
+    label: '主页',
+    route: '/user/dashboard',
+  ),
+  UserNavigationItem(
+    icon: Icons.shopping_bag_outlined,
+    label: '产品服务',
+    route: '/user/services/',
+  ),
+  UserNavigationItem(
+    icon: Icons.attach_money,
+    label: '财务管理',
+    route: '/user/wallet/billing',
+  ),
+  UserNavigationItem(
+    icon: Icons.support_agent_outlined,
+    label: '技术支持',
+    route: '/user/tickets',
+  ),
+  UserNavigationItem(
+    icon: Icons.cloud_upload_outlined,
+    label: '服务使用',
+    route: '/user/subscribe-log',
+  ),
+  UserNavigationItem(
+    icon: Icons.person_outline,
+    label: '我的账户',
+    route: '/user/my-account',
+  ),
+  UserNavigationItem(
+    icon: Icons.share_outlined,
+    label: '用户推广',
+    route: '/user/promote',
+  ),
+  UserNavigationItem(
+    icon: Icons.settings_outlined,
+    label: '设置',
+    route: '/settings',
+  ),
+];
+
+class UserNavigationItem {
+  final IconData icon;
+  final String label;
+  final String? route;
+
+  UserNavigationItem({
+    required this.icon,
+    required this.label,
+    this.route,
+  });
+}
+
+class UserNavigationRail extends StatefulWidget {
+  const UserNavigationRail({super.key});
+
+  @override
+  State<UserNavigationRail> createState() => _UserNavigationRailState();
+}
+
+class _UserNavigationRailState extends State<UserNavigationRail> {
+  OverlayEntry? _overlayEntry;
+  int? _hoveredIndex;
+
+  int _getSelectedIndex(String currentPath) {
+    // 查找完全匹配的路由
+    for (int i = 0; i < userNavItems.length; i++) {
+      final item = userNavItems[i];
+      if (item.route == currentPath) {
+        return i;
+      }
+    }
+
+    // 查找路径前缀匹配（用于子页面）
+    for (int i = 0; i < userNavItems.length; i++) {
+      final item = userNavItems[i];
+      if (item.route != null && currentPath.startsWith(item.route!)) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
+  List<SidebarItemMenu>? _getSubmenuItems(int index) {
+    final itemRoutes = [
+      '/user/dashboard',
+      '/user/services/',
+      '/user/wallet/billing',
+      '/user/tickets',
+      '/user/subscribe-log',
+      '/user/my-account',
+      '/user/promote',
+      '/settings',
+    ];
+
+    if (index >= itemRoutes.length) return null;
+    final route = itemRoutes[index];
+
+    // 查找对应的 sidebarItemLogin 项目
+    for (final item in sidebarItemLogin) {
+      if (item.to == route && item.children != null &&
+          item.children!.isNotEmpty) {
+        return item.children;
+      }
+      if (item.children != null) {
+        for (final child in item.children!) {
+          if (child.to == route) {
+            return item.children;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  void _showSubmenu(BuildContext context, int index, Offset buttonPosition) {
+    final submenuItems = _getSubmenuItems(index);
+    if (submenuItems == null || submenuItems.isEmpty) return;
+
+    _removeOverlay();
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) =>
+          Stack(
+            children: [
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: _removeOverlay,
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
+              Positioned(
+                left: buttonPosition.dx + 80,
+                top: buttonPosition.dy,
+                child: Material(
+                  elevation: 8,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 200,
+                      maxWidth: 280,
+                      maxHeight: 400,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .surface,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .outlineVariant,
+                      ),
+                    ),
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      children: submenuItems.map((item) {
+                        final currentPath = GoRouterState
+                            .of(context)
+                            .uri
+                            .path;
+                        final isSelected = currentPath == item.to;
+                        return ListTile(
+                          leading: item.icon != null
+                              ? Icon(
+                            item.icon,
+                            size: 20,
+                            color: isSelected
+                                ? Theme
+                                .of(context)
+                                .colorScheme
+                                .primary
+                                : Theme
+                                .of(context)
+                                .colorScheme
+                                .onSurface,
+                          )
+                              : null,
+                          title: Text(
+                            item.title ?? '',
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                              color: isSelected
+                                  ? Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .primary
+                                  : Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .onSurface,
+                            ),
+                          ),
+                          selected: isSelected,
+                          selectedTileColor:
+                          Theme
+                              .of(context)
+                              .colorScheme
+                              .primaryContainer
+                              .withValues(alpha: 0.3),
+                          dense: true,
+                          onTap: item.to != null
+                              ? () {
+                            _removeOverlay();
+                            context.go(item.to!);
+                          }
+                              : null,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentPath = GoRouterState
+        .of(context)
+        .uri
+        .path;
+    final selectedIndex = _getSelectedIndex(currentPath);
+
+    return SizedBox(
+      width: 80,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Icon(
+              Icons.account_circle,
+              size: 48,
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: userNavItems.length,
+              itemBuilder: (context, index) {
+                final item = userNavItems[index];
+                final isSelected = selectedIndex == index;
+                final hasSubmenu = _getSubmenuItems(index) != null;
+
+                return MouseRegion(
+                  onEnter: (_) {
+                    setState(() => _hoveredIndex = index);
+                  },
+                  onExit: (_) {
+                    setState(() => _hoveredIndex = null);
+                  },
+                  child: InkWell(
+                    onTap: () {
+                      if (hasSubmenu) {
+                        final RenderBox renderBox = context
+                            .findRenderObject() as RenderBox;
+                        final position = renderBox.localToGlobal(Offset.zero);
+                        _showSubmenu(
+                          context,
+                          index,
+                          Offset(position.dx, position.dy + index * 72.0),
+                        );
+                      } else if (item.route != null) {
+                        context.go(item.route!);
+                      }
+                    },
+                    child: Container(
+                      height: 72,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      color: isSelected
+                          ? Theme
+                          .of(context)
+                          .colorScheme
+                          .secondaryContainer
+                          .withValues(alpha: 0.5)
+                          : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Icon(
+                                item.icon,
+                                color: isSelected
+                                    ? Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .primary
+                                    : Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
+                              ),
+                              if (hasSubmenu)
+                                Positioned(
+                                  right: -8,
+                                  top: -4,
+                                  child: Icon(
+                                    Icons.arrow_drop_down,
+                                    size: 16,
+                                    color: isSelected
+                                        ? Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .primary
+                                        : Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item.label,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                              color: isSelected
+                                  ? Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .primary
+                                  : Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: IconButton(
+              icon: const Icon(Icons.home),
+              tooltip: '返回主页',
+              onPressed: () {
+                context.go('/');
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class UserSidebar extends StatefulWidget {
   const UserSidebar({super.key});
 
@@ -209,7 +597,7 @@ class _UserSidebarState extends State<UserSidebar> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
+              color: theme.colorScheme.primary,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,14 +605,16 @@ class _UserSidebarState extends State<UserSidebar> {
               children: [
                 Icon(
                   Icons.account_circle,
-                  size: 64,
-                  color: theme.colorScheme.onPrimaryContainer,
+                  size: 48,
+                  color: theme.colorScheme.onPrimary,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '用户中心',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                  style: TextStyle(
+                    color: theme.colorScheme.onPrimary,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -235,6 +625,15 @@ class _UserSidebarState extends State<UserSidebar> {
             final item = entry.value;
             return _buildMenuItem(context, item, index, currentPath);
           }),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('返回主页'),
+            onTap: () {
+              Navigator.pop(context);
+              context.go('/');
+            },
+          ),
         ],
       ),
     );
