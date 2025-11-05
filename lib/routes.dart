@@ -72,8 +72,57 @@ final GoRouter router = GoRouter(
                 : (s.uri != null ? s.uri.toString() : '<unknown>'))
             ?.toString();
     return Scaffold(
-      appBar: AppBar(title: Text(state.error?.toString() ?? 'Error')),
-      body: Center(child: Text('找不到 $loc')),
+      appBar: AppBar(
+        title: Text(state.error?.toString() ?? 'Error'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/');
+            }
+          },
+          tooltip: '返回',
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 64,
+              color: Colors.red,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '找不到页面',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headlineMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              loc ?? '<unknown>',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.go('/');
+              },
+              icon: const Icon(Icons.home),
+              label: const Text('回到主页'),
+            ),
+          ],
+        ),
+      ),
     );
   },
 );

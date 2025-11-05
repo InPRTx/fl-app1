@@ -313,8 +313,15 @@ class _UserNavigationRailState extends State<UserNavigationRail> {
 
     _removeOverlay();
 
+    // 在创建 Overlay 前获取当前路径和主题，避免在 Overlay context 中访问
+    final currentPath = GoRouterState
+        .of(context)
+        .uri
+        .path;
+    final theme = Theme.of(context);
+
     _overlayEntry = OverlayEntry(
-      builder: (context) =>
+      builder: (overlayContext) =>
           Stack(
             children: [
               Positioned.fill(
@@ -336,26 +343,16 @@ class _UserNavigationRailState extends State<UserNavigationRail> {
                       maxHeight: 400,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme
-                          .of(context)
-                          .colorScheme
-                          .surface,
+                      color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .outlineVariant,
+                        color: theme.colorScheme.outlineVariant,
                       ),
                     ),
                     child: ListView(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       children: submenuItems.map((item) {
-                        final currentPath = GoRouterState
-                            .of(context)
-                            .uri
-                            .path;
                         final isSelected = currentPath == item.to;
                         return ListTile(
                           leading: item.icon != null
@@ -363,41 +360,22 @@ class _UserNavigationRailState extends State<UserNavigationRail> {
                             item.icon,
                             size: 20,
                             color: isSelected
-                                ? Theme
-                                .of(context)
-                                .colorScheme
-                                .primary
-                                : Theme
-                                .of(context)
-                                .colorScheme
-                                .onSurface,
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurface,
                           )
                               : null,
                           title: Text(
                             item.title ?? '',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: isSelected
-                                  ? Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .primary
-                                  : Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .onSurface,
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.onSurface,
                             ),
                           ),
                           selected: isSelected,
                           selectedTileColor:
-                          Theme
-                              .of(context)
-                              .colorScheme
-                              .primaryContainer
-                              .withValues(alpha: 0.3),
+                          theme.colorScheme.primaryContainer.withValues(
+                              alpha: 0.3),
                           dense: true,
                           onTap: item.to != null
                               ? () {
@@ -467,22 +445,27 @@ class _UserNavigationRailState extends State<UserNavigationRail> {
                   onExit: (_) {
                     setState(() => _hoveredIndex = null);
                   },
-                  child: InkWell(
-                    onTap: () {
-                      if (hasSubmenu) {
-                        final RenderBox renderBox = context
-                            .findRenderObject() as RenderBox;
-                        final position = renderBox.localToGlobal(Offset.zero);
-                        _showSubmenu(
-                          context,
-                          index,
-                          Offset(position.dx, position.dy + index * 72.0),
-                        );
-                      } else if (item.route != null) {
-                        context.go(item.route!);
-                      }
-                    },
-                    child: Container(
+                  child: Builder(
+                    builder: (itemContext) {
+                      return InkWell(
+                        onTap: () {
+                          if (hasSubmenu) {
+                            final RenderBox? renderBox =
+                            itemContext.findRenderObject() as RenderBox?;
+                            if (renderBox != null) {
+                              final position = renderBox.localToGlobal(
+                                  Offset.zero);
+                              _showSubmenu(
+                                context,
+                                index,
+                                position,
+                              );
+                            }
+                          } else if (item.route != null) {
+                            context.go(item.route!);
+                          }
+                        },
+                        child: Container(
                       height: 72,
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       color: isSelected
@@ -555,6 +538,8 @@ class _UserNavigationRailState extends State<UserNavigationRail> {
                         ],
                       ),
                     ),
+                      );
+                    },
                   ),
                 );
               },
