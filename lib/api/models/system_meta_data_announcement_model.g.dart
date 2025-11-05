@@ -22,8 +22,8 @@ SystemMetaDataAnnouncementModel _$SystemMetaDataAnnouncementModelFromJson(
 Map<String, dynamic> _$SystemMetaDataAnnouncementModelToJson(
   SystemMetaDataAnnouncementModel instance,
 ) => <String, dynamic>{
-  'created_at': instance.createdAt?.toIso8601String(),
-  'updated_at': instance.updatedAt?.toIso8601String(),
+  'created_at': ?instance.createdAt?.toIso8601String(),
+  'updated_at': ?instance.updatedAt?.toIso8601String(),
   'html_text': instance.htmlText,
   'markdown_text': instance.markdownText,
 };

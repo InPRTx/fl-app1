@@ -27,7 +27,7 @@ TrialPlanModel _$TrialPlanModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$TrialPlanModelToJson(TrialPlanModel instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'info': instance.info,
+      'info': ?instance.info,
       'price': instance.price,
       'currency': instance.currency,
       'billing': instance.billing,

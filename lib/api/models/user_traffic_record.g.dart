@@ -23,7 +23,7 @@ Map<String, dynamic> _$UserTrafficRecordToJson(UserTrafficRecord instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
       'node_id': instance.nodeId,
-      'node_name': instance.nodeName,
+      'node_name': ?instance.nodeName,
       'created_at': instance.createdAt.toIso8601String(),
       'ss_tx_size': instance.ssTxSize,
       'ss_rx_size': instance.ssRxSize,

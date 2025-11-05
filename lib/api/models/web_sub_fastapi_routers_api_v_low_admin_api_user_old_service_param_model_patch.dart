@@ -32,49 +32,49 @@ class WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPatch {
       );
 
   /// 最后使用时间 t
-  @JsonKey(name: 'ss_last_used_time')
+  @JsonKey(includeIfNull: false, name: 'ss_last_used_time')
   final DateTime? ssLastUsedTime;
 
   /// 上传数量 u
-  @JsonKey(name: 'ss_upload_size')
+  @JsonKey(includeIfNull: false, name: 'ss_upload_size')
   final int? ssUploadSize;
 
   /// 下载数量 d
-  @JsonKey(name: 'ss_download_size')
+  @JsonKey(includeIfNull: false, name: 'ss_download_size')
   final int? ssDownloadSize;
 
   /// transfer_enable
-  @JsonKey(name: 'ss_bandwidth_total_size')
+  @JsonKey(includeIfNull: false, name: 'ss_bandwidth_total_size')
   final int? ssBandwidthTotalSize;
 
   /// 昨天使用的流量数量 last_day_t
-  @JsonKey(name: 'ss_bandwidth_yesterday_used_size')
+  @JsonKey(includeIfNull: false, name: 'ss_bandwidth_yesterday_used_size')
   final int? ssBandwidthYesterdayUsedSize;
 
   /// class
-  @JsonKey(name: 'user_level')
+  @JsonKey(includeIfNull: false, name: 'user_level')
   final int? userLevel;
 
   /// 等级过期时间 class_expire
-  @JsonKey(name: 'user_level_expire_in')
+  @JsonKey(includeIfNull: false, name: 'user_level_expire_in')
   final DateTime? userLevelExpireIn;
-  @JsonKey(name: 'node_speed_limit')
+  @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final int? nodeSpeedLimit;
 
   /// 用户在线设备数量
-  @JsonKey(name: 'node_connector')
+  @JsonKey(includeIfNull: false, name: 'node_connector')
   final int? nodeConnector;
 
   /// 旧版 自动重置流量日
-  @JsonKey(name: 'auto_reset_day')
+  @JsonKey(includeIfNull: false, name: 'auto_reset_day')
   final int? autoResetDay;
 
   /// 旧版 重置流量值
-  @JsonKey(name: 'auto_reset_bandwidth')
+  @JsonKey(includeIfNull: false, name: 'auto_reset_bandwidth')
   final num? autoResetBandwidth;
 
   /// 最后签到时间
-  @JsonKey(name: 'last_check_in_time')
+  @JsonKey(includeIfNull: false, name: 'last_check_in_time')
   final DateTime? lastCheckInTime;
 
   Map<String, Object?> toJson() =>

@@ -34,11 +34,11 @@ class AccountRegisterParamsModel {
   final String rePassword;
 
   /// 邀请码
-  @JsonKey(name: 'invite_code')
+  @JsonKey(includeIfNull: false, name: 'invite_code')
   final String? inviteCode;
 
   /// 邮箱验证码
-  @JsonKey(name: 'email_code')
+  @JsonKey(includeIfNull: false, name: 'email_code')
   final String? emailCode;
 
   Map<String, Object?> toJson() => _$AccountRegisterParamsModelToJson(this);

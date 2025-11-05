@@ -40,7 +40,7 @@ class WebSubFastapiRoutersApiVUserGetMeGetMeGetResultModelResult {
   final bool isBan;
 
   /// Telegram ID
-  @JsonKey(name: 'tg_id')
+  @JsonKey(includeIfNull: false, name: 'tg_id')
   final int? tgId;
 
   /// 用户昵称

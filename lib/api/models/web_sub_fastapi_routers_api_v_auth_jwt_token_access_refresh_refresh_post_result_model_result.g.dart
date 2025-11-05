@@ -22,6 +22,6 @@ _$WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshRefreshPostResultModelResultT
   instance,
 ) => <String, dynamic>{
   'access_token': instance.accessToken,
-  'refresh_token': instance.refreshToken,
+  'refresh_token': ?instance.refreshToken,
   'user_id': instance.userId,
 };

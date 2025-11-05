@@ -24,8 +24,8 @@ UserDataHistoryResponse _$UserDataHistoryResponseFromJson(
 Map<String, dynamic> _$UserDataHistoryResponseToJson(
   UserDataHistoryResponse instance,
 ) => <String, dynamic>{
-  'is_success': instance.isSuccess,
-  'message': instance.message,
-  'result': instance.result,
+  'is_success': ?instance.isSuccess,
+  'message': ?instance.message,
+  'result': ?instance.result,
   'result_list': instance.resultList,
 };

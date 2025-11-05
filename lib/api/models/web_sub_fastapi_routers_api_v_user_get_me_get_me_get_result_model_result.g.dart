@@ -27,7 +27,7 @@ _$WebSubFastapiRoutersApiVUserGetMeGetMeGetResultModelResultToJson(
   'user_new_id': instance.userNewId,
   'email': instance.email,
   'is_ban': instance.isBan,
-  'tg_id': instance.tgId,
+  'tg_id': ?instance.tgId,
   'user_name': instance.userName,
   'user_account_expire_in': instance.userAccountExpireIn.toIso8601String(),
 };

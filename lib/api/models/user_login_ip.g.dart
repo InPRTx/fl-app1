@@ -18,9 +18,9 @@ UserLoginIp _$UserLoginIpFromJson(Map<String, dynamic> json) => UserLoginIp(
 
 Map<String, dynamic> _$UserLoginIpToJson(UserLoginIp instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'id': ?instance.id,
       'user_id': instance.userId,
       'login_ip': instance.loginIp,
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': ?instance.createdAt?.toIso8601String(),
       'is_login': instance.isLogin,
     };

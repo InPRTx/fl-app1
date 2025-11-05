@@ -31,5 +31,5 @@ _$WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultResul
   'shop_id': instance.shopId,
   'shop_name': instance.shopName,
   'money_amount': instance.moneyAmount,
-  'renew_at': instance.renewAt?.toIso8601String(),
+  'renew_at': ?instance.renewAt?.toIso8601String(),
 };

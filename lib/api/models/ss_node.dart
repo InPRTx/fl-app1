@@ -34,10 +34,11 @@ class SsNode {
 
   factory SsNode.fromJson(Map<String, Object?> json) => _$SsNodeFromJson(json);
 
+  @JsonKey(includeIfNull: true)
   final int? id;
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(includeIfNull: false, name: 'updated_at')
   final DateTime? updatedAt;
   final int priority;
   @JsonKey(name: 'node_name')
@@ -56,16 +57,17 @@ class SsNode {
   final int nodeLevel;
 
   /// 节点信息
-  @JsonKey(name: 'node_info')
+  @JsonKey(includeIfNull: false, name: 'node_info')
   final String? nodeInfo;
 
   /// 节点备注 remark
+  @JsonKey(includeIfNull: false)
   final String? remark;
 
   /// 节点速度限制
-  @JsonKey(name: 'node_speed_limit')
+  @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final String? nodeSpeedLimit;
-  @JsonKey(name: 'user_group_host')
+  @JsonKey(includeIfNull: false, name: 'user_group_host')
   final UserGroupHost? userGroupHost;
   @JsonKey(name: 'is_hide_node')
   final bool isHideNode;

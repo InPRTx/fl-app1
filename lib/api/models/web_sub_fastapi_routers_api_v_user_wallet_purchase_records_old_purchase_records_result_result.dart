@@ -34,7 +34,7 @@ class WebSubFastapiRoutersApiVUserWalletPurchaseRecordsOldPurchaseRecordsResultR
   final String shopName;
   @JsonKey(name: 'money_amount')
   final String moneyAmount;
-  @JsonKey(name: 'renew_at')
+  @JsonKey(includeIfNull: false, name: 'renew_at')
   final DateTime? renewAt;
 
   Map<String, Object?> toJson() =>

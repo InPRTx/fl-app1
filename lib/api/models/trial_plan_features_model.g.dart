@@ -19,5 +19,5 @@ Map<String, dynamic> _$TrialPlanFeaturesModelToJson(
 ) => <String, dynamic>{
   'support': instance.support,
   'name': instance.name,
-  'info': instance.info,
+  'info': ?instance.info,
 };

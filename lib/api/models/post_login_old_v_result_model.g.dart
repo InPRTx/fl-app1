@@ -17,7 +17,7 @@ PostLoginOldVResultModel _$PostLoginOldVResultModelFromJson(
 Map<String, dynamic> _$PostLoginOldVResultModelToJson(
   PostLoginOldVResultModel instance,
 ) => <String, dynamic>{
-  'is_success': instance.isSuccess,
-  'message': instance.message,
+  'is_success': ?instance.isSuccess,
+  'message': ?instance.message,
   'result': instance.result,
 };

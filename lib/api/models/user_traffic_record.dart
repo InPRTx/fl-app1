@@ -33,7 +33,7 @@ class UserTrafficRecord {
   final int nodeId;
 
   /// 节点名称
-  @JsonKey(name: 'node_name')
+  @JsonKey(includeIfNull: false, name: 'node_name')
   final String? nodeName;
 
   /// 记录创建时间

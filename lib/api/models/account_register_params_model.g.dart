@@ -24,6 +24,6 @@ Map<String, dynamic> _$AccountRegisterParamsModelToJson(
   'name': instance.name,
   'password': instance.password,
   're_password': instance.rePassword,
-  'invite_code': instance.inviteCode,
-  'email_code': instance.emailCode,
+  'invite_code': ?instance.inviteCode,
+  'email_code': ?instance.emailCode,
 };

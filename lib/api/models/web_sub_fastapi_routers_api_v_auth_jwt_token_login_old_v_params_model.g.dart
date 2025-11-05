@@ -18,6 +18,6 @@ Map<String, dynamic>
 _$WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModelToJson(
   WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel instance,
 ) => <String, dynamic>{
-  'access_token': instance.accessToken,
-  'refresh_token': instance.refreshToken,
+  'access_token': ?instance.accessToken,
+  'refresh_token': ?instance.refreshToken,
 };

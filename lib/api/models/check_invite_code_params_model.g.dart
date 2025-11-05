@@ -12,4 +12,4 @@ CheckInviteCodeParamsModel _$CheckInviteCodeParamsModelFromJson(
 
 Map<String, dynamic> _$CheckInviteCodeParamsModelToJson(
   CheckInviteCodeParamsModel instance,
-) => <String, dynamic>{'invite_code': instance.inviteCode};
+) => <String, dynamic>{'invite_code': ?instance.inviteCode};

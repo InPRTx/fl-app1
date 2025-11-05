@@ -37,8 +37,8 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
 
 Map<String, dynamic> _$SsNodeToJson(SsNode instance) => <String, dynamic>{
   'id': instance.id,
-  'created_at': instance.createdAt?.toIso8601String(),
-  'updated_at': instance.updatedAt?.toIso8601String(),
+  'created_at': ?instance.createdAt?.toIso8601String(),
+  'updated_at': ?instance.updatedAt?.toIso8601String(),
   'priority': instance.priority,
   'node_name': instance.nodeName,
   'node_config': instance.nodeConfig,
@@ -47,10 +47,10 @@ Map<String, dynamic> _$SsNodeToJson(SsNode instance) => <String, dynamic>{
   'vpn_type': _$VpnTypeEnumEnumMap[instance.vpnType]!,
   'node_rate': instance.nodeRate,
   'node_level': instance.nodeLevel,
-  'node_info': instance.nodeInfo,
-  'remark': instance.remark,
-  'node_speed_limit': instance.nodeSpeedLimit,
-  'user_group_host': instance.userGroupHost,
+  'node_info': ?instance.nodeInfo,
+  'remark': ?instance.remark,
+  'node_speed_limit': ?instance.nodeSpeedLimit,
+  'user_group_host': ?instance.userGroupHost,
   'is_hide_node': instance.isHideNode,
 };
 

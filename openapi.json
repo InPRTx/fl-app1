@@ -7442,6 +7442,11 @@
       "get": {
         "summary": "Get User Old Service",
         "operationId": "get_user_old_service_api_v2_low_admin_api_user_old_service__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7476,10 +7481,68 @@
           }
         }
       },
+      "put": {
+        "summary": "Put User Old Service",
+        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "put_user_old_service_api_v2_low_admin_api_user_old_service__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__ParamModelPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "patch": {
         "summary": "Patch User Old Service",
         "description": "更新用户信息 - 只更新提供的字段",
         "operationId": "patch_user_old_service_api_v2_low_admin_api_user_old_service__user_id__patch",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7526,10 +7589,68 @@
       }
     },
     "/api/v2/low_admin_api/user_v2/{user_id}": {
+      "put": {
+        "summary": "Put User V2",
+        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "put_user_v2_api_v2_low_admin_api_user_v2__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__ParamModelPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "patch": {
         "summary": "Patch User V2",
         "description": "更新用户信息 - 只更新提供的字段",
         "operationId": "patch_user_v2_api_v2_low_admin_api_user_v2__user_id__patch",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7577,6 +7698,11 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_v2__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7616,6 +7742,11 @@
       "get": {
         "summary": "Get User V2",
         "operationId": "get_user_v2_api_v2_low_admin_api_user_v2_get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -12852,6 +12983,107 @@
         "title": "ParamModelPatch",
         "description": "PATCH 更新模型 - 只更新提供的字段"
       },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__ParamModelPut": {
+        "properties": {
+          "ss_last_used_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ss Last Used Time",
+            "description": "最后使用时间 t"
+          },
+          "ss_upload_size": {
+            "type": "integer",
+            "title": "Ss Upload Size",
+            "description": "上传数量 u"
+          },
+          "ss_download_size": {
+            "type": "integer",
+            "title": "Ss Download Size",
+            "description": "下载数量 d"
+          },
+          "ss_bandwidth_total_size": {
+            "type": "integer",
+            "title": "Ss Bandwidth Total Size",
+            "description": "transfer_enable"
+          },
+          "ss_bandwidth_yesterday_used_size": {
+            "type": "integer",
+            "title": "Ss Bandwidth Yesterday Used Size",
+            "description": "昨天使用的流量数量 last_day_t",
+            "default": 0
+          },
+          "user_level": {
+            "type": "integer",
+            "title": "User Level",
+            "description": "class",
+            "default": 0
+          },
+          "user_level_expire_in": {
+            "type": "string",
+            "format": "date-time",
+            "title": "User Level Expire In",
+            "description": "等级过期时间 class_expire"
+          },
+          "node_speed_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speed Limit"
+          },
+          "node_connector": {
+            "type": "integer",
+            "title": "Node Connector",
+            "description": "用户在线设备数量",
+            "default": 0
+          },
+          "auto_reset_day": {
+            "type": "integer",
+            "title": "Auto Reset Day",
+            "description": "旧版 自动重置流量日",
+            "default": 0
+          },
+          "auto_reset_bandwidth": {
+            "type": "number",
+            "title": "Auto Reset Bandwidth",
+            "description": "旧版 重置流量值",
+            "default": 0.0
+          },
+          "last_check_in_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Check In Time",
+            "description": "最后签到时间"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ss_upload_size",
+          "ss_download_size",
+          "ss_bandwidth_total_size",
+          "user_level_expire_in"
+        ],
+        "title": "ParamModelPut",
+        "description": "PUT 更新模型 - 需要提供所有必填字段，可选字段可不提供"
+      },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
         "properties": {
           "is_success": {
@@ -12960,6 +13192,59 @@
         "type": "object",
         "title": "ParamModelPatch",
         "description": "PATCH 更新模型 - 只更新提供的字段"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__ParamModelPut": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "邮箱"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "description": "用户名"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "description": "是否启用"
+          },
+          "telegram_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Telegram Id",
+            "description": "Telegram ID"
+          },
+          "is_email_verify": {
+            "type": "boolean",
+            "title": "Is Email Verify",
+            "description": "邮箱是否验证"
+          },
+          "user_account_expire_in": {
+            "type": "string",
+            "format": "date-time",
+            "title": "User Account Expire In",
+            "description": "用户账户过期时间 expire_in"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "user_name",
+          "is_enable",
+          "is_email_verify",
+          "user_account_expire_in"
+        ],
+        "title": "ParamModelPut",
+        "description": "PUT 更新模型 - 需要提供所有必填字段，可选字段可不提供"
       },
       "web_sub3_fastapi__routers__api__v2__user__account__activity__UserAccountActivityResponse__Result": {
         "properties": {

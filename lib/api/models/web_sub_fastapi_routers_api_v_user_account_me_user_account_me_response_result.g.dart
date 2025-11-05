@@ -31,7 +31,7 @@ _$WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResultToJson(
   'email': instance.email,
   'user_name': instance.userName,
   'created_at': instance.createdAt.toIso8601String(),
-  'last_login': instance.lastLogin?.toIso8601String(),
+  'last_login': ?instance.lastLogin?.toIso8601String(),
   'is_verified': instance.isVerified,
   'telegram_linked': instance.telegramLinked,
 };

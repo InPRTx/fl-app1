@@ -14,7 +14,7 @@ class CheckInviteCodeParamsModel {
       _$CheckInviteCodeParamsModelFromJson(json);
 
   /// 邀请码
-  @JsonKey(name: 'invite_code')
+  @JsonKey(includeIfNull: false, name: 'invite_code')
   final String? inviteCode;
 
   Map<String, Object?> toJson() => _$CheckInviteCodeParamsModelToJson(this);

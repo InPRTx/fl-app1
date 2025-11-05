@@ -26,6 +26,7 @@ class GetViewUserBoughtResult {
   final String message;
 
   /// 旧版商店信息
+  @JsonKey(includeIfNull: false)
   final WebSubFastapiRoutersApiVGrafanaAdminViewViewUserBoughtGetViewUserBoughtResultResult?
   result;
 

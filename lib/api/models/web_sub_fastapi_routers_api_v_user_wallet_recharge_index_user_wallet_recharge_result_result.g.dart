@@ -24,6 +24,6 @@ _$WebSubFastapiRoutersApiVUserWalletRechargeIndexUserWalletRechargeResultResultT
   WebSubFastapiRoutersApiVUserWalletRechargeIndexUserWalletRechargeResultResult
   instance,
 ) => <String, dynamic>{
-  'created_at': instance.createdAt?.toIso8601String(),
+  'created_at': ?instance.createdAt?.toIso8601String(),
   'recharge_records': instance.rechargeRecords,
 };

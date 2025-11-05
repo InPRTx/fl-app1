@@ -29,16 +29,16 @@ AdminOldService _$AdminOldServiceFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AdminOldServiceToJson(AdminOldService instance) =>
     <String, dynamic>{
-      'ss_last_used_time': instance.ssLastUsedTime?.toIso8601String(),
+      'ss_last_used_time': ?instance.ssLastUsedTime?.toIso8601String(),
       'ss_upload_size': instance.ssUploadSize,
       'ss_download_size': instance.ssDownloadSize,
       'ss_bandwidth_total_size': instance.ssBandwidthTotalSize,
       'ss_bandwidth_yesterday_used_size': instance.ssBandwidthYesterdayUsedSize,
       'user_level': instance.userLevel,
       'user_level_expire_in': instance.userLevelExpireIn.toIso8601String(),
-      'node_speed_limit': instance.nodeSpeedLimit,
+      'node_speed_limit': ?instance.nodeSpeedLimit,
       'node_connector': instance.nodeConnector,
       'auto_reset_day': instance.autoResetDay,
       'auto_reset_bandwidth': instance.autoResetBandwidth,
-      'last_check_in_time': instance.lastCheckInTime?.toIso8601String(),
+      'last_check_in_time': ?instance.lastCheckInTime?.toIso8601String(),
     };

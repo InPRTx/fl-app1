@@ -21,7 +21,7 @@ Map<String, dynamic>
 _$WebSubFastapiRoutersApiVUserWalletIndexUserWalletResultResultToJson(
   WebSubFastapiRoutersApiVUserWalletIndexUserWalletResultResult instance,
 ) => <String, dynamic>{
-  'created_at': instance.createdAt?.toIso8601String(),
+  'created_at': ?instance.createdAt?.toIso8601String(),
   'wallet_balance': instance.walletBalance,
   'invite_balance': instance.inviteBalance,
 };

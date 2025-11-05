@@ -18,15 +18,15 @@ class UserAccountSecurityPostRequest {
       _$UserAccountSecurityPostRequestFromJson(json);
 
   /// 是否启用双因素认证
-  @JsonKey(name: 'ga_enable')
+  @JsonKey(includeIfNull: false, name: 'ga_enable')
   final bool? gaEnable;
 
   /// 是否启用邮件通知
-  @JsonKey(name: 'email_notification')
+  @JsonKey(includeIfNull: false, name: 'email_notification')
   final bool? emailNotification;
 
   /// Google Authenticator密钥
-  @JsonKey(name: 'ga_token')
+  @JsonKey(includeIfNull: false, name: 'ga_token')
   final String? gaToken;
 
   Map<String, Object?> toJson() => _$UserAccountSecurityPostRequestToJson(this);

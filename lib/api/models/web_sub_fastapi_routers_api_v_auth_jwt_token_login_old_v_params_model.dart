@@ -18,11 +18,11 @@ class WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModel {
   ) => _$WebSubFastapiRoutersApiVAuthJwtTokenLoginOldVParamsModelFromJson(json);
 
   /// 访问令牌
-  @JsonKey(name: 'access_token')
+  @JsonKey(includeIfNull: false, name: 'access_token')
   final String? accessToken;
 
   /// 刷新令牌
-  @JsonKey(name: 'refresh_token')
+  @JsonKey(includeIfNull: false, name: 'refresh_token')
   final String? refreshToken;
 
   Map<String, Object?> toJson() =>

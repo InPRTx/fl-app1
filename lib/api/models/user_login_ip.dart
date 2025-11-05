@@ -19,12 +19,13 @@ class UserLoginIp {
   factory UserLoginIp.fromJson(Map<String, Object?> json) =>
       _$UserLoginIpFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   final String? id;
   @JsonKey(name: 'user_id')
   final int userId;
   @JsonKey(name: 'login_ip')
   final String loginIp;
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
   @JsonKey(name: 'is_login')
   final bool isLogin;

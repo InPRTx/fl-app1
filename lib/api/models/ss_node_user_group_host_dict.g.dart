@@ -15,4 +15,4 @@ SsNodeUserGroupHostDict _$SsNodeUserGroupHostDictFromJson(
 
 Map<String, dynamic> _$SsNodeUserGroupHostDictToJson(
   SsNodeUserGroupHostDict instance,
-) => <String, dynamic>{'host': instance.host, 'port': instance.port};
+) => <String, dynamic>{'host': instance.host, 'port': ?instance.port};

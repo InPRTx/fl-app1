@@ -26,7 +26,7 @@ class WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshRefreshPostResultModelRes
   final String accessToken;
 
   /// 刷新令牌，将在到期1天内进行回复
-  @JsonKey(name: 'refresh_token')
+  @JsonKey(includeIfNull: false, name: 'refresh_token')
   final String? refreshToken;
 
   /// 用户ID

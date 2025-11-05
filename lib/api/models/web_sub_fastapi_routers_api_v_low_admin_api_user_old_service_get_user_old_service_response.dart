@@ -30,6 +30,7 @@ class WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
   final String message;
 
   /// 公告内容
+  @JsonKey(includeIfNull: false)
   final AdminOldService? result;
 
   Map<String, Object?> toJson() =>

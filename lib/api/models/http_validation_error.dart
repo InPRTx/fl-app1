@@ -15,6 +15,7 @@ class HttpValidationError {
   factory HttpValidationError.fromJson(Map<String, Object?> json) =>
       _$HttpValidationErrorFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   final List<ValidationError>? detail;
 
   Map<String, Object?> toJson() => _$HttpValidationErrorToJson(this);

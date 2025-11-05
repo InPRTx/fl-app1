@@ -28,7 +28,7 @@ class CaptchaKeyModel {
   final String message;
 
   /// 一次性校验
-  @JsonKey(name: 'captcha_key')
+  @JsonKey(includeIfNull: false, name: 'captcha_key')
   final String? captchaKey;
   @JsonKey(name: 'captcha_key_type')
   final CaptchaKeyTypeEnum captchaKeyType;

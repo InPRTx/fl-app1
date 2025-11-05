@@ -21,11 +21,15 @@ class AppAuthCookiesModel {
   factory AppAuthCookiesModel.fromJson(Map<String, Object?> json) =>
       _$AppAuthCookiesModelFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   final int? uid;
+  @JsonKey(includeIfNull: false)
   final String? email;
-  @JsonKey(name: 'expire_in')
+  @JsonKey(includeIfNull: false, name: 'expire_in')
   final int? expireIn;
+  @JsonKey(includeIfNull: false)
   final String? ip;
+  @JsonKey(includeIfNull: false)
   final String? key;
   @JsonKey(name: 'is_login')
   final bool isLogin;

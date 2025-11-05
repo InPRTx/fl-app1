@@ -33,7 +33,7 @@ class AdminUserV {
   final String userName;
   @JsonKey(name: 'is_enable')
   final bool isEnable;
-  @JsonKey(name: 'telegram_id')
+  @JsonKey(includeIfNull: true, name: 'telegram_id')
   final int? telegramId;
   @JsonKey(name: 'reg_ip')
   final dynamic regIp;

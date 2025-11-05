@@ -25,7 +25,7 @@ class WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel {
   final String password;
 
   /// 二次验证代码，如果没有则不传
-  @JsonKey(name: 'two_fa_code')
+  @JsonKey(includeIfNull: false, name: 'two_fa_code')
   final String? twoFaCode;
 
   /// 如果是True，則refresh_token的有效期限為30天，否則為1小時

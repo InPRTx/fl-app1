@@ -44,7 +44,7 @@ class WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResult {
   final bool isBan;
 
   /// Telegram ID
-  @JsonKey(name: 'tg_id')
+  @JsonKey(includeIfNull: false, name: 'tg_id')
   final int? tgId;
 
   /// 用户昵称
@@ -56,7 +56,7 @@ class WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResult {
   final String moneyAmount;
 
   /// 用户旧版服务信息
-  @JsonKey(name: 'old_service_info')
+  @JsonKey(includeIfNull: true, name: 'old_service_info')
   final OldServiceInfo? oldServiceInfo;
 
   Map<String, Object?> toJson() =>

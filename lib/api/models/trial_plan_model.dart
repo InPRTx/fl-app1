@@ -24,6 +24,7 @@ class TrialPlanModel {
       _$TrialPlanModelFromJson(json);
 
   final String name;
+  @JsonKey(includeIfNull: false)
   final String? info;
   final String price;
   final String currency;

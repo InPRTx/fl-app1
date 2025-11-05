@@ -14,6 +14,7 @@ class SsNodeUserGroupHostDict {
       _$SsNodeUserGroupHostDictFromJson(json);
 
   final String host;
+  @JsonKey(includeIfNull: false)
   final int? port;
 
   Map<String, Object?> toJson() => _$SsNodeUserGroupHostDictToJson(this);

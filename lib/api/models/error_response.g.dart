@@ -14,6 +14,6 @@ ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
     <String, dynamic>{
-      'is_success': instance.isSuccess,
-      'message': instance.message,
+      'is_success': ?instance.isSuccess,
+      'message': ?instance.message,
     };

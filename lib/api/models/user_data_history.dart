@@ -21,7 +21,7 @@ class UserDataHistory {
   factory UserDataHistory.fromJson(Map<String, Object?> json) =>
       _$UserDataHistoryFromJson(json);
 
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
   @JsonKey(name: 'user_id')
   final int userId;

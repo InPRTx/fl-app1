@@ -21,7 +21,7 @@ UserDataHistory _$UserDataHistoryFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$UserDataHistoryToJson(UserDataHistory instance) =>
     <String, dynamic>{
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': ?instance.createdAt?.toIso8601String(),
       'user_id': instance.userId,
       'ss_upload_size': instance.ssUploadSize,
       'ss_download_size': instance.ssDownloadSize,

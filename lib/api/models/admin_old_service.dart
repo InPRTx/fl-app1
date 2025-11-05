@@ -27,7 +27,7 @@ class AdminOldService {
       _$AdminOldServiceFromJson(json);
 
   /// 最后使用时间 t
-  @JsonKey(name: 'ss_last_used_time')
+  @JsonKey(includeIfNull: false, name: 'ss_last_used_time')
   final DateTime? ssLastUsedTime;
 
   /// 上传数量 u
@@ -53,7 +53,7 @@ class AdminOldService {
   /// 等级过期时间 class_expire
   @JsonKey(name: 'user_level_expire_in')
   final DateTime userLevelExpireIn;
-  @JsonKey(name: 'node_speed_limit')
+  @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final int? nodeSpeedLimit;
 
   /// 用户在线设备数量
@@ -69,7 +69,7 @@ class AdminOldService {
   final num autoResetBandwidth;
 
   /// 最后签到时间
-  @JsonKey(name: 'last_check_in_time')
+  @JsonKey(includeIfNull: false, name: 'last_check_in_time')
   final DateTime? lastCheckInTime;
 
   Map<String, Object?> toJson() => _$AdminOldServiceToJson(this);

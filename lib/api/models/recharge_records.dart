@@ -52,10 +52,11 @@ class RechargeRecords {
   final int payMethodId;
 
   /// 发票ID
-  @JsonKey(name: 'invoice_id')
+  @JsonKey(includeIfNull: true, name: 'invoice_id')
   final String? invoiceId;
 
   /// 备注
+  @JsonKey(includeIfNull: true)
   final String? remark;
 
   /// 配置JSON

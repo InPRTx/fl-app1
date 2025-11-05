@@ -33,7 +33,7 @@ _$WebSubFastapiRoutersApiVUserDashboardIndexGetDashboardResultModelResultToJson(
   'user_new_id': instance.userNewId,
   'email': instance.email,
   'is_ban': instance.isBan,
-  'tg_id': instance.tgId,
+  'tg_id': ?instance.tgId,
   'user_name': instance.userName,
   'money_amount': instance.moneyAmount,
   'old_service_info': instance.oldServiceInfo,

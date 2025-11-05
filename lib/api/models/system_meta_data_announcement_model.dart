@@ -18,9 +18,9 @@ class SystemMetaDataAnnouncementModel {
   factory SystemMetaDataAnnouncementModel.fromJson(Map<String, Object?> json) =>
       _$SystemMetaDataAnnouncementModelFromJson(json);
 
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(includeIfNull: false, name: 'updated_at')
   final DateTime? updatedAt;
   @JsonKey(name: 'html_text')
   final String htmlText;

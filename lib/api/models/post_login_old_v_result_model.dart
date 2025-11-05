@@ -19,8 +19,9 @@ class PostLoginOldVResultModel {
   factory PostLoginOldVResultModel.fromJson(Map<String, Object?> json) =>
       _$PostLoginOldVResultModelFromJson(json);
 
-  @JsonKey(name: 'is_success')
+  @JsonKey(includeIfNull: false, name: 'is_success')
   final bool? isSuccess;
+  @JsonKey(includeIfNull: false)
   final String? message;
   final AppAuthCookiesModel result;
 

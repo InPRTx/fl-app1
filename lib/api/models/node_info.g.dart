@@ -28,7 +28,7 @@ Map<String, dynamic> _$NodeInfoToJson(NodeInfo instance) => <String, dynamic>{
   'server_address': instance.serverAddress,
   'location': instance.location,
   'country_code': instance.countryCode,
-  'ping': instance.ping,
+  'ping': ?instance.ping,
   'load': instance.load,
   'status': instance.status,
   'protocol_support': instance.protocolSupport,

@@ -35,11 +35,11 @@ class OldServiceInfo {
   final String userLevelText;
 
   /// 用户当前在线IP限制
-  @JsonKey(name: 'online_ip_limit')
+  @JsonKey(includeIfNull: false, name: 'online_ip_limit')
   final int? onlineIpLimit;
 
   /// 用户当前在线IP限制
-  @JsonKey(name: 'speed_limit')
+  @JsonKey(includeIfNull: false, name: 'speed_limit')
   final String? speedLimit;
 
   /// 第一个为主要链接，第二个为备用链接

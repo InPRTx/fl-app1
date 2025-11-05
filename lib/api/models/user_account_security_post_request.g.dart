@@ -17,7 +17,7 @@ UserAccountSecurityPostRequest _$UserAccountSecurityPostRequestFromJson(
 Map<String, dynamic> _$UserAccountSecurityPostRequestToJson(
   UserAccountSecurityPostRequest instance,
 ) => <String, dynamic>{
-  'ga_enable': instance.gaEnable,
-  'email_notification': instance.emailNotification,
-  'ga_token': instance.gaToken,
+  'ga_enable': ?instance.gaEnable,
+  'email_notification': ?instance.emailNotification,
+  'ga_token': ?instance.gaToken,
 };

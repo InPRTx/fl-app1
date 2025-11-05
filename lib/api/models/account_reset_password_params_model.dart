@@ -19,13 +19,14 @@ class AccountResetPasswordParamsModel {
   factory AccountResetPasswordParamsModel.fromJson(Map<String, Object?> json) =>
       _$AccountResetPasswordParamsModelFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   final String? email;
   @JsonKey(name: 'email_code')
   final String emailCode;
   final String password;
 
   /// 一次性校验
-  @JsonKey(name: 'captcha_key')
+  @JsonKey(includeIfNull: false, name: 'captcha_key')
   final String? captchaKey;
 
   /// Tiago2的CAPTCHA令牌

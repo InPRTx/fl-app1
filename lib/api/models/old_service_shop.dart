@@ -36,9 +36,9 @@ class OldServiceShop {
       _$OldServiceShopFromJson(json);
 
   final int id;
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
-  @JsonKey(name: 'updated_at')
+  @JsonKey(includeIfNull: false, name: 'updated_at')
   final DateTime? updatedAt;
   @JsonKey(name: 'shop_name')
   final String shopName;
@@ -50,31 +50,31 @@ class OldServiceShop {
   final String moneyAmount;
 
   /// 流量（字节）
-  @JsonKey(name: 'ss_bandwidth_total_size')
+  @JsonKey(includeIfNull: false, name: 'ss_bandwidth_total_size')
   final int? ssBandwidthTotalSize;
 
   /// 等级
-  @JsonKey(name: 'user_level')
+  @JsonKey(includeIfNull: false, name: 'user_level')
   final int? userLevel;
 
   /// 等级有效期天数
-  @JsonKey(name: 'user_level_duration')
+  @JsonKey(includeIfNull: false, name: 'user_level_duration')
   final String? userLevelDuration;
 
   /// 账户有效期天数
-  @JsonKey(name: 'account_validity_duration')
+  @JsonKey(includeIfNull: false, name: 'account_validity_duration')
   final String? accountValidityDuration;
 
   /// 每多少天重置流量 其中流量重置信息为上面几个等级
-  @JsonKey(name: 'ss_bandwidth_reset_interval')
+  @JsonKey(includeIfNull: false, name: 'ss_bandwidth_reset_interval')
   final String? ssBandwidthResetInterval;
 
   /// 端口限速
-  @JsonKey(name: 'node_speed_limit')
+  @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final int? nodeSpeedLimit;
 
   /// IP限制
-  @JsonKey(name: 'node_connector')
+  @JsonKey(includeIfNull: false, name: 'node_connector')
   final int? nodeConnector;
 
   /// 服务支持
@@ -86,7 +86,7 @@ class OldServiceShop {
   final bool isEnable;
   @JsonKey(name: 'is_cannot_new_purchase')
   final bool isCannotNewPurchase;
-  @JsonKey(name: 'data_json')
+  @JsonKey(includeIfNull: false, name: 'data_json')
   final dynamic dataJson;
 
   Map<String, Object?> toJson() => _$OldServiceShopToJson(this);

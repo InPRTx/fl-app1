@@ -4657,6 +4657,39 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<ErrorResponse>
+  putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut({
+    required int userId,
+    required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut
+    body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_old_service/${userId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
   patchUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPatch({
     required int userId,
     required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPatch
@@ -4672,6 +4705,37 @@ class _FallbackClient implements FallbackClient {
           .compose(
         _dio.options,
         '/api/v2/low_admin_api/user_old_service/${userId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse> putUserV2ApiV2LowAdminApiUserV2UserIdPut({
+    required int userId,
+    required WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPut body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_v2/${userId}',
         queryParameters: queryParameters,
         data: _data,
       )

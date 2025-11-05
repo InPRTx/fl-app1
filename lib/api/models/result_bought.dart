@@ -23,7 +23,7 @@ class ResultBought {
   final int id;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(name: 'expire_at')
+  @JsonKey(includeIfNull: false, name: 'expire_at')
   final DateTime? expireAt;
   @JsonKey(name: 'shop_id')
   final int shopId;

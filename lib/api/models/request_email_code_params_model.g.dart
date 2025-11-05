@@ -17,7 +17,7 @@ RequestEmailCodeParamsModel _$RequestEmailCodeParamsModelFromJson(
 Map<String, dynamic> _$RequestEmailCodeParamsModelToJson(
   RequestEmailCodeParamsModel instance,
 ) => <String, dynamic>{
-  'email': instance.email,
-  'captcha_key': instance.captchaKey,
+  'email': ?instance.email,
+  'captcha_key': ?instance.captchaKey,
   'tiago2_cap_token': instance.tiago2CapToken,
 };

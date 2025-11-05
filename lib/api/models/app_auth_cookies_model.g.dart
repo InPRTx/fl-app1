@@ -20,11 +20,11 @@ AppAuthCookiesModel _$AppAuthCookiesModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$AppAuthCookiesModelToJson(
   AppAuthCookiesModel instance,
 ) => <String, dynamic>{
-  'uid': instance.uid,
-  'email': instance.email,
-  'expire_in': instance.expireIn,
-  'ip': instance.ip,
-  'key': instance.key,
+  'uid': ?instance.uid,
+  'email': ?instance.email,
+  'expire_in': ?instance.expireIn,
+  'ip': ?instance.ip,
+  'key': ?instance.key,
   'is_login': instance.isLogin,
   'is_admin': instance.isAdmin,
 };

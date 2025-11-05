@@ -23,7 +23,7 @@ class WebSubFastapiRoutersApiVUserWalletRechargeIndexUserWalletRechargeResultRes
       );
 
   /// 创建时间，查询的时间
-  @JsonKey(name: 'created_at')
+  @JsonKey(includeIfNull: false, name: 'created_at')
   final DateTime? createdAt;
 
   /// 最近交易记录

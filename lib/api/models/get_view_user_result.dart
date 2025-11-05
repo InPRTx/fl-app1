@@ -26,6 +26,7 @@ class GetViewUserResult {
   final String message;
 
   /// 用户信息
+  @JsonKey(includeIfNull: false)
   final WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult?
   result;
 

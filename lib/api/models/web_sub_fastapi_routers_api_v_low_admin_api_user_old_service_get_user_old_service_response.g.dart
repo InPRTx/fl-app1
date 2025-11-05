@@ -24,5 +24,5 @@ _$WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponseToJs
 ) => <String, dynamic>{
   'is_success': instance.isSuccess,
   'message': instance.message,
-  'result': instance.result,
+  'result': ?instance.result,
 };

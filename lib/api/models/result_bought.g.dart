@@ -21,7 +21,7 @@ Map<String, dynamic> _$ResultBoughtToJson(ResultBought instance) =>
     <String, dynamic>{
       'id': instance.id,
       'created_at': instance.createdAt.toIso8601String(),
-      'expire_at': instance.expireAt?.toIso8601String(),
+      'expire_at': ?instance.expireAt?.toIso8601String(),
       'shop_id': instance.shopId,
       'shop_name': instance.shopName,
       'money_amount': instance.moneyAmount,

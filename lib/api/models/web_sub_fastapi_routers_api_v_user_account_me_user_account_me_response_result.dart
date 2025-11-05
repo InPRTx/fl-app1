@@ -46,7 +46,7 @@ class WebSubFastapiRoutersApiVUserAccountMeUserAccountMeResponseResult {
   final DateTime createdAt;
 
   /// 最后登录时间
-  @JsonKey(name: 'last_login')
+  @JsonKey(includeIfNull: false, name: 'last_login')
   final DateTime? lastLogin;
 
   /// 是否已验证邮箱

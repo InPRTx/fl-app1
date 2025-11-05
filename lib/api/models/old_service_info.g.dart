@@ -34,8 +34,8 @@ OldServiceInfo _$OldServiceInfoFromJson(
 Map<String, dynamic> _$OldServiceInfoToJson(OldServiceInfo instance) =>
     <String, dynamic>{
       'user_level_text': instance.userLevelText,
-      'online_ip_limit': instance.onlineIpLimit,
-      'speed_limit': instance.speedLimit,
+      'online_ip_limit': ?instance.onlineIpLimit,
+      'speed_limit': ?instance.speedLimit,
       'sub_link': instance.subLink,
       'traffic_log_token': instance.trafficLogToken,
       'other_emby_uuid': instance.otherEmbyUuid,

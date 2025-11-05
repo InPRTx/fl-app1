@@ -19,8 +19,8 @@ NodeConfig _$NodeConfigFromJson(Map<String, dynamic> json) => NodeConfig(
 
 Map<String, dynamic> _$NodeConfigToJson(NodeConfig instance) =>
     <String, dynamic>{
-      'host': instance.host,
-      'port': instance.port,
-      'vmess_config': instance.vmessConfig,
-      'ssr_config': instance.ssrConfig,
+      'host': ?instance.host,
+      'port': ?instance.port,
+      'vmess_config': ?instance.vmessConfig,
+      'ssr_config': ?instance.ssrConfig,
     };

@@ -21,5 +21,5 @@ Map<String, dynamic> _$UserShopOldShopIdConfirmOrderResultToJson(
 ) => <String, dynamic>{
   'is_success': instance.isSuccess,
   'message': instance.message,
-  'result': instance.result,
+  'result': ?instance.result,
 };

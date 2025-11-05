@@ -24,7 +24,7 @@ _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelToJson(
 ) => <String, dynamic>{
   'email': instance.email,
   'password': instance.password,
-  'two_fa_code': instance.twoFaCode,
+  'two_fa_code': ?instance.twoFaCode,
   'is_remember_me': instance.isRememberMe,
   'captcha_key': instance.captchaKey,
   'tiago2_cap_token': instance.tiago2CapToken,

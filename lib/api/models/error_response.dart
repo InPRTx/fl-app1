@@ -13,8 +13,9 @@ class ErrorResponse {
   factory ErrorResponse.fromJson(Map<String, Object?> json) =>
       _$ErrorResponseFromJson(json);
 
-  @JsonKey(name: 'is_success')
+  @JsonKey(includeIfNull: false, name: 'is_success')
   final bool? isSuccess;
+  @JsonKey(includeIfNull: false)
   final String? message;
 
   Map<String, Object?> toJson() => _$ErrorResponseToJson(this);

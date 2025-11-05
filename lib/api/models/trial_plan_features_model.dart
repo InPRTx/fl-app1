@@ -19,6 +19,7 @@ class TrialPlanFeaturesModel {
 
   final bool support;
   final String name;
+  @JsonKey(includeIfNull: false)
   final String? info;
 
   Map<String, Object?> toJson() => _$TrialPlanFeaturesModelToJson(this);

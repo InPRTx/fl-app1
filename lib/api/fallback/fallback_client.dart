@@ -104,8 +104,10 @@ import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_pa
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_patch.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_put.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_param_model_patch.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_param_model_put.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
 
@@ -1302,6 +1304,18 @@ abstract class FallbackClient {
     @Path('user_id') required int userId,
   });
 
+  /// Put User Old Service.
+  ///
+  /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
+  @PUT('/api/v2/low_admin_api/user_old_service/{user_id}')
+  Future<ErrorResponse>
+  putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut({
+    @Path('user_id') required int userId,
+    @Body()
+    required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut
+    body,
+  });
+
   /// Patch User Old Service.
   ///
   /// 更新用户信息 - 只更新提供的字段.
@@ -1312,6 +1326,15 @@ abstract class FallbackClient {
     @Body()
     required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPatch
     body,
+  });
+
+  /// Put User V2.
+  ///
+  /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
+  @PUT('/api/v2/low_admin_api/user_v2/{user_id}')
+  Future<ErrorResponse> putUserV2ApiV2LowAdminApiUserV2UserIdPut({
+    @Path('user_id') required int userId,
+    @Body() required WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPut body,
   });
 
   /// Patch User V2.

@@ -24,10 +24,10 @@ Map<String, dynamic>
 _$WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPatchToJson(
   WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPatch instance,
 ) => <String, dynamic>{
-  'email': instance.email,
-  'user_name': instance.userName,
-  'is_enable': instance.isEnable,
-  'telegram_id': instance.telegramId,
-  'is_email_verify': instance.isEmailVerify,
-  'user_account_expire_in': instance.userAccountExpireIn?.toIso8601String(),
+  'email': ?instance.email,
+  'user_name': ?instance.userName,
+  'is_enable': ?instance.isEnable,
+  'telegram_id': ?instance.telegramId,
+  'is_email_verify': ?instance.isEmailVerify,
+  'user_account_expire_in': ?instance.userAccountExpireIn?.toIso8601String(),
 };

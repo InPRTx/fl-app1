@@ -16,11 +16,13 @@ class NodeConfig {
   factory NodeConfig.fromJson(Map<String, Object?> json) =>
       _$NodeConfigFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   final String? host;
+  @JsonKey(includeIfNull: false)
   final int? port;
-  @JsonKey(name: 'vmess_config')
+  @JsonKey(includeIfNull: false, name: 'vmess_config')
   final VmessConfig? vmessConfig;
-  @JsonKey(name: 'ssr_config')
+  @JsonKey(includeIfNull: false, name: 'ssr_config')
   final SsrConfig? ssrConfig;
 
   Map<String, Object?> toJson() => _$NodeConfigToJson(this);

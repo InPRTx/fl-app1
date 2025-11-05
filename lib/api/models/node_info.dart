@@ -45,6 +45,7 @@ class NodeInfo {
   final String countryCode;
 
   /// 延迟(ms)
+  @JsonKey(includeIfNull: false)
   final int? ping;
 
   /// 负载百分比

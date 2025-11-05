@@ -27,6 +27,7 @@ class UserShopOldShopIdConfirmOrderResult {
   final String message;
 
   /// 订单信息
+  @JsonKey(includeIfNull: false)
   final OldServiceShop? result;
 
   Map<String, Object?> toJson() =>

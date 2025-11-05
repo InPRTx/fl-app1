@@ -30,6 +30,7 @@ class WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse {
   final String message;
 
   /// 管理员用户信息
+  @JsonKey(includeIfNull: false)
   final AdminUserV? result;
 
   Map<String, Object?> toJson() =>
