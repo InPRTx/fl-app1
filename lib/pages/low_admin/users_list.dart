@@ -1,11 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../api/base_url.dart';
 import '../../api/models/result_list_data.dart';
 import '../../api/rest_client.dart';
+import '../../utils/auth/auth_export.dart';
 import 'low_admin_layout.dart';
 
 class UsersListPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class UsersListPage extends StatefulWidget {
 
 class _UsersListPageState extends State<UsersListPage> {
   final TextEditingController _searchController = TextEditingController();
-  final RestClient _restClient = RestClient(Dio(), baseUrl: kDefaultBaseUrl);
+  late final RestClient _restClient = createAuthenticatedClient();
 
   List<ResultListData> _users = [];
   bool _isLoading = false;

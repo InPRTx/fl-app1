@@ -2,9 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:fl_app1/utils/auth/auth_store.dart';
 import 'package:flutter/foundation.dart';
 
-/// Dio 拦截器，自动在所有请求中添加认证 token
+/// Dio 拦截器，自动在所有请求中添加认证 token，并在 token 过期时自动刷新
 class AuthInterceptor extends Interceptor {
   final AuthStore _authStore = AuthStore();
+  final Dio _dio;
+
+  AuthInterceptor(this._dio);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -29,12 +32,52 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     debugPrint(
       '❌ API Error: ${err.response?.statusCode ?? 'no status'} ${err.requestOptions.path}',
     );
     debugPrint('   Error type: ${err.type}');
     debugPrint('   Message: ${err.message}');
+
+    // 如果是 401 错误且不是刷新令牌的请求，尝试刷新令牌后重试
+    if (err.response?.statusCode == 401 &&
+        !err.requestOptions.path.contains('jwt_access_refresh')) {
+      debugPrint('🔄 检测到 401 错误，尝试刷新令牌...');
+
+      final refreshSuccess = await _authStore.apiRefreshToken();
+
+      if (refreshSuccess) {
+        debugPrint('🔄 令牌刷新成功，重试原始请求...');
+
+        // 更新请求头中的 token
+        final newToken = _authStore.accessToken;
+        if (newToken != null) {
+          err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+        }
+
+        // 重试原始请求
+        final options = Options(
+          method: err.requestOptions.method,
+          headers: err.requestOptions.headers,
+        );
+
+        final response = await _dio.request(
+          err.requestOptions.path,
+          data: err.requestOptions.data,
+          queryParameters: err.requestOptions.queryParameters,
+          options: options,
+        );
+
+        debugPrint('✅ 重试请求成功: ${response.statusCode}');
+        return handler.resolve(response);
+      } else {
+        debugPrint('❌ 令牌刷新失败，请求终止');
+      }
+    }
+
     super.onError(err, handler);
   }
 }

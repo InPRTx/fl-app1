@@ -7,8 +7,8 @@ import 'package:fl_app1/utils/auth/auth_interceptor.dart';
 RestClient createAuthenticatedClient() {
   final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
 
-  // 添加认证拦截器，自动在所有请求中添加 token
-  dio.interceptors.add(AuthInterceptor());
+  // 添加认证拦截器，自动在所有请求中添加 token 并处理 token 过期自动刷新
+  dio.interceptors.add(AuthInterceptor(dio));
 
   return RestClient(dio, baseUrl: kDefaultBaseUrl);
 }

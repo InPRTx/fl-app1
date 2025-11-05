@@ -68,9 +68,22 @@ class AuthStore extends ChangeNotifier {
   }
 
   Future<bool> apiRefreshToken() async {
+    debugPrint('🔄 apiRefreshToken 被调用');
+    debugPrint('🔍 当前 _refreshJWTToken: ${_refreshJWTToken != null
+        ? "存在"
+        : "null"}');
+
     if (_refreshJWTToken == null) {
-      debugPrint('No refresh token available for renewal');
-      return false;
+      debugPrint('❌ No refresh token available for renewal');
+      debugPrint('🔍 尝试重新从存储加载 token...');
+      await _refreshThisToken();
+
+      if (_refreshJWTToken == null) {
+        debugPrint('❌ 重新加载后仍然没有 refresh token，清除访问令牌并登出');
+        await logout();
+        return false;
+      }
+      debugPrint('✅ 重新加载后找到 refresh token');
     }
 
     final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
@@ -118,6 +131,8 @@ class AuthStore extends ChangeNotifier {
           Future.delayed(const Duration(seconds: 1), () {
             _startRefreshTokenTimer();
           });
+        } else {
+          debugPrint('❌ 访问令牌刷新失败，用户需要重新登录');
         }
       });
     } else {
@@ -147,6 +162,13 @@ class AuthStore extends ChangeNotifier {
     );
     final stopRefresh = _prefs?.getString(AuthConstants.stopRefreshKey);
 
+    debugPrint('🔍 _refreshThisToken: accessToken=${accessToken != null
+        ? "存在"
+        : "不存在"}');
+    debugPrint('🔍 _refreshThisToken: refreshToken=${refreshToken != null
+        ? "存在"
+        : "不存在"}');
+
     _accessJWTToken = accessToken;
     _refreshJWTToken = refreshToken;
 
@@ -157,14 +179,22 @@ class AuthStore extends ChangeNotifier {
 
     if (accessToken != null) {
       _accessJWTTokenPayload = _decodeToken(accessToken);
+      debugPrint('🔍 Access token payload 解析: ${_accessJWTTokenPayload != null
+          ? "成功"
+          : "失败"}');
     } else {
       _accessJWTTokenPayload = null;
     }
 
     if (refreshToken != null) {
       _refreshJWTTokenPayload = _decodeToken(refreshToken);
+      debugPrint(
+          '🔍 Refresh token payload 解析: ${_refreshJWTTokenPayload != null
+              ? "成功"
+              : "失败"}');
     } else {
       _refreshJWTTokenPayload = null;
+      debugPrint('⚠️ 警告: Refresh token 不存在');
     }
   }
 
@@ -187,13 +217,19 @@ class AuthStore extends ChangeNotifier {
   }
 
   Future<void> _setTokens(String? accessToken, String? refreshToken) async {
+    debugPrint('💾 _setTokens 被调用: accessToken=${accessToken != null
+        ? "存在"
+        : "null"}, refreshToken=${refreshToken != null ? "存在" : "null"}');
+
     _accessJWTToken = accessToken;
     if (refreshToken != null) {
       _refreshJWTToken = refreshToken;
+      debugPrint('💾 设置内存中的 _refreshJWTToken');
     }
 
     if (accessToken != null) {
       await _prefs?.setString(AuthConstants.accessTokenKey, accessToken);
+      debugPrint('💾 保存 accessToken 到 SharedPreferences');
 
       final payload = _decodeToken(accessToken);
       if (payload?.exp != null) {
@@ -204,6 +240,7 @@ class AuthStore extends ChangeNotifier {
           AuthConstants.accessTokenExpKey,
           expDate.toIso8601String(),
         );
+        debugPrint('💾 保存 accessToken 过期时间: $expDate');
       }
     } else {
       await _prefs?.remove(AuthConstants.accessTokenKey);
@@ -215,6 +252,7 @@ class AuthStore extends ChangeNotifier {
         key: AuthConstants.refreshTokenKey,
         value: refreshToken,
       );
+      debugPrint('💾 保存 refreshToken 到 SecureStorage');
     }
 
     await _refreshThisToken();
