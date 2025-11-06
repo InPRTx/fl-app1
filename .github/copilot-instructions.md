@@ -31,3 +31,7 @@ dio.get
 请把生成的文档放在
 /docs_ai/年_月/日_操作.md 下面
 月/日为01 02 10 这种两位长度
+
+api url路径 /api/v2/low_admin_api 和 /api/v2/user 必须要带上访问令牌，不然会报401错误
+所有api调用均使用model参数，避免手动构造query string
+全局状态使用单例模式，确保状态一致性

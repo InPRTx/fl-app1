@@ -1,6 +1,8 @@
 import 'package:fl_app1/api/export.dart';
+import 'package:fl_app1/pages/low_admin/user_money_recharge.dart';
 import 'package:fl_app1/pages/low_admin/widgets/editable_user_old_service_card.dart';
 import 'package:fl_app1/pages/low_admin/widgets/editable_user_v2_info_card.dart';
+import 'package:fl_app1/pages/low_admin/widgets/user_money_card.dart';
 import 'package:fl_app1/utils/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +21,7 @@ class _UserV2PageState extends State<UserV2Page> {
   bool _isLoading = false;
   AdminUserV? _userV2Data;
   AdminOldService? _userOldServiceData;
+  AdminUserMoneyModel? _userMoneyData;
   String? _errorMessage;
 
   @override
@@ -42,6 +45,9 @@ class _UserV2PageState extends State<UserV2Page> {
       client.getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet(
         userId: widget.userId,
       ),
+      client.getUserV2ByUserIdApiV2LowAdminApiUserMoneyUserIdGet(
+        userId: widget.userId,
+      ),
     ]);
 
     setState(() {
@@ -54,6 +60,7 @@ class _UserV2PageState extends State<UserV2Page> {
           (results[1]
                   as WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse)
               .result;
+      _userMoneyData = (results[2] as GetUserMoneyResponse).result;
     });
   }
 
@@ -107,6 +114,18 @@ class _UserV2PageState extends State<UserV2Page> {
     return false;
   }
 
+  Future<void> _navigateToRecharge() async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => UserMoneyRechargePage(userId: widget.userId),
+      ),
+    );
+
+    if (result == true) {
+      await _loadUserData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,6 +170,11 @@ class _UserV2PageState extends State<UserV2Page> {
                   EditableUserOldServiceCard(
                     serviceData: _userOldServiceData,
                     onUpdate: _updateUserOldService,
+                  ),
+                  const SizedBox(height: 16),
+                  UserMoneyCard(
+                    moneyData: _userMoneyData,
+                    onRecharge: _navigateToRecharge,
                   ),
                 ],
               ),

@@ -7857,6 +7857,94 @@
         }
       }
     },
+    "/api/v2/low_admin_api/user_money/{user_id}": {
+      "get": {
+        "summary": "Get User V2 By User Id",
+        "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_money__user_id__get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserMoneyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_money_money_recharge_it/{user_id}/": {
+      "post": {
+        "summary": "Post User Money Money Recharge It",
+        "operationId": "post_user_money_money_recharge_it_api_v2_low_admin_api_user_money_money_recharge_it__user_id___post",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/captcha-key": {
       "get": {
         "summary": "Get Captcha Key",
@@ -8458,6 +8546,34 @@
           "user_level_expire_in"
         ],
         "title": "AdminOldService"
+      },
+      "AdminUserMoneyModel": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "money_amount": {
+            "type": "string",
+            "title": "Money Amount"
+          },
+          "money_amount_ref": {
+            "type": "string",
+            "title": "Money Amount Ref",
+            "default": "0.00"
+          },
+          "invite_num": {
+            "type": "integer",
+            "title": "Invite Num",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "money_amount"
+        ],
+        "title": "AdminUserMoneyModel"
       },
       "AdminUserV2": {
         "properties": {
@@ -9220,6 +9336,34 @@
         },
         "type": "object",
         "title": "GetUserBoughtResponse"
+      },
+      "GetUserMoneyResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AdminUserMoneyModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "管理员用户信息"
+          }
+        },
+        "type": "object",
+        "title": "GetUserMoneyResponse"
       },
       "GetVersionModel": {
         "properties": {
@@ -12900,6 +13044,45 @@
           "money_amount"
         ],
         "title": "ResultListData"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel": {
+        "properties": {
+          "money_amount_add": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount Add",
+            "description": "充值金额"
+          },
+          "is_insert_paylist": {
+            "type": "boolean",
+            "title": "Is Insert Paylist",
+            "description": "是否显示在充值记录上",
+            "default": true
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark",
+            "description": "备注"
+          }
+        },
+        "type": "object",
+        "required": [
+          "money_amount_add"
+        ],
+        "title": "ParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__GetUserOldServiceResponse": {
         "properties": {

@@ -26,6 +26,7 @@ import '../models/get_old_service_result_model.dart';
 import '../models/get_search_user_result.dart';
 import '../models/get_service_old_shop_result.dart';
 import '../models/get_user_bought_response.dart';
+import '../models/get_user_money_response.dart';
 import '../models/get_version_model.dart';
 import '../models/get_view_user_bought_result.dart';
 import '../models/get_view_user_result.dart';
@@ -103,6 +104,7 @@ import '../models/vpn_type_list_enum.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_patch.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_put.dart';
@@ -1371,6 +1373,23 @@ abstract class FallbackClient {
   Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
     @Query('limit') int? limit = 3000,
     @Query('user_id') int? userId,
+  });
+
+  /// Get User V2 By User Id
+  @GET('/api/v2/low_admin_api/user_money/{user_id}')
+  Future<GetUserMoneyResponse>
+  getUserV2ByUserIdApiV2LowAdminApiUserMoneyUserIdGet({
+    @Path('user_id') required int userId,
+  });
+
+  /// Post User Money Money Recharge It
+  @POST('/api/v2/low_admin_api/user_money_money_recharge_it/{user_id}/')
+  Future<ErrorResponse>
+  postUserMoneyMoneyRechargeItApiV2LowAdminApiUserMoneyMoneyRechargeItUserIdPost({
+    @Path('user_id') required int userId,
+    @Body()
+    required WebSubFastapiRoutersApiVLowAdminApiUserMoneyMoneyRechargeItParamsModel
+    body,
   });
 
   /// Get Captcha Key.
