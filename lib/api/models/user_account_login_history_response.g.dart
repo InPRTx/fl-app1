@@ -1,0 +1,25 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'user_account_login_history_response.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+UserAccountLoginHistoryResponse _$UserAccountLoginHistoryResponseFromJson(
+  Map<String, dynamic> json,
+) => UserAccountLoginHistoryResponse(
+  message: json['message'] as String,
+  result: (json['result'] as List<dynamic>)
+      .map((e) => LoginRecord.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  isSuccess: json['is_success'] as bool? ?? true,
+);
+
+Map<String, dynamic> _$UserAccountLoginHistoryResponseToJson(
+  UserAccountLoginHistoryResponse instance,
+) => <String, dynamic>{
+  'is_success': instance.isSuccess,
+  'message': instance.message,
+  'result': instance.result,
+};

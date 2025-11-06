@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
+
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
+
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="$FLUTTER_BASE_HREF">
+
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta content="A new Flutter project." name="description">
+
+    <!-- iOS meta tags & icons -->
+    <meta content="yes" name="mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="fl_app1" name="apple-mobile-web-app-title">
+    <link href="icons/Icon-192.png" rel="apple-touch-icon">
+
+    <!-- Favicon -->
+    <link href="favicon.png" rel="icon" type="image/png"/>
+
+    <title>fl_app1</title>
+    <link href="manifest.json" rel="manifest">
+    <!-- Crisp Chat Integration -->
+    <script type="text/javascript">
+        window.$crisp = [];
+        window.CRISP_WEBSITE_ID = "04e5a5e9-2e6e-4102-a99b-dd10d50b6d80"; // 请替换为实际的 Crisp Website ID
+
+        (function () {
+            var d = document;
+            var s = d.createElement("script");
+            s.src = "https://client.crisp.chat/l.js";
+            s.async = 1;
+            d.getElementsByTagName("head")[0].appendChild(s);
+        })();
+
+        // 提供给 Flutter 调用的函数
+        function openCrispChat() {
+            if (window.$crisp) {
+                window.$crisp.push(["do", "chat:open"]);
+            }
+        }
+
+        function setCrispUserEmail(email) {
+            if (window.$crisp) {
+                window.$crisp.push(["set", "user:email", [email]]);
+            }
+        }
+
+        function setCrispUserNickname(nickname) {
+            if (window.$crisp) {
+                window.$crisp.push(["set", "user:nickname", [nickname]]);
+            }
+        }
+    </script>
+</head>
+<body>
+<script async src="flutter_bootstrap.js"></script>
+</body>
+</html>
