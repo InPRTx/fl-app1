@@ -7839,7 +7839,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetUserBoughtResponse"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse"
                 }
               }
             }
@@ -7916,7 +7916,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PutParamsModel"
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel"
               }
             }
           }
@@ -8005,6 +8005,151 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_pay_list/": {
+      "get": {
+        "summary": "Get User Pay List",
+        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "get_user_pay_list_api_v2_low_admin_api_user_pay_list__get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 3000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__GetUserBoughtResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_pay_list/{user_pay_list_id}": {
+      "delete": {
+        "summary": "Delete User Pay List",
+        "description": "删除充值记录",
+        "operationId": "delete_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__delete",
+        "parameters": [
+          {
+            "name": "user_pay_list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Pay List Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Put User Pay List",
+        "description": "更新用户购买记录",
+        "operationId": "put_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__put",
+        "parameters": [
+          {
+            "name": "user_pay_list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Pay List Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel"
               }
             }
           }
@@ -9399,32 +9544,6 @@
         "type": "object",
         "title": "GetServiceOldShopResult"
       },
-      "GetUserBoughtResponse": {
-        "properties": {
-          "is_success": {
-            "type": "boolean",
-            "title": "Is Success",
-            "default": true
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "获取结果",
-            "default": "获取成功"
-          },
-          "result_list": {
-            "items": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
-            },
-            "type": "array",
-            "title": "Result List",
-            "description": "管理员用户信息",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "GetUserBoughtResponse"
-      },
       "GetUserMoneyResponse": {
         "properties": {
           "is_success": {
@@ -10245,37 +10364,6 @@
           "result"
         ],
         "title": "PurchaseRecordsResult"
-      },
-      "PutParamsModel": {
-        "properties": {
-          "shop_id": {
-            "type": "integer",
-            "title": "Shop Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "money_amount": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "title": "Money Amount"
-          }
-        },
-        "type": "object",
-        "required": [
-          "shop_id",
-          "created_at",
-          "money_amount"
-        ],
-        "title": "PutParamsModel"
       },
       "RechargeRecords": {
         "properties": {
@@ -11721,6 +11809,81 @@
         ],
         "title": "UserLoginIP"
       },
+      "UserPayList": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "money_amount": {
+            "type": "string",
+            "title": "Money Amount"
+          },
+          "is_finish": {
+            "type": "boolean",
+            "title": "Is Finish",
+            "default": true
+          },
+          "trade_no": {
+            "type": "string",
+            "title": "Trade No"
+          },
+          "pay_method_id": {
+            "type": "integer",
+            "title": "Pay Method Id",
+            "default": 1
+          },
+          "config_json": {
+            "type": "object",
+            "title": "Config Json"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "money_amount",
+          "trade_no"
+        ],
+        "title": "UserPayList"
+      },
       "UserServicesAuditRecordResponse": {
         "properties": {
           "is_success": {
@@ -13113,6 +13276,32 @@
         ],
         "title": "Result"
       },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetUserBoughtResponse"
+      },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData": {
         "properties": {
           "id": {
@@ -13163,6 +13352,37 @@
           "money_amount"
         ],
         "title": "ResultListData"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel": {
+        "properties": {
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "shop_id",
+          "created_at",
+          "money_amount"
+        ],
+        "title": "PutParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel": {
         "properties": {
@@ -13484,6 +13704,92 @@
         ],
         "title": "ParamModelPut",
         "description": "PUT 更新模型 - 需要提供所有必填字段，可选字段可不提供"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__GetUserBoughtResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/UserPayList"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetUserBoughtResponse"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel": {
+        "properties": {
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount"
+          },
+          "is_finish": {
+            "type": "boolean",
+            "title": "Is Finish"
+          },
+          "trade_no": {
+            "type": "string",
+            "title": "Trade No"
+          },
+          "pay_method_id": {
+            "type": "integer",
+            "title": "Pay Method Id"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark"
+          }
+        },
+        "type": "object",
+        "required": [
+          "money_amount",
+          "is_finish",
+          "trade_no",
+          "pay_method_id",
+          "invoice_id",
+          "remark"
+        ],
+        "title": "PutParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
         "properties": {

@@ -25,7 +25,6 @@ import '../models/get_me_get_result_model.dart';
 import '../models/get_old_service_result_model.dart';
 import '../models/get_search_user_result.dart';
 import '../models/get_service_old_shop_result.dart';
-import '../models/get_user_bought_response.dart';
 import '../models/get_user_money_response.dart';
 import '../models/get_version_model.dart';
 import '../models/get_view_user_bought_result.dart';
@@ -40,7 +39,6 @@ import '../models/post_func_block_ip_model.dart';
 import '../models/post_login_old_v_result_model.dart';
 import '../models/post_traffic_model.dart';
 import '../models/purchase_records_result.dart';
-import '../models/put_params_model.dart';
 import '../models/refresh_post_result_model.dart';
 import '../models/replace_email_response.dart';
 import '../models/request_email_code_params_model.dart';
@@ -105,10 +103,14 @@ import '../models/vpn_type_list_enum.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_patch.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_put.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_param_model_patch.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_param_model_put.dart';
@@ -1371,7 +1373,8 @@ abstract class FallbackClient {
   ///
   /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
   @GET('/api/v2/low_admin_api/user_bought/')
-  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
+  getUserBoughtApiV2LowAdminApiUserBoughtGet({
     @Query('limit') int? limit = 3000,
     @Query('user_id') int? userId,
   });
@@ -1391,7 +1394,8 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/user_bought/{bought_id}')
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     @Path('bought_id') required int boughtId,
-    @Body() required PutParamsModel body,
+    @Body()
+    required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
   });
 
   /// Get User V2 By User Id
@@ -1409,6 +1413,36 @@ abstract class FallbackClient {
     @Body()
     required WebSubFastapiRoutersApiVLowAdminApiUserMoneyMoneyRechargeItParamsModel
     body,
+  });
+
+  /// Get User Pay List.
+  ///
+  /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
+  @GET('/api/v2/low_admin_api/user_pay_list/')
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse>
+  getUserPayListApiV2LowAdminApiUserPayListGet({
+    @Query('limit') int? limit = 3000,
+    @Query('user_id') int? userId,
+  });
+
+  /// Delete User Pay List.
+  ///
+  /// 删除充值记录.
+  @DELETE('/api/v2/low_admin_api/user_pay_list/{user_pay_list_id}')
+  Future<ErrorResponse>
+  deleteUserPayListApiV2LowAdminApiUserPayListUserPayListIdDelete({
+    @Path('user_pay_list_id') required int userPayListId,
+  });
+
+  /// Put User Pay List.
+  ///
+  /// 更新用户购买记录.
+  @PUT('/api/v2/low_admin_api/user_pay_list/{user_pay_list_id}')
+  Future<ErrorResponse>
+  putUserPayListApiV2LowAdminApiUserPayListUserPayListIdPut({
+    @Path('user_pay_list_id') required int userPayListId,
+    @Body()
+    required WebSubFastapiRoutersApiVLowAdminApiUserPayListPutParamsModel body,
   });
 
   /// Get Captcha Key.

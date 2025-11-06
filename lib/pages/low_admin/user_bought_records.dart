@@ -127,7 +127,7 @@ class _UserBoughtRecordsPageState extends State<UserBoughtRecordsPage> {
     }
 
     // 提交前必须转换为 UTC 时间
-    final body = PutParamsModel(
+    final body = WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel(
       shopId: result['shopId'] as int,
       createdAt: (result['createdAt'] as DateTime).toUtc(),
       moneyAmount: result['moneyAmount'],

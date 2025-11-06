@@ -4862,7 +4862,8 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
+  getUserBoughtApiV2LowAdminApiUserBoughtGet({
     int? limit = 3000,
     int? userId,
   }) async {
@@ -4874,7 +4875,10 @@ class _FallbackClient implements FallbackClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetUserBoughtResponse>(
+    final _options =
+    _setStreamType<
+        WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
+    >(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -4882,12 +4886,19 @@ class _FallbackClient implements FallbackClient {
         queryParameters: queryParameters,
         data: _data,
       )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+          .copyWith(
+        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+      ),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late GetUserBoughtResponse _value;
+    late WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
+    _value;
     try {
-      _value = GetUserBoughtResponse.fromJson(_result.data!);
+      _value =
+          WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
+              .fromJson(
+            _result.data!,
+          );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -4928,7 +4939,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     required int boughtId,
-    required PutParamsModel body,
+    required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -5004,6 +5015,113 @@ class _FallbackClient implements FallbackClient {
           .compose(
         _dio.options,
         '/api/v2/low_admin_api/user_money_money_recharge_it/${userId}/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse>
+  getUserPayListApiV2LowAdminApiUserPayListGet({
+    int? limit = 3000,
+    int? userId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'user_id': userId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+    _setStreamType<
+        WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
+    >(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_pay_list/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(
+        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+      ),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
+    _value;
+    try {
+      _value =
+          WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
+              .fromJson(
+            _result.data!,
+          );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  deleteUserPayListApiV2LowAdminApiUserPayListUserPayListIdDelete({
+    required int userPayListId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_pay_list/${userPayListId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  putUserPayListApiV2LowAdminApiUserPayListUserPayListIdPut({
+    required int userPayListId,
+    required WebSubFastapiRoutersApiVLowAdminApiUserPayListPutParamsModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_pay_list/${userPayListId}',
         queryParameters: queryParameters,
         data: _data,
       )
