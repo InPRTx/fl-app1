@@ -25,6 +25,7 @@ import '../models/get_me_get_result_model.dart';
 import '../models/get_old_service_result_model.dart';
 import '../models/get_search_user_result.dart';
 import '../models/get_service_old_shop_result.dart';
+import '../models/get_user_bought_response.dart';
 import '../models/get_version_model.dart';
 import '../models/get_view_user_bought_result.dart';
 import '../models/get_view_user_result.dart';
@@ -1355,12 +1356,21 @@ abstract class FallbackClient {
   });
 
   /// Get User V2
-  @GET('/api/v2/low_admin_api/user_v2')
+  @GET('/api/v2/low_admin_api/user_v2/')
   Future<GetSearchUserResult> getUserV2ApiV2LowAdminApiUserV2Get({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
+  });
+
+  /// Get User Bought.
+  ///
+  /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
+  @GET('/api/v2/low_admin_api/user_bought/')
+  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
+    @Query('limit') int? limit = 3000,
+    @Query('user_id') int? userId,
   });
 
   /// Get Captcha Key.

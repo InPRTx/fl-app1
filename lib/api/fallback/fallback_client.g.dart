@@ -4844,7 +4844,7 @@ class _FallbackClient implements FallbackClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
-        '/api/v2/low_admin_api/user_v2',
+        '/api/v2/low_admin_api/user_v2/',
         queryParameters: queryParameters,
         data: _data,
       )
@@ -4854,6 +4854,40 @@ class _FallbackClient implements FallbackClient {
     late GetSearchUserResult _value;
     try {
       _value = GetSearchUserResult.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
+    int? limit = 3000,
+    int? userId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'user_id': userId,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetUserBoughtResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_bought/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetUserBoughtResponse _value;
+    try {
+      _value = GetUserBoughtResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

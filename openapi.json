@@ -7442,11 +7442,6 @@
       "get": {
         "summary": "Get User Old Service",
         "operationId": "get_user_old_service_api_v2_low_admin_api_user_old_service__user_id__get",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7485,11 +7480,6 @@
         "summary": "Put User Old Service",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_old_service_api_v2_low_admin_api_user_old_service__user_id__put",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7538,11 +7528,6 @@
         "summary": "Patch User Old Service",
         "description": "更新用户信息 - 只更新提供的字段",
         "operationId": "patch_user_old_service_api_v2_low_admin_api_user_old_service__user_id__patch",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7593,11 +7578,6 @@
         "summary": "Put User V2",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_v2_api_v2_low_admin_api_user_v2__user_id__put",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7646,11 +7626,6 @@
         "summary": "Patch User V2",
         "description": "更新用户信息 - 只更新提供的字段",
         "operationId": "patch_user_v2_api_v2_low_admin_api_user_v2__user_id__patch",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7698,11 +7673,6 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_v2__user_id__get",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7738,15 +7708,10 @@
         }
       }
     },
-    "/api/v2/low_admin_api/user_v2": {
+    "/api/v2/low_admin_api/user_v2/": {
       "get": {
         "summary": "Get User V2",
-        "operationId": "get_user_v2_api_v2_low_admin_api_user_v2_get",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
+        "operationId": "get_user_v2_api_v2_low_admin_api_user_v2__get",
         "parameters": [
           {
             "name": "q",
@@ -7818,6 +7783,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetSearchUserResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_bought/": {
+      "get": {
+        "summary": "Get User Bought",
+        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "get_user_bought_api_v2_low_admin_api_user_bought__get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 3000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserBoughtResponse"
                 }
               }
             }
@@ -9136,7 +9158,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/ResultListData"
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData"
             },
             "type": "array",
             "title": "Result List",
@@ -9172,6 +9194,32 @@
         },
         "type": "object",
         "title": "GetServiceOldShopResult"
+      },
+      "GetUserBoughtResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetUserBoughtResponse"
       },
       "GetVersionModel": {
         "properties": {
@@ -10170,51 +10218,6 @@
           "money_amount"
         ],
         "title": "ResultBought"
-      },
-      "ResultListData": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id",
-            "description": "用户ID"
-          },
-          "user_name": {
-            "type": "string",
-            "title": "User Name",
-            "description": "用户名",
-            "default": ""
-          },
-          "email": {
-            "type": "string",
-            "title": "Email",
-            "description": "用户邮箱",
-            "default": ""
-          },
-          "money_amount": {
-            "type": "string",
-            "title": "Money Amount",
-            "description": "用户余额",
-            "default": "0.00"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "注册时间"
-          },
-          "is_enable": {
-            "type": "boolean",
-            "title": "Is Enable",
-            "description": "用户是否启用",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "created_at"
-        ],
-        "title": "ResultListData"
       },
       "ResultShop": {
         "properties": {
@@ -12749,6 +12752,51 @@
         "type": "object",
         "title": "ParamsModel"
       },
+      "web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "用户ID"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "description": "用户名",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "用户邮箱",
+            "default": ""
+          },
+          "money_amount": {
+            "type": "string",
+            "title": "Money Amount",
+            "description": "用户余额",
+            "default": "0.00"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "注册时间"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "description": "用户是否启用",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at"
+        ],
+        "title": "ResultListData"
+      },
       "web_sub3_fastapi__routers__api__v2__grafana_admin_view__user_data_history_ch__UserDataHistoryResponse__Result": {
         "properties": {
           "user_id": {
@@ -12801,6 +12849,57 @@
           "shop_list"
         ],
         "title": "Result"
+      },
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "expire_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expire At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id"
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop Name"
+          },
+          "money_amount": {
+            "type": "string",
+            "title": "Money Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "user_id",
+          "shop_id",
+          "shop_name",
+          "money_amount"
+        ],
+        "title": "ResultListData"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__GetUserOldServiceResponse": {
         "properties": {
