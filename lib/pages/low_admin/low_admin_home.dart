@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'low_admin_layout.dart';
-
 class LowAdminHomePage extends StatelessWidget {
   const LowAdminHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return LowAdminLayout(
-      title: '低权限管理后台',
-      selectedIndex: 0,
-      child: _buildContent(context),
-    );
+    // The ShellRoute provides LowAdminLayout (menu). Return only the content.
+    return _buildContent(context);
   }
 
   Widget _buildContent(BuildContext context) {

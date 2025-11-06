@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../api/models/web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
 import '../../api/rest_client.dart';
 import '../../utils/auth/auth_export.dart';
-import 'low_admin_layout.dart';
 
 class UsersListPage extends StatefulWidget {
   const UsersListPage({super.key});
@@ -67,68 +66,65 @@ class _UsersListPageState extends State<UsersListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LowAdminLayout(
-      title: '用户管理',
-      selectedIndex: 1,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: '搜索用户',
-                hintText: '输入用户ID、邮箱或用户名',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (_searchController.text.isNotEmpty)
-                      IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() {
-                            _users = [];
-                            _errorMessage = null;
-                          });
-                        },
-                      ),
-                  ],
-                ),
-                border: const OutlineInputBorder(),
-              ),
-              onSubmitted: (_) => _searchUsers(),
-              onChanged: (value) {
-                setState(() {});
-              },
-            ),
-          ),
-          if (_searchController.text.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
+    // ShellRoute provides LowAdminLayout (menu). Return only the page content.
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              labelText: '搜索用户',
+              hintText: '输入用户ID、邮箱或用户名',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: _isLoading ? null : _searchUsers,
-                      icon: const Icon(Icons.search),
-                      label: const Text('搜索'),
+                  if (_searchController.text.isNotEmpty)
+                    IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() {
+                          _users = [];
+                          _errorMessage = null;
+                        });
+                      },
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton.icon(
-                    onPressed: () => _showUserIdDialog(context),
-                    icon: const Icon(Icons.person_search),
-                    label: const Text('通过ID查看'),
-                  ),
                 ],
               ),
+              border: const OutlineInputBorder(),
             ),
-          const SizedBox(height: 16),
-          Expanded(child: _buildContent()),
-        ],
-      ),
+            onSubmitted: (_) => _searchUsers(),
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+        ),
+        if (_searchController.text.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _searchUsers,
+                    icon: const Icon(Icons.search),
+                    label: const Text('搜索'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: () => _showUserIdDialog(context),
+                  icon: const Icon(Icons.person_search),
+                  label: const Text('通过ID查看'),
+                ),
+              ],
+            ),
+          ),
+        const SizedBox(height: 16),
+        Expanded(child: _buildContent()),
+      ],
     );
   }
 

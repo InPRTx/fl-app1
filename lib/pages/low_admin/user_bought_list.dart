@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response_result_list_data.dart';
 import '../../api/rest_client.dart';
 import '../../utils/auth/auth_export.dart';
-import 'low_admin_layout.dart';
 
 class UserBoughtListPage extends StatefulWidget {
   const UserBoughtListPage({super.key});
@@ -103,63 +102,60 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LowAdminLayout(
-      title: '用户购买记录',
-      selectedIndex: 2,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _userIdController,
-                    decoration: InputDecoration(
-                      labelText: '用户ID',
-                      hintText: '输入用户ID搜索，留空查询所有记录',
-                      prefixIcon: const Icon(Icons.person_search),
-                      suffixIcon: _userIdController.text.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                _userIdController.clear();
-                                setState(() {});
-                              },
-                            )
-                          : null,
-                      border: const OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onSubmitted: (_) => _searchByUserId(),
-                    onChanged: (value) {
-                      setState(() {});
-                    },
+    // ShellRoute provides LowAdminLayout (menu). Return only the page content.
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _userIdController,
+                  decoration: InputDecoration(
+                    labelText: '用户ID',
+                    hintText: '输入用户ID搜索，留空查询所有记录',
+                    prefixIcon: const Icon(Icons.person_search),
+                    suffixIcon: _userIdController.text.isNotEmpty
+                        ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _userIdController.clear();
+                        setState(() {});
+                      },
+                    )
+                        : null,
+                    border: const OutlineInputBorder(),
                   ),
+                  keyboardType: TextInputType.number,
+                  onSubmitted: (_) => _searchByUserId(),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
                 ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _searchByUserId,
-                  icon: const Icon(Icons.search),
-                  label: const Text('搜索'),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: _isLoading
-                      ? null
-                      : () {
-                          _userIdController.clear();
-                          _loadAllRecords();
-                        },
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('全部'),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: _isLoading ? null : _searchByUserId,
+                icon: const Icon(Icons.search),
+                label: const Text('搜索'),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                  _userIdController.clear();
+                  _loadAllRecords();
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('全部'),
+              ),
+            ],
           ),
-          Expanded(child: _buildContent()),
-        ],
-      ),
+        ),
+        Expanded(child: _buildContent()),
+      ],
     );
   }
 
