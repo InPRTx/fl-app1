@@ -40,7 +40,11 @@ class AuthStore extends ChangeNotifier {
 
   bool get isAdmin {
     if (!isAuthenticated) return false;
-    return _accessJWTTokenPayload?.subjectAccess?.isAdmin ?? false;
+
+    // Only consider top-level `role` claim for admin determination.
+    final role = _accessJWTTokenPayload?.role;
+    return role == 'malio_postgrest_admin' ||
+        role == 'malio_postgrest_low_admin';
   }
 
   Future<void> init() async {
