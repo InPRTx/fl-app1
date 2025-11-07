@@ -56,7 +56,9 @@ class SystemViewDefaultConst extends StatelessWidget {
                     // As a StatelessWidget we can't trigger setState; just
                     // pop+push to force rebuild in case runtime flags changed.
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => const SystemViewDefaultConst()),
+                      MaterialPageRoute(
+                        builder: (_) => const SystemViewDefaultConst(),
+                      ),
                     );
                   },
                 ),

@@ -1,11 +1,11 @@
+import 'package:fl_app1/api/models/user_pay_list.dart';
+import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
+import 'package:fl_app1/api/rest_client.dart';
+import 'package:fl_app1/utils/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import '../../api/models/user_pay_list.dart';
-import '../../api/rest_client.dart';
-import '../../utils/auth/auth_export.dart';
 
 class UserPayListPage extends StatefulWidget {
   const UserPayListPage({super.key});
@@ -40,7 +40,8 @@ class _UserPayListPageState extends State<UserPayListPage> {
       _errorMessage = null;
     });
 
-    final result = await _restClient.fallback
+    final WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
+    result = await _restClient.fallback
         .getUserPayListApiV2LowAdminApiUserPayListGet(
           limit: 3000,
           userId: null,
@@ -55,23 +56,23 @@ class _UserPayListPageState extends State<UserPayListPage> {
         }
       } else {
         _errorMessage = result.message;
-        _payRecords = [];
+        _payRecords = <UserPayList>[];
       }
     });
   }
 
   Future<void> _searchByUserId() async {
-    final userIdText = _userIdController.text.trim();
+    final String userIdText = _userIdController.text.trim();
     if (userIdText.isEmpty) {
       _loadAllRecords();
       return;
     }
 
-    final userId = int.tryParse(userIdText);
+    final int? userId = int.tryParse(userIdText);
     if (userId == null) {
       setState(() {
         _errorMessage = '请输入有效的用户ID';
-        _payRecords = [];
+        _payRecords = <UserPayList>[];
       });
       return;
     }
@@ -81,7 +82,8 @@ class _UserPayListPageState extends State<UserPayListPage> {
       _errorMessage = null;
     });
 
-    final result = await _restClient.fallback
+    final WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
+    result = await _restClient.fallback
         .getUserPayListApiV2LowAdminApiUserPayListGet(
           limit: 3000,
           userId: userId,
@@ -96,7 +98,7 @@ class _UserPayListPageState extends State<UserPayListPage> {
         }
       } else {
         _errorMessage = result.message;
-        _payRecords = [];
+        _payRecords = <UserPayList>[];
       }
     });
   }
@@ -234,7 +236,7 @@ class _UserPayListPageState extends State<UserPayListPage> {
   }
 
   Widget _buildPayCard(UserPayList record) {
-    final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),

@@ -53,9 +53,11 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SystemViewDefaultConst(),
+              Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) {
+                    return const SystemViewDefaultConst();
+                  },
                 ),
               );
             },

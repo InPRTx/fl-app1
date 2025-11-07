@@ -246,110 +246,108 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
 
                         // 状态卡片
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: statusGridColumns,
-                    mainAxisSpacing: isLargeScreen ? 16 : 12,
-                    crossAxisSpacing: isLargeScreen ? 16 : 12,
-                    childAspectRatio: statusGridAspectRatio,
-                    children: [
-                      StatusCard(
-                        label: '用户等级',
-                        value: _userLevel,
-                        icon: Icons.star,
-                        color: theme.colorScheme.primary,
-                      ),
-                      StatusCard(
-                        label: '账户余额',
-                        value: '¥$_userBalance',
-                        icon: Icons.account_balance_wallet,
-                        color: theme.colorScheme.secondary,
-                      ),
-                      StatusCard(
-                        label: 'IP限制',
-                        value: _onlineIpLimit,
-                        icon: Icons.devices,
-                        color: theme.colorScheme.tertiary,
-                      ),
-                      StatusCard(
-                        label: '连接速度',
-                        value: _connectionSpeed,
-                        icon: Icons.speed,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ],
-                  ),
+                        GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: statusGridColumns,
+                          mainAxisSpacing: isLargeScreen ? 16 : 12,
+                          crossAxisSpacing: isLargeScreen ? 16 : 12,
+                          childAspectRatio: statusGridAspectRatio,
+                          children: [
+                            StatusCard(
+                              label: '用户等级',
+                              value: _userLevel,
+                              icon: Icons.star,
+                              color: theme.colorScheme.primary,
+                            ),
+                            StatusCard(
+                              label: '账户余额',
+                              value: '¥$_userBalance',
+                              icon: Icons.account_balance_wallet,
+                              color: theme.colorScheme.secondary,
+                            ),
+                            StatusCard(
+                              label: 'IP限制',
+                              value: _onlineIpLimit,
+                              icon: Icons.devices,
+                              color: theme.colorScheme.tertiary,
+                            ),
+                            StatusCard(
+                              label: '连接速度',
+                              value: _connectionSpeed,
+                              icon: Icons.speed,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ],
+                        ),
 
                         SizedBox(height: isLargeScreen ? 24 : 20),
 
                         // 订阅和流量卡片 - 大屏幕时并排显示
-                  if (isLargeScreen)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SubscriptionCard(
+                        if (isLargeScreen)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SubscriptionCard(
+                                  subLinks: _subLinks,
+                                  shadowsocksPassword: _shadowsocksPassword,
+                                  vmessPassword: _vmessPassword,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: TrafficCard(
+                                  totalBytes: _totalBytes,
+                                  usedBytes: _usedBytes,
+                                  todayUsedBytes: _todayUsedBytes,
+                                  expireDate: _expireDate,
+                                  onNavigateToShop: _navigateToShop,
+                                  onNavigateToDataPackage:
+                                      _navigateToDataPackage,
+                                ),
+                              ),
+                            ],
+                          )
+                        else ...[
+                          SubscriptionCard(
                             subLinks: _subLinks,
                             shadowsocksPassword: _shadowsocksPassword,
                             vmessPassword: _vmessPassword,
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TrafficCard(
+                          const SizedBox(height: 16),
+                          TrafficCard(
                             totalBytes: _totalBytes,
                             usedBytes: _usedBytes,
                             todayUsedBytes: _todayUsedBytes,
                             expireDate: _expireDate,
                             onNavigateToShop: _navigateToShop,
-                            onNavigateToDataPackage:
-                            _navigateToDataPackage,
+                            onNavigateToDataPackage: _navigateToDataPackage,
                           ),
-                        ),
-                      ],
-                    )
-                  else
-                    ...[
-                      SubscriptionCard(
-                        subLinks: _subLinks,
-                        shadowsocksPassword: _shadowsocksPassword,
-                        vmessPassword: _vmessPassword,
-                      ),
-                      const SizedBox(height: 16),
-                      TrafficCard(
-                        totalBytes: _totalBytes,
-                        usedBytes: _usedBytes,
-                        todayUsedBytes: _todayUsedBytes,
-                        expireDate: _expireDate,
-                        onNavigateToShop: _navigateToShop,
-                        onNavigateToDataPackage: _navigateToDataPackage,
-                      ),
-                    ],
+                        ],
 
                         SizedBox(height: isLargeScreen ? 24 : 16),
 
                         // 公告和赞助商广告 - 大屏幕时并排显示
-                  if (isLargeScreen)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: AnnouncementCard(
-                            content: _announcementContent,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(child: _buildSponsorCard(theme)),
-                      ],
-                    )
-                  else
-                    ...[
-                      AnnouncementCard(content: _announcementContent),
-                      const SizedBox(height: 16),
-                      _buildSponsorCard(theme),
-                    ],
+                        if (isLargeScreen)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: AnnouncementCard(
+                                  content: _announcementContent,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(child: _buildSponsorCard(theme)),
+                            ],
+                          )
+                        else ...[
+                          AnnouncementCard(content: _announcementContent),
+                          const SizedBox(height: 16),
+                          _buildSponsorCard(theme),
+                        ],
 
                         SizedBox(height: isLargeScreen ? 24 : 20),
                       ],

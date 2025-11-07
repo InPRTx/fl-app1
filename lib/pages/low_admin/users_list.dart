@@ -1,10 +1,10 @@
+import 'package:fl_app1/api/models/get_search_user_result.dart';
+import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
+import 'package:fl_app1/api/rest_client.dart';
+import 'package:fl_app1/utils/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import '../../api/models/web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
-import '../../api/rest_client.dart';
-import '../../utils/auth/auth_export.dart';
 
 class UsersListPage extends StatefulWidget {
   const UsersListPage({super.key});
@@ -18,8 +18,9 @@ class _UsersListPageState extends State<UsersListPage> {
   late final RestClient _restClient = createAuthenticatedClient();
 
   List<
-      WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData> _users = [
-  ];
+    WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+  >
+  _users = [];
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -37,14 +38,14 @@ class _UsersListPageState extends State<UsersListPage> {
   }
 
   Future<void> _searchUsers() async {
-    final query = _searchController.text.trim();
+    final String query = _searchController.text.trim();
 
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
-    final result = await _restClient.fallback
+    final GetSearchUserResult result = await _restClient.fallback
         .getUserV2ApiV2LowAdminApiUserV2Get(
           q: query.isEmpty ? null : query,
           sqlStmtLimit: 50,
@@ -59,7 +60,10 @@ class _UsersListPageState extends State<UsersListPage> {
         }
       } else {
         _errorMessage = result.message;
-        _users = [];
+        _users =
+            <
+              WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+            >[];
       }
     });
   }
@@ -202,8 +206,10 @@ class _UsersListPageState extends State<UsersListPage> {
   }
 
   Widget _buildUserCard(
-      WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData user) {
-    final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+    WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+    user,
+  ) {
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
@@ -337,9 +343,9 @@ class _UsersListPageState extends State<UsersListPage> {
 
   Future<void> _showUserIdDialog(BuildContext context) async {
     final TextEditingController controller = TextEditingController();
-    final router = GoRouter.of(context);
+    final GoRouter router = GoRouter.of(context);
 
-    final result = await showDialog<int>(
+    final int? result = await showDialog<int>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('输入用户ID'),

@@ -76,8 +76,8 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Future<void> _handleSubmit() async {
-    final form = _formKey.currentState;
-    final isValid = form?.validate() ?? false;
+    final FormState? form = _formKey.currentState;
+    final bool isValid = form?.validate() ?? false;
     if (!isValid || _captchaToken == null) {
       if (_captchaToken == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -197,10 +197,10 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void _toggleCaptcha() {
-    // Simple placeholder for captcha: toggles a token and bumps counter to force rebuild
     setState(() {
       if (_captchaToken == null) {
-        _captchaToken = 'token_${DateTime.now().millisecondsSinceEpoch}';
+        final int timestamp = DateTime.now().millisecondsSinceEpoch;
+        _captchaToken = 'token_$timestamp';
       } else {
         _captchaToken = null;
       }
@@ -239,8 +239,8 @@ class _LoginPageState extends State<LoginPage>
                         child: Column(
                           children: [
                             TextFormField(
-                              autovalidateMode: AutovalidateMode
-                                  .onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               maxLength: 100,
@@ -252,18 +252,20 @@ class _LoginPageState extends State<LoginPage>
                                 hintText: 'example@email.com',
                                 counterText: '',
                               ),
-                              validator: (v) {
+                              validator: (String? v) {
                                 if (v == null || v.isEmpty) {
                                   return '请输入邮箱';
                                 }
-                                if (!_validateEmail(v)) return '请输入有效邮箱';
+                                if (!_validateEmail(v)) {
+                                  return '请输入有效邮箱';
+                                }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
-                              autovalidateMode: AutovalidateMode
-                                  .onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               controller: _passwordController,
                               obscureText: true,
                               textInputAction: TextInputAction.next,
@@ -271,16 +273,20 @@ class _LoginPageState extends State<LoginPage>
                                 labelText: '密码',
                                 prefixIcon: Icon(Icons.lock),
                               ),
-                              validator: (v) {
-                                if (v == null || v.isEmpty) return '请输入密码';
-                                if (v.length < 6) return '密码至少6位';
+                              validator: (String? v) {
+                                if (v == null || v.isEmpty) {
+                                  return '请输入密码';
+                                }
+                                if (v.length < 6) {
+                                  return '密码至少6位';
+                                }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 8),
                             TextFormField(
-                              autovalidateMode: AutovalidateMode
-                                  .onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               controller: _twoFaController,
                               keyboardType: TextInputType.number,
                               maxLength: 6,
@@ -292,8 +298,10 @@ class _LoginPageState extends State<LoginPage>
                                 helperText: '请输入6位数字验证码',
                                 counterText: '',
                               ),
-                              validator: (v) {
-                                if (v == null || v.isEmpty) return null;
+                              validator: (String? v) {
+                                if (v == null || v.isEmpty) {
+                                  return null;
+                                }
                                 if (v.length != 6) {
                                   return '验证码必须是6位数字';
                                 }
@@ -320,9 +328,9 @@ class _LoginPageState extends State<LoginPage>
                                       setState(() => _rememberMe = v ?? false),
                                 ),
                                 GestureDetector(
-                                  onTap: () =>
-                                      setState(() =>
-                                      _rememberMe = !_rememberMe),
+                                  onTap: () => setState(
+                                    () => _rememberMe = !_rememberMe,
+                                  ),
                                   child: const Text('记住我'),
                                 ),
                                 const Spacer(),

@@ -243,22 +243,26 @@ class _EditableUserOldServiceCardState
     if (_isEditing) {
       final speedLimitText = _rawControllers['nodeSpeedLimit']!.text.trim();
       final data = <String, dynamic>{
-        'ssUploadSize': int.tryParse(_rawControllers['ssUploadSize']!.text) ??
+        'ssUploadSize':
+            int.tryParse(_rawControllers['ssUploadSize']!.text) ?? 0,
+        'ssDownloadSize':
+            int.tryParse(_rawControllers['ssDownloadSize']!.text) ?? 0,
+        'ssBandwidthTotalSize':
+            int.tryParse(_rawControllers['ssBandwidthTotalSize']!.text) ?? 0,
+        'ssBandwidthYesterdayUsedSize':
+            int.tryParse(
+              _rawControllers['ssBandwidthYesterdayUsedSize']!.text,
+            ) ??
             0,
-        'ssDownloadSize': int.tryParse(
-            _rawControllers['ssDownloadSize']!.text) ?? 0,
-        'ssBandwidthTotalSize': int.tryParse(
-            _rawControllers['ssBandwidthTotalSize']!.text) ?? 0,
-        'ssBandwidthYesterdayUsedSize': int.tryParse(
-            _rawControllers['ssBandwidthYesterdayUsedSize']!.text) ?? 0,
         'userLevel': int.tryParse(_controllers['userLevel']!.text) ?? 0,
         'userLevelExpireIn': _dateTimeValues['userLevelExpireIn']!,
-        'nodeSpeedLimit': speedLimitText.isEmpty ? null : int.tryParse(
-            speedLimitText),
+        'nodeSpeedLimit': speedLimitText.isEmpty
+            ? null
+            : int.tryParse(speedLimitText),
         'nodeConnector': int.tryParse(_controllers['nodeConnector']!.text) ?? 0,
         'autoResetDay': int.tryParse(_controllers['autoResetDay']!.text) ?? 0,
-        'autoResetBandwidth': int.tryParse(
-            _rawControllers['autoResetBandwidth']!.text) ?? 0,
+        'autoResetBandwidth':
+            int.tryParse(_rawControllers['autoResetBandwidth']!.text) ?? 0,
       };
 
       final success = await widget.onUpdate(data);

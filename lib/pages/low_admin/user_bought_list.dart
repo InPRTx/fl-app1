@@ -1,10 +1,10 @@
+import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
+import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response_result_list_data.dart';
+import 'package:fl_app1/api/rest_client.dart';
+import 'package:fl_app1/utils/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import '../../api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response_result_list_data.dart';
-import '../../api/rest_client.dart';
-import '../../utils/auth/auth_export.dart';
 
 class UserBoughtListPage extends StatefulWidget {
   const UserBoughtListPage({super.key});
@@ -42,7 +42,8 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
       _errorMessage = null;
     });
 
-    final result = await _restClient.fallback
+    final WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
+    result = await _restClient.fallback
         .getUserBoughtApiV2LowAdminApiUserBoughtGet(limit: 3000, userId: null);
 
     setState(() {
@@ -54,23 +55,29 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
         }
       } else {
         _errorMessage = result.message;
-        _boughtRecords = [];
+        _boughtRecords =
+            <
+              WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+            >[];
       }
     });
   }
 
   Future<void> _searchByUserId() async {
-    final userIdText = _userIdController.text.trim();
+    final String userIdText = _userIdController.text.trim();
     if (userIdText.isEmpty) {
       _loadAllRecords();
       return;
     }
 
-    final userId = int.tryParse(userIdText);
+    final int? userId = int.tryParse(userIdText);
     if (userId == null) {
       setState(() {
         _errorMessage = '请输入有效的用户ID';
-        _boughtRecords = [];
+        _boughtRecords =
+            <
+              WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+            >[];
       });
       return;
     }
@@ -80,7 +87,8 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
       _errorMessage = null;
     });
 
-    final result = await _restClient.fallback
+    final WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
+    result = await _restClient.fallback
         .getUserBoughtApiV2LowAdminApiUserBoughtGet(
           limit: 3000,
           userId: userId,
@@ -95,7 +103,10 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
         }
       } else {
         _errorMessage = result.message;
-        _boughtRecords = [];
+        _boughtRecords =
+            <
+              WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+            >[];
       }
     });
   }
@@ -118,12 +129,12 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
                     prefixIcon: const Icon(Icons.person_search),
                     suffixIcon: _userIdController.text.isNotEmpty
                         ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _userIdController.clear();
-                        setState(() {});
-                      },
-                    )
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _userIdController.clear();
+                              setState(() {});
+                            },
+                          )
                         : null,
                     border: const OutlineInputBorder(),
                   ),
@@ -145,9 +156,9 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
                 onPressed: _isLoading
                     ? null
                     : () {
-                  _userIdController.clear();
-                  _loadAllRecords();
-                },
+                        _userIdController.clear();
+                        _loadAllRecords();
+                      },
                 icon: const Icon(Icons.refresh),
                 label: const Text('全部'),
               ),
@@ -318,10 +329,7 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
             Row(
               children: [
                 Expanded(
-                  child: _buildClickableUserIdItem(
-                    context,
-                    record.userId,
-                  ),
+                  child: _buildClickableUserIdItem(context, record.userId),
                 ),
                 Expanded(
                   child: _buildInfoItem(
@@ -420,10 +428,7 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .primary,
+                    color: Theme.of(context).colorScheme.primary,
                     decoration: TextDecoration.underline,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -432,10 +437,7 @@ class _UserBoughtListPageState extends State<UserBoughtListPage> {
                 Icon(
                   Icons.open_in_new,
                   size: 12,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .primary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ],
             ),
