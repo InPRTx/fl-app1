@@ -147,39 +147,6 @@ Widget _buildDateTimeInfoRow(String field, String label, DateTime value) {
 
 > 对于一个项目而言，良好的文件和目录层级可读性，保证了代码的健壮。
 
-一个**普通的 Flutter 项目**的目录层级例子如下：
-
-```
---flutter_project           # 项目根目录
-
-----/android, ios           # 移动端原生文件
-----/web, macos, windows    # Web、桌面平台层文件
-
-----/assets                 # 资源文件
-------/fonts                # 字体
-------/images               # 图片
-------/others               # 其他类型资源
-
-----/lib                    # 项目主要代码
-------/apis                 # 接口定义，各类请求封装
-------/constants            # 常量、统一引入及导出口径
---------/constants.dart     # 各种 package、models、apis、widgets 最终统一到此处导出
---------/resources.dart     # (可选) 将资源引用转换成常量 (flutter_asset_generator)
-------/extension            # 项目内定义的扩展方法
-------/models               # Beans、Models，类定义
---------/models.dart        # 所有内容作为 partition 进行分块
-------/pages                # 页面
-------/providers            # (可选) 状态保持
-------/utils                # 工具类
-------/widgets              # 自定义 widget
-
-----/analysis_options.yaml  # IDE 代码分析配置
-
-----/main.dart              # 主入口
-
-----/pubspec.lock           # 当前依赖到的 packages 版本
-----/pubspec.yaml           # Pub packages 声明文件
-```
 
 ### 1.1.1 文件命名
 
@@ -354,3 +321,28 @@ class PersonalPage extends StatefulWidget {
 
 - **必须** `StreamController` 如果不再使用必须 `close`。
 - **必须** 监听 `Stream` 产生的 `StreamSubscription` 不再收听必须手动调用 `cancel` 取消监听。
+
+Lib
+├──page 落地页     
+│   └──user 页面模块文件夹   
+│       └──login 页面落地页文件夹
+│            └──user_login.dart => class UserLoginPage 后缀为page为落地页 唯一入口     
+│                   └──user_login_button.dart => class UserLoginButton 非公共部分页面子组件   
+├──component 通用组件   
+│        └──Modal
+│            └──alert.dart => class ModalAlertComponent  
+├──store 数据集中管理
+│    ├──index.dart 实例化Provider export model类
+│    ├──proto pb协议转换代码
+│    ├──service pb协议 yyp协议 等等转义成 dart方法
+│    ├──model
+│    │    ├──user_model.dart => class UserModel
+│    │    └──index.dart => export all models
+│    └──object
+│         └──user_object.dart => class UserObject
+├──helper 公共方法   
+│    └──index.dart 常规方法、通用方法、全局方法可以用过这个入口export 避免重复引入、可以作用通过用方法入口
+├──config 配置中心
+│    ├──index.dart 配置变量与切换方法  
+└──router 路由
+└──  页面映射配置、observe 方法导出

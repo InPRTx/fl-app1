@@ -1,4 +1,4 @@
-import 'package:fl_app1/utils/auth/jwt_token_model.dart';
+import 'package:fl_app1/store/model/jwt_token_model.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
 void testTokenParsing() {

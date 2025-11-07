@@ -1,10 +1,10 @@
-import 'package:fl_app1/utils/auth/auth_store.dart';
+import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'routes.dart';
+import 'router/index.dart';
 
 // 全局 ScaffoldMessenger key，用于在任何地方显示 SnackBar
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
@@ -59,10 +59,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('zh', 'CN'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('zh', 'CN'), Locale('en', 'US')],
       locale: const Locale('zh', 'CN'),
       theme: ThemeData(
         // This is the theme of your application.
