@@ -27,6 +27,7 @@ response = await dio.get('/test?id=12&name=dio');
 请把生成的文档放在
 /docs_ai/年_月/日_操作.md 下面
 月/日为01 02 10 这种两位长度
+今天是 2025年11月11日
 
 api url路径 /api/v2/low_admin_api 和 /api/v2/user 必须要带上访问令牌，不然会报401错误
 所有api调用均使用model参数，避免手动构造query string

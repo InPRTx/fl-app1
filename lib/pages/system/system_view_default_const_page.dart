@@ -1,8 +1,7 @@
+import 'package:fl_app1/api/base_url.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../api/base_url.dart';
 
 /// A simple debug page that displays the resolved kDefaultBaseUrl value.
 ///

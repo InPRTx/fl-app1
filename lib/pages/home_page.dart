@@ -1,8 +1,9 @@
-import 'package:fl_app1/pages/system/system_view_default_const_page.dart';
 import 'package:fl_app1/utils/auth/auth_store.dart';
 import 'package:fl_app1/widgets/auth_status_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import 'system/system_view_default_const_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

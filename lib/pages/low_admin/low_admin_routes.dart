@@ -1,13 +1,13 @@
-import 'package:fl_app1/pages/low_admin/low_admin_home.dart';
-import 'package:fl_app1/pages/low_admin/settings.dart';
-import 'package:fl_app1/pages/low_admin/user_bought_list.dart';
-import 'package:fl_app1/pages/low_admin/user_pay_list.dart';
-import 'package:fl_app1/pages/low_admin/user_v2.dart';
-import 'package:fl_app1/pages/low_admin/users_list.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'low_admin_home.dart';
 import 'low_admin_layout.dart';
+import 'settings.dart';
+import 'user_bought_list.dart';
+import 'user_pay_list.dart';
+import 'user_v2.dart';
+import 'users_list.dart';
 
 /// Low admin child routes extracted from `routes.dart` to keep that file smaller
 /// and to centralize low-admin route definitions under `lib/pages/low_admin/`.

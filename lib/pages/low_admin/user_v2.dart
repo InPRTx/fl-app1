@@ -1,13 +1,14 @@
 import 'package:fl_app1/api/export.dart';
-import 'package:fl_app1/pages/low_admin/user_bought_records.dart';
-import 'package:fl_app1/pages/low_admin/user_money_recharge.dart';
-import 'package:fl_app1/pages/low_admin/user_pay_records.dart';
-import 'package:fl_app1/pages/low_admin/widgets/editable_user_old_service_card.dart';
-import 'package:fl_app1/pages/low_admin/widgets/editable_user_v2_info_card.dart';
-import 'package:fl_app1/pages/low_admin/widgets/user_money_card.dart';
 import 'package:fl_app1/utils/auth/auth_export.dart';
+import 'package:fl_app1/widgets/low_admin/editable_user_old_service_card.dart';
+import 'package:fl_app1/widgets/low_admin/editable_user_v2_info_card.dart';
+import 'package:fl_app1/widgets/low_admin/user_money_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import 'user_bought_records.dart';
+import 'user_money_recharge.dart';
+import 'user_pay_records.dart';
 
 class UserV2Page extends StatefulWidget {
   final int userId;
