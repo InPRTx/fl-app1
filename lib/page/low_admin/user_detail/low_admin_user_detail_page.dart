@@ -91,25 +91,26 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
   }
 
   Future<bool> _updateUserOldService(Map<String, dynamic> data) async {
-    final body =
-        WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPatch(
-          ssUploadSize: data['ssUploadSize'] as int?,
-          ssDownloadSize: data['ssDownloadSize'] as int?,
-          ssBandwidthTotalSize: data['ssBandwidthTotalSize'] as int?,
-          ssBandwidthYesterdayUsedSize:
-              data['ssBandwidthYesterdayUsedSize'] as int?,
-          userLevel: data['userLevel'] as int?,
-          userLevelExpireIn: data['userLevelExpireIn'] != null
-              ? (data['userLevelExpireIn'] as DateTime).toUtc()
-              : null,
-          nodeSpeedLimit: data['nodeSpeedLimit'] as int?,
-          nodeConnector: data['nodeConnector'] as int?,
-          autoResetDay: data['autoResetDay'] as int?,
-          autoResetBandwidth: data['autoResetBandwidth'] as num?,
-        );
+    final body = WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut(
+      ssUploadSize: data['ssUploadSize'] as int,
+      ssDownloadSize: data['ssDownloadSize'] as int,
+      ssBandwidthTotalSize: data['ssBandwidthTotalSize'] as int,
+      userLevelExpireIn: (data['userLevelExpireIn'] as DateTime).toUtc(),
+      // 有默认值的字段，需要提供非 null 值
+      ssBandwidthYesterdayUsedSize:
+          data['ssBandwidthYesterdayUsedSize'] as int? ?? 0,
+      userLevel: data['userLevel'] as int? ?? 0,
+      // 可选字段，允许 null
+      nodeConnector: data['nodeConnector'] as int?,
+      autoResetDay: data['autoResetDay'] as int?,
+      autoResetBandwidth: data['autoResetBandwidth'],
+      nodeSpeedLimit: data['nodeSpeedLimit'],
+      ssLastUsedTime: _userOldServiceData?.ssLastUsedTime,
+      lastCheckInTime: _userOldServiceData?.lastCheckInTime,
+    );
 
     final response = await _restClient.fallback
-        .patchUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPatch(
+        .putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut(
           userId: widget.userId,
           body: body,
         );

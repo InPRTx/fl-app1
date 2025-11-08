@@ -17,11 +17,11 @@ AdminOldService _$AdminOldServiceFromJson(Map<String, dynamic> json) =>
       userLevel: (json['user_level'] as num?)?.toInt() ?? 0,
       nodeConnector: (json['node_connector'] as num?)?.toInt() ?? 0,
       autoResetDay: (json['auto_reset_day'] as num?)?.toInt() ?? 0,
-      autoResetBandwidth: json['auto_reset_bandwidth'] as num? ?? 0.0,
+      autoResetBandwidth: json['auto_reset_bandwidth'] as String? ?? '0.0',
       ssLastUsedTime: json['ss_last_used_time'] == null
           ? null
           : DateTime.parse(json['ss_last_used_time'] as String),
-      nodeSpeedLimit: (json['node_speed_limit'] as num?)?.toInt(),
+      nodeSpeedLimit: json['node_speed_limit'] as String?,
       lastCheckInTime: json['last_check_in_time'] == null
           ? null
           : DateTime.parse(json['last_check_in_time'] as String),

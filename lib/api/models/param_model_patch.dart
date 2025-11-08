@@ -22,26 +22,27 @@ class ParamModelPatch {
       _$ParamModelPatchFromJson(json);
 
   /// 邮箱
+  @JsonKey(includeIfNull: false)
   final String? email;
 
   /// 用户名
-  @JsonKey(name: 'user_name')
+  @JsonKey(includeIfNull: false, name: 'user_name')
   final String? userName;
 
   /// 是否启用
-  @JsonKey(name: 'is_enable')
+  @JsonKey(includeIfNull: false, name: 'is_enable')
   final bool? isEnable;
 
   /// Telegram ID
-  @JsonKey(name: 'telegram_id')
+  @JsonKey(includeIfNull: false, name: 'telegram_id')
   final int? telegramId;
 
   /// 邮箱是否验证
-  @JsonKey(name: 'is_email_verify')
+  @JsonKey(includeIfNull: false, name: 'is_email_verify')
   final bool? isEmailVerify;
 
   /// 用户账户过期时间 expire_in
-  @JsonKey(name: 'user_account_expire_in')
+  @JsonKey(includeIfNull: false, name: 'user_account_expire_in')
   final DateTime? userAccountExpireIn;
 
   Map<String, Object?> toJson() => _$ParamModelPatchToJson(this);

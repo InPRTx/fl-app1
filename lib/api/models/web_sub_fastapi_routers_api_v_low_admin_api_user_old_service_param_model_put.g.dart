@@ -17,13 +17,13 @@ _$WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPutFromJson(
   ssBandwidthYesterdayUsedSize:
       (json['ss_bandwidth_yesterday_used_size'] as num?)?.toInt() ?? 0,
   userLevel: (json['user_level'] as num?)?.toInt() ?? 0,
-  nodeConnector: (json['node_connector'] as num?)?.toInt() ?? 0,
-  autoResetDay: (json['auto_reset_day'] as num?)?.toInt() ?? 0,
-  autoResetBandwidth: json['auto_reset_bandwidth'] as num? ?? 0.0,
   ssLastUsedTime: json['ss_last_used_time'] == null
       ? null
       : DateTime.parse(json['ss_last_used_time'] as String),
-  nodeSpeedLimit: (json['node_speed_limit'] as num?)?.toInt(),
+  nodeSpeedLimit: json['node_speed_limit'],
+  nodeConnector: (json['node_connector'] as num?)?.toInt(),
+  autoResetDay: (json['auto_reset_day'] as num?)?.toInt(),
+  autoResetBandwidth: json['auto_reset_bandwidth'],
   lastCheckInTime: json['last_check_in_time'] == null
       ? null
       : DateTime.parse(json['last_check_in_time'] as String),
@@ -41,8 +41,8 @@ _$WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPutToJson(
   'user_level': instance.userLevel,
   'user_level_expire_in': instance.userLevelExpireIn.toIso8601String(),
   'node_speed_limit': ?instance.nodeSpeedLimit,
-  'node_connector': instance.nodeConnector,
-  'auto_reset_day': instance.autoResetDay,
-  'auto_reset_bandwidth': instance.autoResetBandwidth,
+  'node_connector': ?instance.nodeConnector,
+  'auto_reset_day': ?instance.autoResetDay,
+  'auto_reset_bandwidth': ?instance.autoResetBandwidth,
   'last_check_in_time': ?instance.lastCheckInTime?.toIso8601String(),
 };

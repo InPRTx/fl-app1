@@ -18,12 +18,13 @@ ParamModelPatch _$ParamModelPatchFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['user_account_expire_in'] as String),
     );
 
-Map<String, dynamic> _$ParamModelPatchToJson(ParamModelPatch instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'user_name': instance.userName,
-      'is_enable': instance.isEnable,
-      'telegram_id': instance.telegramId,
-      'is_email_verify': instance.isEmailVerify,
-      'user_account_expire_in': instance.userAccountExpireIn?.toIso8601String(),
-    };
+Map<String, dynamic> _$ParamModelPatchToJson(
+  ParamModelPatch instance,
+) => <String, dynamic>{
+  'email': ?instance.email,
+  'user_name': ?instance.userName,
+  'is_enable': ?instance.isEnable,
+  'telegram_id': ?instance.telegramId,
+  'is_email_verify': ?instance.isEmailVerify,
+  'user_account_expire_in': ?instance.userAccountExpireIn?.toIso8601String(),
+};

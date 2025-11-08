@@ -32,7 +32,7 @@ class _EditableUserOldServiceCardComponentState
   late final TextEditingController _ssBandwidthYesterdayUsedSizeHumanController;
   late final TextEditingController _ssBandwidthYesterdayUsedSizeRawController;
   late final TextEditingController _userLevelController;
-  late final TextEditingController _nodeSpeedLimitController;
+  late final TextEditingController _nodeSpeedLimitRawController;
   late final TextEditingController _nodeConnectorController;
   late final TextEditingController _autoResetDayController;
   late final TextEditingController _autoResetBandwidthHumanController;
@@ -52,7 +52,7 @@ class _EditableUserOldServiceCardComponentState
     _ssBandwidthYesterdayUsedSizeHumanController = TextEditingController();
     _ssBandwidthYesterdayUsedSizeRawController = TextEditingController();
     _userLevelController = TextEditingController();
-    _nodeSpeedLimitController = TextEditingController();
+    _nodeSpeedLimitRawController = TextEditingController();
     _nodeConnectorController = TextEditingController();
     _autoResetDayController = TextEditingController();
     _autoResetBandwidthHumanController = TextEditingController();
@@ -71,7 +71,7 @@ class _EditableUserOldServiceCardComponentState
     _ssBandwidthYesterdayUsedSizeHumanController.dispose();
     _ssBandwidthYesterdayUsedSizeRawController.dispose();
     _userLevelController.dispose();
-    _nodeSpeedLimitController.dispose();
+    _nodeSpeedLimitRawController.dispose();
     _nodeConnectorController.dispose();
     _autoResetDayController.dispose();
     _autoResetBandwidthHumanController.dispose();
@@ -99,15 +99,36 @@ class _EditableUserOldServiceCardComponentState
     _ssBandwidthYesterdayUsedSizeRawController.text =
         (service?.ssBandwidthYesterdayUsedSize ?? 0).toString();
     _userLevelController.text = (service?.userLevel ?? 0).toString();
-    _nodeSpeedLimitController.text = (service?.nodeSpeedLimit ?? 0).toString();
+
+    // node_speed_limit 现在是 Mbps，直接显示
+    final speedLimitMbps = service?.nodeSpeedLimit;
+    _nodeSpeedLimitRawController.text = speedLimitMbps?.toString() ?? '';
+
     _nodeConnectorController.text = (service?.nodeConnector ?? 0).toString();
-    _autoResetDayController.text = (service?.autoResetDay ?? 0).toString();
-    _autoResetBandwidthHumanController.text = formatBytes(
-      (service?.autoResetBandwidth ?? 0).toInt(),
-    );
-    _autoResetBandwidthRawController.text = (service?.autoResetBandwidth ?? 0)
-        .toInt()
-        .toString();
+
+    // auto_reset_day 可能为 null，显示为空字符串
+    _autoResetDayController.text = service?.autoResetDay?.toString() ?? '';
+
+    // auto_reset_bandwidth 可能为 null，类型为 String?
+    final resetBandwidth = service?.autoResetBandwidth;
+    if (resetBandwidth != null && resetBandwidth.isNotEmpty) {
+      final bandwidthValue = num.tryParse(resetBandwidth);
+      if (bandwidthValue != null) {
+        _autoResetBandwidthHumanController.text = formatBytes(
+          bandwidthValue.toInt(),
+        );
+        _autoResetBandwidthRawController.text = bandwidthValue
+            .toInt()
+            .toString();
+      } else {
+        _autoResetBandwidthHumanController.text = '';
+        _autoResetBandwidthRawController.text = '';
+      }
+    } else {
+      _autoResetBandwidthHumanController.text = '';
+      _autoResetBandwidthRawController.text = '';
+    }
+
     _userLevelExpireIn = service?.userLevelExpireIn.toLocal();
   }
 
@@ -149,11 +170,20 @@ class _EditableUserOldServiceCardComponentState
             int.tryParse(_ssBandwidthYesterdayUsedSizeRawController.text) ?? 0,
         'userLevel': int.tryParse(_userLevelController.text) ?? 0,
         'userLevelExpireIn': _userLevelExpireIn,
-        'nodeSpeedLimit': int.tryParse(_nodeSpeedLimitController.text),
+        // node_speed_limit 现在是 Mbps (num 类型)，支持小数
+        'nodeSpeedLimit': _nodeSpeedLimitRawController.text.trim().isEmpty
+            ? null
+            : num.tryParse(_nodeSpeedLimitRawController.text),
         'nodeConnector': int.tryParse(_nodeConnectorController.text) ?? 0,
-        'autoResetDay': int.tryParse(_autoResetDayController.text) ?? 0,
+        // auto_reset_day 空值为 null
+        'autoResetDay': _autoResetDayController.text.trim().isEmpty
+            ? null
+            : int.tryParse(_autoResetDayController.text),
+        // auto_reset_bandwidth 空值为 null
         'autoResetBandwidth':
-            int.tryParse(_autoResetBandwidthRawController.text) ?? 0,
+            _autoResetBandwidthRawController.text.trim().isEmpty
+            ? null
+            : int.tryParse(_autoResetBandwidthRawController.text),
       };
 
       final success = await widget.onUpdate(data);
@@ -363,14 +393,14 @@ class _EditableUserOldServiceCardComponentState
           ),
           const SizedBox(height: 12),
           TextField(
-            controller: _nodeSpeedLimitController,
+            controller: _nodeSpeedLimitRawController,
             decoration: const InputDecoration(
-              labelText: '速度限制',
+              labelText: '连接限速 (Mbps)',
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.speed),
-              helperText: '单位: Mbps',
+              helperText: '单位: Mbps，支持小数，留空为不限速',
             ),
-            keyboardType: TextInputType.number,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             enabled: !_isSaving,
           ),
           const SizedBox(height: 12),
@@ -388,17 +418,17 @@ class _EditableUserOldServiceCardComponentState
           TextField(
             controller: _autoResetDayController,
             decoration: const InputDecoration(
-              labelText: '自动重置日',
+              labelText: '管理员设置重置日',
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.event_repeat),
-              helperText: '每月重置流量的日期（1-31）',
+              helperText: '每月重置流量的日期（1-31），留空为未启用',
             ),
             keyboardType: TextInputType.number,
             enabled: !_isSaving,
           ),
           const SizedBox(height: 12),
           _buildTrafficEditSection(
-            '自动重置流量',
+            '管理员设置自动重置流量值',
             _autoResetBandwidthHumanController,
             _autoResetBandwidthRawController,
             Icons.autorenew,
@@ -450,27 +480,78 @@ class _EditableUserOldServiceCardComponentState
               ? Colors.red
               : Colors.green,
         ),
-        if (service.nodeSpeedLimit != null)
-          _buildInfoRow(
-            Icons.speed,
-            '速度限制',
-            '${service.nodeSpeedLimit} Mbps',
-            valueColor: Colors.blue,
-          ),
-        _buildInfoRow(Icons.link, '连接数量', service.nodeConnector.toString()),
-        if (service.autoResetDay > 0)
+        // nodeSpeedLimit 是 String? 类型
+        if (service.nodeSpeedLimit != null &&
+            service.nodeSpeedLimit!.isNotEmpty)
+          () {
+            final speedLimit = num.tryParse(service.nodeSpeedLimit!);
+            if (speedLimit != null && speedLimit > 0) {
+              return _buildInfoRow(
+                Icons.speed,
+                '连接限速',
+                '${speedLimit.toStringAsFixed(2)} Mbps',
+                valueColor: Colors.blue,
+              );
+            } else {
+              return _buildInfoRow(
+                Icons.speed,
+                '连接限速',
+                '不限速',
+                valueColor: Colors.grey,
+              );
+            }
+          }()
+        else
+          _buildInfoRow(Icons.speed, '连接限速', '不限速', valueColor: Colors.grey),
+        _buildInfoRow(
+          Icons.link,
+          '连接数量',
+          service.nodeConnector != null
+              ? service.nodeConnector.toString()
+              : '不限制',
+          valueColor: service.nodeConnector == null ? Colors.grey : null,
+        ),
+        if (service.autoResetDay != null && service.autoResetDay! > 0)
           _buildInfoRow(
             Icons.event_repeat,
-            '自动重置日',
+            '管理员设置重置日',
             '每月${service.autoResetDay}日',
             valueColor: Colors.blue,
+          )
+        else
+          _buildInfoRow(
+            Icons.event_repeat,
+            '管理员设置重置日',
+            '未启用',
+            valueColor: Colors.grey,
           ),
-        if (service.autoResetBandwidth > 0)
+        // autoResetBandwidth 是 String? 类型
+        if (service.autoResetBandwidth != null &&
+            service.autoResetBandwidth!.isNotEmpty)
+          () {
+            final bandwidth = num.tryParse(service.autoResetBandwidth!);
+            if (bandwidth != null && bandwidth > 0) {
+              return _buildInfoRow(
+                Icons.autorenew,
+                '管理员设置自动重置流量值',
+                formatBytes(bandwidth.toInt()),
+                valueColor: Colors.blue,
+              );
+            } else {
+              return _buildInfoRow(
+                Icons.autorenew,
+                '管理员设置自动重置流量值',
+                '未设置',
+                valueColor: Colors.grey,
+              );
+            }
+          }()
+        else
           _buildInfoRow(
             Icons.autorenew,
-            '自动重置流量',
-            formatBytes(service.autoResetBandwidth.toInt()),
-            valueColor: Colors.blue,
+            '管理员设置自动重置流量值',
+            '未设置',
+            valueColor: Colors.grey,
           ),
         if (service.ssLastUsedTime != null)
           _buildInfoRow(
@@ -492,8 +573,9 @@ class _EditableUserOldServiceCardComponentState
     String label,
     TextEditingController humanController,
     TextEditingController rawController,
-    IconData icon,
-  ) {
+    IconData icon, {
+    String? helperText,
+  }) {
     return Card(
       elevation: 1,
       child: Padding(
@@ -538,11 +620,11 @@ class _EditableUserOldServiceCardComponentState
             const SizedBox(height: 8),
             TextField(
               controller: rawController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: '原始字节数',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 isDense: true,
-                helperText: '单位: Bytes',
+                helperText: helperText ?? '单位: Bytes',
               ),
               keyboardType: TextInputType.number,
               enabled: !_isSaving,

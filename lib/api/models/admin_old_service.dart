@@ -17,7 +17,7 @@ class AdminOldService {
     this.userLevel = 0,
     this.nodeConnector = 0,
     this.autoResetDay = 0,
-    this.autoResetBandwidth = 0.0,
+    this.autoResetBandwidth = '0.0',
     this.ssLastUsedTime,
     this.nodeSpeedLimit,
     this.lastCheckInTime,
@@ -54,19 +54,19 @@ class AdminOldService {
   @JsonKey(name: 'user_level_expire_in')
   final DateTime userLevelExpireIn;
   @JsonKey(includeIfNull: false, name: 'node_speed_limit')
-  final int? nodeSpeedLimit;
+  final String? nodeSpeedLimit;
 
   /// 用户在线设备数量
-  @JsonKey(name: 'node_connector')
-  final int nodeConnector;
+  @JsonKey(includeIfNull: true, name: 'node_connector')
+  final int? nodeConnector;
 
   /// 旧版 自动重置流量日
-  @JsonKey(name: 'auto_reset_day')
-  final int autoResetDay;
+  @JsonKey(includeIfNull: true, name: 'auto_reset_day')
+  final int? autoResetDay;
 
   /// 旧版 重置流量值
-  @JsonKey(name: 'auto_reset_bandwidth')
-  final num autoResetBandwidth;
+  @JsonKey(includeIfNull: true, name: 'auto_reset_bandwidth')
+  final String? autoResetBandwidth;
 
   /// 最后签到时间
   @JsonKey(includeIfNull: false, name: 'last_check_in_time')
