@@ -91,21 +91,25 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
   }
 
   Future<bool> _updateUserOldService(Map<String, dynamic> data) async {
-    final body = WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut(
-      ssUploadSize: data['ssUploadSize'] as int,
-      ssDownloadSize: data['ssDownloadSize'] as int,
-      ssBandwidthTotalSize: data['ssBandwidthTotalSize'] as int,
-      ssBandwidthYesterdayUsedSize: data['ssBandwidthYesterdayUsedSize'] as int,
-      userLevel: data['userLevel'] as int,
-      userLevelExpireIn: (data['userLevelExpireIn'] as DateTime).toUtc(),
-      nodeSpeedLimit: data['nodeSpeedLimit'] as int?,
-      nodeConnector: data['nodeConnector'] as int,
-      autoResetDay: data['autoResetDay'] as int,
-      autoResetBandwidth: data['autoResetBandwidth'] as num,
-    );
+    final body =
+        WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPatch(
+          ssUploadSize: data['ssUploadSize'] as int?,
+          ssDownloadSize: data['ssDownloadSize'] as int?,
+          ssBandwidthTotalSize: data['ssBandwidthTotalSize'] as int?,
+          ssBandwidthYesterdayUsedSize:
+              data['ssBandwidthYesterdayUsedSize'] as int?,
+          userLevel: data['userLevel'] as int?,
+          userLevelExpireIn: data['userLevelExpireIn'] != null
+              ? (data['userLevelExpireIn'] as DateTime).toUtc()
+              : null,
+          nodeSpeedLimit: data['nodeSpeedLimit'] as int?,
+          nodeConnector: data['nodeConnector'] as int?,
+          autoResetDay: data['autoResetDay'] as int?,
+          autoResetBandwidth: data['autoResetBandwidth'] as num?,
+        );
 
     final response = await _restClient.fallback
-        .putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut(
+        .patchUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPatch(
           userId: widget.userId,
           body: body,
         );

@@ -8,6 +8,36 @@ String formatBytes(int bytes) {
   return '${value.toStringAsFixed(2)} $suffix';
 }
 
+/// 解析人类可读格式的字节大小为整数
+int? parseBytes(String input) {
+  final trimmed = input.trim().toUpperCase();
+  if (trimmed.isEmpty) return null;
+
+  final regex = RegExp(r'^([\d.]+)\s*([KMGTP]?B?)$');
+  final match = regex.firstMatch(trimmed);
+  if (match == null) return null;
+
+  final value = double.tryParse(match.group(1)!);
+  if (value == null) return null;
+
+  final unit = match.group(2)!;
+  int multiplier = 1;
+
+  if (unit.startsWith('K')) {
+    multiplier = 1024;
+  } else if (unit.startsWith('M')) {
+    multiplier = 1024 * 1024;
+  } else if (unit.startsWith('G')) {
+    multiplier = 1024 * 1024 * 1024;
+  } else if (unit.startsWith('T')) {
+    multiplier = 1024 * 1024 * 1024 * 1024;
+  } else if (unit.startsWith('P')) {
+    multiplier = 1024 * 1024 * 1024 * 1024 * 1024;
+  }
+
+  return (value * multiplier).round();
+}
+
 /// 格式化日期时间
 String formatDateTime(DateTime? dateTime) {
   if (dateTime == null) return '未知';

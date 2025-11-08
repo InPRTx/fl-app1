@@ -1,13 +1,10 @@
-import 'package:fl_app1/api/models/admin_user_v.dart';
+import 'package:fl_app1/api/export.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:timezone/timezone.dart' as tz;
-
-typedef OnUpdate = Future<bool> Function(Map<String, dynamic> data);
 
 class EditableUserV2InfoCardComponent extends StatefulWidget {
   final AdminUserV? userData;
-  final OnUpdate onUpdate;
+  final Future<bool> Function(Map<String, dynamic> data) onUpdate;
 
   const EditableUserV2InfoCardComponent({
     super.key,
@@ -23,15 +20,14 @@ class EditableUserV2InfoCardComponent extends StatefulWidget {
 class _EditableUserV2InfoCardComponentState
     extends State<EditableUserV2InfoCardComponent> {
   bool _isEditing = false;
-  final Map<String, TextEditingController> _controllers = {};
-  final Map<String, bool> _boolValues = {};
-  final Map<String, DateTime> _dateTimeValues = {};
+  bool _isSaving = false;
 
-  String _formatDateTime(DateTime? dateTime) {
-    if (dateTime == null) return 'N/A';
-    final tz.TZDateTime localDateTime = tz.TZDateTime.from(dateTime, tz.local);
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
-  }
+  late final TextEditingController _emailController;
+  late final TextEditingController _userNameController;
+  late final TextEditingController _telegramIdController;
+  late bool _isEnable;
+  late bool _isEmailVerify;
+  late DateTime _userAccountExpireIn;
 
   @override
   void initState() {
@@ -40,64 +36,62 @@ class _EditableUserV2InfoCardComponentState
   }
 
   void _initializeControllers() {
-    if (widget.userData == null) return;
-
-    final user = widget.userData!;
-    _controllers['userName'] = TextEditingController(text: user.userName);
-    _controllers['email'] = TextEditingController(text: user.email);
-    _controllers['telegramId'] = TextEditingController(
-      text: user.telegramId?.toString() ?? '',
+    final user = widget.userData;
+    _emailController = TextEditingController(text: user?.email ?? '');
+    _userNameController = TextEditingController(text: user?.userName ?? '');
+    _telegramIdController = TextEditingController(
+      text: user?.telegramId?.toString() ?? '',
     );
-    _boolValues['isEnable'] = user.isEnable;
-    _boolValues['isEmailVerify'] = user.isEmailVerify;
-    _dateTimeValues['userAccountExpireIn'] =
-        tz.TZDateTime.from(user.userAccountExpireIn, tz.local);
+    _isEnable = user?.isEnable ?? true;
+    _isEmailVerify = user?.isEmailVerify ?? false;
+    // API 返回的是 UTC 时间，转换为本地时间供编辑使用
+    _userAccountExpireIn = user?.userAccountExpireIn.toLocal() ??
+        DateTime.now().add(const Duration(days: 365));
   }
 
   @override
   void dispose() {
-    for (var controller in _controllers.values) {
-      controller.dispose();
-    }
+    _emailController.dispose();
+    _userNameController.dispose();
+    _telegramIdController.dispose();
     super.dispose();
   }
 
   Future<void> _toggleEdit() async {
     if (_isEditing) {
-      final telegramText = _controllers['telegramId']!.text.trim();
-      final data = <String, dynamic>{
-        'userName': _controllers['userName']!.text,
-        'email': _controllers['email']!.text,
-        'telegramId': telegramText.isEmpty ? null : int.tryParse(telegramText),
-        'isEnable': _boolValues['isEnable']!,
-        'isEmailVerify': _boolValues['isEmailVerify']!,
-        'userAccountExpireIn': _dateTimeValues['userAccountExpireIn']!,
+      setState(() => _isSaving = true);
+
+      final data = {
+        'email': _emailController.text.trim(),
+        'userName': _userNameController.text.trim(),
+        'isEnable': _isEnable,
+        'isEmailVerify': _isEmailVerify,
+        'userAccountExpireIn': _userAccountExpireIn,
+        'telegramId': _telegramIdController.text
+            .trim()
+            .isEmpty
+            ? null
+            : int.tryParse(_telegramIdController.text.trim()),
       };
 
       final success = await widget.onUpdate(data);
 
-      if (success) {
-        setState(() => _isEditing = false);
-        if (mounted) {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+          if (success) {
+            _isEditing = false;
+          }
+        });
+
+        if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('用户信息修改成功'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
+            const SnackBar(content: Text('更新成功')),
           );
-        }
-      } else {
-        if (mounted) {
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('用户信息修改失败'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 2),
-            ),
+            const SnackBar(content: Text('更新失败')),
           );
-          _initializeControllers();
-          setState(() {});
         }
       }
     } else {
@@ -105,53 +99,65 @@ class _EditableUserV2InfoCardComponentState
     }
   }
 
-  Future<void> _selectDateTime(String field) async {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    final currentDate = _dateTimeValues[field] ?? now;
-    final pickedDate = await showDatePicker(
+  void _cancelEdit() {
+    setState(() {
+      _isEditing = false;
+      _initializeControllers();
+    });
+  }
+
+  Future<void> _selectDateTime() async {
+    final date = await showDatePicker(
       context: context,
-      initialDate: currentDate,
-      firstDate: DateTime(2020),
+      initialDate: _userAccountExpireIn,
+      firstDate: DateTime(2000),
       lastDate: DateTime(2100),
       locale: const Locale('zh', 'CN'),
     );
 
-    if (pickedDate != null && mounted) {
-      final pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(currentDate),
-      );
+    if (date == null || !mounted) return;
 
-      if (pickedTime != null) {
-        setState(() {
-          // 使用 tz.TZDateTime 创建本地时区的时间
-          _dateTimeValues[field] = tz.TZDateTime(
-            tz.local,
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
-        });
-      }
-    }
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_userAccountExpireIn),
+    );
+
+    if (time == null) return;
+
+    setState(() {
+      _userAccountExpireIn = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
+    });
+  }
+
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) return 'N/A';
+    final localDateTime = dateTime.toLocal();
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userData == null) {
+    final user = widget.userData;
+
+    if (user == null) {
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Center(
-            child: Text('暂无用户信息', style: TextStyle(color: Colors.grey[600])),
+            child: Text(
+              '暂无用户数据',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
           ),
         ),
       );
     }
-
-    final user = widget.userData!;
 
     return Card(
       elevation: 2,
@@ -160,233 +166,235 @@ class _EditableUserV2InfoCardComponentState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(Icons.person, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 8),
-                Text(
-                  '用户基本信息',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                ElevatedButton.icon(
-                  onPressed: _toggleEdit,
-                  icon: Icon(_isEditing ? Icons.check : Icons.edit, size: 18),
-                  label: Text(_isEditing ? '提交' : '修改'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _isEditing ? Colors.green : null,
-                    foregroundColor: _isEditing ? Colors.white : null,
-                  ),
-                ),
-              ],
-            ),
+            _buildHeader(),
             const Divider(height: 24),
-            _buildInfoRow('用户 ID', user.id.toString()),
-            _buildEditableInfoRow(
-              'userName',
-              '用户名',
-              _controllers['userName']!.text,
-            ),
-            _buildEditableInfoRow('email', '邮箱', _controllers['email']!.text),
-            _buildBoolInfoRow(
-              'isEmailVerify',
-              '邮箱验证',
-              _boolValues['isEmailVerify']!,
-            ),
-            _buildBoolInfoRow('isEnable', '账户状态', _boolValues['isEnable']!),
-            _buildEditableInfoRow(
-              'telegramId',
-              'Telegram ID',
-              _controllers['telegramId']!.text.isEmpty
-                  ? '未绑定'
-                  : _controllers['telegramId']!.text,
-            ),
-            _buildInfoRow('注册 IP', user.regIp?.toString() ?? 'N/A'),
-            _buildInfoRow('注册时间', _formatDateTime(user.createdAt)),
-            _buildDateTimeInfoRow(
-              'userAccountExpireIn',
-              '账户过期时间',
-              _dateTimeValues['userAccountExpireIn']!,
-            ),
+            _buildContent(user),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value, {Color? valueColor}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildHeader() {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme
+                .of(context)
+                .colorScheme
+                .primary
+                .withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            Icons.person,
+            color: Theme
+                .of(context)
+                .colorScheme
+                .primary,
+            size: 24,
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(
+          child: Text(
+            '用户基本信息',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        if (!_isEditing)
+          IconButton(
+            icon: const Icon(Icons.edit, size: 20),
+            onPressed: _toggleEdit,
+            tooltip: '编辑',
+          ),
+        if (_isEditing) ...[
+          IconButton(
+            icon: const Icon(Icons.close, size: 20),
+            onPressed: _isSaving ? null : _cancelEdit,
+            tooltip: '取消',
+          ),
+          IconButton(
+            icon: _isSaving
+                ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+                : const Icon(Icons.check, size: 20),
+            onPressed: _isSaving ? null : _toggleEdit,
+            tooltip: '保存',
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildContent(AdminUserV user) {
+    if (_isEditing) {
+      return Column(
         children: [
-          SizedBox(
-            width: 120,
+          TextField(
+            controller: _emailController,
+            decoration: const InputDecoration(
+              labelText: '邮箱',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.email),
+            ),
+            enabled: !_isSaving,
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _userNameController,
+            decoration: const InputDecoration(
+              labelText: '用户名',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.person_outline),
+            ),
+            enabled: !_isSaving,
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _telegramIdController,
+            decoration: const InputDecoration(
+              labelText: 'Telegram ID',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.telegram),
+            ),
+            keyboardType: TextInputType.number,
+            enabled: !_isSaving,
+          ),
+          const SizedBox(height: 12),
+          SwitchListTile(
+            title: const Text('账号启用状态'),
+            subtitle: Text(_isEnable ? '已启用' : '已禁用'),
+            value: _isEnable,
+            onChanged: _isSaving ? null : (value) =>
+                setState(() => _isEnable = value),
+          ),
+          SwitchListTile(
+            title: const Text('邮箱验证状态'),
+            subtitle: Text(_isEmailVerify ? '已验证' : '未验证'),
+            value: _isEmailVerify,
+            onChanged: _isSaving
+                ? null
+                : (value) => setState(() => _isEmailVerify = value),
+          ),
+          const SizedBox(height: 12),
+          InkWell(
+            onTap: _isSaving ? null : _selectDateTime,
+            child: InputDecorator(
+              decoration: const InputDecoration(
+                labelText: '账号过期时间',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.calendar_today),
+              ),
+              child: Text(
+                _formatDateTime(_userAccountExpireIn),
+                style: TextStyle(
+                  color: _userAccountExpireIn.isBefore(DateTime.now())
+                      ? Colors.red
+                      : Colors.green,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        _buildInfoRow(
+          Icons.fingerprint,
+          '用户ID',
+          user.id.toString(),
+        ),
+        _buildInfoRow(
+          Icons.email,
+          '邮箱',
+          user.email,
+        ),
+        _buildInfoRow(
+          Icons.person_outline,
+          '用户名',
+          user.userName,
+        ),
+        if (user.telegramId != null)
+          _buildInfoRow(
+            Icons.telegram,
+            'Telegram ID',
+            user.telegramId.toString(),
+          ),
+        _buildInfoRow(
+          Icons.power_settings_new,
+          '账号状态',
+          user.isEnable ? '已启用' : '已禁用',
+          valueColor: user.isEnable ? Colors.green : Colors.red,
+        ),
+        _buildInfoRow(
+          Icons.verified,
+          '邮箱验证',
+          user.isEmailVerify ? '已验证' : '未验证',
+          valueColor: user.isEmailVerify ? Colors.green : Colors.orange,
+        ),
+        _buildInfoRow(
+          Icons.calendar_today,
+          '账号过期时间',
+          _formatDateTime(user.userAccountExpireIn),
+          valueColor: user.userAccountExpireIn.toLocal().isBefore(
+              DateTime.now())
+              ? Colors.red
+              : Colors.green,
+        ),
+        _buildInfoRow(
+          Icons.access_time,
+          '创建时间',
+          _formatDateTime(user.createdAt),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon,
+      String label,
+      String value, {
+        Color? valueColor,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 2,
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[700],
                 fontWeight: FontWeight.w500,
-                color: Colors.grey,
               ),
             ),
           ),
           Expanded(
+            flex: 3,
             child: Text(
               value,
               style: TextStyle(
+                fontSize: 14,
                 color: valueColor,
-                fontWeight: valueColor != null ? FontWeight.w500 : null,
+                fontWeight: FontWeight.w600,
               ),
+              textAlign: TextAlign.right,
             ),
           ),
         ],
       ),
     );
-  }
-
-  Widget _buildEditableInfoRow(String field, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          Expanded(
-            child: _isEditing
-                ? TextField(
-                    controller: _controllers[field],
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  )
-                : Text(value),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBoolInfoRow(String field, String label, bool value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          Expanded(
-            child: _isEditing
-                ? Switch(
-                    value: _boolValues[field]!,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _boolValues[field] = newValue;
-                      });
-                    },
-                  )
-                : Text(
-                    _getDisplayText(field, value),
-                    style: TextStyle(
-                      color: _getValueColor(field, value),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDateTimeInfoRow(String field, String label, DateTime value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          Expanded(
-            child: _isEditing
-                ? InkWell(
-                    onTap: () => _selectDateTime(field),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(_formatDateTime(_dateTimeValues[field])),
-                    ),
-                  )
-                : Text(
-                    _formatDateTime(value),
-                    style: TextStyle(
-                      color: value.isBefore(tz.TZDateTime.now(tz.local))
-                          ? Colors.red
-                          : Colors.green,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getDisplayText(String field, bool value) {
-    switch (field) {
-      case 'isEmailVerify':
-        return value ? '已验证' : '未验证';
-      case 'isEnable':
-        return value ? '启用' : '禁用';
-      default:
-        return value.toString();
-    }
-  }
-
-  Color _getValueColor(String field, bool value) {
-    switch (field) {
-      case 'isEmailVerify':
-        return value ? Colors.green : Colors.orange;
-      case 'isEnable':
-        return value ? Colors.green : Colors.red;
-      default:
-        return Colors.black;
-    }
   }
 }
+
