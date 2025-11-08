@@ -1,3 +1,4 @@
+import 'package:fl_app1/store/base_url_store.dart';
 import 'package:fl_app1/store/local_time_store.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,9 @@ void main() async {
   await initializeDateFormatting();
   Intl.defaultLocale = 'zh_CN';
   tz.initializeTimeZones();
+
+  // Initialize BaseUrlStore to get saved base URL
+  await BaseUrlStore().init();
 
   // Initialize LocalTimeStore to get saved timezone
   await LocalTimeStore().init();

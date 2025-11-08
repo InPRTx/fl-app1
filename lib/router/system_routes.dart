@@ -1,4 +1,5 @@
 import 'package:fl_app1/component/layout/simple_layout_with_menu_component.dart';
+import 'package:fl_app1/page/system/debug/system_debug_base_url_page.dart';
 import 'package:fl_app1/page/system/debug/system_debug_page.dart';
 import 'package:fl_app1/page/system/debug/system_debug_view_timezone_page.dart';
 import 'package:fl_app1/page/system/settings/system_local_time_page.dart';
@@ -29,6 +30,11 @@ final RouteBase SystemShellRoute = ShellRoute(
       path: '/system/debug/view_timezone',
       name: 'system_debug_view_timezone',
       builder: (context, state) => const SystemDebugViewTimezonePage(),
+    ),
+    GoRoute(
+      path: '/system/debug/base_url',
+      name: 'system_debug_base_url',
+      builder: (context, state) => const SystemDebugBaseUrlPage(),
     ),
   ],
 );

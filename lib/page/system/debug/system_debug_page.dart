@@ -32,6 +32,16 @@ class SystemDebugPage extends StatelessWidget {
               ),
               const Divider(height: 1),
               ListTile(
+                leading: const Icon(Icons.link),
+                title: const Text('Base URL 配置'),
+                subtitle: const Text('配置 API 服务器地址'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  context.go('/system/debug/base_url');
+                },
+              ),
+              const Divider(height: 1),
+              ListTile(
                 leading: const Icon(Icons.info_outline),
                 title: const Text('系统信息'),
                 subtitle: const Text('查看系统运行信息'),
