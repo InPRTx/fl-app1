@@ -1241,6 +1241,7 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_admin_view/search_user')
   Future<GetSearchUserResult> getSearchUserApiV2GrafanaAdminViewSearchUserGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1257,6 +1258,7 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_admin_view/view_user')
   Future<GetViewUserResult> getViewUserApiV2GrafanaAdminViewViewUserGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1267,6 +1269,7 @@ abstract class FallbackClient {
   Future<GetViewUserBoughtResult>
   getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1277,6 +1280,7 @@ abstract class FallbackClient {
   Future<UserDataHistoryResponse>
   getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1286,6 +1290,7 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_view/user_traffic_log_full_ch')
   Future<void> getUserTrafficLogFullChApiV2GrafanaViewUserTrafficLogFullChGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1296,6 +1301,7 @@ abstract class FallbackClient {
   Future<void>
   getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1364,6 +1370,7 @@ abstract class FallbackClient {
   @GET('/api/v2/low_admin_api/user_v2/')
   Future<GetSearchUserResult> getUserV2ApiV2LowAdminApiUserV2Get({
     @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,

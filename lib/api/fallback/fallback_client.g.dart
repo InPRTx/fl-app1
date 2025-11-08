@@ -4372,6 +4372,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<GetSearchUserResult> getSearchUserApiV2GrafanaAdminViewSearchUserGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4379,6 +4380,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4439,6 +4441,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<GetViewUserResult> getViewUserApiV2GrafanaAdminViewViewUserGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4446,6 +4449,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4478,6 +4482,7 @@ class _FallbackClient implements FallbackClient {
   Future<GetViewUserBoughtResult>
   getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4485,6 +4490,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4517,6 +4523,7 @@ class _FallbackClient implements FallbackClient {
   Future<UserDataHistoryResponse>
   getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4524,6 +4531,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4555,6 +4563,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<void> getUserTrafficLogFullChApiV2GrafanaViewUserTrafficLogFullChGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4562,6 +4571,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4586,6 +4596,7 @@ class _FallbackClient implements FallbackClient {
   Future<void>
   getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4593,6 +4604,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4826,6 +4838,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<GetSearchUserResult> getUserV2ApiV2LowAdminApiUserV2Get({
     int? sqlStmtLimit = 3000,
+    int? sqlStmtOffset = 0,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
@@ -4833,6 +4846,7 @@ class _FallbackClient implements FallbackClient {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'sql_stmt_limit': sqlStmtLimit,
+      r'sql_stmt_offset': sqlStmtOffset,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
