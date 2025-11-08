@@ -32,16 +32,17 @@ class _EditableUserV2InfoCardComponentState
   @override
   void initState() {
     super.initState();
+    _emailController = TextEditingController();
+    _userNameController = TextEditingController();
+    _telegramIdController = TextEditingController();
     _initializeControllers();
   }
 
   void _initializeControllers() {
     final user = widget.userData;
-    _emailController = TextEditingController(text: user?.email ?? '');
-    _userNameController = TextEditingController(text: user?.userName ?? '');
-    _telegramIdController = TextEditingController(
-      text: user?.telegramId?.toString() ?? '',
-    );
+    _emailController.text = user?.email ?? '';
+    _userNameController.text = user?.userName ?? '';
+    _telegramIdController.text = user?.telegramId?.toString() ?? '';
     _isEnable = user?.isEnable ?? true;
     _isEmailVerify = user?.isEmailVerify ?? false;
     // API 返回的是 UTC 时间，转换为本地时间供编辑使用
