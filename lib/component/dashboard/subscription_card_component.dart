@@ -1,6 +1,6 @@
-import 'package:fl_app1/store/model/subscription_model.dart';
 import 'package:fl_app1/helper/clipboard_helper.dart';
 import 'package:fl_app1/helper/subscription_helper.dart';
+import 'package:fl_app1/store/model/subscription_model.dart';
 import 'package:flutter/material.dart';
 
 // 常量定义
