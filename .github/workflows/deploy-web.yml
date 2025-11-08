@@ -48,9 +48,11 @@ jobs:
       - name: Commit and push
         run: |
           cd target-repo
+          # 切换到与源仓库同名的分支（如果不存在则创建）
+          git checkout -B ${{ github.ref_name }}
           git add .
           git diff --staged --quiet || git commit -m "Deploy from branch ${{ github.ref_name }} - commit ${{ github.sha }}"
-          git push origin main || git push origin master
+          git push -f origin ${{ github.ref_name }}
 
       - name: Cleanup SSH key
         if: always()
