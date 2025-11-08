@@ -1,5 +1,4 @@
 import 'package:fl_app1/api/models/user_pay_list.dart';
-import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
@@ -21,39 +20,93 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
 
   List<UserPayList> _payRecords = [];
   bool _isLoading = false;
+  bool _isLoadingMore = false;
   String? _errorMessage;
+
+  // Paging
+  final ScrollController _scrollController = ScrollController();
+  static const int _pageLimit = 50;
+  int _offset = 0;
+  bool _hasMore = true;
 
   @override
   void initState() {
     super.initState();
-    _loadAllRecords();
+    _scrollController.addListener(_onScroll);
+    _fetchRecords(userId: null);
   }
 
   @override
   void dispose() {
     _userIdController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
-  Future<void> _loadAllRecords() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final current = _scrollController.position.pixels;
+    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+        _hasMore) {
+      final text = _userIdController.text.trim();
+      final int? userId = text.isEmpty ? null : int.tryParse(text);
+      _fetchRecords(userId: userId, isLoadMore: true);
+    }
+  }
 
-    final WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
-    result = await _restClient.fallback
+  Future<void> _fetchRecords({int? userId, bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      if (_isLoadingMore || !_hasMore) return;
+      setState(() {
+        _isLoadingMore = true;
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+        _offset = 0;
+        _hasMore = true;
+      });
+    }
+
+    final result = await _restClient.fallback
         .getUserPayListApiV2LowAdminApiUserPayListGet(
-          limit: 3000,
-          userId: null,
+      sqlStmtLimit: _pageLimit,
+      sqlStmtOffset: _offset,
+      userId: userId,
         );
 
+    if (!mounted) return;
+
     setState(() {
-      _isLoading = false;
+      if (isLoadMore) {
+        _isLoadingMore = false;
+      } else {
+        _isLoading = false;
+      }
+
       if (result.isSuccess) {
-        _payRecords = result.resultList;
+        final fetched = result.resultList;
+        if (isLoadMore) {
+          _payRecords = List.from(_payRecords)
+            ..addAll(fetched);
+        } else {
+          _payRecords = fetched;
+        }
+
+        if (fetched.length < _pageLimit) {
+          _hasMore = false;
+        } else {
+          _hasMore = true;
+          _offset += _pageLimit;
+        }
+
         if (_payRecords.isEmpty) {
-          _errorMessage = '暂无充值记录';
+          _errorMessage =
+          userId == null ? '暂无充值记录' : '该用户暂无充值记录';
         }
       } else {
         _errorMessage = result.message;
@@ -62,10 +115,15 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
     });
   }
 
+  Future<void> _loadAllRecords() async {
+    // backward-compatible wrapper
+    await _fetchRecords(userId: null);
+  }
+
   Future<void> _searchByUserId() async {
     final String userIdText = _userIdController.text.trim();
     if (userIdText.isEmpty) {
-      _loadAllRecords();
+      await _fetchRecords(userId: null);
       return;
     }
 
@@ -77,31 +135,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       });
       return;
     }
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    final WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse
-    result = await _restClient.fallback
-        .getUserPayListApiV2LowAdminApiUserPayListGet(
-          limit: 3000,
-          userId: userId,
-        );
-
-    setState(() {
-      _isLoading = false;
-      if (result.isSuccess) {
-        _payRecords = result.resultList;
-        if (_payRecords.isEmpty) {
-          _errorMessage = '该用户暂无充值记录';
-        }
-      } else {
-        _errorMessage = result.message;
-        _payRecords = <UserPayList>[];
-      }
-    });
+    await _fetchRecords(userId: userId);
   }
 
   @override
@@ -227,11 +261,28 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
     }
 
     return ListView.builder(
+      controller: _scrollController, // keep as controller
       padding: const EdgeInsets.all(16.0),
-      itemCount: _payRecords.length,
+      itemCount: _payRecords.length + 1,
       itemBuilder: (context, index) {
-        final record = _payRecords[index];
-        return _buildPayCard(record);
+        if (index < _payRecords.length) {
+          final record = _payRecords[index];
+          return _buildPayCard(record);
+        }
+        if (_isLoadingMore) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (!_hasMore) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24.0),
+            child: Center(
+                child: Text('到底了', style: TextStyle(color: Colors.grey))),
+          );
+        }
+        return const SizedBox.shrink();
       },
     );
   }

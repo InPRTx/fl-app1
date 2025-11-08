@@ -4371,16 +4371,16 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<GetSearchUserResult> getSearchUserApiV2GrafanaAdminViewSearchUserGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4440,16 +4440,16 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<GetViewUserResult> getViewUserApiV2GrafanaAdminViewViewUserGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4481,16 +4481,16 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<GetViewUserBoughtResult>
   getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4522,16 +4522,16 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<UserDataHistoryResponse>
   getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4562,16 +4562,16 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> getUserTrafficLogFullChApiV2GrafanaViewUserTrafficLogFullChGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4595,16 +4595,16 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<void>
   getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4837,16 +4837,16 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<GetSearchUserResult> getUserV2ApiV2LowAdminApiUserV2Get({
-    int? sqlStmtLimit = 3000,
     int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     String? q,
     DateTime? fromIso,
     DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'sql_stmt_limit': sqlStmtLimit,
       r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'q': q,
       r'from_iso': fromIso?.toIso8601String(),
       r'to_iso': toIso?.toIso8601String(),
@@ -4878,12 +4878,14 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
   getUserBoughtApiV2LowAdminApiUserBoughtGet({
-    int? limit = 3000,
+    int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     int? userId,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'limit': limit,
+      r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'user_id': userId,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -5048,12 +5050,14 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse>
   getUserPayListApiV2LowAdminApiUserPayListGet({
-    int? limit = 3000,
+    int? sqlStmtOffset = 0,
+    int? sqlStmtLimit = 3000,
     int? userId,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'limit': limit,
+      r'sql_stmt_offset': sqlStmtOffset,
+      r'sql_stmt_limit': sqlStmtLimit,
       r'user_id': userId,
     };
     queryParameters.removeWhere((k, v) => v == null);

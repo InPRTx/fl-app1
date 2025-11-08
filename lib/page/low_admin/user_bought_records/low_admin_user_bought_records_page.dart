@@ -18,40 +18,104 @@ class _LowAdminUserBoughtRecordsPageState
   late final RestClient _restClient = createAuthenticatedClient();
 
   bool _isLoading = false;
+  bool _isLoadingMore = false;
   List<
     WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
   >
   _boughtRecords = [];
   String? _errorMessage;
 
+  // Paging
+  final ScrollController _scrollController = ScrollController();
+  static const int _pageLimit = 50;
+  int _offset = 0;
+  bool _hasMore = true;
+
   @override
   void initState() {
     super.initState();
-    _loadUserBoughtRecords();
+    _scrollController.addListener(_onScroll);
+    _fetchRecords();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final current = _scrollController.position.pixels;
+    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+        _hasMore) {
+      _fetchRecords(isLoadMore: true);
+    }
   }
 
   Future<void> _loadUserBoughtRecords() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    // Keep backward-compatible call
+    await _fetchRecords(isLoadMore: false);
+  }
+
+  Future<void> _fetchRecords({bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      if (_isLoadingMore || !_hasMore) return;
+      setState(() {
+        _isLoadingMore = true;
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+        _offset = 0;
+        _hasMore = true;
+      });
+    }
 
     final result = await _restClient.fallback
         .getUserBoughtApiV2LowAdminApiUserBoughtGet(
-          limit: 3000,
+      sqlStmtLimit: _pageLimit,
+      sqlStmtOffset: _offset,
           userId: widget.userId,
         );
 
+    if (!mounted) return;
+
     setState(() {
-      _isLoading = false;
+      if (isLoadMore) {
+        _isLoadingMore = false;
+      } else {
+        _isLoading = false;
+      }
+
       if (result.isSuccess) {
-        _boughtRecords = result.resultList;
+        final fetched = result.resultList;
+        if (isLoadMore) {
+          _boughtRecords = List.from(_boughtRecords)
+            ..addAll(fetched);
+        } else {
+          _boughtRecords = fetched;
+        }
+
+        if (fetched.length < _pageLimit) {
+          _hasMore = false;
+        } else {
+          _hasMore = true;
+          _offset += _pageLimit;
+        }
+
         if (_boughtRecords.isEmpty) {
           _errorMessage = '该用户暂无购买记录';
         }
       } else {
         _errorMessage = result.message;
-        _boughtRecords = [];
+        if (!isLoadMore) {
+          _boughtRecords = [];
+        }
       }
     });
   }
@@ -196,11 +260,28 @@ class _LowAdminUserBoughtRecordsPageState
           : RefreshIndicator(
               onRefresh: _loadUserBoughtRecords,
               child: ListView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.all(16),
-                itemCount: _boughtRecords.length,
+                itemCount: _boughtRecords.length + 1,
                 itemBuilder: (context, index) {
-                  final record = _boughtRecords[index];
-                  return _buildBoughtCard(record);
+                  if (index < _boughtRecords.length) {
+                    final record = _boughtRecords[index];
+                    return _buildBoughtCard(record);
+                  }
+                  if (_isLoadingMore) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (!_hasMore) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24.0),
+                      child: Center(child: Text(
+                          '到底了', style: TextStyle(color: Colors.grey))),
+                    );
+                  }
+                  return const SizedBox.shrink();
                 },
               ),
             ),

@@ -1240,8 +1240,8 @@ abstract class FallbackClient {
   /// Get Search User
   @GET('/api/v2/grafana_admin_view/search_user')
   Future<GetSearchUserResult> getSearchUserApiV2GrafanaAdminViewSearchUserGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1257,8 +1257,8 @@ abstract class FallbackClient {
   /// Get View User
   @GET('/api/v2/grafana_admin_view/view_user')
   Future<GetViewUserResult> getViewUserApiV2GrafanaAdminViewViewUserGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1268,8 +1268,8 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_admin_view/view_user_bought')
   Future<GetViewUserBoughtResult>
   getViewUserBoughtApiV2GrafanaAdminViewViewUserBoughtGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1279,8 +1279,8 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_admin_view/user_data_history_ch')
   Future<UserDataHistoryResponse>
   getUserDataHistoryChApiV2GrafanaAdminViewUserDataHistoryChGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1289,8 +1289,8 @@ abstract class FallbackClient {
   /// Get User Traffic Log Full Ch
   @GET('/api/v2/grafana_view/user_traffic_log_full_ch')
   Future<void> getUserTrafficLogFullChApiV2GrafanaViewUserTrafficLogFullChGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1300,8 +1300,8 @@ abstract class FallbackClient {
   @GET('/api/v2/grafana_view/user_traffic_log_user_traffic')
   Future<void>
   getUserTrafficLogUserTrafficApiV2GrafanaViewUserTrafficLogUserTrafficGet({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1369,8 +1369,8 @@ abstract class FallbackClient {
   /// Get User V2
   @GET('/api/v2/low_admin_api/user_v2/')
   Future<GetSearchUserResult> getUserV2ApiV2LowAdminApiUserV2Get({
-    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('q') String? q,
     @Query('from_iso') DateTime? fromIso,
     @Query('to_iso') DateTime? toIso,
@@ -1382,7 +1382,8 @@ abstract class FallbackClient {
   @GET('/api/v2/low_admin_api/user_bought/')
   Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
   getUserBoughtApiV2LowAdminApiUserBoughtGet({
-    @Query('limit') int? limit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('user_id') int? userId,
   });
 
@@ -1428,7 +1429,8 @@ abstract class FallbackClient {
   @GET('/api/v2/low_admin_api/user_pay_list/')
   Future<WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse>
   getUserPayListApiV2LowAdminApiUserPayListGet({
-    @Query('limit') int? limit = 3000,
+    @Query('sql_stmt_offset') int? sqlStmtOffset = 0,
+    @Query('sql_stmt_limit') int? sqlStmtLimit = 3000,
     @Query('user_id') int? userId,
   });
 

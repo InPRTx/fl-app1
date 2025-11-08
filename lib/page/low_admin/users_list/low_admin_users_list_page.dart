@@ -22,50 +22,108 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
   >
   _users = [];
   bool _isLoading = false;
+  bool _isLoadingMore = false;
   String? _errorMessage;
+
+  // Paging
+  final ScrollController _scrollController = ScrollController();
+  static const int _pageLimit = 50;
+  int _offset = 0;
+  bool _hasMore = true;
 
   @override
   void initState() {
     super.initState();
     _searchController.text = '';
+    _scrollController.addListener(_onScroll);
     _searchUsers();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
-  Future<void> _searchUsers() async {
+  Future<void> _searchUsers({bool isLoadMore = false}) async {
     final String query = _searchController.text.trim();
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    if (isLoadMore) {
+      if (_isLoadingMore || !_hasMore) return;
+      setState(() {
+        _isLoadingMore = true;
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+        _offset = 0;
+        _hasMore = true;
+      });
+    }
 
     final GetSearchUserResult result = await _restClient.fallback
         .getUserV2ApiV2LowAdminApiUserV2Get(
           q: query.isEmpty ? null : query,
-          sqlStmtLimit: 50,
+      sqlStmtLimit: _pageLimit,
+      sqlStmtOffset: _offset,
         );
 
+    if (!mounted) return;
+
     setState(() {
-      _isLoading = false;
+      if (isLoadMore) {
+        _isLoadingMore = false;
+      } else {
+        _isLoading = false;
+      }
+
       if (result.isSuccess) {
-        _users = result.resultList;
+        final List<
+            WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+        > fetched = result.resultList;
+
+        if (isLoadMore) {
+          _users = List.from(_users)
+            ..addAll(fetched);
+        } else {
+          _users = fetched;
+        }
+
+        // If fewer items than page limit returned -> no more data
+        if (fetched.length < _pageLimit) {
+          _hasMore = false;
+        } else {
+          _hasMore = true;
+          _offset += _pageLimit;
+        }
+
         if (_users.isEmpty) {
           _errorMessage = '未找到匹配的用户';
         }
       } else {
         _errorMessage = result.message;
-        _users =
-            <
+        if (!isLoadMore) {
+          _users = <
               WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
-            >[];
+          >[];
+        }
       }
     });
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final double maxScroll = _scrollController.position.maxScrollExtent;
+    final double current = _scrollController.position.pixels;
+    // When within 200 pixels from bottom, try to load more
+    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+        _hasMore) {
+      _searchUsers(isLoadMore: true);
+    }
   }
 
   @override
@@ -196,11 +254,15 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
     }
 
     return ListView.builder(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16.0),
-      itemCount: _users.length,
+      itemCount: _users.length + 1, // extra item for footer
       itemBuilder: (context, index) {
-        final user = _users[index];
-        return _buildUserCard(user);
+        if (index < _users.length) {
+          final user = _users[index];
+          return _buildUserCard(user);
+        }
+        return _buildListFooter();
       },
     );
   }
@@ -305,7 +367,8 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
                     child: _buildInfoItem(
                       Icons.calendar_today,
                       '注册时间',
-                      dateFormat.format(user.createdAt),
+                      // API returns UTC DateTime; convert to local for display
+                      dateFormat.format(user.createdAt.toLocal()),
                     ),
                   ),
                 ],
@@ -315,6 +378,30 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildListFooter() {
+    if (_isLoadingMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (!_hasMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24.0),
+        child: Center(
+          child: Text(
+            '到底了',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
+    // When not loading more and still may have data, show nothing.
+    return const SizedBox.shrink();
   }
 
   Widget _buildInfoItem(IconData icon, String label, String value) {

@@ -24,43 +24,101 @@ class _LowAdminUserBoughtListPageState
   >
   _boughtRecords = [];
   bool _isLoading = false;
+  bool _isLoadingMore = false;
   String? _errorMessage;
+
+  // Paging
+  final ScrollController _scrollController = ScrollController();
+  static const int _pageLimit = 50;
+  int _offset = 0;
+  bool _hasMore = true;
 
   @override
   void initState() {
     super.initState();
-    _loadAllRecords();
+    _scrollController.addListener(_onScroll);
+    _fetchRecords(userId: null);
   }
 
   @override
   void dispose() {
     _userIdController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
-  Future<void> _loadAllRecords() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+  Future<void> _fetchRecords({int? userId, bool isLoadMore = false}) async {
+    final String? userIdText = _userIdController.text
+        .trim()
+        .isEmpty
+        ? null
+        : _userIdController.text.trim();
+
+    if (isLoadMore) {
+      if (_isLoadingMore || !_hasMore) return;
+      setState(() {
+        _isLoadingMore = true;
+        _errorMessage = null;
+      });
+    } else {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+        _offset = 0;
+        _hasMore = true;
+      });
+    }
+
+    final int? effectiveUserId = userId ??
+        (userIdText == null ? null : int.tryParse(userIdText));
 
     final WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
     result = await _restClient.fallback
-        .getUserBoughtApiV2LowAdminApiUserBoughtGet(limit: 3000, userId: null);
+        .getUserBoughtApiV2LowAdminApiUserBoughtGet(
+      sqlStmtLimit: _pageLimit,
+      sqlStmtOffset: _offset,
+      userId: effectiveUserId,
+    );
+
+    if (!mounted) return;
 
     setState(() {
-      _isLoading = false;
+      if (isLoadMore) {
+        _isLoadingMore = false;
+      } else {
+        _isLoading = false;
+      }
+
       if (result.isSuccess) {
-        _boughtRecords = result.resultList;
+        final fetched = result.resultList;
+        if (isLoadMore) {
+          _boughtRecords = List.from(_boughtRecords)
+            ..addAll(fetched);
+        } else {
+          _boughtRecords = fetched;
+        }
+
+        if (fetched.length < _pageLimit) {
+          _hasMore = false;
+        } else {
+          _hasMore = true;
+          _offset += _pageLimit;
+        }
+
         if (_boughtRecords.isEmpty) {
-          _errorMessage = '暂无购买记录';
+          _errorMessage = userId == null
+              ? '暂无购买记录'
+              : '该用户暂无购买记录';
         }
       } else {
         _errorMessage = result.message;
-        _boughtRecords =
-            <
+        if (!isLoadMore) {
+          _boughtRecords =
+          <
               WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
-            >[];
+          >[];
+        }
       }
     });
   }
@@ -68,7 +126,7 @@ class _LowAdminUserBoughtListPageState
   Future<void> _searchByUserId() async {
     final String userIdText = _userIdController.text.trim();
     if (userIdText.isEmpty) {
-      _loadAllRecords();
+      await _fetchRecords(userId: null);
       return;
     }
 
@@ -84,33 +142,20 @@ class _LowAdminUserBoughtListPageState
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    await _fetchRecords(userId: userId);
+  }
 
-    final WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
-    result = await _restClient.fallback
-        .getUserBoughtApiV2LowAdminApiUserBoughtGet(
-          limit: 3000,
-          userId: userId,
-        );
-
-    setState(() {
-      _isLoading = false;
-      if (result.isSuccess) {
-        _boughtRecords = result.resultList;
-        if (_boughtRecords.isEmpty) {
-          _errorMessage = '该用户暂无购买记录';
-        }
-      } else {
-        _errorMessage = result.message;
-        _boughtRecords =
-            <
-              WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
-            >[];
-      }
-    });
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final current = _scrollController.position.pixels;
+    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+        _hasMore) {
+      // Determine current filter (userId)
+      final String text = _userIdController.text.trim();
+      final int? userId = text.isEmpty ? null : int.tryParse(text);
+      _fetchRecords(userId: userId, isLoadMore: true);
+    }
   }
 
   @override
@@ -159,7 +204,7 @@ class _LowAdminUserBoughtListPageState
                     ? null
                     : () {
                         _userIdController.clear();
-                        _loadAllRecords();
+                        _fetchRecords(userId: null);
                       },
                 icon: const Icon(Icons.refresh),
                 label: const Text('全部'),
@@ -200,7 +245,7 @@ class _LowAdminUserBoughtListPageState
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: _userIdController.text.isEmpty
-                  ? _loadAllRecords
+                  ? () => _fetchRecords(userId: null)
                   : _searchByUserId,
               icon: const Icon(Icons.refresh),
               label: const Text('重试'),
@@ -236,11 +281,29 @@ class _LowAdminUserBoughtListPageState
     }
 
     return ListView.builder(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16.0),
-      itemCount: _boughtRecords.length,
+      itemCount: _boughtRecords.length + 1,
       itemBuilder: (context, index) {
-        final record = _boughtRecords[index];
-        return _buildBoughtCard(record);
+        if (index < _boughtRecords.length) {
+          final record = _boughtRecords[index];
+          return _buildBoughtCard(record);
+        }
+        // footer
+        if (_isLoadingMore) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (!_hasMore) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24.0),
+            child: Center(
+                child: Text('到底了', style: TextStyle(color: Colors.grey))),
+          );
+        }
+        return const SizedBox.shrink();
       },
     );
   }
@@ -250,8 +313,10 @@ class _LowAdminUserBoughtListPageState
     record,
   ) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
-    final isExpired =
-        record.expireAt != null && record.expireAt!.isBefore(DateTime.now());
+    // use local time for display/comparison
+    final localExpireAt = record.expireAt?.toLocal();
+    final isExpired = localExpireAt != null &&
+        localExpireAt.isBefore(DateTime.now());
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
@@ -356,7 +421,7 @@ class _LowAdminUserBoughtListPageState
                   child: _buildInfoItem(
                     Icons.calendar_today,
                     '购买时间',
-                    dateFormat.format(record.createdAt),
+                    dateFormat.format(record.createdAt.toLocal()),
                   ),
                 ),
                 if (record.expireAt != null)
@@ -364,7 +429,7 @@ class _LowAdminUserBoughtListPageState
                     child: _buildInfoItem(
                       Icons.event,
                       '过期时间',
-                      dateFormat.format(record.expireAt!),
+                      dateFormat.format(localExpireAt!),
                     ),
                   )
                 else
