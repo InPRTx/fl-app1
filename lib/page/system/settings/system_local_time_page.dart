@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:fl_app1/store/local_time_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:timezone/timezone.dart' as tz;
 
 class SystemLocalTimePage extends StatefulWidget {
   const SystemLocalTimePage({super.key});
@@ -26,6 +28,9 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
   // Store selected timezone identifier (simple string). If 'UTC', we'll display UTC time.
   String? _selectedTimeZone;
 
+  // Flag to ensure tz database initialized once.
+  bool _tzInitialized = false;
+
   // Common timezone list. It's OK to extend this list later.
   static const List<String> _timeZoneList = <String>[
     'UTC',
@@ -45,6 +50,8 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
     'Pacific/Auckland',
   ];
 
+  List<String> _allTimeZones = <String>[];
+
   @override
   void initState() {
     super.initState();
@@ -57,8 +64,40 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
     // initialize store
     await _store.init();
 
+    // initialize timezone database once
+    if (!_tzInitialized) {
+      try {
+        tzdata.initializeTimeZones();
+      } catch (_) {
+        // If initialization fails, we still continue and fall back to local/UTC DateTime.
+      }
+      _tzInitialized = true;
+    }
+
+    // Try to read full timezone list from database; fall back to common list.
+    try {
+      final Iterable<String> keys = tz.timeZoneDatabase.locations.keys;
+      _allTimeZones = keys.toList()
+        ..sort();
+      if (_allTimeZones.isEmpty) {
+        _allTimeZones = List<String>.from(_timeZoneList);
+      }
+    } catch (_) {
+      _allTimeZones = List<String>.from(_timeZoneList);
+    }
+
     _controller.text = _store.fixedTimeZone ?? '';
     _selectedTimeZone = _controller.text.isEmpty ? null : _controller.text;
+
+    // If there is a saved tz, set tz.local location now so tz APIs use it immediately
+    try {
+      final tz.Location? initLoc = _resolveLocation(_selectedTimeZone);
+      if (initLoc != null) {
+        tz.setLocalLocation(initLoc);
+      }
+    } catch (_) {
+      // ignore
+    }
 
     // start live timer
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -68,7 +107,7 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
 
     setState(() {
       _initialized = true;
-      _filteredZones = List<String>.from(_timeZoneList);
+      _filteredZones = List<String>.from(_allTimeZones);
     });
   }
 
@@ -86,9 +125,9 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
   void _onTextChanged() {
     final String input = _controller.text.trim();
     if (input.isEmpty) {
-      _filteredZones = List<String>.from(_timeZoneList);
+      _filteredZones = List<String>.from(_allTimeZones);
     } else {
-      _filteredZones = _timeZoneList
+      _filteredZones = _allTimeZones
           .where((String z) => z.toLowerCase().contains(input.toLowerCase()))
           .toList();
     }
@@ -166,8 +205,54 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
 
   Future<void> _save() async {
     final String val = _controller.text.trim();
-    await _store.setFixedTimeZone(val.isEmpty ? null : val);
-    _selectedTimeZone = val.isEmpty ? null : val;
+
+    if (val.isEmpty) {
+      await _store.setFixedTimeZone(null);
+      _selectedTimeZone = null;
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('已保存时区设置')));
+      setState(() {});
+      return;
+    }
+
+    // Validate and canonicalize timezone name using tz database if possible
+    final tz.Location? loc = _resolveLocation(val);
+    if (loc == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('时区无效，请检查输入（例如 Asia/Shanghai 或 UTC）')));
+      return;
+    }
+
+    // Find canonical name from database keys (case-insensitive match)
+    String canonical = val;
+    try {
+      final Iterable<String> keys = tz.timeZoneDatabase.locations.keys;
+      final String? match = keys.firstWhere(
+            (String k) => k.toLowerCase() == val.toLowerCase(),
+        orElse: () => '',
+      );
+      if (match != null && match.isNotEmpty) canonical = match;
+    } catch (_) {
+      // keep user input if no database available
+    }
+
+    await _store.setFixedTimeZone(canonical);
+    _selectedTimeZone = canonical;
+    // set tz package local location so tz.now() and related helpers use it
+    try {
+      final tz.Location? canonicalLoc = _resolveLocation(canonical);
+      if (canonicalLoc != null) {
+        tz.setLocalLocation(canonicalLoc);
+      }
+    } catch (_) {
+      // ignore
+    }
+    // update input to canonical name so subsequent display uses exact key
+    _controller.text = canonical;
+    _controller.selection = TextSelection.collapsed(offset: canonical.length);
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('已保存时区设置')));
@@ -184,80 +269,176 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
     setState(() {});
   }
 
-  String _formatDateTimeForSelectedZone() {
-    if (_selectedTimeZone == 'UTC') {
-      return DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toUtc());
+  tz.Location? _resolveLocation(String? tzName) {
+    if (tzName == null) return null;
+    final String name = tzName.trim();
+    if (name.isEmpty) return null;
+    if (name.toUpperCase() == 'UTC') {
+      return tz.UTC;
     }
-    // For non-UTC zones we display device local time (accurate conversion requires timezone database).
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    try {
+      return tz.getLocation(name);
+    } catch (_) {
+      // fall through to case-insensitive lookup
+    }
+
+    try {
+      final Iterable<String> keys = tz.timeZoneDatabase.locations.keys;
+      final String? match = keys.firstWhere(
+            (String k) => k.toLowerCase() == name.toLowerCase(),
+        orElse: () => '',
+      );
+      if (match != null && match.isNotEmpty) {
+        try {
+          return tz.getLocation(match);
+        } catch (_) {
+          return null;
+        }
+      }
+    } catch (_) {
+      // ignore
+    }
+
+    return null;
+  }
+
+  String _formatDateTimeForSelectedZone() {
+    if (_selectedTimeZone != null &&
+        _selectedTimeZone!.toUpperCase() == 'UTC') {
+      return DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toUtc()) +
+          ' (UTC+00:00)';
+    }
+
+    final tz.Location? loc = _resolveLocation(_selectedTimeZone);
+    if (loc != null) {
+      final tz.TZDateTime tzNow = tz.TZDateTime.from(
+          DateTime.now().toUtc(), loc);
+      final Duration offset = tzNow.timeZoneOffset;
+      final int hours = offset.inHours.abs();
+      final int minutes = offset.inMinutes.abs() % 60;
+      final String offsetStr = '${offset.isNegative ? '-' : '+'}'
+          '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(
+          2, '0')}';
+      return DateFormat('yyyy-MM-dd HH:mm:ss').format(tzNow) +
+          ' (UTC$offsetStr)';
+    }
+
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toLocal());
+  }
+
+  String _formatUtcNow() {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toUtc());
+  }
+
+  // Return offset string for selected timezone (e.g. +08:00) or empty if none
+  String _selectedZoneOffsetString() {
+    final tz.Location? loc = _resolveLocation(_selectedTimeZone);
+    if (loc == null) return '';
+    final tz.TZDateTime tzNow = tz.TZDateTime.from(DateTime.now().toUtc(), loc);
+    final Duration offset = tzNow.timeZoneOffset;
+    final int hours = offset.inHours.abs();
+    final int minutes = offset.inMinutes.abs() % 60;
+    final String offsetStr = '${offset.isNegative ? '-' : '+'}'
+        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(
+        2, '0')}';
+    return 'UTC$offsetStr';
+  }
+
+  String _deviceOffsetString() {
+    final Duration offset = DateTime
+        .now()
+        .timeZoneOffset;
+    final int hours = offset.inHours.abs();
+    final int minutes = offset.inMinutes.abs() % 60;
+    final String offsetStr = '${offset.isNegative ? '-' : '+'}'
+        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(
+        2, '0')}';
+    return 'UTC$offsetStr';
   }
 
   @override
   Widget build(BuildContext context) {
     final String deviceLocal = DateFormat('yyyy-MM-dd HH:mm:ss').format(
-        DateTime.now());
+        DateTime.now().toLocal());
+    final String utcNow = _formatUtcNow();
     final String selectedZoneLabel = _selectedTimeZone == null ||
         _selectedTimeZone!.isEmpty
         ? '（未设置，使用设备本地时区）'
         : _selectedTimeZone!;
     final String selectedZoneTime = _formatDateTimeForSelectedZone();
+    final String selectedZoneOffset = _selectedZoneOffsetString();
+    final String deviceOffset = _deviceOffsetString();
 
     return Scaffold(
       appBar: AppBar(title: const Text('本地时区设置')),
       body: _initialized
           ? Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('固定本软件使用的本地时区 (时区数据库标识，例如: UTC, Asia/Shanghai)'),
-                  const SizedBox(height: 12),
-                  CompositedTransformTarget(
-                    link: _layerLink,
-                    child: TextField(
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '时区标识',
-                        hintText: '例如: Asia/Shanghai 或 UTC',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      ElevatedButton(onPressed: _save, child: const Text('保存')),
-                      const SizedBox(width: 12),
-                      TextButton(onPressed: _clear, child: const Text('清除')),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Live display section
-                  const Text('当前时间（设备本地）'),
-                  const SizedBox(height: 6),
-                  Text(deviceLocal, style: const TextStyle(fontSize: 16)),
-                  const SizedBox(height: 12),
-
-                  const Text('使用的时区及显示时间'),
-                  const SizedBox(height: 6),
-                  Text(selectedZoneLabel, style: const TextStyle(fontSize: 14)),
-                  const SizedBox(height: 6),
-                  Text(selectedZoneTime, style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 20),
-
-                  const Text('说明'),
-                  const SizedBox(height: 6),
-                  const Text('1) 如果不设置(为空)，应用将使用设备本地时间显示。'),
-                  const SizedBox(height: 6),
-                  const Text(
-                    '2) 设置后应用会将此时区视为本地时区用于显示/比较/格式化（不改变API提交时间，仍请按 UTC 规则转换）。',
-                  ),
-                ],
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+                '固定本软件使用的本地时区 (时区数据库标识，例如: UTC, Asia/Shanghai)'),
+            const SizedBox(height: 12),
+            CompositedTransformTarget(
+              link: _layerLink,
+              child: TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '时区标识',
+                  hintText: '例如: Asia/Shanghai 或 UTC',
+                ),
               ),
-            )
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                ElevatedButton(onPressed: _save, child: const Text('保存')),
+                const SizedBox(width: 12),
+                TextButton(onPressed: _clear, child: const Text('清除')),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // Live display section
+            const Text('当前时间（设备本地）'),
+            const SizedBox(height: 6),
+            Text(deviceLocal, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 12),
+
+            const Text('当前 UTC 时间'),
+            const SizedBox(height: 6),
+            Text(utcNow, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 12),
+
+            const Text('使用的时区及显示时间'),
+            const SizedBox(height: 6),
+            Text(selectedZoneLabel, style: const TextStyle(fontSize: 14)),
+            const SizedBox(height: 6),
+            Text(selectedZoneTime, style: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 6),
+            // show offset comparison to help debug/display correctness
+            if (selectedZoneOffset.isNotEmpty) ...[
+              Text('选定时区偏移：$selectedZoneOffset'),
+              const SizedBox(height: 4),
+            ],
+            Text('设备本地偏移：$deviceOffset'),
+            const SizedBox(height: 20),
+
+            const Text('说明'),
+            const SizedBox(height: 6),
+            const Text('1) 如果不设置(为空)，应用将使用设备本地时间显示。'),
+            const SizedBox(height: 6),
+            const Text(
+              '2) 设置后应用会将此时区视为本地时区用于显示/比较/格式化（不改变API提交时间，仍请按 UTC 规则转换）。',
+            ),
+          ],
+        ),
+      )
           : const Center(child: CircularProgressIndicator()),
     );
   }
