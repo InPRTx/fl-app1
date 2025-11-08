@@ -122,6 +122,137 @@ Widget _buildDateTimeInfoRow(String field, String label, DateTime value) {
 6. ✅ 时间选择器：使用本地时间 + 中文 locale
 7. ✅ 比较时间：使用 `DateTime.now()` 会自动使用本地时间
 
+### 使用 TZDateTime 处理时区时间
+
+当需要更精确的时区处理时，使用 `timezone` 包中的 `TZDateTime`。
+
+#### 依赖包
+
+```yaml
+dependencies:
+  timezone: ^0.9.0
+  intl: ^0.18.0
+```
+
+#### 导入
+
+```dart
+import 'package:timezone/timezone.dart' as tz;
+import 'package:intl/intl.dart';
+```
+
+#### 1. 从 API 读取时间并转换为本地时区
+
+```dart
+// API 返回的 DateTime 是 UTC 时间
+// 使用 tz.TZDateTime.from 转换为本地时区
+final DateTime? apiDateTime = record.expireAt; // UTC 时间
+
+final tz.TZDateTime? localExpireAt = apiDateTime != null
+    ? tz.TZDateTime.from(apiDateTime, tz.local)
+    : null;
+```
+
+#### 2. 显示时间
+
+```dart
+// 格式化显示本地时间
+final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+
+Widget _buildTimeDisplay(DateTime? dateTime) {
+  if (dateTime == null) return const Text('N/A');
+
+  // 转换为本地时区后格式化
+  final tz.TZDateTime localTime = tz.TZDateTime.from(dateTime, tz.local);
+  return Text(dateFormat.format(localTime));
+}
+```
+
+#### 3. 时间比较
+
+```dart
+// 比较时间时，统一使用本地时区
+final tz.TZDateTime? localExpireAt = record.expireAt != null
+    ? tz.TZDateTime.from(record.expireAt!, tz.local)
+    : null;
+
+final bool isExpired = localExpireAt != null &&
+    localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
+```
+
+#### 4. 完整示例（用户购买记录列表）
+
+```dart
+Widget _buildBoughtCard(BoughtRecord record) {
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+
+  // 1. 从 API DateTime（UTC）转换为本地时区
+  final tz.TZDateTime? localExpireAt = record.expireAt != null
+      ? tz.TZDateTime.from(record.expireAt!, tz.local)
+      : null;
+
+  // 2. 使用本地时区进行时间比较
+  final bool isExpired = localExpireAt != null &&
+      localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
+
+  return Card(
+    child: Column(
+      children: [
+        // 3. 显示格式化的本地时间
+        Text('购买时间: ${dateFormat.format(
+            tz.TZDateTime.from(record.createdAt, tz.local)
+        )}'),
+
+        if (record.expireAt != null)
+          Text('过期时间: ${dateFormat.format(localExpireAt!)}'),
+
+        // 4. 根据时间状态显示不同样式
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: isExpired
+                ? Colors.red.withValues(alpha: 0.2)
+                : Colors.green.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            isExpired ? '已过期' : '有效',
+            style: TextStyle(
+              fontSize: 12,
+              color: isExpired ? Colors.red[700] : Colors.green[700],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+```
+
+#### 5. 提交数据到 API
+
+```dart
+// 如果需要从 TZDateTime 转换回 UTC 提交给 API
+Future<void> updateRecord(tz.TZDateTime localTime) async {
+  // TZDateTime 转换为 UTC DateTime
+  final DateTime utcTime = localTime.toUtc();
+
+  final body = UpdateModel(
+    expireAt: utcTime, // API 模型会自动序列化为 ISO8601 UTC 格式
+  );
+
+  await _restClient.updateRecord(body);
+}
+```
+
+#### TZDateTime 关键点总结
+
+1. ✅ 使用 `tz.TZDateTime.from(dateTime, tz.local)` 将 UTC 转为本地时区
+2. ✅ 使用 `tz.TZDateTime.now(tz.local)` 获取当前本地时区时间
+3. ✅ 时间比较时确保两个时间都在同一时区（都用 `tz.local`）
+4. ✅ 显示时间前先转换为本地时区，再格式化
+5. ✅ 提交 API 时使用 `.toUtc()` 转回 UTC 时间
+6. ✅ `tz.local` 会自动使用设备的系统时区
 
 # Flutter 开发规范
 
