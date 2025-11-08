@@ -5,6 +5,7 @@ import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LowAdminUserBoughtListPage extends StatefulWidget {
   const LowAdminUserBoughtListPage({super.key});
@@ -314,9 +315,11 @@ class _LowAdminUserBoughtListPageState
   ) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
     // use local time for display/comparison
-    final localExpireAt = record.expireAt?.toLocal();
+    final localExpireAt = record.expireAt != null
+        ? tz.TZDateTime.from(record.expireAt!, tz.local)
+        : null;
     final isExpired = localExpireAt != null &&
-        localExpireAt.isBefore(DateTime.now());
+        localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12.0),
@@ -421,7 +424,8 @@ class _LowAdminUserBoughtListPageState
                   child: _buildInfoItem(
                     Icons.calendar_today,
                     '购买时间',
-                    dateFormat.format(record.createdAt.toLocal()),
+                    dateFormat.format(
+                        tz.TZDateTime.from(record.createdAt, tz.local)),
                   ),
                 ),
                 if (record.expireAt != null)

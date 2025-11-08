@@ -1,3 +1,4 @@
+import 'package:fl_app1/store/local_time_store.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,7 +19,19 @@ void main() async {
   Intl.defaultLocale = 'zh_CN';
   tz.initializeTimeZones();
 
-  tz.setLocalLocation(tz.getLocation('Asia/Tokyo'));
+  // Initialize LocalTimeStore to get saved timezone
+  await LocalTimeStore().init();
+
+  // Get saved timezone or use default Asia/Shanghai
+  final String timeZoneName = LocalTimeStore().fixedTimeZone ?? 'Asia/Shanghai';
+
+  try {
+    final tz.Location location = tz.getLocation(timeZoneName);
+    tz.setLocalLocation(location);
+  } catch (e) {
+    // If timezone is invalid, fallback to Asia/Shanghai
+    tz.setLocalLocation(tz.getLocation('Asia/Shanghai'));
+  }
 
   // Initialize auth store
   await AuthStore().init();

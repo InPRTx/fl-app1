@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LowAdminUserPayListPage extends StatefulWidget {
   const LowAdminUserPayListPage({super.key});
@@ -444,7 +445,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
                     child: _buildInfoItem(
                       Icons.calendar_today,
                       '创建时间',
-                      dateFormat.format(record.createdAt!.toLocal()),
+                      dateFormat.format(
+                          tz.TZDateTime.from(record.createdAt!, tz.local)),
                     ),
                   )
                 else
@@ -454,7 +456,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
                     child: _buildInfoItem(
                       Icons.update,
                       '更新时间',
-                      dateFormat.format(record.updatedAt!.toLocal()),
+                      dateFormat.format(
+                          tz.TZDateTime.from(record.updatedAt!, tz.local)),
                     ),
                   )
                 else

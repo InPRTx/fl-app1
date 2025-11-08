@@ -1,6 +1,7 @@
 import 'package:fl_app1/api/models/admin_user_v.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 typedef OnUpdate = Future<bool> Function(Map<String, dynamic> data);
 
@@ -28,7 +29,7 @@ class _EditableUserV2InfoCardComponentState
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return 'N/A';
-    final localDateTime = dateTime.toLocal();
+    final tz.TZDateTime localDateTime = tz.TZDateTime.from(dateTime, tz.local);
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
   }
 
@@ -49,7 +50,8 @@ class _EditableUserV2InfoCardComponentState
     );
     _boolValues['isEnable'] = user.isEnable;
     _boolValues['isEmailVerify'] = user.isEmailVerify;
-    _dateTimeValues['userAccountExpireIn'] = user.userAccountExpireIn;
+    _dateTimeValues['userAccountExpireIn'] =
+        tz.TZDateTime.from(user.userAccountExpireIn, tz.local);
   }
 
   @override
@@ -104,7 +106,8 @@ class _EditableUserV2InfoCardComponentState
   }
 
   Future<void> _selectDateTime(String field) async {
-    final currentDate = _dateTimeValues[field] ?? DateTime.now();
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    final currentDate = _dateTimeValues[field] ?? now;
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: currentDate,
@@ -121,8 +124,9 @@ class _EditableUserV2InfoCardComponentState
 
       if (pickedTime != null) {
         setState(() {
-          // 创建本地时间 DateTime（默认就是本地时区）
-          _dateTimeValues[field] = DateTime(
+          // 使用 tz.TZDateTime 创建本地时区的时间
+          _dateTimeValues[field] = tz.TZDateTime(
+            tz.local,
             pickedDate.year,
             pickedDate.month,
             pickedDate.day,
@@ -352,7 +356,7 @@ class _EditableUserV2InfoCardComponentState
                 : Text(
                     _formatDateTime(value),
                     style: TextStyle(
-                      color: value.isBefore(DateTime.now())
+                      color: value.isBefore(tz.TZDateTime.now(tz.local))
                           ? Colors.red
                           : Colors.green,
                       fontWeight: FontWeight.w500,

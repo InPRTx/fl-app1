@@ -2,6 +2,7 @@ import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LowAdminUserBoughtRecordsPage extends StatefulWidget {
   final int userId;
@@ -294,9 +295,12 @@ class _LowAdminUserBoughtRecordsPageState
   ) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
     // 将 UTC 时间转换为本地时间进行比较和显示
-    final localExpireAt = record.expireAt?.toLocal();
+    final localExpireAt = record.expireAt != null
+        ? tz.TZDateTime.from(record.expireAt!, tz.local)
+        : null;
     final isExpired =
-        localExpireAt != null && localExpireAt.isBefore(DateTime.now());
+        localExpireAt != null &&
+            localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -405,7 +409,8 @@ class _LowAdminUserBoughtRecordsPageState
                   child: _buildInfoItem(
                     Icons.calendar_today,
                     '购买时间',
-                    dateFormat.format(record.createdAt.toLocal()),
+                    dateFormat.format(
+                        tz.TZDateTime.from(record.createdAt, tz.local)),
                   ),
                 ),
                 if (localExpireAt != null)
@@ -495,7 +500,7 @@ class _EditBoughtRecordDialogState extends State<_EditBoughtRecordDialog> {
       text: widget.record.moneyAmount,
     );
     // API 返回的是 UTC 时间，转换为本地时间供编辑使用
-    _createdAt = widget.record.createdAt.toLocal();
+    _createdAt = tz.TZDateTime.from(widget.record.createdAt, tz.local);
   }
 
   @override
@@ -524,7 +529,8 @@ class _EditBoughtRecordDialogState extends State<_EditBoughtRecordDialog> {
     if (time == null) return;
 
     setState(() {
-      _createdAt = DateTime(
+      _createdAt = tz.TZDateTime(
+        tz.local,
         date.year,
         date.month,
         date.day,

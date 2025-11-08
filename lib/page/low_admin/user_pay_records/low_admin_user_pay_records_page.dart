@@ -3,6 +3,7 @@ import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LowAdminUserPayRecordsPage extends StatefulWidget {
   final int userId;
@@ -442,7 +443,8 @@ class _LowAdminUserPayRecordsPageState
                     child: _buildInfoItem(
                       Icons.calendar_today,
                       '创建时间',
-                      dateFormat.format(record.createdAt!.toLocal()),
+                      dateFormat.format(
+                          tz.TZDateTime.from(record.createdAt!, tz.local)),
                     ),
                   )
                 else
@@ -452,7 +454,8 @@ class _LowAdminUserPayRecordsPageState
                     child: _buildInfoItem(
                       Icons.update,
                       '更新时间',
-                      dateFormat.format(record.updatedAt!.toLocal()),
+                      dateFormat.format(
+                          tz.TZDateTime.from(record.updatedAt!, tz.local)),
                     ),
                   )
                 else

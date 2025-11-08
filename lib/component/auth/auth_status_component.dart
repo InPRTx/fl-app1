@@ -1,5 +1,6 @@
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 /// Example widget showing how to use AuthStore in your app
 class AuthStatusComponent extends StatefulWidget {
@@ -107,7 +108,7 @@ class _AuthStatusComponentState extends State<AuthStatusComponent> {
   String _formatExpiry(int? exp) {
     if (exp == null) return 'N/A';
     final expTime = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-    final now = DateTime.now();
+    final now = tz.TZDateTime.now(tz.local);
     final diff = expTime.difference(now);
 
     if (diff.isNegative) {

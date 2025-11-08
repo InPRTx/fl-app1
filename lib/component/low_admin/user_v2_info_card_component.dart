@@ -1,6 +1,7 @@
 import 'package:fl_app1/api/models/admin_user_v.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class UserV2InfoCardComponent extends StatelessWidget {
   final AdminUserV? userData;
@@ -9,7 +10,7 @@ class UserV2InfoCardComponent extends StatelessWidget {
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return 'N/A';
-    final localDateTime = dateTime.toLocal();
+    final tz.TZDateTime localDateTime = tz.TZDateTime.from(dateTime, tz.local);
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
   }
 
@@ -67,7 +68,8 @@ class UserV2InfoCardComponent extends StatelessWidget {
             _buildInfoRow(
               '账户过期时间',
               _formatDateTime(user.userAccountExpireIn),
-              valueColor: user.userAccountExpireIn.isBefore(DateTime.now())
+              valueColor:
+                  user.userAccountExpireIn.isBefore(tz.TZDateTime.now(tz.local))
                   ? Colors.red
                   : Colors.green,
             ),

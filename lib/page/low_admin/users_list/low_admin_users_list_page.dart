@@ -5,6 +5,7 @@ import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LowAdminUsersListPage extends StatefulWidget {
   const LowAdminUsersListPage({super.key});
@@ -368,8 +369,9 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
                       Icons.calendar_today,
                       '注册时间',
                       // API returns UTC DateTime; convert to local for display
-                      dateFormat.format(user.createdAt.toLocal()),
-                    ),
+                      dateFormat.format(
+                        tz.TZDateTime.from(user.createdAt, tz.local),
+                      )),
                   ),
                 ],
               ),

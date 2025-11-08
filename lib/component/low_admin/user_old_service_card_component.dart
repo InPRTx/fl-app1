@@ -1,6 +1,7 @@
 import 'package:fl_app1/api/models/admin_old_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class UserOldServiceCardComponent extends StatelessWidget {
   final AdminOldService? serviceData;
@@ -9,7 +10,7 @@ class UserOldServiceCardComponent extends StatelessWidget {
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return 'N/A';
-    final localDateTime = dateTime.toLocal();
+    final tz.TZDateTime localDateTime = tz.TZDateTime.from(dateTime, tz.local);
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
   }
 
@@ -137,7 +138,8 @@ class UserOldServiceCardComponent extends StatelessWidget {
             _buildInfoRow(
               '等级过期时间',
               _formatDateTime(service.userLevelExpireIn),
-              valueColor: service.userLevelExpireIn.isBefore(DateTime.now())
+              valueColor: service.userLevelExpireIn.isBefore(
+                  tz.TZDateTime.now(tz.local))
                   ? Colors.red
                   : Colors.green,
             ),

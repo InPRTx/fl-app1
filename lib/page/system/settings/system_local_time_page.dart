@@ -87,7 +87,16 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
     }
 
     _controller.text = _store.fixedTimeZone ?? '';
-    _selectedTimeZone = _controller.text.isEmpty ? null : _controller.text;
+
+    // 如果时区标识为空，则默认设置为 Asia/Shanghai
+    if (_controller.text.isEmpty) {
+      const String defaultTimeZone = 'Asia/Shanghai';
+      await _store.setFixedTimeZone(defaultTimeZone);
+      _controller.text = defaultTimeZone;
+      _selectedTimeZone = defaultTimeZone;
+    } else {
+      _selectedTimeZone = _controller.text;
+    }
 
     // If there is a saved tz, set tz.local location now so tz APIs use it immediately
     try {
@@ -206,12 +215,26 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
   Future<void> _save() async {
     final String val = _controller.text.trim();
 
+    // 如果输入为空，设置为默认时区 Asia/Shanghai
     if (val.isEmpty) {
-      await _store.setFixedTimeZone(null);
-      _selectedTimeZone = null;
+      const String defaultTimeZone = 'Asia/Shanghai';
+      await _store.setFixedTimeZone(defaultTimeZone);
+      _selectedTimeZone = defaultTimeZone;
+      _controller.text = defaultTimeZone;
+
+      // 设置 tz package 的本地时区
+      try {
+        final tz.Location? loc = _resolveLocation(defaultTimeZone);
+        if (loc != null) {
+          tz.setLocalLocation(loc);
+        }
+      } catch (_) {
+        // ignore
+      }
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('已保存时区设置')));
+          const SnackBar(content: Text('已设置为默认时区 (Asia/Shanghai)')));
       setState(() {});
       return;
     }
@@ -260,12 +283,25 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
   }
 
   Future<void> _clear() async {
-    await _store.setFixedTimeZone(null);
-    _controller.text = '';
-    _selectedTimeZone = null;
+    // 清除时强制设置为 Asia/Shanghai
+    const String defaultTimeZone = 'Asia/Shanghai';
+    await _store.setFixedTimeZone(defaultTimeZone);
+    _controller.text = defaultTimeZone;
+    _selectedTimeZone = defaultTimeZone;
+
+    // 设置 tz package 的本地时区
+    try {
+      final tz.Location? loc = _resolveLocation(defaultTimeZone);
+      if (loc != null) {
+        tz.setLocalLocation(loc);
+      }
+    } catch (_) {
+      // ignore
+    }
+
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('已清除时区设置')));
+        const SnackBar(content: Text('已重置为默认时区 (Asia/Shanghai)')));
     setState(() {});
   }
 
@@ -398,7 +434,7 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
               children: [
                 ElevatedButton(onPressed: _save, child: const Text('保存')),
                 const SizedBox(width: 12),
-                TextButton(onPressed: _clear, child: const Text('清除')),
+                TextButton(onPressed: _clear, child: const Text('重置为默认')),
               ],
             ),
             const SizedBox(height: 20),
@@ -431,10 +467,12 @@ class _SystemLocalTimePageState extends State<SystemLocalTimePage> {
 
             const Text('说明'),
             const SizedBox(height: 6),
-            const Text('1) 如果不设置(为空)，应用将使用设备本地时间显示。'),
+            const Text('1) 默认时区为 Asia/Shanghai (东八区 UTC+08:00)。'),
+            const SizedBox(height: 6),
+            const Text('2) 点击"重置为默认"将恢复为 Asia/Shanghai 时区。'),
             const SizedBox(height: 6),
             const Text(
-              '2) 设置后应用会将此时区视为本地时区用于显示/比较/格式化（不改变API提交时间，仍请按 UTC 规则转换）。',
+              '3) 设置后应用会将此时区视为本地时区用于显示/比较/格式化（不改变API提交时间，仍请按 UTC 规则转换）。',
             ),
           ],
         ),
