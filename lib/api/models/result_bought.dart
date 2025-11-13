@@ -14,17 +14,17 @@ class ResultBought {
     required this.shopId,
     required this.shopName,
     required this.moneyAmount,
-    this.expireAt,
+    this.expiresAt,
   });
 
   factory ResultBought.fromJson(Map<String, Object?> json) =>
       _$ResultBoughtFromJson(json);
 
-  final int id;
+  final String id;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
-  @JsonKey(includeIfNull: false, name: 'expire_at')
-  final DateTime? expireAt;
+  @JsonKey(includeIfNull: false, name: 'expires_at')
+  final DateTime? expiresAt;
   @JsonKey(name: 'shop_id')
   final int shopId;
   @JsonKey(name: 'shop_name')

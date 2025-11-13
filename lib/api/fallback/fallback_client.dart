@@ -531,6 +531,10 @@ abstract class FallbackClient {
     @Query('ip_cidr') required String ipCidr,
   });
 
+  /// Post Move User Bought V1
+  @POST('/v1/admin/move_user_bought_v1')
+  Future<void> postMoveUserBoughtV1V1AdminMoveUserBoughtV1Post();
+
   /// Post Gaset
   @POST('/v1/user/gaset')
   Future<void> postGasetV1UserGasetPost();
@@ -796,10 +800,6 @@ abstract class FallbackClient {
     @Query('user_old_email') required String userOldEmail,
     @Query('user_new_email') required String userNewEmail,
   });
-
-  /// Test251016 1
-  @GET('/api/v2/admin_api/move_shop')
-  Future<void> test2510161ApiV2AdminApiMoveShopGet();
 
   /// Post Index
   @POST('/api/v2/auth/account_register/')
@@ -1387,7 +1387,7 @@ abstract class FallbackClient {
   /// 更新用户购买记录 - 需要提供所有必填字段（完全替换）.
   @PUT('/api/v2/low_admin_api/user_bought/{bought_id}')
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
-    @Path('bought_id') required int boughtId,
+    @Path('bought_id') required String boughtId,
     @Body()
     required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
   });

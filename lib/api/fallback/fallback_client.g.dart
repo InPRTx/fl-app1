@@ -1554,6 +1554,25 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
+  Future<void> postMoveUserBoughtV1V1AdminMoveUserBoughtV1Post() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/admin/move_user_bought_v1',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
   Future<void> postGasetV1UserGasetPost() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2499,25 +2518,6 @@ class _FallbackClient implements FallbackClient {
       rethrow;
     }
     return _value;
-  }
-
-  @override
-  Future<void> test2510161ApiV2AdminApiMoveShopGet() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-        _dio.options,
-        '/api/v2/admin_api/move_shop',
-        queryParameters: queryParameters,
-        data: _data,
-      )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -4921,7 +4921,7 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
-    required int boughtId,
+    required String boughtId,
     required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
   }) async {
     final _extra = <String, dynamic>{};
