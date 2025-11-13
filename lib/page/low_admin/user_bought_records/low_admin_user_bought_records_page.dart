@@ -183,16 +183,6 @@ class _LowAdminUserBoughtRecordsPageState
 
     if (result == null) return;
 
-    final boughtIdInt = int.tryParse(record.id);
-    if (boughtIdInt == null) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('无效的购买记录ID')));
-      }
-      return;
-    }
-
     // 提交前必须转换为 UTC 时间
     final body = WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel(
       shopId: result['shopId'] as int,
@@ -202,7 +192,7 @@ class _LowAdminUserBoughtRecordsPageState
 
     final response = await _restClient.fallback
         .putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut(
-          boughtId: boughtIdInt,
+      boughtId: record.id,
           body: body,
         );
 

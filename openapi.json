@@ -2455,6 +2455,22 @@
         }
       }
     },
+    "/v1/admin/move_user_bought_v1": {
+      "post": {
+        "summary": "Post Move User Bought V1",
+        "operationId": "post_move_user_bought_v1_v1_admin_move_user_bought_v1_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/user/gaset": {
       "post": {
         "summary": "Post Gaset",
@@ -4075,27 +4091,6 @@
             }
           }
         }
-      }
-    },
-    "/api/v2/admin_api/move_shop": {
-      "get": {
-        "summary": "Test251016 1",
-        "operationId": "test251016_1_api_v2_admin_api_move_shop_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ]
       }
     },
     "/api/v2/auth/account_register/": {
@@ -7945,7 +7940,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
+              "format": "uuid",
               "title": "Bought Id"
             }
           }
@@ -10723,7 +10719,8 @@
       "ResultBought": {
         "properties": {
           "id": {
-            "type": "integer",
+            "type": "string",
+            "format": "uuid",
             "title": "Id"
           },
           "created_at": {
@@ -10731,7 +10728,7 @@
             "format": "date-time",
             "title": "Created At"
           },
-          "expire_at": {
+          "expires_at": {
             "anyOf": [
               {
                 "type": "string",
@@ -10741,7 +10738,7 @@
                 "type": "null"
               }
             ],
-            "title": "Expire At"
+            "title": "Expires At"
           },
           "shop_id": {
             "type": "integer",
@@ -13502,6 +13499,7 @@
         "properties": {
           "id": {
             "type": "string",
+            "format": "uuid",
             "title": "Id"
           },
           "created_at": {
