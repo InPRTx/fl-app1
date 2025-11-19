@@ -4785,13 +4785,17 @@ class _FallbackClient implements FallbackClient {
   getUserBoughtApiV2LowAdminApiUserBoughtGet({
     int? offset = 0,
     int? limit = 3000,
-    int? userId,
+    String? q,
+    DateTime? fromIso,
+    DateTime? toIso,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'offset': offset,
       r'limit': limit,
-      r'user_id': userId,
+      r'q': q,
+      r'from_iso': fromIso?.toIso8601String(),
+      r'to_iso': toIso?.toIso8601String(),
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

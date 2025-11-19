@@ -1343,13 +1343,15 @@ abstract class FallbackClient {
 
   /// Get User Bought.
   ///
-  /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
+  /// 查询用户购买记录，可按用户ID过滤，或按ID模糊搜索.
   @GET('/api/v2/low_admin_api/user_bought/')
   Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
   getUserBoughtApiV2LowAdminApiUserBoughtGet({
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit = 3000,
-    @Query('user_id') int? userId,
+    @Query('q') String? q,
+    @Query('from_iso') DateTime? fromIso,
+    @Query('to_iso') DateTime? toIso,
   });
 
   /// Delete User Bought.
