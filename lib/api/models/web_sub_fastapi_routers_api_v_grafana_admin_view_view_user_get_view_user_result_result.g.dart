@@ -11,7 +11,7 @@ _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResultFromJso
   Map<String, dynamic> json,
 ) => WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult(
   userV2: AdminUserV.fromJson(json['user_v2'] as Map<String, dynamic>),
-  oldService: AdminOldService.fromJson(
+  oldService: AdminOldServiceOutput.fromJson(
     json['old_service'] as Map<String, dynamic>,
   ),
 );

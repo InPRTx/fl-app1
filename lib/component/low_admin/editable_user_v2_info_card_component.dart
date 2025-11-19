@@ -24,8 +24,8 @@ class _EditableUserV2InfoCardComponentState
 
   late final TextEditingController _emailController;
   late final TextEditingController _userNameController;
-  late final TextEditingController _telegramIdController;
-  late bool _isEnable;
+  late final TextEditingController _tgIdController;
+  late bool _isEnabled;
   late bool _isEmailVerify;
   late DateTime _userAccountExpireIn;
 
@@ -34,7 +34,7 @@ class _EditableUserV2InfoCardComponentState
     super.initState();
     _emailController = TextEditingController();
     _userNameController = TextEditingController();
-    _telegramIdController = TextEditingController();
+    _tgIdController = TextEditingController();
     _initializeControllers();
   }
 
@@ -42,11 +42,12 @@ class _EditableUserV2InfoCardComponentState
     final user = widget.userData;
     _emailController.text = user?.email ?? '';
     _userNameController.text = user?.userName ?? '';
-    _telegramIdController.text = user?.telegramId?.toString() ?? '';
-    _isEnable = user?.isEnable ?? true;
+    _tgIdController.text = user?.tgId?.toString() ?? '';
+    _isEnabled = user?.isEnabled ?? true;
     _isEmailVerify = user?.isEmailVerify ?? false;
     // API 返回的是 UTC 时间，转换为本地时间供编辑使用
-    _userAccountExpireIn = user?.userAccountExpireIn.toLocal() ??
+    _userAccountExpireIn =
+        user?.userAccountExpireIn.toLocal() ??
         DateTime.now().add(const Duration(days: 365));
   }
 
@@ -54,7 +55,7 @@ class _EditableUserV2InfoCardComponentState
   void dispose() {
     _emailController.dispose();
     _userNameController.dispose();
-    _telegramIdController.dispose();
+    _tgIdController.dispose();
     super.dispose();
   }
 
@@ -65,14 +66,12 @@ class _EditableUserV2InfoCardComponentState
       final data = {
         'email': _emailController.text.trim(),
         'userName': _userNameController.text.trim(),
-        'isEnable': _isEnable,
+        'isEnabled': _isEnabled,
         'isEmailVerify': _isEmailVerify,
         'userAccountExpireIn': _userAccountExpireIn,
-        'telegramId': _telegramIdController.text
-            .trim()
-            .isEmpty
+        'tgId': _tgIdController.text.trim().isEmpty
             ? null
-            : int.tryParse(_telegramIdController.text.trim()),
+            : int.tryParse(_tgIdController.text.trim()),
       };
 
       final success = await widget.onUpdate(data);
@@ -86,13 +85,13 @@ class _EditableUserV2InfoCardComponentState
         });
 
         if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('更新成功')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('更新成功')));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('更新失败')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('更新失败')));
         }
       }
     } else {
@@ -151,10 +150,7 @@ class _EditableUserV2InfoCardComponentState
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Center(
-            child: Text(
-              '暂无用户数据',
-              style: TextStyle(color: Colors.grey[600]),
-            ),
+            child: Text('暂无用户数据', style: TextStyle(color: Colors.grey[600])),
           ),
         ),
       );
@@ -182,19 +178,12 @@ class _EditableUserV2InfoCardComponentState
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Theme
-                .of(context)
-                .colorScheme
-                .primary
-                .withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             Icons.person,
-            color: Theme
-                .of(context)
-                .colorScheme
-                .primary,
+            color: Theme.of(context).colorScheme.primary,
             size: 24,
           ),
         ),
@@ -220,10 +209,10 @@ class _EditableUserV2InfoCardComponentState
           IconButton(
             icon: _isSaving
                 ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
                 : const Icon(Icons.check, size: 20),
             onPressed: _isSaving ? null : _toggleEdit,
             tooltip: '保存',
@@ -258,7 +247,7 @@ class _EditableUserV2InfoCardComponentState
           ),
           const SizedBox(height: 12),
           TextField(
-            controller: _telegramIdController,
+            controller: _tgIdController,
             decoration: const InputDecoration(
               labelText: 'Telegram ID',
               border: OutlineInputBorder(),
@@ -270,10 +259,11 @@ class _EditableUserV2InfoCardComponentState
           const SizedBox(height: 12),
           SwitchListTile(
             title: const Text('账号启用状态'),
-            subtitle: Text(_isEnable ? '已启用' : '已禁用'),
-            value: _isEnable,
-            onChanged: _isSaving ? null : (value) =>
-                setState(() => _isEnable = value),
+            subtitle: Text(_isEnabled ? '已启用' : '已禁用'),
+            value: _isEnabled,
+            onChanged: _isSaving
+                ? null
+                : (value) => setState(() => _isEnabled = value),
           ),
           SwitchListTile(
             title: const Text('邮箱验证状态'),
@@ -308,32 +298,16 @@ class _EditableUserV2InfoCardComponentState
 
     return Column(
       children: [
-        _buildInfoRow(
-          Icons.fingerprint,
-          '用户ID',
-          user.id.toString(),
-        ),
-        _buildInfoRow(
-          Icons.email,
-          '邮箱',
-          user.email,
-        ),
-        _buildInfoRow(
-          Icons.person_outline,
-          '用户名',
-          user.userName,
-        ),
-        if (user.telegramId != null)
-          _buildInfoRow(
-            Icons.telegram,
-            'Telegram ID',
-            user.telegramId.toString(),
-          ),
+        _buildInfoRow(Icons.fingerprint, '用户ID', user.id.toString()),
+        _buildInfoRow(Icons.email, '邮箱', user.email),
+        _buildInfoRow(Icons.person_outline, '用户名', user.userName),
+        if (user.tgId != null)
+          _buildInfoRow(Icons.telegram, 'Telegram ID', user.tgId.toString()),
         _buildInfoRow(
           Icons.power_settings_new,
           '账号状态',
-          user.isEnable ? '已启用' : '已禁用',
-          valueColor: user.isEnable ? Colors.green : Colors.red,
+          user.isEnabled ? '已启用' : '已禁用',
+          valueColor: user.isEnabled ? Colors.green : Colors.red,
         ),
         _buildInfoRow(
           Icons.verified,
@@ -345,8 +319,8 @@ class _EditableUserV2InfoCardComponentState
           Icons.calendar_today,
           '账号过期时间',
           _formatDateTime(user.userAccountExpireIn),
-          valueColor: user.userAccountExpireIn.toLocal().isBefore(
-              DateTime.now())
+          valueColor:
+              user.userAccountExpireIn.toLocal().isBefore(DateTime.now())
               ? Colors.red
               : Colors.green,
         ),
@@ -359,11 +333,12 @@ class _EditableUserV2InfoCardComponentState
     );
   }
 
-  Widget _buildInfoRow(IconData icon,
-      String label,
-      String value, {
-        Color? valueColor,
-      }) {
+  Widget _buildInfoRow(
+    IconData icon,
+    String label,
+    String value, {
+    Color? valueColor,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -398,4 +373,3 @@ class _EditableUserV2InfoCardComponentState
     );
   }
 }
-

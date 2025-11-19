@@ -675,30 +675,6 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<void> getUsersV1ModMuGrafanaLokiExportGet({
-    bool? isAutoTrigger = false,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'is_auto_trigger': isAutoTrigger,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-        _dio.options,
-        '/v1/mod_mu/grafana_loki_export',
-        queryParameters: queryParameters,
-        data: _data,
-      )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    await _dio.fetch<void>(_options);
-  }
-
-  @override
   Future<void> activeCheckPaylistV1ModMuActiveCheckPaylistGet({
     bool? isAutoTrigger = false,
   }) async {
@@ -982,27 +958,6 @@ class _FallbackClient implements FallbackClient {
           .compose(
         _dio.options,
         '/v1/mod_mu/clickhouse_import_user_traffic_log_total',
-        queryParameters: queryParameters,
-        data: _data,
-      )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    await _dio.fetch<void>(_options);
-  }
-
-  @override
-  Future<void> getByTokenUuidV1AuthByTokenUuidTokenUuidGet({
-    required String tokenUuid,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-        _dio.options,
-        '/v1/auth/by_token_uuid/${tokenUuid}',
         queryParameters: queryParameters,
         data: _data,
       )
@@ -1564,6 +1519,25 @@ class _FallbackClient implements FallbackClient {
           .compose(
         _dio.options,
         '/v1/admin/move_user_bought_v1',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<void> postMoveOldUserV1V1AdminMoveOldUserV1Post() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/admin/move_old_user_v1',
         queryParameters: queryParameters,
         data: _data,
       )
@@ -3399,13 +3373,9 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<UserServicesSubscribeLogAreaTimeAxisResponse>
-  userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet(
-      {
-        int? limit = 10000,
-      }) async {
+  userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet() async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'limit': limit};
-    queryParameters.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options =
@@ -4629,8 +4599,7 @@ class _FallbackClient implements FallbackClient {
   Future<ErrorResponse>
   putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut({
     required int userId,
-    required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut
-    body,
+    required AdminOldServiceInput body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4703,7 +4672,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<ErrorResponse> putUserV2ApiV2LowAdminApiUserV2UserIdPut({
     required int userId,
-    required WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPut body,
+    required AdminUserV body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4712,37 +4681,6 @@ class _FallbackClient implements FallbackClient {
     _data.addAll(body.toJson());
     final _options = _setStreamType<ErrorResponse>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
-          .compose(
-        _dio.options,
-        '/api/v2/low_admin_api/user_v2/${userId}',
-        queryParameters: queryParameters,
-        data: _data,
-      )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late ErrorResponse _value;
-    try {
-      _value = ErrorResponse.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ErrorResponse> patchUserV2ApiV2LowAdminApiUserV2UserIdPatch({
-    required int userId,
-    required ParamModelPatch body,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<ErrorResponse>(
-      Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
         '/api/v2/low_admin_api/user_v2/${userId}',

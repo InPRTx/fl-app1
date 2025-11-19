@@ -7,6 +7,8 @@ import 'package:retrofit/retrofit.dart';
 
 import '../models/account_register_params_model.dart';
 import '../models/account_reset_password_params_model.dart';
+import '../models/admin_old_service_input.dart';
+import '../models/admin_user_v.dart';
 import '../models/announcement_enum.dart';
 import '../models/announcement_response.dart';
 import '../models/announcement_update_response.dart';
@@ -33,7 +35,6 @@ import '../models/index_get_result_model.dart';
 import '../models/login_post_result_model.dart';
 import '../models/login_web_version_enum.dart';
 import '../models/node_config.dart';
-import '../models/param_model_patch.dart';
 import '../models/post_add_alive_ip_model.dart';
 import '../models/post_add_detect_log_model.dart';
 import '../models/post_func_block_ip_model.dart';
@@ -108,11 +109,9 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_us
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_param_model_put.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_param_model_put.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
 
@@ -297,12 +296,6 @@ abstract class FallbackClient {
     @Body() required PostAddDetectLogModel body,
   });
 
-  /// Get Users
-  @GET('/v1/mod_mu/grafana_loki_export')
-  Future<void> getUsersV1ModMuGrafanaLokiExportGet({
-    @Query('is_auto_trigger') bool? isAutoTrigger = false,
-  });
-
   /// Active Check Paylist.
   ///
   /// 每分钟从队列中取出数据并处理.
@@ -380,12 +373,6 @@ abstract class FallbackClient {
   Future<void>
   getClickhouseImportUserTrafficLogTotalV1ModMuClickhouseImportUserTrafficLogTotalGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
-  });
-
-  /// Get By Token Uuid
-  @GET('/v1/auth/by_token_uuid/{token_uuid}')
-  Future<void> getByTokenUuidV1AuthByTokenUuidTokenUuidGet({
-    @Path('token_uuid') required String tokenUuid,
   });
 
   /// Get Login
@@ -534,6 +521,10 @@ abstract class FallbackClient {
   /// Post Move User Bought V1
   @POST('/v1/admin/move_user_bought_v1')
   Future<void> postMoveUserBoughtV1V1AdminMoveUserBoughtV1Post();
+
+  /// Post Move Old User V1
+  @POST('/v1/admin/move_old_user_v1')
+  Future<void> postMoveOldUserV1V1AdminMoveOldUserV1Post();
 
   /// Post Gaset
   @POST('/v1/user/gaset')
@@ -1010,13 +1001,9 @@ abstract class FallbackClient {
   /// User Services Subscribe Log Area Time Axis.
   ///
   /// 获取用户订阅日志区域时间轴数据.
-  ///
-  /// [limit] - 数据条数限制.
   @GET('/api/v2/user/services/subscribe-log/area-time-axis')
   Future<UserServicesSubscribeLogAreaTimeAxisResponse>
-  userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet({
-    @Query('limit') int? limit = 10000,
-  });
+  userServicesSubscribeLogAreaTimeAxisApiV2UserServicesSubscribeLogAreaTimeAxisGet();
 
   /// User Services Subscribe Log Calendar Pie.
   ///
@@ -1313,9 +1300,7 @@ abstract class FallbackClient {
   Future<ErrorResponse>
   putUserOldServiceApiV2LowAdminApiUserOldServiceUserIdPut({
     @Path('user_id') required int userId,
-    @Body()
-    required WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut
-    body,
+    @Body() required AdminOldServiceInput body,
   });
 
   /// Get User Old Service
@@ -1333,16 +1318,7 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/user_v2/{user_id}')
   Future<ErrorResponse> putUserV2ApiV2LowAdminApiUserV2UserIdPut({
     @Path('user_id') required int userId,
-    @Body() required WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPut body,
-  });
-
-  /// Patch User V2.
-  ///
-  /// 更新用户信息 - 只更新提供的字段.
-  @PATCH('/api/v2/low_admin_api/user_v2/{user_id}')
-  Future<ErrorResponse> patchUserV2ApiV2LowAdminApiUserV2UserIdPatch({
-    @Path('user_id') required int userId,
-    @Body() required ParamModelPatch body,
+    @Body() required AdminUserV body,
   });
 
   /// Get User V2 By User Id

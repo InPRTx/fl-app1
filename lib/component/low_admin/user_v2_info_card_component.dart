@@ -59,10 +59,10 @@ class UserV2InfoCardComponent extends StatelessWidget {
             ),
             _buildInfoRow(
               '账户状态',
-              user.isEnable ? '启用' : '禁用',
-              valueColor: user.isEnable ? Colors.green : Colors.red,
+              user.isEnabled ? '启用' : '禁用',
+              valueColor: user.isEnabled ? Colors.green : Colors.red,
             ),
-            _buildInfoRow('Telegram ID', user.telegramId?.toString() ?? '未绑定'),
+            _buildInfoRow('Telegram ID', user.tgId?.toString() ?? '未绑定'),
             _buildInfoRow('注册 IP', user.regIp?.toString() ?? 'N/A'),
             _buildInfoRow('注册时间', _formatDateTime(user.createdAt)),
             _buildInfoRow(

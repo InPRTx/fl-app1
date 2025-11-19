@@ -969,44 +969,6 @@
         }
       }
     },
-    "/v1/mod_mu/grafana_loki_export": {
-      "get": {
-        "summary": "Get Users",
-        "operationId": "get_users_v1_mod_mu_grafana_loki_export_get",
-        "parameters": [
-          {
-            "name": "is_auto_trigger",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false,
-              "title": "Is Auto Trigger"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/mod_mu/active_check_paylist": {
       "get": {
         "summary": "Active Check Paylist",
@@ -1458,44 +1420,6 @@
               "type": "boolean",
               "default": false,
               "title": "Is Auto Trigger"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/auth/by_token_uuid/{token_uuid}": {
-      "get": {
-        "summary": "Get By Token Uuid",
-        "operationId": "get_by_token_uuid_v1_auth_by_token_uuid__token_uuid__get",
-        "parameters": [
-          {
-            "name": "token_uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Token Uuid"
             }
           }
         ],
@@ -2459,6 +2383,22 @@
       "post": {
         "summary": "Post Move User Bought V1",
         "operationId": "post_move_user_bought_v1_v1_admin_move_user_bought_v1_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/move_old_user_v1": {
+      "post": {
+        "summary": "Post Move Old User V1",
+        "operationId": "post_move_old_user_v1_v1_admin_move_old_user_v1_post",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -5403,25 +5343,6 @@
         "summary": "User Services Subscribe Log Area Time Axis",
         "description": "获取用户订阅日志区域时间轴数据",
         "operationId": "user_services_subscribe_log_area_time_axis_api_v2_user_services_subscribe_log_area_time_axis_get",
-        "security": [
-          {
-            "JwtAccessBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "description": "数据条数限制",
-              "default": 10000,
-              "title": "Limit"
-            },
-            "description": "数据条数限制"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -5434,26 +5355,21 @@
             }
           },
           "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
-            },
-            "description": "Forbidden"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ]
       }
     },
     "/api/v2/user/services/subscribe-log/calendar-pie": {
@@ -7520,7 +7436,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__ParamModelPut"
+                "$ref": "#/components/schemas/AdminOldService-Input"
               }
             }
           }
@@ -7607,55 +7523,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__ParamModelPut"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "summary": "Patch User V2",
-        "description": "更新用户信息 - 只更新提供的字段",
-        "operationId": "patch_user_v2_api_v2_low_admin_api_user_v2__user_id__patch",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "User Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ParamModelPatch"
+                "$ref": "#/components/schemas/AdminUserV2"
               }
             }
           }
@@ -8767,7 +8635,134 @@
         ],
         "title": "ActivityItem"
       },
-      "AdminOldService": {
+      "AdminOldService-Input": {
+        "properties": {
+          "ss_last_used_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ss Last Used Time",
+            "description": "最后使用时间 t"
+          },
+          "ss_upload_size": {
+            "type": "integer",
+            "title": "Ss Upload Size",
+            "description": "上传数量 u"
+          },
+          "ss_download_size": {
+            "type": "integer",
+            "title": "Ss Download Size",
+            "description": "下载数量 d"
+          },
+          "ss_bandwidth_total_size": {
+            "type": "integer",
+            "title": "Ss Bandwidth Total Size",
+            "description": "transfer_enable"
+          },
+          "ss_bandwidth_yesterday_used_size": {
+            "type": "integer",
+            "title": "Ss Bandwidth Yesterday Used Size",
+            "description": "昨天使用的流量数量 last_day_t",
+            "default": 0
+          },
+          "user_level": {
+            "type": "integer",
+            "title": "User Level",
+            "description": "class",
+            "default": 0
+          },
+          "user_level_expire_in": {
+            "type": "string",
+            "format": "date-time",
+            "title": "User Level Expire In",
+            "description": "等级过期时间 class_expire"
+          },
+          "node_speed_limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speed Limit"
+          },
+          "node_connector": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Connector",
+            "description": "用户在线设备数量",
+            "default": 0
+          },
+          "auto_reset_day": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auto Reset Day",
+            "description": "旧版 自动重置流量日",
+            "default": 0
+          },
+          "auto_reset_bandwidth": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auto Reset Bandwidth",
+            "description": "旧版 重置流量值",
+            "default": 0.0
+          },
+          "last_check_in_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Check In Time",
+            "description": "最后签到时间"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ss_upload_size",
+          "ss_download_size",
+          "ss_bandwidth_total_size",
+          "user_level_expire_in"
+        ],
+        "title": "AdminOldService"
+      },
+      "AdminOldService-Output": {
         "properties": {
           "ss_last_used_time": {
             "anyOf": [
@@ -8920,13 +8915,14 @@
         "properties": {
           "id": {
             "type": "integer",
-            "title": "Id"
+            "title": "Id",
+            "description": "用户ID,只读"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
             "title": "Created At",
-            "description": "注册时间"
+            "description": "注册时间,只读"
           },
           "email": {
             "type": "string",
@@ -8937,11 +8933,11 @@
             "type": "string",
             "title": "User Name"
           },
-          "is_enable": {
+          "is_enabled": {
             "type": "boolean",
-            "title": "Is Enable"
+            "title": "Is Enabled"
           },
-          "telegram_id": {
+          "tg_id": {
             "anyOf": [
               {
                 "type": "integer"
@@ -8950,7 +8946,7 @@
                 "type": "null"
               }
             ],
-            "title": "Telegram Id"
+            "title": "Tg Id"
           },
           "reg_ip": {
             "anyOf": [
@@ -8983,8 +8979,8 @@
           "created_at",
           "email",
           "user_name",
-          "is_enable",
-          "telegram_id",
+          "is_enabled",
+          "tg_id",
           "reg_ip",
           "user_account_expire_in"
         ],
@@ -10429,87 +10425,6 @@
           "data"
         ],
         "title": "POSTTrafficModel"
-      },
-      "ParamModelPatch": {
-        "properties": {
-          "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email",
-            "description": "邮箱"
-          },
-          "user_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "User Name",
-            "description": "用户名"
-          },
-          "is_enable": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Enable",
-            "description": "是否启用"
-          },
-          "telegram_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Telegram Id",
-            "description": "Telegram ID"
-          },
-          "is_email_verify": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Email Verify",
-            "description": "邮箱是否验证"
-          },
-          "user_account_expire_in": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "User Account Expire In",
-            "description": "用户账户过期时间 expire_in"
-          }
-        },
-        "type": "object",
-        "title": "ParamModelPatch",
-        "description": "PATCH 更新模型 - 只更新提供的字段"
       },
       "PostLoginOldV1ResultModel": {
         "properties": {
@@ -13435,7 +13350,7 @@
             "$ref": "#/components/schemas/AdminUserV2"
           },
           "old_service": {
-            "$ref": "#/components/schemas/AdminOldService"
+            "$ref": "#/components/schemas/AdminOldService-Output"
           }
         },
         "type": "object",
@@ -13633,7 +13548,7 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/AdminOldService"
+                "$ref": "#/components/schemas/AdminOldService-Output"
               },
               {
                 "type": "null"
@@ -13644,131 +13559,6 @@
         },
         "type": "object",
         "title": "GetUserOldServiceResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__ParamModelPut": {
-        "properties": {
-          "ss_last_used_time": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ss Last Used Time",
-            "description": "最后使用时间 t"
-          },
-          "ss_upload_size": {
-            "type": "integer",
-            "title": "Ss Upload Size",
-            "description": "上传数量 u"
-          },
-          "ss_download_size": {
-            "type": "integer",
-            "title": "Ss Download Size",
-            "description": "下载数量 d"
-          },
-          "ss_bandwidth_total_size": {
-            "type": "integer",
-            "title": "Ss Bandwidth Total Size",
-            "description": "transfer_enable"
-          },
-          "ss_bandwidth_yesterday_used_size": {
-            "type": "integer",
-            "title": "Ss Bandwidth Yesterday Used Size",
-            "description": "昨天使用的流量数量 last_day_t",
-            "default": 0
-          },
-          "user_level": {
-            "type": "integer",
-            "title": "User Level",
-            "description": "class",
-            "default": 0
-          },
-          "user_level_expire_in": {
-            "type": "string",
-            "format": "date-time",
-            "title": "User Level Expire In",
-            "description": "等级过期时间 class_expire"
-          },
-          "node_speed_limit": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Node Speed Limit"
-          },
-          "node_connector": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Node Connector",
-            "description": "用户在线设备数量"
-          },
-          "auto_reset_day": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Auto Reset Day",
-            "description": "旧版 自动重置流量日"
-          },
-          "auto_reset_bandwidth": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Auto Reset Bandwidth",
-            "description": "旧版 重置流量值"
-          },
-          "last_check_in_time": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Check In Time",
-            "description": "最后签到时间"
-          }
-        },
-        "type": "object",
-        "required": [
-          "ss_upload_size",
-          "ss_download_size",
-          "ss_bandwidth_total_size",
-          "user_level_expire_in"
-        ],
-        "title": "ParamModelPut",
-        "description": "PUT 更新模型 - 需要提供所有必填字段，可选字段可不提供"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__GetUserBoughtResponse": {
         "properties": {
@@ -13883,59 +13673,6 @@
         },
         "type": "object",
         "title": "GetUserOldServiceResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__ParamModelPut": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email",
-            "description": "邮箱"
-          },
-          "user_name": {
-            "type": "string",
-            "title": "User Name",
-            "description": "用户名"
-          },
-          "is_enable": {
-            "type": "boolean",
-            "title": "Is Enable",
-            "description": "是否启用"
-          },
-          "telegram_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Telegram Id",
-            "description": "Telegram ID"
-          },
-          "is_email_verify": {
-            "type": "boolean",
-            "title": "Is Email Verify",
-            "description": "邮箱是否验证"
-          },
-          "user_account_expire_in": {
-            "type": "string",
-            "format": "date-time",
-            "title": "User Account Expire In",
-            "description": "用户账户过期时间 expire_in"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "user_name",
-          "is_enable",
-          "is_email_verify",
-          "user_account_expire_in"
-        ],
-        "title": "ParamModelPut",
-        "description": "PUT 更新模型 - 需要提供所有必填字段，可选字段可不提供"
       },
       "web_sub3_fastapi__routers__api__v2__user__account__activity__UserAccountActivityResponse__Result": {
         "properties": {

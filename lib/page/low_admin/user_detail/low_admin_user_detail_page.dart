@@ -23,7 +23,7 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
 
   bool _isLoading = false;
   AdminUserV? _userV2Data;
-  AdminOldService? _userOldServiceData;
+  AdminOldServiceOutput? _userOldServiceData;
   AdminUserMoneyModel? _userMoneyData;
   String? _errorMessage;
 
@@ -68,13 +68,18 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
   }
 
   Future<bool> _updateUserV2(Map<String, dynamic> data) async {
-    final body = WebSubFastapiRoutersApiVLowAdminApiUserVParamModelPut(
+    if (_userV2Data == null) return false;
+
+    final body = AdminUserV(
+      id: _userV2Data!.id,
+      createdAt: _userV2Data!.createdAt,
       email: data['email'] as String,
       userName: data['userName'] as String,
-      isEnable: data['isEnable'] as bool,
+      isEnabled: data['isEnabled'] as bool,
       isEmailVerify: data['isEmailVerify'] as bool,
       userAccountExpireIn: (data['userAccountExpireIn'] as DateTime).toUtc(),
-      telegramId: data['telegramId'] as int?,
+      tgId: data['tgId'] as int?,
+      regIp: _userV2Data!.regIp,
     );
 
     final response = await _restClient.fallback
@@ -91,7 +96,7 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
   }
 
   Future<bool> _updateUserOldService(Map<String, dynamic> data) async {
-    final body = WebSubFastapiRoutersApiVLowAdminApiUserOldServiceParamModelPut(
+    final body = AdminOldServiceInput(
       ssUploadSize: data['ssUploadSize'] as int,
       ssDownloadSize: data['ssDownloadSize'] as int,
       ssBandwidthTotalSize: data['ssBandwidthTotalSize'] as int,

@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'admin_old_service.dart';
+import 'admin_old_service_output.dart';
 import 'admin_user_v.dart';
 
 part 'web_sub_fastapi_routers_api_v_grafana_admin_view_view_user_get_view_user_result_result.g.dart';
@@ -26,7 +26,7 @@ class WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResult {
   @JsonKey(name: 'user_v2')
   final AdminUserV userV2;
   @JsonKey(name: 'old_service')
-  final AdminOldService oldService;
+  final AdminOldServiceOutput oldService;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVGrafanaAdminViewViewUserGetViewUserResultResultToJson(

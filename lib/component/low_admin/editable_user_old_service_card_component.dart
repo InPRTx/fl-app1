@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EditableUserOldServiceCardComponent extends StatefulWidget {
-  final AdminOldService? serviceData;
+  final AdminOldServiceOutput? serviceData;
   final Future<bool> Function(Map<String, dynamic> data) onUpdate;
 
   const EditableUserOldServiceCardComponent({
@@ -328,7 +328,7 @@ class _EditableUserOldServiceCardComponentState
     );
   }
 
-  Widget _buildContent(AdminOldService service) {
+  Widget _buildContent(AdminOldServiceOutput service) {
     if (_isEditing) {
       return Column(
         children: [
