@@ -1,6 +1,7 @@
 import 'package:fl_app1/page/low_admin/home/low_admin_home_page.dart';
 import 'package:fl_app1/page/low_admin/low_admin_layout.dart';
 import 'package:fl_app1/page/low_admin/old_service_shop_list/low_admin_old_service_shop_list_page.dart';
+import 'package:fl_app1/page/low_admin/ticket_detail/low_admin_ticket_detail_page.dart';
 import 'package:fl_app1/page/low_admin/ticket_list/low_admin_ticket_list_page.dart';
 import 'package:fl_app1/page/low_admin/user_bought_list/low_admin_user_bought_list_page.dart';
 import 'package:fl_app1/page/low_admin/user_detail/low_admin_user_detail_page.dart';
@@ -55,6 +56,18 @@ final RouteBase lowAdminShellRoute = ShellRoute(
       builder: (context, state) => const LowAdminTicketListPage(),
     ),
     GoRoute(
+      path: '/low_admin/ticket/:id',
+      name: 'low_admin_ticket_detail',
+      builder: (context, state) {
+        final idStr = state.pathParameters['id'];
+        final id = int.tryParse(idStr?.toString() ?? '');
+        if (id == null) {
+          return const Scaffold(body: Center(child: Text('invalid ticket id')));
+        }
+        return LowAdminTicketDetailPage(ticketId: id);
+      },
+    ),
+    GoRoute(
       path: '/low_admin/settings',
       name: 'low_admin_settings',
       builder: (context, state) {
@@ -88,6 +101,7 @@ int _selectedIndexForLocation(String location) {
   if (location.startsWith('/low_admin/user_bought')) return 2;
   if (location.startsWith('/low_admin/user_pay_list')) return 3;
   if (location.startsWith('/low_admin/old_service_shop')) return 4;
+  // Treat ticket detail pages as part of the Ticket section
   if (location.startsWith('/low_admin/ticket')) return 5;
   if (location.startsWith('/low_admin/settings')) return 6;
   // exact /low_admin or others under low_admin default to 0
