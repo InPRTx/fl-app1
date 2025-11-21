@@ -16,13 +16,14 @@ class LowAdminUserPayListPage extends StatefulWidget {
 }
 
 class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
-  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _queryController = TextEditingController();
   late final RestClient _restClient = createAuthenticatedClient();
 
   List<UserPayList> _payRecords = [];
   bool _isLoading = false;
   bool _isLoadingMore = false;
   String? _errorMessage;
+  String? _queryString;
 
   // Paging
   final ScrollController _scrollController = ScrollController();
@@ -34,30 +35,57 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _fetchRecords(userId: null);
+    // 延迟读取URL参数，确保GoRouter已经初始化
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadQueryFromUrl();
+    });
+  }
+
+  void _loadQueryFromUrl() {
+    final uri = GoRouterState
+        .of(context)
+        .uri;
+    final qParam = uri.queryParameters['q'];
+    if (qParam != null && qParam.isNotEmpty) {
+      _queryController.text = qParam;
+      setState(() {
+        _queryString = qParam;
+      });
+      _fetchRecords();
+    } else {
+      _fetchRecords();
+    }
   }
 
   @override
   void dispose() {
-    _userIdController.dispose();
+    _queryController.dispose();
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _applyQuery() {
+    final text = _queryController.text.trim();
+    setState(() {
+      _queryString = text.isEmpty ? null : text;
+    });
+    _fetchRecords();
   }
 
   void _onScroll() {
     if (!_scrollController.hasClients) return;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final current = _scrollController.position.pixels;
-    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+    if (current >= (maxScroll - 200) &&
+        !_isLoading &&
+        !_isLoadingMore &&
         _hasMore) {
-      final text = _userIdController.text.trim();
-      final int? userId = text.isEmpty ? null : int.tryParse(text);
-      _fetchRecords(userId: userId, isLoadMore: true);
+      _fetchRecords(isLoadMore: true);
     }
   }
 
-  Future<void> _fetchRecords({int? userId, bool isLoadMore = false}) async {
+  Future<void> _fetchRecords({bool isLoadMore = false}) async {
     if (isLoadMore) {
       if (_isLoadingMore || !_hasMore) return;
       setState(() {
@@ -77,8 +105,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
         .getUserPayListApiV2LowAdminApiUserPayListGet(
       limit: _pageLimit,
       offset: _offset,
-      userId: userId,
-        );
+      q: _queryString,
+    );
 
     if (!mounted) return;
 
@@ -107,36 +135,15 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
 
         if (_payRecords.isEmpty) {
           _errorMessage =
-          userId == null ? '暂无充值记录' : '该用户暂无充值记录';
+          _queryString == null ? '暂无充值记录' : '该用户暂无充值记录';
         }
       } else {
         _errorMessage = result.message;
-        _payRecords = <UserPayList>[];
+        if (!isLoadMore) {
+          _payRecords = <UserPayList>[];
+        }
       }
     });
-  }
-
-  Future<void> _loadAllRecords() async {
-    // backward-compatible wrapper
-    await _fetchRecords(userId: null);
-  }
-
-  Future<void> _searchByUserId() async {
-    final String userIdText = _userIdController.text.trim();
-    if (userIdText.isEmpty) {
-      await _fetchRecords(userId: null);
-      return;
-    }
-
-    final int? userId = int.tryParse(userIdText);
-    if (userId == null) {
-      setState(() {
-        _errorMessage = '请输入有效的用户ID';
-        _payRecords = <UserPayList>[];
-      });
-      return;
-    }
-    await _fetchRecords(userId: userId);
   }
 
   Future<void> _confirmFinishPay(UserPayList record) async {
@@ -196,9 +203,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       );
 
       // 刷新列表
-      final text = _userIdController.text.trim();
-      final int? userId = text.isEmpty ? null : int.tryParse(text);
-      await _fetchRecords(userId: userId);
+      await _fetchRecords();
     } else {
       messenger.showSnackBar(
         SnackBar(
@@ -212,7 +217,6 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ShellRoute provides LowAdminLayout (menu). Return only the page content.
     return Column(
       children: [
         Padding(
@@ -221,24 +225,24 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: _userIdController,
+                  controller: _queryController,
                   decoration: InputDecoration(
-                    labelText: '用户ID',
-                    hintText: '输入用户ID搜索，留空查询所有记录',
-                    prefixIcon: const Icon(Icons.person_search),
-                    suffixIcon: _userIdController.text.isNotEmpty
+                    labelText: '查询参数 (q)',
+                    hintText: '例如: user_id:123 或留空查询所有',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _queryController.text.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear),
                             onPressed: () {
-                              _userIdController.clear();
-                              setState(() {});
+                              _queryController.clear();
+                              _applyQuery();
                             },
                           )
                         : null,
                     border: const OutlineInputBorder(),
+                    helperText: '支持格式: user_id:123',
                   ),
-                  keyboardType: TextInputType.number,
-                  onSubmitted: (_) => _searchByUserId(),
+                  onSubmitted: (_) => _applyQuery(),
                   onChanged: (value) {
                     setState(() {});
                   },
@@ -246,20 +250,17 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
               ),
               const SizedBox(width: 8),
               ElevatedButton.icon(
-                onPressed: _isLoading ? null : _searchByUserId,
-                icon: const Icon(Icons.search),
-                label: const Text('搜索'),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        _userIdController.clear();
-                        _loadAllRecords();
-                      },
-                icon: const Icon(Icons.refresh),
-                label: const Text('全部'),
+                onPressed: _applyQuery,
+                icon: Icon(_queryController.text
+                    .trim()
+                    .isEmpty
+                    ? Icons.refresh
+                    : Icons.search),
+                label: Text(_queryController.text
+                    .trim()
+                    .isEmpty
+                    ? '全部'
+                    : '搜索'),
               ),
             ],
           ),
@@ -296,9 +297,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: _userIdController.text.isEmpty
-                  ? _loadAllRecords
-                  : _searchByUserId,
+              onPressed: _fetchRecords,
               icon: const Icon(Icons.refresh),
               label: const Text('重试'),
             ),
@@ -324,7 +323,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              '输入用户ID搜索指定用户的充值记录',
+              '输入查询参数搜索，支持格式: user_id:123',
               style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             ),
           ],
@@ -332,30 +331,33 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       );
     }
 
-    return ListView.builder(
-      controller: _scrollController, // keep as controller
-      padding: const EdgeInsets.all(16.0),
-      itemCount: _payRecords.length + 1,
-      itemBuilder: (context, index) {
-        if (index < _payRecords.length) {
-          final record = _payRecords[index];
-          return _buildPayCard(record);
-        }
-        if (_isLoadingMore) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        if (!_hasMore) {
-          return const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24.0),
-            child: Center(
-                child: Text('到底了', style: TextStyle(color: Colors.grey))),
-          );
-        }
-        return const SizedBox.shrink();
-      },
+    return RefreshIndicator(
+      onRefresh: _fetchRecords,
+      child: ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16.0),
+        itemCount: _payRecords.length + 1,
+        itemBuilder: (context, index) {
+          if (index < _payRecords.length) {
+            final record = _payRecords[index];
+            return _buildPayCard(record);
+          }
+          if (_isLoadingMore) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          if (!_hasMore) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.0),
+              child: Center(
+                  child: Text('到底了', style: TextStyle(color: Colors.grey))),
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 

@@ -55,22 +55,6 @@
         }
       }
     },
-    "/v1/version_db": {
-      "get": {
-        "summary": "Get Db Version",
-        "operationId": "get_db_version_v1_version_db_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/emby_function": {
       "get": {
         "summary": "Emby Function",
@@ -181,7 +165,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string"
+                  "type": "integer"
                 },
                 {
                   "type": "null"
@@ -2379,38 +2363,6 @@
         }
       }
     },
-    "/v1/admin/move_user_bought_v1": {
-      "post": {
-        "summary": "Post Move User Bought V1",
-        "operationId": "post_move_user_bought_v1_v1_admin_move_user_bought_v1_post",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/admin/move_old_user_v1": {
-      "post": {
-        "summary": "Post Move Old User V1",
-        "operationId": "post_move_old_user_v1_v1_admin_move_old_user_v1_post",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/user/gaset": {
       "post": {
         "summary": "Post Gaset",
@@ -2578,7 +2530,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2674,7 +2626,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2822,7 +2774,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2885,6 +2837,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Post Buy Pre V1 User Buy Pre Post"
                 }
@@ -2905,6 +2858,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Post Buy Pre V1 User Buy Post"
                 }
@@ -2988,7 +2942,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum",
               "default": "json"
             }
           },
@@ -3042,7 +2996,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Body_delete_bought_v1_user_bought_delete"
+                "$ref": "#/components/schemas/fastapi___compat__v2__Body_delete_bought_v1_user_bought_delete"
               }
             }
           }
@@ -7420,6 +7374,11 @@
         "summary": "Put User Old Service",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_old_service_api_v2_low_admin_api_user_old_service__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7467,6 +7426,11 @@
       "get": {
         "summary": "Get User Old Service",
         "operationId": "get_user_old_service_api_v2_low_admin_api_user_old_service__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7507,6 +7471,11 @@
         "summary": "Put User V2",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_v2_api_v2_low_admin_api_user_v2__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7554,6 +7523,11 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_v2__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7593,6 +7567,11 @@
       "get": {
         "summary": "Get User V2",
         "operationId": "get_user_v2_api_v2_low_admin_api_user_v2__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -7695,23 +7674,62 @@
     "/api/v2/low_admin_api/user_bought/": {
       "get": {
         "summary": "Get User Bought",
-        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "description": "查询用户购买记录，可按用户ID过滤，或按ID模糊搜索",
         "operationId": "get_user_bought_api_v2_low_admin_api_user_bought__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
-            "name": "user_id",
+            "name": "q",
             "in": "query",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
-              "title": "User Id"
+              "title": "Q"
+            }
+          },
+          {
+            "name": "from_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Iso"
+            }
+          },
+          {
+            "name": "to_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Iso"
             }
           },
           {
@@ -7720,6 +7738,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Offset"
             }
@@ -7730,6 +7749,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
               "default": 3000,
               "title": "Limit"
             }
@@ -7764,6 +7785,11 @@
         "summary": "Delete User Bought",
         "description": "删除用户购买记录",
         "operationId": "delete_user_bought_api_v2_low_admin_api_user_bought__bought_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "bought_id",
@@ -7802,6 +7828,11 @@
         "summary": "Put User Bought",
         "description": "更新用户购买记录 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_bought_api_v2_low_admin_api_user_bought__bought_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "bought_id",
@@ -7852,6 +7883,11 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_money__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7891,6 +7927,11 @@
       "post": {
         "summary": "Post User Money Money Recharge It",
         "operationId": "post_user_money_money_recharge_it_api_v2_low_admin_api_user_money_money_recharge_it__user_id___post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7941,21 +7982,60 @@
         "summary": "Get User Pay List",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "get_user_pay_list_api_v2_low_admin_api_user_pay_list__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
-            "name": "user_id",
+            "name": "q",
             "in": "query",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "type": "integer"
+                  "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
-              "title": "User Id"
+              "title": "Q"
+            }
+          },
+          {
+            "name": "from_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Iso"
+            }
+          },
+          {
+            "name": "to_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Iso"
             }
           },
           {
@@ -7964,6 +8044,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Offset"
             }
@@ -7974,6 +8055,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
               "default": 3000,
               "title": "Limit"
             }
@@ -8008,6 +8091,11 @@
         "summary": "Delete User Pay List",
         "description": "删除充值记录",
         "operationId": "delete_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8047,6 +8135,11 @@
         "summary": "Put User Pay List",
         "description": "更新用户购买记录",
         "operationId": "put_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8097,6 +8190,11 @@
       "post": {
         "summary": "Admin Notify",
         "operationId": "admin_notify_api_v2_low_admin_api_user_pay_list__user_pay_list_id__is_finish_notify_post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8109,6 +8207,419 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/old_service_shop/{shop_id}": {
+      "put": {
+        "summary": "Put Old Service Shop",
+        "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "put_old_service_shop_api_v2_low_admin_api_old_service_shop__shop_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "shop_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Shop Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OldServiceShop-Input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Old Service Shop By Shop Id",
+        "operationId": "get_old_service_shop_by_shop_id_api_v2_low_admin_api_old_service_shop__shop_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "shop_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Shop Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOldServiceShopResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/old_service_shop/": {
+      "get": {
+        "summary": "Get Old Service Shop",
+        "operationId": "get_old_service_shop_api_v2_low_admin_api_old_service_shop__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "from_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Iso"
+            }
+          },
+          {
+            "name": "to_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Iso"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
+              "default": 3000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOldServiceShopListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/ticket/": {
+      "get": {
+        "summary": "Get Ticket",
+        "description": "管理端：工单列表（支持 GrafanaParamsModel 的通用筛选）\n搜索支持 q 中的命令参数：id:, user_id:, status: 以及模糊搜索\n返回 DB2M.T2.UserTicketView 列表（已封装为 Pydantic model）",
+        "operationId": "get_ticket_api_v2_low_admin_api_ticket__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "from_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Iso"
+            }
+          },
+          {
+            "name": "to_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Iso"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
+              "default": 3000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTicketListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/ticket/{ticket_id}": {
+      "get": {
+        "summary": "Get Ticket Detail",
+        "operationId": "get_ticket_detail_api_v2_low_admin_api_ticket__ticket_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticket_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Ticket Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTicketDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/ticket/{ticket_id}/reply": {
+      "post": {
+        "summary": "Post Ticket Reply",
+        "description": "管理端回复工单：插入一条 UserTicketMessage，并可选择更新工单状态\n注意：此接口未进行管理员鉴权，调用方需保证权限（低权限 API 目录约定）",
+        "operationId": "post_ticket_reply_api_v2_low_admin_api_ticket__ticket_id__reply_post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticket_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Ticket Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyParams"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -9135,19 +9646,6 @@
         ],
         "title": "AuthRegisterResponse"
       },
-      "Body_delete_bought_v1_user_bought_delete": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "Body_delete_bought_v1_user_bought_delete"
-      },
       "CaptchaKeyModel": {
         "properties": {
           "is_success": {
@@ -9500,14 +9998,6 @@
         "type": "object",
         "title": "ErrorResponse"
       },
-      "FormalEnum": {
-        "type": "string",
-        "enum": [
-          "json"
-        ],
-        "const": "json",
-        "title": "FormalEnum"
-      },
       "GetCsrfTokenResult": {
         "properties": {
           "is_success": {
@@ -9599,6 +10089,60 @@
         ],
         "title": "GetOldServiceResultModel"
       },
+      "GetOldServiceShopListResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/OldServiceShop-Output"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetOldServiceShopListResponse"
+      },
+      "GetOldServiceShopResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OldServiceShop-Output"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "管理员用户信息"
+          }
+        },
+        "type": "object",
+        "title": "GetOldServiceShopResponse"
+      },
       "GetSearchUserResult": {
         "properties": {
           "is_success": {
@@ -9640,7 +10184,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/OldServiceShop"
+              "$ref": "#/components/schemas/OldServiceShop-Output"
             },
             "type": "array",
             "title": "Result List",
@@ -9650,6 +10194,60 @@
         },
         "type": "object",
         "title": "GetServiceOldShopResult"
+      },
+      "GetTicketDetailResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserTicketView"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "工单详情"
+          }
+        },
+        "type": "object",
+        "title": "GetTicketDetailResponse"
+      },
+      "GetTicketListResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/UserTicket"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "工单视图列表",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetTicketListResponse"
       },
       "GetUserMoneyResponse": {
         "properties": {
@@ -9881,6 +10479,46 @@
           "v2"
         ],
         "title": "LoginWebVersionEnum"
+      },
+      "Messages": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "ticket_id": {
+            "type": "integer",
+            "title": "Ticket Id"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "ticket_id",
+          "user_id",
+          "content"
+        ],
+        "title": "Messages"
       },
       "NodeConfig": {
         "properties": {
@@ -10136,7 +10774,169 @@
         ],
         "title": "OldServiceInfo"
       },
-      "OldServiceShop": {
+      "OldServiceShop-Input": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop Name"
+          },
+          "shop_group_id": {
+            "type": "integer",
+            "title": "Shop Group Id",
+            "default": 0
+          },
+          "shop_type": {
+            "$ref": "#/components/schemas/ShopTypeEnum",
+            "default": "main_package"
+          },
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount"
+          },
+          "ss_bandwidth_total_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ss Bandwidth Total Size",
+            "description": "流量（字节）"
+          },
+          "user_level": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Level",
+            "description": "等级"
+          },
+          "user_level_duration": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "duration"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Level Duration",
+            "description": "等级有效期天数"
+          },
+          "account_validity_duration": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "duration"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Validity Duration",
+            "description": "账户有效期天数"
+          },
+          "ss_bandwidth_reset_interval": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "duration"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ss Bandwidth Reset Interval",
+            "description": "每多少天重置流量 其中流量重置信息为上面几个等级"
+          },
+          "node_speed_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speed Limit",
+            "description": "端口限速"
+          },
+          "node_connector": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Connector",
+            "description": "IP限制"
+          },
+          "content_extra": {
+            "type": "string",
+            "title": "Content Extra",
+            "description": "服务支持"
+          },
+          "is_auto_reset_bandwidth": {
+            "type": "boolean",
+            "title": "Is Auto Reset Bandwidth",
+            "default": false
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "default": true
+          },
+          "is_cannot_new_purchase": {
+            "type": "boolean",
+            "title": "Is Cannot New Purchase",
+            "default": false
+          },
+          "data_json": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data Json"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "shop_name",
+          "money_amount",
+          "content_extra"
+        ],
+        "title": "OldServiceShop"
+      },
+      "OldServiceShop-Output": {
         "properties": {
           "id": {
             "type": "integer",
@@ -10277,6 +11077,7 @@
             "default": false
           },
           "data_json": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Data Json"
           }
@@ -10538,6 +11339,7 @@
             "description": "备注"
           },
           "config_json": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Config Json",
             "description": "配置JSON"
@@ -10605,6 +11407,31 @@
           "result"
         ],
         "title": "ReplaceEmailResponse"
+      },
+      "ReplyParams": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "回复内容"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TicketStatusEnum"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "可选，变更工单状态"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "title": "ReplyParams"
       },
       "RequestEmailCodeParamsModel": {
         "properties": {
@@ -11257,6 +12084,16 @@
         ],
         "title": "TicketStatus"
       },
+      "TicketStatusEnum": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "processing",
+          "resolved",
+          "closed"
+        ],
+        "title": "TicketStatusEnum"
+      },
       "TicketV2GetResultModel": {
         "properties": {
           "is_success": {
@@ -11523,6 +12360,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "Telegram 链接信息"
@@ -11669,6 +12507,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "安全设置信息"
@@ -11840,6 +12679,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "邀请记录"
@@ -11957,6 +12797,7 @@
             "default": 1
           },
           "config_json": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Config Json"
           },
@@ -12005,6 +12846,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "审计记录信息"
@@ -12030,6 +12872,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "审计规则信息"
@@ -12074,6 +12917,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "链接令牌信息"
@@ -12099,6 +12943,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "节点详情"
@@ -12148,6 +12993,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "账单信息"
@@ -12173,6 +13019,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "自动续费设置信息"
@@ -12198,6 +13045,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "服务账单信息"
@@ -12223,6 +13071,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "签到信息"
@@ -12334,6 +13183,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "SS密码信息"
@@ -12467,6 +13317,7 @@
             "description": "确认订单结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "订单信息"
@@ -12495,7 +13346,7 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/OldServiceShop"
+                "$ref": "#/components/schemas/OldServiceShop-Output"
               },
               {
                 "type": "null"
@@ -12520,6 +13371,7 @@
             "description": "预订结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "预订信息"
@@ -12531,6 +13383,105 @@
           "result"
         ],
         "title": "UserShopOldShopIdPreOrderResponse"
+      },
+      "UserTicket": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "ticket_status": {
+            "$ref": "#/components/schemas/TicketStatusEnum",
+            "default": "pending"
+          },
+          "is_markdown": {
+            "type": "boolean",
+            "title": "Is Markdown",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "UserTicket",
+        "description": "用户工单/支持单模型"
+      },
+      "UserTicketView": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "ticket_status": {
+            "$ref": "#/components/schemas/TicketStatusEnum"
+          },
+          "is_markdown": {
+            "type": "boolean",
+            "title": "Is Markdown"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/Messages"
+            },
+            "type": "array",
+            "title": "Messages"
+          },
+          "user_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "User Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "user_id",
+          "title",
+          "ticket_status",
+          "is_markdown"
+        ],
+        "title": "UserTicketView"
       },
       "UserTicketsTicketIdEditStatusResponse": {
         "properties": {
@@ -12545,6 +13496,7 @@
             "description": "编辑结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "工单状态信息"
@@ -12570,6 +13522,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "工单消息列表"
@@ -12595,6 +13548,7 @@
             "description": "发送结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "消息信息"
@@ -12788,6 +13742,7 @@
             "description": "激活结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "激活信息"
@@ -12813,6 +13768,7 @@
             "description": "获取结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "激活码信息"
@@ -12838,6 +13794,7 @@
             "description": "充值结果"
           },
           "result": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Result",
             "description": "充值信息"
@@ -12996,6 +13953,19 @@
           "ssr_vmess"
         ],
         "title": "VpnTypeListEnum"
+      },
+      "fastapi___compat__v2__Body_delete_bought_v1_user_bought_delete": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "Body_delete_bought_v1_user_bought_delete"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -14303,6 +15273,13 @@
           "version"
         ],
         "title": "SqlTableEnum"
+      },
+      "web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum": {
+        "type": "string",
+        "enum": [
+          "json"
+        ],
+        "title": "FormalEnum"
       }
     },
     "securitySchemes": {

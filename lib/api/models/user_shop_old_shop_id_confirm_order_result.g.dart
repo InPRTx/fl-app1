@@ -11,7 +11,9 @@ _$UserShopOldShopIdConfirmOrderResultFromJson(Map<String, dynamic> json) =>
     UserShopOldShopIdConfirmOrderResult(
       result: json['result'] == null
           ? null
-          : OldServiceShop.fromJson(json['result'] as Map<String, dynamic>),
+          : OldServiceShopOutput.fromJson(
+              json['result'] as Map<String, dynamic>,
+            ),
       isSuccess: json['is_success'] as bool? ?? true,
       message: json['message'] as String? ?? '获取成功',
     );

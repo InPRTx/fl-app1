@@ -1,21 +1,42 @@
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-class LowAdminUserBoughtRecordsPage extends StatefulWidget {
-  final int userId;
+/// 购买记录列表组件
+///
+/// 可复用的购买记录列表，支持：
+/// - 分页加载
+/// - 下拉刷新
+/// - 编辑和删除记录
+/// - 按查询条件筛选（可选）
+class BoughtRecordsListComponent extends StatefulWidget {
+  /// 搜索查询字符串，格式如 "user_id:123"，如果为null则显示所有记录
+  final String? q;
 
-  const LowAdminUserBoughtRecordsPage({super.key, required this.userId});
+  /// 是否显示编辑和删除按钮
+  final bool isShowActions;
+
+  /// 是否可以点击用户ID跳转
+  final bool isEnableUserIdNavigation;
+
+  const BoughtRecordsListComponent({
+    super.key,
+    this.q,
+    this.isShowActions = true,
+    this.isEnableUserIdNavigation = false,
+  });
 
   @override
-  State<LowAdminUserBoughtRecordsPage> createState() =>
-      _LowAdminUserBoughtRecordsPageState();
+  State<BoughtRecordsListComponent> createState() =>
+      _BoughtRecordsListComponentState();
 }
 
-class _LowAdminUserBoughtRecordsPageState
-    extends State<LowAdminUserBoughtRecordsPage> {
+class _BoughtRecordsListComponentState
+    extends State<BoughtRecordsListComponent> {
   late final RestClient _restClient = createAuthenticatedClient();
 
   bool _isLoading = false;
@@ -26,7 +47,6 @@ class _LowAdminUserBoughtRecordsPageState
   _boughtRecords = [];
   String? _errorMessage;
 
-  // Paging
   final ScrollController _scrollController = ScrollController();
   static const int _pageLimit = 50;
   int _offset = 0;
@@ -50,15 +70,12 @@ class _LowAdminUserBoughtRecordsPageState
     if (!_scrollController.hasClients) return;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final current = _scrollController.position.pixels;
-    if (current >= (maxScroll - 200) && !_isLoading && !_isLoadingMore &&
+    if (current >= (maxScroll - 200) &&
+        !_isLoading &&
+        !_isLoadingMore &&
         _hasMore) {
       _fetchRecords(isLoadMore: true);
     }
-  }
-
-  Future<void> _loadUserBoughtRecords() async {
-    // Keep backward-compatible call
-    await _fetchRecords(isLoadMore: false);
   }
 
   Future<void> _fetchRecords({bool isLoadMore = false}) async {
@@ -79,9 +96,9 @@ class _LowAdminUserBoughtRecordsPageState
 
     final result = await _restClient.fallback
         .getUserBoughtApiV2LowAdminApiUserBoughtGet(
-      limit: _pageLimit,
-      offset: _offset,
-          userId: widget.userId,
+          limit: _pageLimit,
+          offset: _offset,
+          q: widget.q,
         );
 
     if (!mounted) return;
@@ -96,8 +113,7 @@ class _LowAdminUserBoughtRecordsPageState
       if (result.isSuccess) {
         final fetched = result.resultList;
         if (isLoadMore) {
-          _boughtRecords = List.from(_boughtRecords)
-            ..addAll(fetched);
+          _boughtRecords = List.from(_boughtRecords)..addAll(fetched);
         } else {
           _boughtRecords = fetched;
         }
@@ -110,7 +126,7 @@ class _LowAdminUserBoughtRecordsPageState
         }
 
         if (_boughtRecords.isEmpty) {
-          _errorMessage = '该用户暂无购买记录';
+          _errorMessage = widget.q == null ? '暂无购买记录' : '该用户暂无购买记录';
         }
       } else {
         _errorMessage = result.message;
@@ -163,7 +179,7 @@ class _LowAdminUserBoughtRecordsPageState
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('删除成功')));
-        await _loadUserBoughtRecords();
+        await _fetchRecords();
       } else {
         ScaffoldMessenger.of(
           context,
@@ -183,7 +199,6 @@ class _LowAdminUserBoughtRecordsPageState
 
     if (result == null) return;
 
-    // 提交前必须转换为 UTC 时间
     final body = WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel(
       shopId: result['shopId'] as int,
       createdAt: (result['createdAt'] as DateTime).toUtc(),
@@ -192,7 +207,7 @@ class _LowAdminUserBoughtRecordsPageState
 
     final response = await _restClient.fallback
         .putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut(
-      boughtId: record.id,
+          boughtId: record.id,
           body: body,
         );
 
@@ -201,7 +216,7 @@ class _LowAdminUserBoughtRecordsPageState
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('更新成功')));
-        await _loadUserBoughtRecords();
+        await _fetchRecords();
       } else {
         ScaffoldMessenger.of(
           context,
@@ -212,70 +227,64 @@ class _LowAdminUserBoughtRecordsPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('购买记录 - 用户ID: ${widget.userId}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _isLoading ? null : _loadUserBoughtRecords,
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _errorMessage != null && _boughtRecords.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_bag_outlined,
-                    size: 80,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    _errorMessage!,
-                    style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    onPressed: _loadUserBoughtRecords,
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('重试'),
-                  ),
-                ],
-              ),
-            )
-          : RefreshIndicator(
-              onRefresh: _loadUserBoughtRecords,
-              child: ListView.builder(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(16),
-                itemCount: _boughtRecords.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < _boughtRecords.length) {
-                    final record = _boughtRecords[index];
-                    return _buildBoughtCard(record);
-                  }
-                  if (_isLoadingMore) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  if (!_hasMore) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24.0),
-                      child: Center(child: Text(
-                          '到底了', style: TextStyle(color: Colors.grey))),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_errorMessage != null && _boughtRecords.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.shopping_bag_outlined,
+              size: 80,
+              color: Colors.grey[400],
             ),
+            const SizedBox(height: 16),
+            Text(
+              _errorMessage!,
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: _fetchRecords,
+              icon: const Icon(Icons.refresh),
+              label: const Text('重试'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _fetchRecords,
+      child: ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16),
+        itemCount: _boughtRecords.length + 1,
+        itemBuilder: (context, index) {
+          if (index < _boughtRecords.length) {
+            final record = _boughtRecords[index];
+            return _buildBoughtCard(record);
+          }
+          if (_isLoadingMore) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          if (!_hasMore) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.0),
+              child: Center(
+                child: Text('到底了', style: TextStyle(color: Colors.grey)),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 
@@ -284,13 +293,12 @@ class _LowAdminUserBoughtRecordsPageState
     record,
   ) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
-    // 将 UTC 时间转换为本地时间进行比较和显示
     final localExpireAt = record.expireAt != null
         ? tz.TZDateTime.from(record.expireAt!, tz.local)
         : null;
     final isExpired =
         localExpireAt != null &&
-            localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
+        localExpireAt.isBefore(tz.TZDateTime.now(tz.local));
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -357,9 +365,37 @@ class _LowAdminUserBoughtRecordsPageState
                         ],
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        '订单ID: ${record.id}',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      Row(
+                        children: [
+                          Text(
+                            '订单ID: ${record.id}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          InkWell(
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: record.id));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('订单ID已复制'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(4),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(
+                                Icons.copy,
+                                size: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -370,11 +406,13 @@ class _LowAdminUserBoughtRecordsPageState
             Row(
               children: [
                 Expanded(
-                  child: _buildInfoItem(
-                    Icons.person,
-                    '用户ID',
-                    record.userId.toString(),
-                  ),
+                  child: widget.isEnableUserIdNavigation
+                      ? _buildClickableUserIdItem(record.userId)
+                      : _buildInfoItem(
+                          Icons.person,
+                          '用户ID',
+                          record.userId.toString(),
+                        ),
                 ),
                 Expanded(
                   child: _buildInfoItem(
@@ -400,7 +438,8 @@ class _LowAdminUserBoughtRecordsPageState
                     Icons.calendar_today,
                     '购买时间',
                     dateFormat.format(
-                        tz.TZDateTime.from(record.createdAt, tz.local)),
+                      tz.TZDateTime.from(record.createdAt, tz.local),
+                    ),
                   ),
                 ),
                 if (localExpireAt != null)
@@ -415,24 +454,28 @@ class _LowAdminUserBoughtRecordsPageState
                   const Expanded(child: SizedBox()),
               ],
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                OutlinedButton.icon(
-                  onPressed: () => _editBoughtRecord(record),
-                  icon: const Icon(Icons.edit, size: 18),
-                  label: const Text('编辑'),
-                ),
-                const SizedBox(width: 8),
-                OutlinedButton.icon(
-                  onPressed: () => _deleteBoughtRecord(record.id),
-                  icon: const Icon(Icons.delete, size: 18),
-                  label: const Text('删除'),
-                  style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-                ),
-              ],
-            ),
+            if (widget.isShowActions) ...[
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () => _editBoughtRecord(record),
+                    icon: const Icon(Icons.edit, size: 18),
+                    label: const Text('编辑'),
+                  ),
+                  const SizedBox(width: 8),
+                  OutlinedButton.icon(
+                    onPressed: () => _deleteBoughtRecord(record.id),
+                    icon: const Icon(Icons.delete, size: 18),
+                    label: const Text('删除'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
@@ -462,6 +505,50 @@ class _LowAdminUserBoughtRecordsPageState
       ],
     );
   }
+
+  Widget _buildClickableUserIdItem(int userId) {
+    return InkWell(
+      onTap: () {
+        context.go('/low_admin/user_v2/$userId');
+      },
+      borderRadius: BorderRadius.circular(4),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.person, size: 16, color: Colors.grey[600]),
+                const SizedBox(width: 4),
+                Text(
+                  '用户ID',
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Text(
+                  userId.toString(),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(width: 4),
+                Icon(Icons.arrow_forward, size: 14, color: Colors.grey[600]),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _EditBoughtRecordDialog extends StatefulWidget {
@@ -489,7 +576,6 @@ class _EditBoughtRecordDialogState extends State<_EditBoughtRecordDialog> {
     _moneyAmountController = TextEditingController(
       text: widget.record.moneyAmount,
     );
-    // API 返回的是 UTC 时间，转换为本地时间供编辑使用
     _createdAt = tz.TZDateTime.from(widget.record.createdAt, tz.local);
   }
 

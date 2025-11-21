@@ -8,6 +8,7 @@ import 'admin_old_service_output.dart';
 
 part 'web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.g.dart';
 
+@JsonSerializable()
 class WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse {
   const WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse({
     this.result,

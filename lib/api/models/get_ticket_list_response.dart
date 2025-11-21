@@ -4,30 +4,30 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'old_service_shop_output.dart';
+import 'user_ticket.dart';
 
-part 'get_service_old_shop_result.g.dart';
+part 'get_ticket_list_response.g.dart';
 
 @JsonSerializable()
-class GetServiceOldShopResult {
-  const GetServiceOldShopResult({
+class GetTicketListResponse {
+  const GetTicketListResponse({
     this.isSuccess = true,
     this.message = '获取成功',
     this.resultList = const [],
   });
 
-  factory GetServiceOldShopResult.fromJson(Map<String, Object?> json) =>
-      _$GetServiceOldShopResultFromJson(json);
+  factory GetTicketListResponse.fromJson(Map<String, Object?> json) =>
+      _$GetTicketListResponseFromJson(json);
 
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 
-  /// 响应消息
+  /// 获取结果
   final String message;
 
-  /// 旧版商店信息
+  /// 工单视图列表
   @JsonKey(name: 'result_list')
-  final List<OldServiceShopOutput> resultList;
+  final List<UserTicket> resultList;
 
-  Map<String, Object?> toJson() => _$GetServiceOldShopResultToJson(this);
+  Map<String, Object?> toJson() => _$GetTicketListResponseToJson(this);
 }

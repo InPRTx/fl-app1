@@ -6,30 +6,28 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'old_service_shop_output.dart';
 
-part 'user_shop_old_shop_id_confirm_order_result.g.dart';
+part 'get_old_service_shop_response.g.dart';
 
 @JsonSerializable()
-class UserShopOldShopIdConfirmOrderResult {
-  const UserShopOldShopIdConfirmOrderResult({
+class GetOldServiceShopResponse {
+  const GetOldServiceShopResponse({
     this.result,
     this.isSuccess = true,
     this.message = '获取成功',
   });
 
-  factory UserShopOldShopIdConfirmOrderResult.fromJson(
-    Map<String, Object?> json,
-  ) => _$UserShopOldShopIdConfirmOrderResultFromJson(json);
+  factory GetOldServiceShopResponse.fromJson(Map<String, Object?> json) =>
+      _$GetOldServiceShopResponseFromJson(json);
 
   @JsonKey(name: 'is_success')
   final bool isSuccess;
 
-  /// 确认订单结果
+  /// 获取结果
   final String message;
 
-  /// 订单信息
+  /// 管理员用户信息
   @JsonKey(includeIfNull: false)
   final OldServiceShopOutput? result;
 
-  Map<String, Object?> toJson() =>
-      _$UserShopOldShopIdConfirmOrderResultToJson(this);
+  Map<String, Object?> toJson() => _$GetOldServiceShopResponseToJson(this);
 }

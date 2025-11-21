@@ -42,6 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
           const AuthStatusComponent(),
           const SizedBox(height: 8),
           ElevatedButton(
+            onPressed: () => context.go('/auth/simple_login'),
+            child: const Text('简洁登录'),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
             onPressed: () => context.go('/auth/login'),
             child: const Text('打开登录页面'),
           ),

@@ -35,7 +35,6 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
   @override
   void initState() {
     super.initState();
-    _searchController.text = '';
     _scrollController.addListener(_onScroll);
     _searchUsers();
   }
@@ -46,6 +45,10 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _applyQuery() {
+    _searchUsers();
   }
 
   Future<void> _searchUsers({bool isLoadMore = false}) async {
@@ -68,10 +71,10 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
 
     final GetSearchUserResult result = await _restClient.fallback
         .getUserV2ApiV2LowAdminApiUserV2Get(
-          q: query.isEmpty ? null : query,
+      q: query.isEmpty ? null : query,
       limit: _pageLimit,
       offset: _offset,
-        );
+    );
 
     if (!mounted) return;
 
@@ -94,7 +97,6 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
           _users = fetched;
         }
 
-        // If fewer items than page limit returned -> no more data
         if (fetched.length < _pageLimit) {
           _hasMore = false;
         } else {
@@ -108,9 +110,7 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
       } else {
         _errorMessage = result.message;
         if (!isLoadMore) {
-          _users = <
-              WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
-          >[];
+          _users = [];
         }
       }
     });
@@ -129,63 +129,54 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ShellRoute provides LowAdminLayout (menu). Return only the page content.
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              labelText: '搜索用户',
-              hintText: '输入用户ID、邮箱或用户名',
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_searchController.text.isNotEmpty)
-                    IconButton(
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: '查询参数 (q)',
+                    hintText: '例如: id:123, email:test@example.com 或留空查询所有',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         _searchController.clear();
-                        setState(() {
-                          _users = [];
-                          _errorMessage = null;
-                        });
+                        _applyQuery();
                       },
-                    ),
-                ],
+                    )
+                        : null,
+                    border: const OutlineInputBorder(),
+                    helperText: '支持格式: id:123, email:xxx, username:xxx',
+                  ),
+                  onSubmitted: (_) => _applyQuery(),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
               ),
-              border: const OutlineInputBorder(),
-            ),
-            onSubmitted: (_) => _searchUsers(),
-            onChanged: (value) {
-              setState(() {});
-            },
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: _applyQuery,
+                icon: Icon(_searchController.text
+                    .trim()
+                    .isEmpty
+                    ? Icons.refresh
+                    : Icons.search),
+                label: Text(_searchController.text
+                    .trim()
+                    .isEmpty
+                    ? '全部'
+                    : '搜索'),
+              ),
+            ],
           ),
         ),
-        if (_searchController.text.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: _isLoading ? null : _searchUsers,
-                    icon: const Icon(Icons.search),
-                    label: const Text('搜索'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: () => _showUserIdDialog(context),
-                  icon: const Icon(Icons.person_search),
-                  label: const Text('通过ID查看'),
-                ),
-              ],
-            ),
-          ),
-        const SizedBox(height: 16),
         Expanded(child: _buildContent()),
       ],
     );
@@ -235,19 +226,14 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
             Icon(Icons.people_outline, size: 80, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              '输入关键词搜索用户',
+              '未找到匹配的用户',
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             const SizedBox(height: 8),
             Text(
-              '支持搜索用户ID、邮箱或用户名',
+              '请尝试其他搜索条件，支持格式: id:123, email:xxx, username:xxx',
               style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () => _showUserIdDialog(context),
-              icon: const Icon(Icons.person_search),
-              label: const Text('通过ID查看用户'),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -428,46 +414,5 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
         ),
       ],
     );
-  }
-
-  Future<void> _showUserIdDialog(BuildContext context) async {
-    final TextEditingController controller = TextEditingController();
-    final GoRouter router = GoRouter.of(context);
-
-    final int? result = await showDialog<int>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('输入用户ID'),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: '用户ID',
-            hintText: '例如: 123',
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
-          ),
-          TextButton(
-            onPressed: () {
-              final id = int.tryParse(controller.text.trim());
-              Navigator.pop(context, id);
-            },
-            child: const Text('确定'),
-          ),
-        ],
-      ),
-    );
-
-    controller.dispose();
-
-    if (result != null) {
-      if (!mounted) return;
-      router.push('/low_admin/user_v2/$result');
-    }
   }
 }

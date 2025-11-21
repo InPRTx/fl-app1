@@ -1,5 +1,6 @@
 import 'package:fl_app1/component/layout/simple_layout_with_menu_component.dart';
 import 'package:fl_app1/page/auth/login/auth_login_page.dart';
+import 'package:fl_app1/page/auth/login/auth_simple_login_page.dart';
 import 'package:fl_app1/page/debug/version/debug_version_page.dart';
 import 'package:fl_app1/page/home_page.dart';
 import 'package:fl_app1/router/low_admin_routes.dart';
@@ -34,6 +35,11 @@ final GoRouter router = GoRouter(
           path: '/auth/login',
           name: 'auth_login',
           builder: (context, state) => const AuthLoginPage(),
+        ),
+        GoRoute(
+          path: '/auth/simple_login',
+          name: 'auth_simple_login',
+          builder: (context, state) => const AuthSimpleLoginPage(),
         ),
       ],
     ),
