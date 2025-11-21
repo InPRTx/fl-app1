@@ -2530,7 +2530,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2626,7 +2626,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2774,7 +2774,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2942,7 +2942,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum",
               "default": "json"
             }
           },
@@ -7374,6 +7374,11 @@
         "summary": "Put User Old Service",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_old_service_api_v2_low_admin_api_user_old_service__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7421,6 +7426,11 @@
       "get": {
         "summary": "Get User Old Service",
         "operationId": "get_user_old_service_api_v2_low_admin_api_user_old_service__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7461,6 +7471,11 @@
         "summary": "Put User V2",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_v2_api_v2_low_admin_api_user_v2__user_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7508,6 +7523,11 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_v2__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7547,6 +7567,11 @@
       "get": {
         "summary": "Get User V2",
         "operationId": "get_user_v2_api_v2_low_admin_api_user_v2__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -7651,6 +7676,11 @@
         "summary": "Get User Bought",
         "description": "查询用户购买记录，可按用户ID过滤，或按ID模糊搜索",
         "operationId": "get_user_bought_api_v2_low_admin_api_user_bought__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -7755,6 +7785,11 @@
         "summary": "Delete User Bought",
         "description": "删除用户购买记录",
         "operationId": "delete_user_bought_api_v2_low_admin_api_user_bought__bought_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "bought_id",
@@ -7793,6 +7828,11 @@
         "summary": "Put User Bought",
         "description": "更新用户购买记录 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_user_bought_api_v2_low_admin_api_user_bought__bought_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "bought_id",
@@ -7843,6 +7883,11 @@
       "get": {
         "summary": "Get User V2 By User Id",
         "operationId": "get_user_v2_by_user_id_api_v2_low_admin_api_user_money__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7882,6 +7927,11 @@
       "post": {
         "summary": "Post User Money Money Recharge It",
         "operationId": "post_user_money_money_recharge_it_api_v2_low_admin_api_user_money_money_recharge_it__user_id___post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -7932,6 +7982,11 @@
         "summary": "Get User Pay List",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "get_user_pay_list_api_v2_low_admin_api_user_pay_list__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -8036,6 +8091,11 @@
         "summary": "Delete User Pay List",
         "description": "删除充值记录",
         "operationId": "delete_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8075,6 +8135,11 @@
         "summary": "Put User Pay List",
         "description": "更新用户购买记录",
         "operationId": "put_user_pay_list_api_v2_low_admin_api_user_pay_list__user_pay_list_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8125,6 +8190,11 @@
       "post": {
         "summary": "Admin Notify",
         "operationId": "admin_notify_api_v2_low_admin_api_user_pay_list__user_pay_list_id__is_finish_notify_post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_pay_list_id",
@@ -8166,6 +8236,11 @@
         "summary": "Put Old Service Shop",
         "description": "更新用户信息 - 需要提供所有必填字段（完全替换）",
         "operationId": "put_old_service_shop_api_v2_low_admin_api_old_service_shop__shop_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "shop_id",
@@ -8213,6 +8288,11 @@
       "get": {
         "summary": "Get Old Service Shop By Shop Id",
         "operationId": "get_old_service_shop_by_shop_id_api_v2_low_admin_api_old_service_shop__shop_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "shop_id",
@@ -8252,6 +8332,11 @@
       "get": {
         "summary": "Get Old Service Shop",
         "operationId": "get_old_service_shop_api_v2_low_admin_api_old_service_shop__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -8356,6 +8441,11 @@
         "summary": "Get Ticket",
         "description": "管理端：工单列表（支持 GrafanaParamsModel 的通用筛选）\n搜索支持 q 中的命令参数：id:, user_id:, status: 以及模糊搜索\n返回 DB2M.T2.UserTicketView 列表（已封装为 Pydantic model）",
         "operationId": "get_ticket_api_v2_low_admin_api_ticket__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "q",
@@ -8459,6 +8549,11 @@
       "get": {
         "summary": "Get Ticket Detail",
         "operationId": "get_ticket_detail_api_v2_low_admin_api_ticket__ticket_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "ticket_id",
@@ -8499,6 +8594,11 @@
         "summary": "Post Ticket Reply",
         "description": "管理端回复工单：插入一条 UserTicketMessage，并可选择更新工单状态\n注意：此接口未进行管理员鉴权，调用方需保证权限（低权限 API 目录约定）",
         "operationId": "post_ticket_reply_api_v2_low_admin_api_ticket__ticket_id__reply_post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "ticket_id",
@@ -10138,7 +10238,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/UserTicketView"
+              "$ref": "#/components/schemas/UserTicket"
             },
             "type": "array",
             "title": "Result List",
@@ -13284,6 +13384,47 @@
         ],
         "title": "UserShopOldShopIdPreOrderResponse"
       },
+      "UserTicket": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "ticket_status": {
+            "$ref": "#/components/schemas/TicketStatusEnum",
+            "default": "pending"
+          },
+          "is_markdown": {
+            "type": "boolean",
+            "title": "Is Markdown",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "UserTicket",
+        "description": "用户工单/支持单模型"
+      },
       "UserTicketView": {
         "properties": {
           "id": {
@@ -15133,7 +15274,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

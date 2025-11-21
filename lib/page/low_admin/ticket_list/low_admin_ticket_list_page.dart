@@ -19,7 +19,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
   String? _queryString;
   bool _isLoading = false;
   bool _isLoadingMore = false;
-  List<UserTicketView> _tickets = [];
+  List<UserTicket> _tickets = [];
   String? _errorMessage;
 
   static const int _pageLimit = 20;
@@ -253,7 +253,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
     );
   }
 
-  Widget _buildTicketCard(UserTicketView ticket) {
+  Widget _buildTicketCard(UserTicket ticket) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final statusColor = _getStatusColor(ticket.ticketStatus);
     final statusText = _getStatusText(ticket.ticketStatus);
@@ -263,7 +263,9 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
       child: InkWell(
         onTap: () {
           // 导航到工单详情页面
-          context.push('/low_admin/ticket/${ticket.id}');
+          if (ticket.id != null) {
+            context.push('/low_admin/ticket/${ticket.id}');
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -307,30 +309,33 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
                   Icon(Icons.tag, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    'ID: ${ticket.id}',
+                    'ID: ${ticket.id ?? "N/A"}',
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   const SizedBox(width: 16),
                   Icon(Icons.person, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    '用户ID: ${ticket.userId}',
+                    '用户ID: ${ticket.userId ?? "N/A"}',
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-                  const SizedBox(width: 4),
-                  Text(
-                    '创建: ${dateFormat.format(ticket.createdAt.toLocal())}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                  ),
-                ],
-              ),
-              if (ticket.updatedAt != ticket.createdAt)
+              if (ticket.createdAt != null)
+                Row(
+                  children: [
+                    Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                    const SizedBox(width: 4),
+                    Text(
+                      '创建: ${dateFormat.format(ticket.createdAt!.toLocal())}',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    ),
+                  ],
+                ),
+              if (ticket.updatedAt != null &&
+                  ticket.createdAt != null &&
+                  ticket.updatedAt != ticket.createdAt)
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Row(
@@ -338,7 +343,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
                       Icon(Icons.update, size: 16, color: Colors.grey[600]),
                       const SizedBox(width: 4),
                       Text(
-                        '更新: ${dateFormat.format(ticket.updatedAt.toLocal())}',
+                        '更新: ${dateFormat.format(ticket.updatedAt!.toLocal())}',
                         style: TextStyle(color: Colors.grey[600], fontSize: 12),
                       ),
                     ],

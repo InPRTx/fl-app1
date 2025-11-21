@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'user_ticket_view.dart';
+import 'user_ticket.dart';
 
 part 'get_ticket_list_response.g.dart';
 
@@ -27,7 +27,7 @@ class GetTicketListResponse {
 
   /// 工单视图列表
   @JsonKey(name: 'result_list')
-  final List<UserTicketView> resultList;
+  final List<UserTicket> resultList;
 
   Map<String, Object?> toJson() => _$GetTicketListResponseToJson(this);
 }
