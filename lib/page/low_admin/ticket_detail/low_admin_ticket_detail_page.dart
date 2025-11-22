@@ -24,6 +24,8 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
   UserTicketView? _ticket;
   String? _errorMessage;
   TicketStatusEnum? _selectedStatus;
+  TicketStatusEnum? _initialStatus;
+  bool _statusChanged = false;
 
   @override
   void initState() {
@@ -56,6 +58,9 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
       if (response.isSuccess && response.result != null) {
         _ticket = response.result;
         _selectedStatus = _ticket?.ticketStatus;
+        // record the initial status and reset changed flag
+        _initialStatus = _ticket?.ticketStatus;
+        _statusChanged = false;
       } else {
         _errorMessage = response.message;
       }
@@ -75,7 +80,11 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
       _isSubmitting = true;
     });
 
-    final body = ReplyParams(content: content, status: _selectedStatus);
+    // Only include status if the user explicitly changed it.
+    final body = ReplyParams(
+      content: content,
+      status: _statusChanged ? _selectedStatus : null,
+    );
 
     final response = await _restClient.fallback
         .postTicketReplyApiV2LowAdminApiTicketTicketIdReplyPost(
@@ -548,6 +557,8 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                     onChanged: (value) {
                       setState(() {
                         _selectedStatus = value;
+                        // mark that user explicitly changed status
+                        _statusChanged = true;
                       });
                     },
                     hint: const Text('选择状态'),
