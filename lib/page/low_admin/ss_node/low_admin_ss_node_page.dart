@@ -148,6 +148,15 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     return _dateFormat.format(localTime);
   }
 
+  String _getCountryEmoji(String countryCode) {
+    final code = countryCode.toUpperCase();
+    if (code.length != 2) return countryCode;
+    return String.fromCharCodes([
+      0x1F1E6 + code.codeUnitAt(0) - 0x41,
+      0x1F1E6 + code.codeUnitAt(1) - 0x41,
+    ]);
+  }
+
   Widget _buildFilterRow() {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -378,7 +387,9 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                           '端口', node.nodeConfig.port?.toString() ?? '-'),
                       _buildInfoRow('协议', node.vpnType.name),
                       _buildInfoRow(
-                          '国家代码', node.iso3166Code.name.toUpperCase()),
+                          '国家代码',
+                          '${_getCountryEmoji(node.iso3166Code.name)} ${node
+                              .iso3166Code.name.toUpperCase()}'),
                       _buildInfoRow('倍率', node.nodeRate),
                       _buildInfoRow('等级', node.nodeLevel.toString()),
                       _buildInfoRow('隐藏', node.isHideNode ? '是' : '否'),
