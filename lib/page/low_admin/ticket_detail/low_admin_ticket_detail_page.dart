@@ -1,5 +1,5 @@
 import 'package:fl_app1/api/export.dart';
-import 'package:fl_app1/store/service/auth/auth_export.dart';
+import 'package:fl_app1/store/service/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +26,9 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
   TicketStatusEnum? _selectedStatus;
   TicketStatusEnum? _initialStatus;
   bool _statusChanged = false;
+
+  // Cached user infos fetched for this page (mirrors UserService cache)
+  Map<int, UserInfo> _userInfos = <int, UserInfo>{};
 
   @override
   void initState() {
@@ -65,6 +68,26 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
         _errorMessage = response.message;
       }
     });
+
+    // After ticket loaded successfully, fetch related user infos (ticket owner + message authors)
+    if (_ticket != null && mounted) {
+      final Set<int> ids = <int>{};
+      ids.add(_ticket!.userId);
+      final messages = _ticket!.messages ?? [];
+      for (final m in messages) {
+        ids.add(m.userId);
+      }
+
+      try {
+        final fetched = await UserService().fetchBatchUserInfos(ids.toList());
+        if (!mounted) return;
+        setState(() {
+          _userInfos = fetched;
+        });
+      } catch (_) {
+        // 不做无意义的报错包装，页面仍然可以显示基础信息
+      }
+    }
   }
 
   Future<void> _submitReply() async {
@@ -261,6 +284,11 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
     final statusColor = _getStatusColor(_ticket!.ticketStatus);
     final statusText = _getStatusText(_ticket!.ticketStatus);
 
+    final ownerInfo = _userInfos[_ticket!.userId];
+    final ownerAvatar = UserService().gravatarUrlForEmail(
+        ownerInfo?.email, size: 40);
+    final ownerName = ownerInfo?.userName ?? '用户ID: ${_ticket!.userId}';
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -296,6 +324,21 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                     ),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.grey[200],
+                  backgroundImage: ownerAvatar != null ? NetworkImage(
+                      ownerAvatar) : null,
+                  child: ownerAvatar == null ? Icon(
+                      Icons.person, color: Colors.grey[700]) : null,
+                ),
+                const SizedBox(width: 8),
+                Text(ownerName, style: const TextStyle(fontSize: 14)),
               ],
             ),
             const SizedBox(height: 12),
@@ -437,6 +480,10 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
   Widget _buildMessageCard(Messages message) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final isAdmin = message.userId != _ticket!.userId;
+    final msgUserInfo = _userInfos[message.userId];
+    final msgAvatar = UserService().gravatarUrlForEmail(
+        msgUserInfo?.email, size: 36);
+    final msgName = msgUserInfo?.userName ?? (isAdmin ? '管理员' : '用户');
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -448,19 +495,19 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
           children: [
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: isAdmin
-                        ? Colors.blue.withValues(alpha: 0.2)
-                        : Colors.grey.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(
-                    isAdmin ? Icons.support_agent : Icons.person,
-                    size: 20,
-                    color: isAdmin ? Colors.blue[700] : Colors.grey[700],
-                  ),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: isAdmin
+                      ? Colors.blue.withValues(alpha: 0.2)
+                      : Colors.grey.withValues(alpha: 0.2),
+                  backgroundImage: msgAvatar != null
+                      ? NetworkImage(msgAvatar)
+                      : null,
+                  child: msgAvatar == null
+                      ? Icon(
+                      isAdmin ? Icons.support_agent : Icons.person, size: 20,
+                      color: isAdmin ? Colors.blue[700] : Colors.grey[700])
+                      : null,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -470,7 +517,7 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                       Row(
                         children: [
                           Text(
-                            isAdmin ? '管理员' : '用户',
+                            msgName,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: isAdmin ? Colors.blue[700] : null,
@@ -557,8 +604,8 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                     onChanged: (value) {
                       setState(() {
                         _selectedStatus = value;
-                        // mark that user explicitly changed status
-                        _statusChanged = true;
+                        // mark changed only when selection differs from initial
+                        _statusChanged = value != _initialStatus;
                       });
                     },
                     hint: const Text('选择状态'),
