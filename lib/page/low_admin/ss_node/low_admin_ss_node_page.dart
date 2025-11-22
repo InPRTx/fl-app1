@@ -23,9 +23,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
   bool _isLoading = false;
   String? _errorMessage;
   static const double _tabletBreakpoint = 640;
-  static const double _desktopBreakpoint = 1280;
-  static const double _largeDesktopBreakpoint = 1800;
-  static const double _cardMinWidth = 350;
 
   @override
   void initState() {
@@ -80,24 +77,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
   bool _isTablet(double width) => width >= _tabletBreakpoint;
 
-  int _calculateGridCrossAxisCount(double width) {
-    // 减去内边距和间距的占用空间
-    final double availableWidth = width - 32; // padding: 16 * 2
-
-    // 根据宽度计算可以容纳的列数
-    if (width >= _largeDesktopBreakpoint) {
-      // 超大屏幕: 尝试显示4列
-      final int cols = (availableWidth / _cardMinWidth).floor();
-      return cols >= 4 ? 4 : 3;
-    } else if (width >= _desktopBreakpoint) {
-      // 桌面屏幕: 尝试显示3列
-      final int cols = (availableWidth / _cardMinWidth).floor();
-      return cols >= 3 ? 3 : 2;
-    } else {
-      // 平板: 2列
-      return 2;
-    }
-  }
 
   Future<void> _openNodeForm({SsNodeOutput? node}) async {
     final bool? updated = await showDialog<bool>(
@@ -288,15 +267,14 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
           Widget child;
           if (isTablet) {
-            final int crossAxisCount = _calculateGridCrossAxisCount(width);
             child = GridView.builder(
               padding: const EdgeInsets.all(16),
               physics: const AlwaysScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 400,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 5 / 4,
+                mainAxisExtent: 280,
               ),
               itemCount: _nodes.length,
               itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
