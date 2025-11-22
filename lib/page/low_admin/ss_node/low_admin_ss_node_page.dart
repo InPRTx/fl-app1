@@ -296,7 +296,7 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                 crossAxisCount: crossAxisCount,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 4 / 3,
+                childAspectRatio: 5 / 4,
               ),
               itemCount: _nodes.length,
               itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
@@ -318,74 +318,100 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
 
   Widget _buildNodeCard(SsNodeOutput node) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
+    return SizedBox(
+      height: 280,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          node.nodeName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'ID: ${node.id ?? '-'}',
+                          style: const TextStyle(fontSize: 11, color: Colors
+                              .grey),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: '编辑',
+                    iconSize: 18,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                        minWidth: 32, minHeight: 32),
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _openNodeForm(node: node),
+                  ),
+                  IconButton(
+                    tooltip: '删除',
+                    iconSize: 18,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                        minWidth: 32, minHeight: 32),
+                    icon: const Icon(Icons.delete_outline),
+                    color: Colors.red[700],
+                    onPressed: () => _confirmDelete(node),
+                  ),
+                  Chip(
+                    backgroundColor: node.isEnable
+                        ? Colors.green.withValues(alpha: 0.15)
+                        : Colors.red.withValues(alpha: 0.15),
+                    label: Text(
+                      node.isEnable ? '启用' : '禁用',
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                    labelStyle: TextStyle(
+                      color: node.isEnable ? Colors.green[700] : Colors
+                          .red[700],
+                      fontSize: 11,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6, vertical: 2),
+                  ),
+                ],
+              ),
+              const Divider(height: 12),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        node.nodeName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text('ID: ${node.id ?? '-'}'),
+                      _buildInfoRow('主机', node.nodeConfig.host ?? '-'),
+                      _buildInfoRow(
+                          '端口', node.nodeConfig.port?.toString() ?? '-'),
+                      _buildInfoRow('协议', node.vpnType.name),
+                      _buildInfoRow(
+                          '国家代码', node.iso3166Code.name.toUpperCase()),
+                      _buildInfoRow('倍率', node.nodeRate),
+                      _buildInfoRow('等级', node.nodeLevel.toString()),
+                      _buildInfoRow('隐藏', node.isHideNode ? '是' : '否'),
+                      _buildInfoRow(
+                          '创建时间', _formatDateTime(node.createdAt)),
                     ],
                   ),
                 ),
-                Chip(
-                  backgroundColor: node.isEnable
-                      ? Colors.green.withValues(alpha: 0.15)
-                      : Colors.red.withValues(alpha: 0.15),
-                  label: Text(node.isEnable ? '启用' : '禁用'),
-                  labelStyle: TextStyle(
-                    color: node.isEnable ? Colors.green[700] : Colors.red[700],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 20),
-            _buildInfoRow('主机', node.nodeConfig.host ?? '-'),
-            _buildInfoRow('端口', node.nodeConfig.port?.toString() ?? '-'),
-            _buildInfoRow('协议', node.vpnType.name),
-            _buildInfoRow('国家代码', node.iso3166Code.name.toUpperCase()),
-            _buildInfoRow('倍率', node.nodeRate),
-            _buildInfoRow('等级', node.nodeLevel.toString()),
-            _buildInfoRow('隐藏', node.isHideNode ? '是' : '否'),
-            _buildInfoRow('创建时间', _formatDateTime(node.createdAt)),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _openNodeForm(node: node),
-                    icon: const Icon(Icons.edit, size: 18),
-                    label: const Text('编辑'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _confirmDelete(node),
-                    icon: const Icon(Icons.delete_outline, size: 18),
-                    label: const Text('删除'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red[700],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -393,17 +419,24 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
           SizedBox(
             width: 72,
-            child: Text(label, style: const TextStyle(color: Colors.grey)),
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
