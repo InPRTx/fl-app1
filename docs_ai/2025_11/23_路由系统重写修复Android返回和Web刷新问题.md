@@ -284,7 +284,19 @@ class AppBarWithBackComponent extends StatelessWidget
 
 1. **页面导航**：使用 `context.go()` 或 `context.push()`
 2. **返回操作**：使用 `context.pop()` 或 `context.canPop()` 检查
-3. **路由定义**：所有页面都应该在路由表中定义，避免使用 `Navigator.push()`
+3. **对话框关闭**：使用 `Navigator.pop(context, result)`（对话框不属于路由栈，这是标准做法）
+4. **路由定义**：所有页面都应该在路由表中定义，避免使用 `Navigator.push()`
+
+### Navigator API 使用场景
+
+虽然我们迁移到了 GoRouter，但以下场景仍然使用 Navigator API（这是正确的）：
+
+- **对话框**（AlertDialog, SimpleDialog）
+- **底部表单**（showModalBottomSheet）
+- **通用对话框**（showGeneralDialog）
+- **日期/时间选择器**等模态窗口
+
+这些都不属于应用的路由栈，而是临时的 UI 元素，因此使用 Navigator.pop() 是正确且推荐的做法。
 
 ### AppBar 规范
 
@@ -310,8 +322,30 @@ AppBar(
 
 ### 对话框/抽屉关闭
 
-- 对话框：继续使用 `Navigator.pop(context, result)`
-- 抽屉：使用 `Scaffold.of(context).closeDrawer()`
+- **对话框**：继续使用 `Navigator.pop(context, result)`（这是 Flutter 标准做法，对话框不属于路由栈）
+- **抽屉**：使用 `Scaffold.of(context).closeDrawer()`
+- **底部表单**：使用 `Navigator.pop(context, result)`
+
+示例：
+```dart
+// 对话框关闭 - 使用 Navigator.pop
+showDialog(
+  context: context,
+  builder: (dialogContext) => AlertDialog(
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(dialogContext, result),
+        child: const Text('确定'),
+      ),
+    ],
+  ),
+);
+
+// 抽屉关闭 - 使用 Scaffold API
+if (Scaffold.of(context).hasDrawer) {
+  Scaffold.of(context).closeDrawer();
+}
+```
 
 ## 技术说明
 
