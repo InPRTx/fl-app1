@@ -5,12 +5,14 @@ class LowAdminLayout extends StatefulWidget {
   final Widget child;
   final String title;
   final int selectedIndex;
+  final ValueChanged<int>? onNavigationChanged;
 
   const LowAdminLayout({
     super.key,
     required this.child,
     required this.title,
     required this.selectedIndex,
+    this.onNavigationChanged,
   });
 
   @override
@@ -19,41 +21,40 @@ class LowAdminLayout extends StatefulWidget {
 
 class _LowAdminLayoutState extends State<LowAdminLayout> {
   final List<NavigationItem> _navItems = [
-    NavigationItem(icon: Icons.dashboard, label: '仪表盘', route: '/low_admin'),
+    NavigationItem(
+      icon: Icons.dashboard,
+      label: '仪表盘',
+      path: '/low_admin',
+    ),
     NavigationItem(
       icon: Icons.people,
       label: '用户管理',
-      route: '/low_admin/users',
+      path: '/low_admin/users',
     ),
     NavigationItem(
       icon: Icons.shopping_bag,
       label: '购买记录',
-      route: '/low_admin/user_bought',
+      path: '/low_admin/user_bought',
     ),
     NavigationItem(
       icon: Icons.account_balance_wallet,
       label: '充值记录',
-      route: '/low_admin/user_pay_list',
+      path: '/low_admin/user_pay_list',
     ),
     NavigationItem(
       icon: Icons.shopping_cart,
       label: '旧版商品',
-      route: '/low_admin/old_service_shop',
+      path: '/low_admin/old_service_shop',
     ),
     NavigationItem(
       icon: Icons.cloud,
       label: '节点管理',
-      route: '/low_admin/ss_node',
+      path: '/low_admin/ss_node',
     ),
     NavigationItem(
       icon: Icons.support_agent,
       label: '工单管理',
-      route: '/low_admin/ticket',
-    ),
-    NavigationItem(
-      icon: Icons.settings,
-      label: '设置',
-      route: '/low_admin/settings',
+      path: '/low_admin/ticket',
     ),
   ];
 
@@ -129,9 +130,8 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
               selected: widget.selectedIndex == index,
               onTap: () {
                 Navigator.pop(context);
-                if (item.route != null) {
-                  context.router.pushPath(item.route!);
-                }
+                // 使用回调来切换标签
+                widget.onNavigationChanged?.call(index);
               },
             );
           }),
@@ -153,10 +153,8 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
     return NavigationRail(
       selectedIndex: widget.selectedIndex,
       onDestinationSelected: (index) {
-        final item = _navItems[index];
-        if (item.route != null) {
-          context.router.pushPath(item.route!);
-        }
+        // 使用回调来切换标签
+        widget.onNavigationChanged?.call(index);
       },
       labelType: NavigationRailLabelType.all,
       leading: Padding(
@@ -193,9 +191,13 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
 }
 
 class NavigationItem {
+  NavigationItem({
+    required this.icon,
+    required this.label,
+    required this.path,
+  });
+
   final IconData icon;
   final String label;
-  final String? route;
-
-  NavigationItem({required this.icon, required this.label, this.route});
+  final String path;
 }
