@@ -127,9 +127,13 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
 
   Future<void> _navigateToRecharge() async {
     // 使用 GoRouter 导航到充值页面
-    await context.push('/low_admin/user_v2/${widget.userId}/recharge');
-    // 返回后重新加载数据
-    await _loadUserData();
+    final result = await context.push<bool>(
+      '/low_admin/user_v2/${widget.userId}/recharge',
+    );
+    // 只有充值成功时才重新加载数据
+    if (result == true) {
+      await _loadUserData();
+    }
   }
 
   Future<void> _navigateToBoughtRecords() async {

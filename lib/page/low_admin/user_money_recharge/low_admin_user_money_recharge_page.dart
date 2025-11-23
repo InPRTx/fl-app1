@@ -100,7 +100,7 @@ class _LowAdminUserMoneyRechargePageState
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('充值成功'), backgroundColor: Colors.green),
         );
-        context.pop();
+        context.pop(true); // 返回 true 表示充值成功
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
