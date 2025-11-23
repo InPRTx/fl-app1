@@ -277,24 +277,43 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
           Widget child;
           if (isTablet) {
-            child = GridView.builder(
-              padding: const EdgeInsets.all(16),
+            child = CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 400,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                mainAxisExtent: 280,
-              ),
-              itemCount: _nodes.length,
-              itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
+              slivers: [
+                SliverToBoxAdapter(child: _buildFilterRow()),
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildNodeCard(_nodes[index]),
+                      childCount: _nodes.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 400,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          mainAxisExtent: 280,
+                        ),
+                  ),
+                ),
+              ],
             );
           } else {
-            child = ListView.builder(
-              padding: const EdgeInsets.all(16),
+            child = CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: _nodes.length,
-              itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
+              slivers: [
+                SliverToBoxAdapter(child: _buildFilterRow()),
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildNodeCard(_nodes[index]),
+                      childCount: _nodes.length,
+                    ),
+                  ),
+                ),
+              ],
             );
           }
 
@@ -479,7 +498,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Text('节点管理', style: Theme.of(context).textTheme.headlineSmall),
         ),
-        _buildFilterRow(),
         _buildContent(),
       ],
     );
