@@ -1,3 +1,4 @@
+import 'package:fl_app1/router/app_router.dart';
 import 'package:fl_app1/store/base_url_store.dart';
 import 'package:fl_app1/store/local_time_store.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
@@ -8,11 +9,12 @@ import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'router/index.dart';
-
 // 全局 ScaffoldMessenger key，用于在任何地方显示 SnackBar
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+
+// 全局路由器实例
+final appRouter = AppRouter();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +62,7 @@ void main() async {
 
   // 设置跳转到登录页回调
   AuthStore().onNavigateToLogin = () {
-    router.go('/auth/login');
+    appRouter.pushPath('/auth/login');
   };
 
   runApp(const MyApp());
@@ -74,7 +76,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       scaffoldMessengerKey: scaffoldMessengerKey,
-      routerConfig: router,
+      routerDelegate: appRouter.delegate(),
+      routeInformationParser: appRouter.defaultRouteParser(),
       title: 'Flutter Demo',
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -84,24 +87,8 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [Locale('zh', 'CN'), Locale('en', 'US')],
       locale: const Locale('zh', 'CN'),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      // home is handled by GoRouter's '/' route
     );
   }
 }

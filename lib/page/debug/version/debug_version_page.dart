@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/base_url.dart';
 import 'package:fl_app1/api/models/version_response_model.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 /// 页面：调用 GET /v1/version 并显示返回结果。
 /// 说明/假设：默认 baseUrl 为 http://127.0.0.1:8000（常见 FastAPI 本地地址），
 /// 可以在页面里修改并点击"Fetch"来请求其他地址。
+@RoutePage()
 class DebugVersionPage extends StatefulWidget {
   const DebugVersionPage({super.key});
 

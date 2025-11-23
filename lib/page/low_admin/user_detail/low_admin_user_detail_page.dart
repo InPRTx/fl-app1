@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/component/low_admin/editable_user_old_service_card_component.dart';
 import 'package:fl_app1/component/low_admin/editable_user_v2_info_card_component.dart';
@@ -5,12 +6,12 @@ import 'package:fl_app1/component/low_admin/user_money_card_component.dart';
 import 'package:fl_app1/page/low_admin/user_money_recharge/low_admin_user_money_recharge_page.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class LowAdminUserDetailPage extends StatefulWidget {
   final int userId;
 
-  const LowAdminUserDetailPage({super.key, required this.userId});
+  const LowAdminUserDetailPage({super.key, @PathParam('id') required this.userId});
 
   @override
   State<LowAdminUserDetailPage> createState() => _LowAdminUserDetailPageState();
@@ -140,12 +141,14 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
 
   Future<void> _navigateToBoughtRecords() async {
     // 导航到购买记录列表页面，并带上user_id查询参数
-    context.go('/low_admin/user_bought?q=user_id:${widget.userId}');
+    context.router.pushPath(
+        '/low_admin/user_bought?q=user_id:${widget.userId}');
   }
 
   Future<void> _navigateToPayRecords() async {
     // 导航到充值记录列表页面，并带上user_id查询参数
-    context.go('/low_admin/user_pay_list?q=user_id:${widget.userId}');
+    context.router.pushPath(
+        '/low_admin/user_pay_list?q=user_id:${widget.userId}');
   }
 
   @override
@@ -156,10 +159,10 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (context.canPop()) {
-              context.pop();
+            if (context.router.canPop()) {
+              context.router.pop();
             } else {
-              context.go('/low_admin/user_bought');
+              context.router.pushPath('/low_admin/user_bought');
             }
           },
           tooltip: '返回',

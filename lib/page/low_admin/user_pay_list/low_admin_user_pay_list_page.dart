@@ -1,12 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/models/user_pay_list.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class LowAdminUserPayListPage extends StatefulWidget {
   const LowAdminUserPayListPage({super.key});
 
@@ -35,16 +36,14 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    // 延迟读取URL参数，确保GoRouter已经初始化
+    // 延迟读取URL参数，确保路由已经初始化
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadQueryFromUrl();
     });
   }
 
   void _loadQueryFromUrl() {
-    final uri = GoRouterState
-        .of(context)
-        .uri;
+    final uri = Uri.base;
     final qParam = uri.queryParameters['q'];
     if (qParam != null && qParam.isNotEmpty) {
       _queryController.text = qParam;
@@ -594,7 +593,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
   Widget _buildClickableUserIdItem(BuildContext context, int userId) {
     return InkWell(
       onTap: () {
-        context.go('/low_admin/user_v2/$userId');
+        context.router.pushPath('/low_admin/user_v2/$userId');
       },
       borderRadius: BorderRadius.circular(4),
       child: Padding(

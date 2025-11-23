@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class LowAdminSsNodePage extends StatefulWidget {
   const LowAdminSsNodePage({super.key});
 

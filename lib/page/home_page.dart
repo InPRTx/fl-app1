@@ -1,11 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/component/auth/auth_status_component.dart';
 import 'package:fl_app1/page/system/system_view_default_const_page.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, this.title = 'Flutter Demo Home Page'});
 
   final String title;
 
@@ -42,17 +43,17 @@ class _MyHomePageState extends State<MyHomePage> {
           const AuthStatusComponent(),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.go('/auth/simple_login'),
+            onPressed: () => context.router.pushPath('/auth/simple_login'),
             child: const Text('简洁登录'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.go('/auth/login'),
+            onPressed: () => context.router.pushPath('/auth/login'),
             child: const Text('打开登录页面'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.go('/user/dashboard'),
+            onPressed: () => context.router.pushPath('/user/dashboard'),
             child: const Text('前往用户首页'),
           ),
           const SizedBox(height: 8),
@@ -71,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 8),
           if (_authStore.isAdmin) ...[
             ElevatedButton(
-              onPressed: () => context.go('/low_admin'),
+              onPressed: () => context.router.pushPath('/low_admin'),
               child: const Text('前往管理主页'),
             ),
             const SizedBox(height: 8),

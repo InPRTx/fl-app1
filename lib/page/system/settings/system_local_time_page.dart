@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/store/local_time_store.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class SystemLocalTimePage extends StatefulWidget {
   const SystemLocalTimePage({super.key});
 
