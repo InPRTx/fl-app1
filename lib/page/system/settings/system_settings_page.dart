@@ -145,7 +145,7 @@ class _SystemSettingsPageState extends State<SystemSettingsPage> {
             subtitle: const Text('在专用页面中设置时区'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              context.router.pushNamed('/system/settings/local_time');
+              context.router.pushPath('/system/settings/local_time');
             },
           ),
         ),

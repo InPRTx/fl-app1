@@ -1,11 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:fl_app1/component/layout/simple_layout_with_menu_component.dart';
 import 'package:fl_app1/page/auth/login/auth_login_page.dart';
 import 'package:fl_app1/page/auth/login/auth_simple_login_page.dart';
 import 'package:fl_app1/page/debug/version/debug_version_page.dart';
 import 'package:fl_app1/page/home_page.dart';
 import 'package:fl_app1/page/low_admin/home/low_admin_home_page.dart';
-import 'package:fl_app1/page/low_admin/low_admin_layout.dart';
 import 'package:fl_app1/page/low_admin/old_service_shop_list/low_admin_old_service_shop_list_page.dart';
 import 'package:fl_app1/page/low_admin/ss_node/low_admin_ss_node_page.dart';
 import 'package:fl_app1/page/low_admin/ticket_detail/low_admin_ticket_detail_page.dart';
@@ -24,6 +22,7 @@ import 'package:fl_app1/page/user/dashboard/user_dashboard_page.dart';
 import 'package:fl_app1/router/low_admin_wrapper.dart';
 import 'package:fl_app1/router/main_wrapper.dart';
 import 'package:fl_app1/router/user_wrapper.dart';
+import 'package:flutter/material.dart';
 
 part 'app_router.gr.dart';
 
@@ -37,7 +36,7 @@ class AppRouter extends RootStackRouter {
           initial: true,
           children: [
             AutoRoute(
-              page: HomeRoute.page,
+              page: MyHomeRoute.page,
               path: '',
             ),
             AutoRoute(

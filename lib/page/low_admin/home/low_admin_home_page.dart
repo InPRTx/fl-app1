@@ -53,7 +53,7 @@ class LowAdminHomePage extends StatelessWidget {
                   icon: Icons.people,
                   title: '用户管理',
                   description: '查看和编辑用户信息',
-                  onTap: () => context.router.pushNamed('/low_admin/users'),
+                  onTap: () => context.router.pushPath('/low_admin/users'),
                 ),
                 _buildQuickActionCard(
                   context: context,
@@ -67,21 +67,23 @@ class LowAdminHomePage extends StatelessWidget {
                   icon: Icons.shopping_bag,
                   title: '购买记录',
                   description: '查看用户购买记录',
-                  onTap: () => context.router.pushNamed('/low_admin/user_bought'),
+                  onTap: () =>
+                      context.router.pushPath('/low_admin/user_bought'),
                 ),
                 _buildQuickActionCard(
                   context: context,
                   icon: Icons.account_balance_wallet,
                   title: '充值记录',
                   description: '查看用户充值记录',
-                  onTap: () => context.router.pushNamed('/low_admin/user_pay_list'),
+                  onTap: () =>
+                      context.router.pushPath('/low_admin/user_pay_list'),
                 ),
                 _buildQuickActionCard(
                   context: context,
                   icon: Icons.settings,
                   title: '系统设置',
                   description: '配置系统参数',
-                  onTap: () => context.router.pushNamed('/low_admin/settings'),
+                  onTap: () => context.router.pushPath('/low_admin/settings'),
                 ),
               ],
             ),
@@ -173,7 +175,7 @@ class LowAdminHomePage extends StatelessWidget {
     controller.dispose();
 
     if (result != null && context.mounted) {
-      context.router.pushNamed('/low_admin/user_v2/$result');
+      context.router.pushPath('/low_admin/user_v2/$result');
     }
   }
 }

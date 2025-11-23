@@ -298,7 +298,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
         onTap: () {
           // 导航到工单详情页面
           if (ticket.id != null) {
-            context.router.pushNamed('/low_admin/ticket/${ticket.id}');
+            context.router.pushPath('/low_admin/ticket/${ticket.id}');
           }
         },
         child: Padding(

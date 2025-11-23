@@ -509,7 +509,7 @@ class _BoughtRecordsListComponentState
   Widget _buildClickableUserIdItem(int userId) {
     return InkWell(
       onTap: () {
-        context.router.pushNamed('/low_admin/user_v2/$userId');
+        context.router.pushPath('/low_admin/user_v2/$userId');
       },
       borderRadius: BorderRadius.circular(4),
       child: Padding(

@@ -141,12 +141,14 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
 
   Future<void> _navigateToBoughtRecords() async {
     // 导航到购买记录列表页面，并带上user_id查询参数
-    context.router.pushNamed('/low_admin/user_bought?q=user_id:${widget.userId}');
+    context.router.pushPath(
+        '/low_admin/user_bought?q=user_id:${widget.userId}');
   }
 
   Future<void> _navigateToPayRecords() async {
     // 导航到充值记录列表页面，并带上user_id查询参数
-    context.router.pushNamed('/low_admin/user_pay_list?q=user_id:${widget.userId}');
+    context.router.pushPath(
+        '/low_admin/user_pay_list?q=user_id:${widget.userId}');
   }
 
   @override
@@ -160,7 +162,7 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
             if (context.router.canPop()) {
               context.router.pop();
             } else {
-              context.router.pushNamed('/low_admin/user_bought');
+              context.router.pushPath('/low_admin/user_bought');
             }
           },
           tooltip: '返回',

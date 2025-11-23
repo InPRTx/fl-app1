@@ -80,7 +80,7 @@ class _AuthSimpleLoginPageState extends State<AuthSimpleLoginPage> {
       SnackBar(content: Text('登录成功，欢迎回来！'), backgroundColor: Colors.green),
     );
 
-    context.router.pushNamed('/user/dashboard');
+    context.router.pushPath('/user/dashboard');
   }
 
   @override

@@ -62,7 +62,7 @@ void main() async {
 
   // 设置跳转到登录页回调
   AuthStore().onNavigateToLogin = () {
-    appRouter.pushNamed('/auth/login');
+    appRouter.pushPath('/auth/login');
   };
 
   runApp(const MyApp());
@@ -76,7 +76,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       scaffoldMessengerKey: scaffoldMessengerKey,
-      routerConfig: appRouter.config(),
+      routerDelegate: appRouter.delegate(),
+      routeInformationParser: appRouter.defaultRouteParser(),
       title: 'Flutter Demo',
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

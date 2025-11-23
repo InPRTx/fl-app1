@@ -28,7 +28,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('查看不同时区的时间'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.router.pushNamed('/system/debug/view_timezone');
+                  context.router.pushPath('/system/debug/view_timezone');
                 },
               ),
               const Divider(height: 1),
@@ -38,7 +38,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('配置 API 服务器地址'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.router.pushNamed('/system/debug/base_url');
+                  context.router.pushPath('/system/debug/base_url');
                 },
               ),
               const Divider(height: 1),
@@ -48,7 +48,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('查看和解析访问令牌与刷新令牌'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.router.pushNamed('/system/debug/jwt_token');
+                  context.router.pushPath('/system/debug/jwt_token');
                 },
               ),
               const Divider(height: 1),

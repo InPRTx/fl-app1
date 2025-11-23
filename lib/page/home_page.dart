@@ -43,17 +43,17 @@ class _MyHomePageState extends State<MyHomePage> {
           const AuthStatusComponent(),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.router.pushNamed('/auth/simple_login'),
+            onPressed: () => context.router.pushPath('/auth/simple_login'),
             child: const Text('简洁登录'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.router.pushNamed('/auth/login'),
+            onPressed: () => context.router.pushPath('/auth/login'),
             child: const Text('打开登录页面'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.router.pushNamed('/user/dashboard'),
+            onPressed: () => context.router.pushPath('/user/dashboard'),
             child: const Text('前往用户首页'),
           ),
           const SizedBox(height: 8),
@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 8),
           if (_authStore.isAdmin) ...[
             ElevatedButton(
-              onPressed: () => context.router.pushNamed('/low_admin'),
+              onPressed: () => context.router.pushPath('/low_admin'),
               child: const Text('前往管理主页'),
             ),
             const SizedBox(height: 8),

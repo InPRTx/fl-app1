@@ -156,7 +156,7 @@ class _AuthLoginPageState extends State<AuthLoginPage>
       );
 
       // 跳转到用户仪表板
-      context.router.pushNamed('/user/dashboard');
+      context.router.pushPath('/user/dashboard');
     } on DioException catch (e) {
       setState(() => _isLoggingIn = false);
 

@@ -265,7 +265,7 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
       margin: const EdgeInsets.only(bottom: 12.0),
       elevation: 2,
       child: InkWell(
-        onTap: () => context.router.pushNamed('/low_admin/user_v2/${user.id}'),
+        onTap: () => context.router.pushPath('/low_admin/user_v2/${user.id}'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -13,7 +13,7 @@ class SimpleUserMenu extends StatelessWidget {
       onDestinationSelected: (index) {
         final route = _menuItems[index].route;
         if (route != null) {
-          context.router.pushNamed(route);
+          context.router.pushPath(route);
           if (Scaffold.of(context).hasDrawer) {
             Navigator.of(context).pop();
           }

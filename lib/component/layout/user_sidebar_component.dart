@@ -75,7 +75,7 @@ class _UserNavigationRailComponentState
     _removeOverlay();
 
     // 在创建 Overlay 前获取当前路径和主题，避免在 Overlay context 中访问
-    final currentPath = GoRouterState.of(context).uri.path;
+    final currentPath = context.router.currentPath;
     final theme = Theme.of(context);
 
     _overlayEntry = OverlayEntry(
@@ -134,7 +134,7 @@ class _UserNavigationRailComponentState
                       onTap: item.to != null
                           ? () {
                               _removeOverlay();
-                              context.router.pushNamed(item.to!);
+                              context.router.pushPath(item.to!);
                             }
                           : null,
                     );
@@ -163,7 +163,7 @@ class _UserNavigationRailComponentState
 
   @override
   Widget build(BuildContext context) {
-    final currentPath = GoRouterState.of(context).uri.path;
+    final currentPath = context.router.currentPath;
     final selectedIndex = _getSelectedIndex(currentPath);
 
     return SizedBox(
@@ -203,7 +203,7 @@ class _UserNavigationRailComponentState
                               _showSubmenu(context, index, position);
                             }
                           } else if (item.route != null) {
-                            context.router.pushNamed(item.route!);
+                            context.router.pushPath(item.route!);
                           }
                         },
                         child: Container(
@@ -278,7 +278,7 @@ class _UserNavigationRailComponentState
               icon: const Icon(Icons.home),
               tooltip: '返回主页',
               onPressed: () {
-                context.router.pushNamed('/');
+                context.router.pushPath('/');
               },
             ),
           ),
@@ -301,7 +301,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final currentPath = GoRouterState.of(context).uri.path;
+    final currentPath = context.router.currentPath;
 
     return Drawer(
       child: ListView(
@@ -341,7 +341,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
             title: const Text('返回主页'),
             onTap: () {
               Navigator.pop(context);
-              context.router.pushNamed('/');
+              context.router.pushPath('/');
             },
           ),
         ],
@@ -415,7 +415,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
                 onTap: child.to != null
                     ? () {
                         Navigator.pop(context);
-                        context.router.pushNamed(child.to!);
+                        context.router.pushPath(child.to!);
                       }
                     : null,
               );
@@ -445,7 +445,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
       onTap: item.to != null
           ? () {
               Navigator.pop(context);
-              context.router.pushNamed(item.to!);
+              context.router.pushPath(item.to!);
             }
           : null,
     );
