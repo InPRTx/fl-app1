@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class SystemDebugPage extends StatelessWidget {
   const SystemDebugPage({super.key});
 
@@ -27,7 +28,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('查看不同时区的时间'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.go('/system/debug/view_timezone');
+                  context.router.pushNamed('/system/debug/view_timezone');
                 },
               ),
               const Divider(height: 1),
@@ -37,7 +38,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('配置 API 服务器地址'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.go('/system/debug/base_url');
+                  context.router.pushNamed('/system/debug/base_url');
                 },
               ),
               const Divider(height: 1),
@@ -47,7 +48,7 @@ class SystemDebugPage extends StatelessWidget {
                 subtitle: const Text('查看和解析访问令牌与刷新令牌'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  context.go('/system/debug/jwt_token');
+                  context.router.pushNamed('/system/debug/jwt_token');
                 },
               ),
               const Divider(height: 1),

@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -509,7 +509,7 @@ class _BoughtRecordsListComponentState
   Widget _buildClickableUserIdItem(int userId) {
     return InkWell(
       onTap: () {
-        context.go('/low_admin/user_v2/$userId');
+        context.router.pushNamed('/low_admin/user_v2/$userId');
       },
       borderRadius: BorderRadius.circular(4),
       child: Padding(

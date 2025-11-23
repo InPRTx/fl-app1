@@ -1,5 +1,5 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SimpleLayoutWithMenuComponent extends StatelessWidget {
   final Widget child;
@@ -64,7 +64,7 @@ class SimpleNavigationRail extends StatelessWidget {
       onDestinationSelected: (index) {
         final route = _getRouteByIndex(index);
         if (route != null) {
-          context.go(route);
+          context.router.pushNamed(route);
         }
       },
       labelType: NavigationRailLabelType.all,
@@ -110,7 +110,7 @@ class SimpleNavigationDrawer extends StatelessWidget {
       onDestinationSelected: (index) {
         final route = _getRouteByIndex(index);
         if (route != null) {
-          context.go(route);
+          context.router.pushNamed(route);
           if (Scaffold.of(context).hasDrawer) {
             Navigator.of(context).pop();
           }

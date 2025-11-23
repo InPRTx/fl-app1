@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/index.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+@RoutePage()
 class LowAdminTicketListPage extends StatefulWidget {
   const LowAdminTicketListPage({super.key});
 
@@ -38,7 +39,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
   }
 
   void _loadQueryFromUrl() {
-    final uri = GoRouterState.of(context).uri;
+    final uri = Uri.base;
     final qParam = uri.queryParameters['q'];
     if (qParam != null && qParam.isNotEmpty) {
       _queryController.text = qParam;
@@ -297,7 +298,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
         onTap: () {
           // 导航到工单详情页面
           if (ticket.id != null) {
-            context.push('/low_admin/ticket/${ticket.id}');
+            context.router.pushNamed('/low_admin/ticket/${ticket.id}');
           }
         },
         child: Padding(

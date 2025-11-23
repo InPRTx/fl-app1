@@ -1,5 +1,5 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'user_menu_component.dart';
 
@@ -134,7 +134,7 @@ class _UserNavigationRailComponentState
                       onTap: item.to != null
                           ? () {
                               _removeOverlay();
-                              context.go(item.to!);
+                              context.router.pushNamed(item.to!);
                             }
                           : null,
                     );
@@ -203,7 +203,7 @@ class _UserNavigationRailComponentState
                               _showSubmenu(context, index, position);
                             }
                           } else if (item.route != null) {
-                            context.go(item.route!);
+                            context.router.pushNamed(item.route!);
                           }
                         },
                         child: Container(
@@ -278,7 +278,7 @@ class _UserNavigationRailComponentState
               icon: const Icon(Icons.home),
               tooltip: '返回主页',
               onPressed: () {
-                context.go('/');
+                context.router.pushNamed('/');
               },
             ),
           ),
@@ -341,7 +341,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
             title: const Text('返回主页'),
             onTap: () {
               Navigator.pop(context);
-              context.go('/');
+              context.router.pushNamed('/');
             },
           ),
         ],
@@ -415,7 +415,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
                 onTap: child.to != null
                     ? () {
                         Navigator.pop(context);
-                        context.go(child.to!);
+                        context.router.pushNamed(child.to!);
                       }
                     : null,
               );
@@ -445,7 +445,7 @@ class _UserSidebarComponentState extends State<UserSidebarComponent> {
       onTap: item.to != null
           ? () {
               Navigator.pop(context);
-              context.go(item.to!);
+              context.router.pushNamed(item.to!);
             }
           : null,
     );

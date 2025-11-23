@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/component/dashboard/announcement_card_component.dart';
 import 'package:fl_app1/component/dashboard/status_card_component.dart';
@@ -6,6 +7,7 @@ import 'package:fl_app1/component/dashboard/traffic_card_component.dart';
 import 'package:fl_app1/store/service/auth/authenticated_client.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class UserDashboardPage extends StatefulWidget {
   const UserDashboardPage({super.key});
 

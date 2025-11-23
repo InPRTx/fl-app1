@@ -1,5 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/scheduler.dart';
 
 class LowAdminLayout extends StatefulWidget {
   final Widget child;
@@ -130,7 +131,7 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
               onTap: () {
                 Navigator.pop(context);
                 if (item.route != null) {
-                  context.go(item.route!);
+                  context.router.pushNamed(item.route!);
                 }
               },
             );
@@ -141,7 +142,7 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
             title: const Text('返回主页'),
             onTap: () {
               Navigator.pop(context);
-              context.go('/');
+              context.router.pushNamed('/');
             },
           ),
         ],
@@ -155,7 +156,7 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
       onDestinationSelected: (index) {
         final item = _navItems[index];
         if (item.route != null) {
-          context.go(item.route!);
+          context.router.pushNamed(item.route!);
         }
       },
       labelType: NavigationRailLabelType.all,
@@ -182,7 +183,7 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
               icon: const Icon(Icons.home),
               tooltip: '返回主页',
               onPressed: () {
-                context.go('/');
+                context.router.pushNamed('/');
               },
             ),
           ),

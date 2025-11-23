@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
+@RoutePage()
 class SystemDebugJwtTokenPage extends StatefulWidget {
   const SystemDebugJwtTokenPage({super.key});
 

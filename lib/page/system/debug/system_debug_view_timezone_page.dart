@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class SystemDebugViewTimezonePage extends StatefulWidget {
   const SystemDebugViewTimezonePage({super.key});
 

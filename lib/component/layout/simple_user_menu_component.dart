@@ -1,19 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SimpleUserMenu extends StatelessWidget {
   const SimpleUserMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final currentPath = GoRouterState.of(context).uri.toString();
+    final currentPath = context.router.currentPath;
 
     return NavigationDrawer(
       selectedIndex: _getSelectedIndex(currentPath),
       onDestinationSelected: (index) {
         final route = _menuItems[index].route;
         if (route != null) {
-          context.go(route);
+          context.router.pushNamed(route);
           if (Scaffold.of(context).hasDrawer) {
             Navigator.of(context).pop();
           }

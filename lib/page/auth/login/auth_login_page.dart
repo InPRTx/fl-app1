@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/base_url.dart';
 import 'package:fl_app1/api/models/login_post_result_model.dart';
@@ -6,8 +7,8 @@ import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class AuthLoginPage extends StatefulWidget {
   const AuthLoginPage({super.key});
 
@@ -155,7 +156,7 @@ class _AuthLoginPageState extends State<AuthLoginPage>
       );
 
       // 跳转到用户仪表板
-      context.go('/user/dashboard');
+      context.router.pushNamed('/user/dashboard');
     } on DioException catch (e) {
       setState(() => _isLoggingIn = false);
 

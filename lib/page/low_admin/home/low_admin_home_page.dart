@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class LowAdminHomePage extends StatelessWidget {
   const LowAdminHomePage({super.key});
 
@@ -52,7 +53,7 @@ class LowAdminHomePage extends StatelessWidget {
                   icon: Icons.people,
                   title: '用户管理',
                   description: '查看和编辑用户信息',
-                  onTap: () => context.go('/low_admin/users'),
+                  onTap: () => context.router.pushNamed('/low_admin/users'),
                 ),
                 _buildQuickActionCard(
                   context: context,
@@ -66,21 +67,21 @@ class LowAdminHomePage extends StatelessWidget {
                   icon: Icons.shopping_bag,
                   title: '购买记录',
                   description: '查看用户购买记录',
-                  onTap: () => context.go('/low_admin/user_bought'),
+                  onTap: () => context.router.pushNamed('/low_admin/user_bought'),
                 ),
                 _buildQuickActionCard(
                   context: context,
                   icon: Icons.account_balance_wallet,
                   title: '充值记录',
                   description: '查看用户充值记录',
-                  onTap: () => context.go('/low_admin/user_pay_list'),
+                  onTap: () => context.router.pushNamed('/low_admin/user_pay_list'),
                 ),
                 _buildQuickActionCard(
                   context: context,
                   icon: Icons.settings,
                   title: '系统设置',
                   description: '配置系统参数',
-                  onTap: () => context.go('/low_admin/settings'),
+                  onTap: () => context.router.pushNamed('/low_admin/settings'),
                 ),
               ],
             ),
@@ -139,7 +140,6 @@ class LowAdminHomePage extends StatelessWidget {
 
   Future<void> _showUserIdDialog(BuildContext context) async {
     final TextEditingController controller = TextEditingController();
-    final router = GoRouter.of(context);
 
     final result = await showDialog<int>(
       context: context,
@@ -172,8 +172,8 @@ class LowAdminHomePage extends StatelessWidget {
 
     controller.dispose();
 
-    if (result != null) {
-      router.go('/low_admin/user_v2/$result');
+    if (result != null && context.mounted) {
+      context.router.pushNamed('/low_admin/user_v2/$result');
     }
   }
 }

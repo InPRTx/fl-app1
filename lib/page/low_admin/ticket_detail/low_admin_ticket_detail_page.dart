@@ -1,13 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+@RoutePage()
 class LowAdminTicketDetailPage extends StatefulWidget {
   final int ticketId;
 
-  const LowAdminTicketDetailPage({super.key, required this.ticketId});
+  const LowAdminTicketDetailPage({super.key, @PathParam('id') required this.ticketId});
 
   @override
   State<LowAdminTicketDetailPage> createState() =>

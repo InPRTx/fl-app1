@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/models/get_old_service_shop_list_response.dart';
 import 'package:fl_app1/api/models/old_service_shop_input.dart';
 import 'package:fl_app1/api/models/old_service_shop_output.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class LowAdminOldServiceShopListPage extends StatefulWidget {
   const LowAdminOldServiceShopListPage({super.key});
 

@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/store/base_url_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+@RoutePage()
 class SystemDebugBaseUrlPage extends StatefulWidget {
   const SystemDebugBaseUrlPage({super.key});
 

@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/component/bought_records/bought_records_list_component.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
+@RoutePage()
 class LowAdminUserBoughtListPage extends StatefulWidget {
   const LowAdminUserBoughtListPage({super.key});
 
@@ -18,14 +19,14 @@ class _LowAdminUserBoughtListPageState
   @override
   void initState() {
     super.initState();
-    // 延迟读取URL参数，确保GoRouter已经初始化
+    // 延迟读取URL参数，确保路由已经初始化
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadQueryFromUrl();
     });
   }
 
   void _loadQueryFromUrl() {
-    final uri = GoRouterState.of(context).uri;
+    final uri = Uri.base;
     final qParam = uri.queryParameters['q'];
     if (qParam != null && qParam.isNotEmpty) {
       _queryController.text = qParam;

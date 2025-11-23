@@ -1,12 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/models/get_search_user_result.dart';
 import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+@RoutePage()
 class LowAdminUsersListPage extends StatefulWidget {
   const LowAdminUsersListPage({super.key});
 
@@ -264,7 +265,7 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
       margin: const EdgeInsets.only(bottom: 12.0),
       elevation: 2,
       child: InkWell(
-        onTap: () => context.push('/low_admin/user_v2/${user.id}'),
+        onTap: () => context.router.pushNamed('/low_admin/user_v2/${user.id}'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16.0),

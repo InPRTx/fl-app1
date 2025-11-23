@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      auto_route_generator:auto_route_generator:
+        enabled: true
+        options:
+          # 使用 auto_route 默认配置
