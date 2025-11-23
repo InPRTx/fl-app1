@@ -67,7 +67,7 @@ final RouteBase lowAdminShellRoute = ShellRoute(
       name: 'low_admin_ticket_detail',
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
-        final id = int.tryParse(idStr?.toString() ?? '');
+        final id = int.tryParse(idStr ?? '');
         if (id == null) {
           return const Scaffold(body: Center(child: Text('invalid ticket id')));
         }
@@ -90,7 +90,7 @@ final RouteBase lowAdminShellRoute = ShellRoute(
       name: 'user_v2',
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
-        final id = int.tryParse(idStr?.toString() ?? '');
+        final id = int.tryParse(idStr ?? '');
         if (id == null) {
           return const Scaffold(body: Center(child: Text('invalid id')));
         }
@@ -102,7 +102,7 @@ final RouteBase lowAdminShellRoute = ShellRoute(
       name: 'user_recharge',
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
-        final id = int.tryParse(idStr?.toString() ?? '');
+        final id = int.tryParse(idStr ?? '');
         if (id == null) {
           return const Scaffold(body: Center(child: Text('invalid id')));
         }

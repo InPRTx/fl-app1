@@ -117,9 +117,10 @@ class MyApp extends StatelessWidget {
               return;
             }
             
-            final router = GoRouter.of(context);
-            if (router.canPop()) {
-              router.pop();
+            // 检查是否可以在路由栈中返回
+            final canPopRoute = GoRouter.of(context).canPop();
+            if (canPopRoute) {
+              GoRouter.of(context).pop();
             } else {
               // 如果无法返回，显示退出确认对话框
               showDialog<bool>(
