@@ -6,6 +6,12 @@
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
+                <!-- 
+                使用 singleTask 而非 singleTop 的原因:
+                - singleTask: 确保应用在单一任务栈中运行，返回键可以在应用内导航
+                - 移除 taskAffinity: 避免创建新的任务栈导致返回键直接退出应用
+                详见: docs_ai/2025_11/23_路由系统重写修复Android返回和Web刷新问题.md
+                -->
                 android:launchMode="singleTask"
                 android:theme="@style/LaunchTheme"
                 android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
