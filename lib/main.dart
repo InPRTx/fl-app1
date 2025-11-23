@@ -125,6 +125,7 @@ class MyApp extends StatelessWidget {
               // 如果无法返回，显示退出确认对话框
               showDialog<bool>(
                 context: context,
+                barrierDismissible: false, // 防止误触对话框外部退出
                 builder: (dialogContext) => AlertDialog(
                   title: const Text('确认退出'),
                   content: const Text('确定要退出应用吗？'),
