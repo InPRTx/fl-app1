@@ -112,7 +112,7 @@ class SimpleNavigationDrawer extends StatelessWidget {
         if (route != null) {
           context.go(route);
           if (Scaffold.of(context).hasDrawer) {
-            Navigator.of(context).pop();
+            Scaffold.of(context).closeDrawer();
           }
         }
       },

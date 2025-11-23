@@ -2,7 +2,9 @@ import 'package:fl_app1/store/base_url_store.dart';
 import 'package:fl_app1/store/local_time_store.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -100,8 +102,51 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // 添加 AppBar 主题，确保自动显示返回按钮
+        appBarTheme: const AppBarTheme(
+          centerTitle: false,
+        ),
       ),
       // home is handled by GoRouter's '/' route
+      builder: (context, child) {
+        // 添加系统返回键处理
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) {
+              return;
+            }
+            
+            final router = GoRouter.of(context);
+            if (router.canPop()) {
+              router.pop();
+            } else {
+              // 如果无法返回，显示退出确认对话框
+              showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('确认退出'),
+                  content: const Text('确定要退出应用吗？'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('取消'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                        SystemNavigator.pop();
+                      },
+                      child: const Text('退出'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+          child: child!,
+        );
+      },
     );
   }
 }

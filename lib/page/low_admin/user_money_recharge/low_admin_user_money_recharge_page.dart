@@ -1,6 +1,7 @@
 import 'package:fl_app1/api/export.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LowAdminUserMoneyRechargePage extends StatefulWidget {
   final int userId;
@@ -99,7 +100,7 @@ class _LowAdminUserMoneyRechargePageState
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('充值成功'), backgroundColor: Colors.green),
         );
-        Navigator.of(context).pop(true);
+        context.pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -1,5 +1,4 @@
 import 'package:fl_app1/component/auth/auth_status_component.dart';
-import 'package:fl_app1/page/system/system_view_default_const_page.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -57,15 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push<void>(
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return const SystemViewDefaultConstPage();
-                  },
-                ),
-              );
-            },
+            onPressed: () => context.go('/system/view_default_const'),
             child: const Text('查看 Base URL'),
           ),
           const SizedBox(height: 8),

@@ -6,6 +6,7 @@ import 'package:fl_app1/page/low_admin/ticket_detail/low_admin_ticket_detail_pag
 import 'package:fl_app1/page/low_admin/ticket_list/low_admin_ticket_list_page.dart';
 import 'package:fl_app1/page/low_admin/user_bought_list/low_admin_user_bought_list_page.dart';
 import 'package:fl_app1/page/low_admin/user_detail/low_admin_user_detail_page.dart';
+import 'package:fl_app1/page/low_admin/user_money_recharge/low_admin_user_money_recharge_page.dart';
 import 'package:fl_app1/page/low_admin/user_pay_list/low_admin_user_pay_list_page.dart';
 import 'package:fl_app1/page/low_admin/users_list/low_admin_users_list_page.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,18 @@ final RouteBase lowAdminShellRoute = ShellRoute(
           return const Scaffold(body: Center(child: Text('invalid id')));
         }
         return LowAdminUserDetailPage(userId: id);
+      },
+    ),
+    GoRoute(
+      path: '/low_admin/user_v2/:id/recharge',
+      name: 'user_recharge',
+      builder: (context, state) {
+        final idStr = state.pathParameters['id'];
+        final id = int.tryParse(idStr?.toString() ?? '');
+        if (id == null) {
+          return const Scaffold(body: Center(child: Text('invalid id')));
+        }
+        return LowAdminUserMoneyRechargePage(userId: id);
       },
     ),
   ],

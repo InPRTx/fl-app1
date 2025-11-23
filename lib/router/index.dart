@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 /// 使用 go_router 的路由器实例
 final GoRouter router = GoRouter(
   initialLocation: '/',
+  debugLogDiagnostics: true, // 启用调试日志以便追踪路由问题
   routes: <RouteBase>[
     // Main app shell: show site navigation (menu/rail) for these routes
     ShellRoute(
@@ -61,6 +62,7 @@ final GoRouter router = GoRouter(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            // 优先使用 canPop 检查，确保在 Web 刷新后也能正确返回
             if (context.canPop()) {
               context.pop();
             } else {

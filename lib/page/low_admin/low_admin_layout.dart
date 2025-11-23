@@ -128,7 +128,9 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
               title: Text(item.label),
               selected: widget.selectedIndex == index,
               onTap: () {
-                Navigator.pop(context);
+                if (Scaffold.of(context).hasDrawer) {
+                  Scaffold.of(context).closeDrawer();
+                }
                 if (item.route != null) {
                   context.go(item.route!);
                 }
@@ -140,7 +142,9 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
             leading: const Icon(Icons.logout),
             title: const Text('返回主页'),
             onTap: () {
-              Navigator.pop(context);
+              if (Scaffold.of(context).hasDrawer) {
+                Scaffold.of(context).closeDrawer();
+              }
               context.go('/');
             },
           ),
