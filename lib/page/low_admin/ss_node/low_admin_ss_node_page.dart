@@ -77,7 +77,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
   bool _isTablet(double width) => width >= _tabletBreakpoint;
 
-
   Future<void> _openNodeForm({SsNodeOutput? node}) async {
     final bool? updated = await showDialog<bool>(
       context: context,
@@ -303,8 +302,9 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     );
   }
 
-
   Widget _buildNodeCard(SsNodeOutput node) {
+    final VmessConfig? vmessConfig = node.nodeConfig.vmessConfig;
+    final SsrConfig? ssrConfig = node.nodeConfig.ssrConfig;
     return SizedBox(
       height: 280,
       child: Card(
@@ -331,8 +331,10 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                         const SizedBox(height: 2),
                         Text(
                           'ID: ${node.id ?? '-'}',
-                          style: const TextStyle(fontSize: 11, color: Colors
-                              .grey),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -344,7 +346,9 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                     iconSize: 18,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(
-                        minWidth: 32, minHeight: 32),
+                      minWidth: 32,
+                      minHeight: 32,
+                    ),
                     icon: const Icon(Icons.edit),
                     onPressed: () => _openNodeForm(node: node),
                   ),
@@ -353,7 +357,9 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                     iconSize: 18,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(
-                        minWidth: 32, minHeight: 32),
+                      minWidth: 32,
+                      minHeight: 32,
+                    ),
                     icon: const Icon(Icons.delete_outline),
                     color: Colors.red[700],
                     onPressed: () => _confirmDelete(node),
@@ -367,12 +373,15 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                       style: const TextStyle(fontSize: 11),
                     ),
                     labelStyle: TextStyle(
-                      color: node.isEnable ? Colors.green[700] : Colors
-                          .red[700],
+                      color: node.isEnable
+                          ? Colors.green[700]
+                          : Colors.red[700],
                       fontSize: 11,
                     ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 6, vertical: 2),
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                   ),
                 ],
               ),
@@ -384,17 +393,43 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
                     children: [
                       _buildInfoRow('主机', node.nodeConfig.host ?? '-'),
                       _buildInfoRow(
-                          '端口', node.nodeConfig.port?.toString() ?? '-'),
+                        '端口',
+                        node.nodeConfig.port?.toString() ?? '-',
+                      ),
                       _buildInfoRow('协议', node.vpnType.name),
                       _buildInfoRow(
-                          '国家代码',
-                          '${_getCountryEmoji(node.iso3166Code.name)} ${node
-                              .iso3166Code.name.toUpperCase()}'),
+                        '国家代码',
+                        '${_getCountryEmoji(node.iso3166Code.name)} ${node.iso3166Code.name.toUpperCase()}',
+                      ),
                       _buildInfoRow('倍率', node.nodeRate),
                       _buildInfoRow('等级', node.nodeLevel.toString()),
                       _buildInfoRow('隐藏', node.isHideNode ? '是' : '否'),
-                      _buildInfoRow(
-                          '创建时间', _formatDateTime(node.createdAt)),
+                      _buildInfoRow('创建时间', _formatDateTime(node.createdAt)),
+                      if (vmessConfig != null) ...[
+                        _buildInfoRow(
+                          'VMess主机',
+                          '${vmessConfig.host}:${vmessConfig.port}',
+                        ),
+                        _buildInfoRow(
+                          'VMess参数',
+                          'alterId ${vmessConfig.alterId} / ${vmessConfig.netType}',
+                        ),
+                        _buildInfoRow(
+                          '证书校验',
+                          vmessConfig.verifyCert ? '校验' : '跳过',
+                        ),
+                      ],
+                      if (ssrConfig != null) ...[
+                        _buildInfoRow(
+                          'SSR主机',
+                          '${ssrConfig.host}:${ssrConfig.port}',
+                        ),
+                        _buildInfoRow(
+                          'SSR加密',
+                          '${ssrConfig.method} / ${ssrConfig.protocol}',
+                        ),
+                        _buildInfoRow('SSR混淆', ssrConfig.obfs),
+                      ],
                     ],
                   ),
                 ),
@@ -433,7 +468,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -465,6 +499,12 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
   late _SsNodeFormData _data;
   bool _isSubmitting = false;
   String? _errorMessage;
+
+  bool get _isVmess => _data.vpnType == VpnTypeEnum.vmess;
+
+  bool get _isSsr =>
+      _data.vpnType == VpnTypeEnum.shadowsocks ||
+      _data.vpnType == VpnTypeEnum.shadowsocksr;
 
   @override
   void initState() {
@@ -666,6 +706,12 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
                   }),
                 ),
                 const SizedBox(height: 12),
+                if (_isVmess) _buildVmessFields(),
+                if (_isSsr) ...[
+                  if (_isVmess) const SizedBox(height: 12),
+                  _buildSsrFields(),
+                ],
+                if (_isVmess || _isSsr) const SizedBox(height: 12),
                 TextFormField(
                   initialValue: _data.userGroupHostRaw,
                   decoration: const InputDecoration(
@@ -744,8 +790,29 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final NodeConfig nodeConfig = NodeConfig(
-      host: _data.host,
+      host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
+      vmessConfig: _isVmess
+          ? VmessConfig(
+              host: _data.vmessHost,
+              verifyCert: _data.vmessVerifyCert,
+              port: _data.vmessPort,
+              alterId: _data.vmessAlterId,
+              netType: _data.vmessNetType,
+            )
+          : null,
+      ssrConfig: _isSsr
+          ? SsrConfig(
+              host: _data.ssrHost,
+              port: _data.ssrPort,
+              password: _data.ssrPassword,
+              method: _data.ssrMethod,
+              protocol: _data.ssrProtocol,
+              protocolParam: _data.ssrProtocolParam,
+              obfs: _data.ssrObfs,
+              obfsParam: _data.ssrObfsParam,
+            )
+          : null,
     );
 
     final SsNodeInput body = SsNodeInput(
@@ -823,6 +890,245 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     });
     return UserGroupHost(userGroupHost: map);
   }
+
+  Widget _buildSectionTitle(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildVmessFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle('VMess 配置'),
+        const SizedBox(height: 8),
+        TextFormField(
+          initialValue: _data.vmessHost,
+          decoration: const InputDecoration(
+            labelText: 'VMess 主机',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (!_isVmess) return null;
+            if (value == null || value.trim().isEmpty) {
+              return 'VMess 主机必填';
+            }
+            return null;
+          },
+          onChanged: (value) => setState(() {
+            _data.vmessHost = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                initialValue: _data.vmessPort.toString(),
+                decoration: const InputDecoration(
+                  labelText: 'VMess 端口',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (!_isVmess) return null;
+                  if (value == null || value.trim().isEmpty) {
+                    return '端口必填';
+                  }
+                  final int? parsed = int.tryParse(value.trim());
+                  if (parsed == null || parsed <= 0) {
+                    return '端口格式错误';
+                  }
+                  return null;
+                },
+                onChanged: (value) => setState(() {
+                  _data.vmessPort = int.tryParse(value.trim()) ?? 0;
+                }),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: TextFormField(
+                initialValue: _data.vmessAlterId.toString(),
+                decoration: const InputDecoration(
+                  labelText: 'Alter ID',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) => setState(() {
+                  _data.vmessAlterId = int.tryParse(value.trim()) ?? 0;
+                }),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.vmessNetType,
+          decoration: const InputDecoration(
+            labelText: '网络类型 (net_type)',
+            helperText: '示例: tcp / ws / grpc',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (!_isVmess) return null;
+            if (value == null || value.trim().isEmpty) {
+              return '网络类型必填';
+            }
+            return null;
+          },
+          onChanged: (value) => setState(() {
+            _data.vmessNetType = value.trim();
+          }),
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('启用证书校验 (verify_cert)'),
+          value: _data.vmessVerifyCert,
+          onChanged: (value) => setState(() {
+            _data.vmessVerifyCert = value;
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSsrFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle('SSR 配置'),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                initialValue: _data.ssrHost,
+                decoration: const InputDecoration(
+                  labelText: 'SSR 主机',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (!_isSsr) return null;
+                  if (value == null || value.trim().isEmpty) {
+                    return 'SSR 主机必填';
+                  }
+                  return null;
+                },
+                onChanged: (value) => setState(() {
+                  _data.ssrHost = value.trim();
+                }),
+              ),
+            ),
+            const SizedBox(width: 12),
+            SizedBox(
+              width: 120,
+              child: TextFormField(
+                initialValue: _data.ssrPort.toString(),
+                decoration: const InputDecoration(
+                  labelText: '端口',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (!_isSsr) return null;
+                  if (value == null || value.trim().isEmpty) {
+                    return '端口必填';
+                  }
+                  final int? parsed = int.tryParse(value.trim());
+                  if (parsed == null || parsed <= 0) {
+                    return '端口格式错误';
+                  }
+                  return null;
+                },
+                onChanged: (value) => setState(() {
+                  _data.ssrPort = int.tryParse(value.trim()) ?? 0;
+                }),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrPassword,
+          decoration: const InputDecoration(
+            labelText: '密码',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (!_isSsr) return null;
+            if (value == null || value.trim().isEmpty) {
+              return '密码必填';
+            }
+            return null;
+          },
+          onChanged: (value) => setState(() {
+            _data.ssrPassword = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrMethod,
+          decoration: const InputDecoration(
+            labelText: '加密方式 (method)',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => setState(() {
+            _data.ssrMethod = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrProtocol,
+          decoration: const InputDecoration(
+            labelText: '协议 (protocol)',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => setState(() {
+            _data.ssrProtocol = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrProtocolParam,
+          decoration: const InputDecoration(
+            labelText: '协议参数 (protocol_param)',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => setState(() {
+            _data.ssrProtocolParam = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrObfs,
+          decoration: const InputDecoration(
+            labelText: '混淆 (obfs)',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => setState(() {
+            _data.ssrObfs = value.trim();
+          }),
+        ),
+        const SizedBox(height: 12),
+        TextFormField(
+          initialValue: _data.ssrObfsParam,
+          decoration: const InputDecoration(
+            labelText: '混淆参数 (obfs_param)',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) => setState(() {
+            _data.ssrObfsParam = value.trim();
+          }),
+        ),
+      ],
+    );
+  }
 }
 
 class _SsNodeFormData {
@@ -838,7 +1144,20 @@ class _SsNodeFormData {
       isHideNode = false,
       iso3166Code = CountryCode.cn,
       vpnType = VpnTypeEnum.vmess,
-      userGroupHostRaw = '';
+      userGroupHostRaw = '',
+      vmessHost = '',
+      vmessPort = 443,
+      vmessVerifyCert = true,
+      vmessAlterId = 0,
+      vmessNetType = 'tcp',
+      ssrHost = '',
+      ssrPort = 443,
+      ssrPassword = '',
+      ssrMethod = 'aes-256-cfb',
+      ssrProtocol = 'origin',
+      ssrProtocolParam = '',
+      ssrObfs = 'plain',
+      ssrObfsParam = '';
 
   _SsNodeFormData.fromOutput(SsNodeOutput node)
     : id = node.id,
@@ -862,7 +1181,22 @@ class _SsNodeFormData {
               node.userGroupHost!.userGroupHost.map(
                 (key, value) => MapEntry(key, value.toJson()),
               ),
-            );
+            ),
+      vmessHost =
+          node.nodeConfig.vmessConfig?.host ?? node.nodeConfig.host ?? '',
+      vmessPort =
+          node.nodeConfig.vmessConfig?.port ?? node.nodeConfig.port ?? 443,
+      vmessVerifyCert = node.nodeConfig.vmessConfig?.verifyCert ?? true,
+      vmessAlterId = node.nodeConfig.vmessConfig?.alterId ?? 0,
+      vmessNetType = node.nodeConfig.vmessConfig?.netType ?? 'tcp',
+      ssrHost = node.nodeConfig.ssrConfig?.host ?? node.nodeConfig.host ?? '',
+      ssrPort = node.nodeConfig.ssrConfig?.port ?? node.nodeConfig.port ?? 443,
+      ssrPassword = node.nodeConfig.ssrConfig?.password ?? '',
+      ssrMethod = node.nodeConfig.ssrConfig?.method ?? 'aes-256-cfb',
+      ssrProtocol = node.nodeConfig.ssrConfig?.protocol ?? 'origin',
+      ssrProtocolParam = node.nodeConfig.ssrConfig?.protocolParam ?? '',
+      ssrObfs = node.nodeConfig.ssrConfig?.obfs ?? 'plain',
+      ssrObfsParam = node.nodeConfig.ssrConfig?.obfsParam ?? '';
 
   int? id;
   String nodeName;
@@ -880,4 +1214,17 @@ class _SsNodeFormData {
   String? nodeSpeedLimit;
   DateTime? createdAtLocal;
   String userGroupHostRaw;
+  String vmessHost;
+  int vmessPort;
+  bool vmessVerifyCert;
+  int vmessAlterId;
+  String vmessNetType;
+  String ssrHost;
+  int ssrPort;
+  String ssrPassword;
+  String ssrMethod;
+  String ssrProtocol;
+  String ssrProtocolParam;
+  String ssrObfs;
+  String ssrObfsParam;
 }
