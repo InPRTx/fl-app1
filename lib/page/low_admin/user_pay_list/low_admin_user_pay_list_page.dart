@@ -102,10 +102,10 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
 
     final result = await _restClient.fallback
         .getUserPayListApiV2LowAdminApiUserPayListGet(
-      limit: _pageLimit,
-      offset: _offset,
-      q: _queryString,
-    );
+          limit: _pageLimit,
+          offset: _offset,
+          q: _queryString,
+        );
 
     if (!mounted) return;
 
@@ -119,8 +119,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       if (result.isSuccess) {
         final fetched = result.resultList;
         if (isLoadMore) {
-          _payRecords = List.from(_payRecords)
-            ..addAll(fetched);
+          _payRecords = List.from(_payRecords)..addAll(fetched);
         } else {
           _payRecords = fetched;
         }
@@ -133,8 +132,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
         }
 
         if (_payRecords.isEmpty) {
-          _errorMessage =
-          _queryString == null ? '暂无充值记录' : '该用户暂无充值记录';
+          _errorMessage = _queryString == null ? '暂无充值记录' : '该用户暂无充值记录';
         }
       } else {
         _errorMessage = result.message;
@@ -153,8 +151,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
           title: const Text('确认完成充值'),
           content: Text(
             '是否确认为订单 ${record.tradeNo} 完成充值？\n\n'
-                '用户ID: ${record.userId}\n'
-                '金额: ¥${record.moneyAmount}',
+            '用户ID: ${record.userId}\n'
+            '金额: ¥${record.moneyAmount}',
           ),
           actions: [
             TextButton(
@@ -179,16 +177,13 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger.showSnackBar(
-      const SnackBar(
-        content: Text('正在处理...'),
-        duration: Duration(seconds: 1),
-      ),
+      const SnackBar(content: Text('正在处理...'), duration: Duration(seconds: 1)),
     );
 
     final result = await _restClient.fallback
         .adminNotifyApiV2LowAdminApiUserPayListUserPayListIdIsFinishNotifyPost(
-      userPayListId: payListId,
-    );
+          userPayListId: payListId,
+        );
 
     if (!mounted) return;
 
@@ -212,12 +207,12 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
         ),
       );
     }
-
-  @override
-  WWidget build(BuildContext context) {
-    return _buildContent();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return _buildContent();
+  }
 
   Widget _buildContent() {
     if (_isLoading) {
@@ -310,21 +305,17 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                if (index < _payRecords.length) {
-                  return _buildPayCard(_payRecords[index]);
-                }
-                return _buildListFooter();
-              },
-              childCount: _payRecords.length + 1,
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              if (index < _payRecords.length) {
+                return _buildPayCard(_payRecords[index]);
+              }
+              return _buildListFooter();
+            }, childCount: _payRecords.length + 1),
           ),
         ),
       ],
     );
   }
-
 
   Widget _buildListFooter() {
     if (_isLoadingMore) {
@@ -343,7 +334,6 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
     }
     return const SizedBox.shrink();
   }
-
 
   Widget _buildPayCard(UserPayList record) {
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
@@ -503,7 +493,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
                       Icons.calendar_today,
                       '创建时间',
                       dateFormat.format(
-                          tz.TZDateTime.from(record.createdAt!, tz.local)),
+                        tz.TZDateTime.from(record.createdAt!, tz.local),
+                      ),
                     ),
                   )
                 else
@@ -514,7 +505,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
                       Icons.update,
                       '更新时间',
                       dateFormat.format(
-                          tz.TZDateTime.from(record.updatedAt!, tz.local)),
+                        tz.TZDateTime.from(record.updatedAt!, tz.local),
+                      ),
                     ),
                   )
                 else
