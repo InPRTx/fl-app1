@@ -2530,7 +2530,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2626,7 +2626,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2774,7 +2774,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2942,7 +2942,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum",
               "default": "json"
             }
           },
@@ -3535,7 +3535,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SsNode"
+                    "$ref": "#/components/schemas/SsNode-Output"
                   },
                   "title": "Response Read Nodes Api V2 Admin Api Db Ss Node  Get"
                 }
@@ -8328,6 +8328,386 @@
         }
       }
     },
+    "/api/v2/low_admin_api/ss_node/{node_id}": {
+      "put": {
+        "summary": "Put Ss Node",
+        "description": "更新节点信息 - 需要提供所有必填字段（完全替换）",
+        "operationId": "put_ss_node_api_v2_low_admin_api_ss_node__node_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SsNode-Input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Ss Node",
+        "description": "删除节点",
+        "operationId": "delete_ss_node_api_v2_low_admin_api_ss_node__node_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Ss Node By Id",
+        "description": "根据ID获取节点信息",
+        "operationId": "get_ss_node_by_id_api_v2_low_admin_api_ss_node__node_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSsNodeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/ss_node/": {
+      "post": {
+        "summary": "Post Ss Node",
+        "description": "创建新节点",
+        "operationId": "post_ss_node_api_v2_low_admin_api_ss_node__post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SsNode-Input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Ss Node List",
+        "description": "获取节点列表，支持搜索和分页\n\n支持的查询参数:\n- q: 模糊搜索（节点名称、备注、ID）\n- q_command: 精确查询命令，如 {\"id\": \"123\", \"node_level\": \"1\", \"vpn_type\": \"vmess\"}\n- limit: 每页数量\n- offset: 偏移量",
+        "operationId": "get_ss_node_list_api_v2_low_admin_api_ss_node__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "from_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From Iso"
+            }
+          },
+          {
+            "name": "to_iso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To Iso"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
+              "default": 3000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSsNodeListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_v2/batch_usernames": {
+      "post": {
+        "summary": "Get Batch Usernames",
+        "description": "批量获取用户名\n\n根据提供的用户ID列表，返回对应的用户名。\n如果用户不存在或已删除，则返回 [已销号]",
+        "operationId": "get_batch_usernames_api_v2_low_admin_api_user_v2_batch_usernames_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUsernamesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsernamesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v2/low_admin_api/user_v2/batch_user_infos": {
+      "post": {
+        "summary": "Get Batch User Infos",
+        "description": "批量获取用户信息（用户名和邮箱）\n\n根据提供的用户ID列表，返回对应的用户名和邮箱。\n如果用户不存在或已删除，则返回用户名为 [已销号]，邮箱为空字符串",
+        "operationId": "get_batch_user_infos_api_v2_low_admin_api_user_v2_batch_user_infos_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUsernamesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserInfosResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ]
+      }
+    },
     "/api/v2/low_admin_api/old_service_shop/": {
       "get": {
         "summary": "Get Old Service Shop",
@@ -10195,6 +10575,60 @@
         "type": "object",
         "title": "GetServiceOldShopResult"
       },
+      "GetSsNodeListResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/SsNode-Output"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "节点列表",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetSsNodeListResponse"
+      },
+      "GetSsNodeResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SsNode-Output"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "节点信息"
+          }
+        },
+        "type": "object",
+        "title": "GetSsNodeResponse"
+      },
       "GetTicketDetailResponse": {
         "properties": {
           "is_success": {
@@ -10249,6 +10683,31 @@
         "type": "object",
         "title": "GetTicketListResponse"
       },
+      "GetUserInfosResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "type": "object",
+            "title": "Result",
+            "description": "用户ID到用户信息的映射"
+          }
+        },
+        "type": "object",
+        "title": "GetUserInfosResponse"
+      },
       "GetUserMoneyResponse": {
         "properties": {
           "is_success": {
@@ -10276,6 +10735,48 @@
         },
         "type": "object",
         "title": "GetUserMoneyResponse"
+      },
+      "GetUsernamesRequest": {
+        "properties": {
+          "user_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "User Ids",
+            "description": "用户ID列表"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_ids"
+        ],
+        "title": "GetUsernamesRequest"
+      },
+      "GetUsernamesResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Result",
+            "description": "用户ID到用户名的映射"
+          }
+        },
+        "type": "object",
+        "title": "GetUsernamesResponse"
       },
       "GetVersionModel": {
         "properties": {
@@ -11710,7 +12211,128 @@
         ],
         "title": "ShopTypeEnum"
       },
-      "SsNode": {
+      "SsNode-Input": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "default": 60000
+          },
+          "node_name": {
+            "type": "string",
+            "title": "Node Name"
+          },
+          "node_config": {
+            "$ref": "#/components/schemas/NodeConfig"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "default": true
+          },
+          "iso3166_code": {
+            "$ref": "#/components/schemas/CountryCode",
+            "default": "AR"
+          },
+          "vpn_type": {
+            "$ref": "#/components/schemas/VpnTypeEnum",
+            "default": "vmess"
+          },
+          "node_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Node Rate",
+            "default": "1.00"
+          },
+          "node_level": {
+            "type": "integer",
+            "title": "Node Level",
+            "default": 0
+          },
+          "node_info": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Info",
+            "description": "节点信息"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark",
+            "description": "节点备注 remark"
+          },
+          "node_speed_limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speed Limit",
+            "description": "节点速度限制"
+          },
+          "user_group_host": {
+            "$ref": "#/components/schemas/UserGroupHost"
+          },
+          "is_hide_node": {
+            "type": "boolean",
+            "title": "Is Hide Node",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "node_name",
+          "node_config"
+        ],
+        "title": "SsNode"
+      },
+      "SsNode-Output": {
         "properties": {
           "id": {
             "anyOf": [
@@ -12665,6 +13287,32 @@
         },
         "type": "object",
         "title": "UserGroupHost"
+      },
+      "UserInfo": {
+        "properties": {
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "description": "用户名"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email",
+            "description": "邮箱"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_name"
+        ],
+        "title": "UserInfo"
       },
       "UserInviteRecordResponse": {
         "properties": {
@@ -15274,7 +15922,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

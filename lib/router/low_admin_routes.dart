@@ -1,6 +1,7 @@
 import 'package:fl_app1/page/low_admin/home/low_admin_home_page.dart';
 import 'package:fl_app1/page/low_admin/low_admin_layout.dart';
 import 'package:fl_app1/page/low_admin/old_service_shop_list/low_admin_old_service_shop_list_page.dart';
+import 'package:fl_app1/page/low_admin/ss_node/low_admin_ss_node_page.dart';
 import 'package:fl_app1/page/low_admin/ticket_detail/low_admin_ticket_detail_page.dart';
 import 'package:fl_app1/page/low_admin/ticket_list/low_admin_ticket_list_page.dart';
 import 'package:fl_app1/page/low_admin/user_bought_list/low_admin_user_bought_list_page.dart';
@@ -49,6 +50,11 @@ final RouteBase lowAdminShellRoute = ShellRoute(
       path: '/low_admin/old_service_shop',
       name: 'low_admin_old_service_shop',
       builder: (context, state) => const LowAdminOldServiceShopListPage(),
+    ),
+    GoRoute(
+      path: '/low_admin/ss_node',
+      name: 'low_admin_ss_node',
+      builder: (context, state) => const LowAdminSsNodePage(),
     ),
     GoRoute(
       path: '/low_admin/ticket',
@@ -101,9 +107,10 @@ int _selectedIndexForLocation(String location) {
   if (location.startsWith('/low_admin/user_bought')) return 2;
   if (location.startsWith('/low_admin/user_pay_list')) return 3;
   if (location.startsWith('/low_admin/old_service_shop')) return 4;
+  if (location.startsWith('/low_admin/ss_node')) return 5;
   // Treat ticket detail pages as part of the Ticket section
-  if (location.startsWith('/low_admin/ticket')) return 5;
-  if (location.startsWith('/low_admin/settings')) return 6;
+  if (location.startsWith('/low_admin/ticket')) return 6;
+  if (location.startsWith('/low_admin/settings')) return 7;
   // exact /low_admin or others under low_admin default to 0
   return 0;
 }

@@ -1,5 +1,5 @@
 import 'package:fl_app1/api/export.dart';
-import 'package:fl_app1/store/service/auth/auth_export.dart';
+import 'package:fl_app1/store/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +21,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
   bool _isLoadingMore = false;
   List<UserTicket> _tickets = [];
   String? _errorMessage;
+  Map<int, UserInfo> _userInfos = <int, UserInfo>{};
 
   static const int _pageLimit = 20;
   int _offset = 0;
@@ -130,6 +131,30 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
         }
       }
     });
+
+    // Fetch user info for all tickets after loading
+    if (response.isSuccess && _tickets.isNotEmpty && mounted) {
+      final Set<int> userIds = <int>{};
+      for (final ticket in _tickets) {
+        if (ticket.userId != null) {
+          userIds.add(ticket.userId!);
+        }
+      }
+
+      if (userIds.isNotEmpty) {
+        try {
+          final fetched = await UserService().fetchBatchUserInfos(
+            userIds.toList(),
+          );
+          if (!mounted) return;
+          setState(() {
+            _userInfos = fetched;
+          });
+        } catch (_) {
+          // 不做无意义的报错包装，列表仍然可以显示基础信息
+        }
+      }
+    }
   }
 
   @override
@@ -258,6 +283,14 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
     final statusColor = _getStatusColor(ticket.ticketStatus);
     final statusText = _getStatusText(ticket.ticketStatus);
 
+    // Get user info from cache
+    final userInfo = ticket.userId != null ? _userInfos[ticket.userId!] : null;
+    final userAvatar = userInfo != null
+        ? UserService().gravatarUrlForEmail(userInfo.email, size: 40)
+        : null;
+    final userName = userInfo?.userName ??
+        (ticket.userId != null ? '用户ID: ${ticket.userId}' : 'N/A');
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -272,15 +305,39 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // User info row with avatar and name
               Row(
                 children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[200],
+                    backgroundImage: userAvatar != null ? NetworkImage(
+                        userAvatar) : null,
+                    child: userAvatar == null
+                        ? Icon(Icons.person, color: Colors.grey[700], size: 20)
+                        : null,
+                  ),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      ticket.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        if (ticket.userId != null)
+                          Text(
+                            'ID: ${ticket.userId}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   Container(
@@ -290,7 +347,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
                     ),
                     decoration: BoxDecoration(
                       color: statusColor.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       statusText,
@@ -303,70 +360,65 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const Divider(height: 24),
+              // Title row
               Row(
                 children: [
-                  Icon(Icons.tag, size: 16, color: Colors.grey[600]),
-                  const SizedBox(width: 4),
-                  Text(
-                    'ID: ${ticket.id ?? "N/A"}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                  ),
-                  const SizedBox(width: 16),
-                  Icon(Icons.person, size: 16, color: Colors.grey[600]),
-                  const SizedBox(width: 4),
-                  Text(
-                    '用户ID: ${ticket.userId ?? "N/A"}',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  Expanded(
+                    child: Text(
+                      ticket.title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              if (ticket.createdAt != null)
-                Row(
-                  children: [
-                    Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-                    const SizedBox(width: 4),
-                    Text(
-                      '创建: ${dateFormat.format(ticket.createdAt!.toLocal())}',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              const SizedBox(height: 12),
+              // Metadata row
+              Wrap(
+                spacing: 16,
+                runSpacing: 8,
+                children: [
+                  _buildInfoChip(Icons.tag, 'ID: ${ticket.id ?? "N/A"}'),
+                  if (ticket.createdAt != null)
+                    _buildInfoChip(
+                      Icons.access_time,
+                      dateFormat.format(ticket.createdAt!.toLocal()),
                     ),
-                  ],
-                ),
-              if (ticket.updatedAt != null &&
-                  ticket.createdAt != null &&
-                  ticket.updatedAt != ticket.createdAt)
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Row(
-                    children: [
-                      Icon(Icons.update, size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
-                      Text(
-                        '更新: ${dateFormat.format(ticket.updatedAt!.toLocal())}',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
-              if (ticket.isMarkdown)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Row(
-                    children: [
-                      Icon(Icons.code, size: 16, color: Colors.blue[600]),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Markdown格式',
-                        style: TextStyle(color: Colors.blue[600], fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
+                  if (ticket.updatedAt != null &&
+                      ticket.createdAt != null &&
+                      ticket.updatedAt != ticket.createdAt)
+                    _buildInfoChip(
+                      Icons.update,
+                      '更新: ${dateFormat.format(ticket.updatedAt!.toLocal())}',
+                    ),
+                  if (ticket.isMarkdown)
+                    _buildInfoChip(Icons.code, 'Markdown', Colors.blue),
+                ],
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInfoChip(IconData icon, String label, [Color? color]) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 14, color: color ?? Colors.grey[600]),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: color ?? Colors.grey[600],
+          ),
+        ),
+      ],
     );
   }
 

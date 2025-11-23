@@ -1595,7 +1595,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1661,7 +1661,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1750,7 +1750,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1894,8 +1894,8 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketIndexFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
+        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {
@@ -2191,7 +2191,7 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<List<SsNode>> readNodesApiV2AdminApiDbSsNodeGet({
+  Future<List<SsNodeOutput>> readNodesApiV2AdminApiDbSsNodeGet({
     required String order,
     int? offset = 0,
     int? limit = 10000,
@@ -2205,7 +2205,7 @@ class _FallbackClient implements FallbackClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<SsNode>>(
+    final _options = _setStreamType<List<SsNodeOutput>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -2216,10 +2216,10 @@ class _FallbackClient implements FallbackClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<SsNode> _value;
+    late List<SsNodeOutput> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => SsNode.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => SsNodeOutput.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -5098,6 +5098,227 @@ class _FallbackClient implements FallbackClient {
     late GetOldServiceShopResponse _value;
     try {
       _value = GetOldServiceShopResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse> putSsNodeApiV2LowAdminApiSsNodeNodeIdPut({
+    required int nodeId,
+    required SsNodeInput body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/ss_node/${nodeId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse> deleteSsNodeApiV2LowAdminApiSsNodeNodeIdDelete({
+    required int nodeId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/ss_node/${nodeId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetSsNodeResponse> getSsNodeByIdApiV2LowAdminApiSsNodeNodeIdGet({
+    required int nodeId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetSsNodeResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/ss_node/${nodeId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetSsNodeResponse _value;
+    try {
+      _value = GetSsNodeResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse> postSsNodeApiV2LowAdminApiSsNodePost({
+    required SsNodeInput body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/ss_node/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetSsNodeListResponse> getSsNodeListApiV2LowAdminApiSsNodeGet({
+    int? offset = 0,
+    int? limit = 3000,
+    String? q,
+    DateTime? fromIso,
+    DateTime? toIso,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'offset': offset,
+      r'limit': limit,
+      r'q': q,
+      r'from_iso': fromIso?.toIso8601String(),
+      r'to_iso': toIso?.toIso8601String(),
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetSsNodeListResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/ss_node/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetSsNodeListResponse _value;
+    try {
+      _value = GetSsNodeListResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetUsernamesResponse>
+  getBatchUsernamesApiV2LowAdminApiUserV2BatchUsernamesPost({
+    required GetUsernamesRequest body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<GetUsernamesResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_v2/batch_usernames',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetUsernamesResponse _value;
+    try {
+      _value = GetUsernamesResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetUserInfosResponse>
+  getBatchUserInfosApiV2LowAdminApiUserV2BatchUserInfosPost({
+    required GetUsernamesRequest body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<GetUserInfosResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_v2/batch_user_infos',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetUserInfosResponse _value;
+    try {
+      _value = GetUserInfosResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
