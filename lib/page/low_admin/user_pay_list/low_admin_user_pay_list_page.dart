@@ -213,8 +213,8 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       );
     }
 
-  @@override
-  Widget build(BuildContext context) {
+  @override
+  WWidget build(BuildContext context) {
     return _buildContent();
   }
 
