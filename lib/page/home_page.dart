@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, this.title = 'Flutter Demo Home Page'});
 
   final String title;
 
