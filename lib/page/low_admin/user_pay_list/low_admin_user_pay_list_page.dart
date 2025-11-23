@@ -214,8 +214,10 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {eturn _buildContent();
+  @overrideidget build(BuildContext context) {
+    return _buildContent();
+  }
+
   }
 
   Widget _buildContent() {
@@ -309,15 +311,17 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           sliver: SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              if (index < _payRecords.length) {
-                return _buildPayCard(_payRecords[index]);
-              }
-              return _buildListFooter();
-            }, childCount: _payRecords.length + 1),
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                if (index < _payRecords.length) {
+                  return _buildPayCard(_payRecords[index]);
+                }
+                return _buildListFooter();
+              },
+              childCount: _payRecords.length + 1,
+            ),
           ),
         ),
-      ),
       ],
     );
   }
