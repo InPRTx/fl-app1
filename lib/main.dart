@@ -124,17 +124,20 @@ class MyApp extends StatelessWidget {
               // 如果无法返回，显示退出确认对话框
               showDialog<bool>(
                 context: context,
-                builder: (context) => AlertDialog(
+                builder: (dialogContext) => AlertDialog(
                   title: const Text('确认退出'),
                   content: const Text('确定要退出应用吗？'),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(context, false),
+                      // 关闭对话框使用 Navigator.pop，这是标准做法
+                      onPressed: () => Navigator.pop(dialogContext, false),
                       child: const Text('取消'),
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context, true);
+                        // 关闭对话框
+                        Navigator.pop(dialogContext, true);
+                        // 退出应用
                         SystemNavigator.pop();
                       },
                       child: const Text('退出'),
