@@ -215,58 +215,7 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _queryController,
-                  decoration: InputDecoration(
-                    labelText: '查询参数 (q)',
-                    hintText: '例如: user_id:123 或留空查询所有',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _queryController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _queryController.clear();
-                              _applyQuery();
-                            },
-                          )
-                        : null,
-                    border: const OutlineInputBorder(),
-                    helperText: '支持格式: user_id:123',
-                  ),
-                  onSubmitted: (_) => _applyQuery(),
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _applyQuery,
-                icon: Icon(_queryController.text
-                    .trim()
-                    .isEmpty
-                    ? Icons.refresh
-                    : Icons.search),
-                label: Text(_queryController.text
-                    .trim()
-                    .isEmpty
-                    ? '全部'
-                    : '搜索'),
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: _buildContent()),
-      ],
-    );
+  Widget build(BuildContext context) {eturn _buildContent();
   }
 
   Widget _buildContent() {
@@ -305,60 +254,93 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
       );
     }
 
-    if (_payRecords.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.account_balance_wallet_outlined,
-              size: 80,
-              color: Colors.grey[400],
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        // 搜索栏（可滚动）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _queryController,
+                    decoration: InputDecoration(
+                      labelText: '查询参数 (q)',
+                      hintText: '例如: user_id:123 或留空查询所有',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _queryController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _queryController.clear();
+                                _applyQuery();
+                              },
+                            )
+                          : null,
+                      border: const OutlineInputBorder(),
+                      helperText: '支持格式: user_id:123',
+                    ),
+                    onSubmitted: (_) => _applyQuery(),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: _applyQuery,
+                  icon: Icon(
+                    _queryController.text.trim().isEmpty
+                        ? Icons.refresh
+                        : Icons.search,
+                  ),
+                  label: Text(
+                    _queryController.text.trim().isEmpty ? '全部' : '搜索',
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              '暂无充值记录',
-              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '输入查询参数搜索，支持格式: user_id:123',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-            ),
-          ],
+          ),
+        ),
+
+        // 充值记录列表
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              if (index < _payRecords.length) {
+                return _buildPayCard(_payRecords[index]);
+              }
+              return _buildListFooter();
+            }, childCount: _payRecords.length + 1),
+          ),
+        ),
+      ),
+      ],
+    );
+  }
+
+
+  Widget _buildListFooter() {
+    if (_isLoadingMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (!_hasMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24.0),
+        child: Center(
+          child: Text('到底了', style: TextStyle(color: Colors.grey)),
         ),
       );
     }
-
-    return RefreshIndicator(
-      onRefresh: _fetchRecords,
-      child: ListView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _payRecords.length + 1,
-        itemBuilder: (context, index) {
-          if (index < _payRecords.length) {
-            final record = _payRecords[index];
-            return _buildPayCard(record);
-          }
-          if (_isLoadingMore) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (!_hasMore) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24.0),
-              child: Center(
-                  child: Text('到底了', style: TextStyle(color: Colors.grey))),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
-    );
+    return const SizedBox.shrink();
   }
+
 
   Widget _buildPayCard(UserPayList record) {
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');

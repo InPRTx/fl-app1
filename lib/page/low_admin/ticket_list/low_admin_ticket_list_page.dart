@@ -160,53 +160,7 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _queryController,
-                  decoration: InputDecoration(
-                    labelText: '查询参数 (q)',
-                    hintText: '例如: user_id:123 或留空查询所有',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _queryController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _queryController.clear();
-                              _applyQuery();
-                            },
-                          )
-                        : null,
-                    border: const OutlineInputBorder(),
-                    helperText: '支持格式: user_id:123 title:问题',
-                  ),
-                  onSubmitted: (_) => _applyQuery(),
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _applyQuery,
-                icon: Icon(
-                  _queryController.text.trim().isEmpty
-                      ? Icons.refresh
-                      : Icons.search,
-                ),
-                label: Text(_queryController.text.trim().isEmpty ? '全部' : '搜索'),
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: _buildContent()),
-      ],
-    );
+    return _buildContent();
   }
 
   Widget _buildContent() {
@@ -221,7 +175,10 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
           children: [
             Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
             const SizedBox(height: 16),
-            Text('加载失败', style: Theme.of(context).textTheme.titleLarge),
+            Text('加载失败', style: Theme
+                .of(context)
+                .textTheme
+                .titleLarge),
             const SizedBox(height: 8),
             Text(_errorMessage!),
             const SizedBox(height: 16),
@@ -240,43 +197,107 @@ class _LowAdminTicketListPageState extends State<LowAdminTicketListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.inbox_outlined, size: 64, color: Colors.grey[300]),
+            Icon(Icons.support_agent, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            Text('暂无工单', style: Theme.of(context).textTheme.titleLarge),
+            Text('暂无工单', style: Theme
+                .of(context)
+                .textTheme
+                .titleLarge),
           ],
         ),
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadTickets,
-      child: ListView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(16),
-        itemCount: _tickets.length + 1,
-        itemBuilder: (context, index) {
-          if (index < _tickets.length) {
-            final ticket = _tickets[index];
-            return _buildTicketCard(ticket);
-          }
-          if (_isLoadingMore) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (!_hasMore) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24.0),
-              child: Center(
-                child: Text('到底了', style: TextStyle(color: Colors.grey)),
-              ),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        // 搜索栏（可滚动）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _queryController,
+                    decoration: InputDecoration(
+                      labelText: '查询参数 (q)',
+                      hintText: '例如: user_id:123 或留空查询所有',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _queryController.text.isNotEmpty
+                          ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _queryController.clear();
+                          _applyQuery();
+                        },
+                      )
+                          : null,
+                      border: const OutlineInputBorder(),
+                      helperText: '支持格式: user_id:123 title:问题',
+                    ),
+                    onSubmitted: (_) => _applyQuery(),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: _applyQuery,
+                  icon: Icon(
+                    _queryController.text
+                        .trim()
+                        .isEmpty
+                        ? Icons.refresh
+                        : Icons.search,
+                  ),
+                  label: Text(
+                    _queryController.text
+                        .trim()
+                        .isEmpty ? '全部' : '搜索',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // 工单列表
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                if (index < _tickets.length) {
+                  return _buildTicketCard(_tickets[index]);
+                }
+                return _buildListFooter();
+              },
+              childCount: _tickets.length + 1,
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  Widget _buildListFooter() {
+    if (_isLoadingMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (!_hasMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24.0),
+        child: Center(
+          child: Text('到底了', style: TextStyle(color: Colors.grey)),
+        ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 
   Widget _buildTicketCard(UserTicket ticket) {

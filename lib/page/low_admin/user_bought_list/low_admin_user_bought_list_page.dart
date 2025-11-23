@@ -51,55 +51,58 @@ class _LowAdminUserBoughtListPageState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _queryController,
-                  decoration: InputDecoration(
-                    labelText: '查询参数 (q)',
-                    hintText: '例如: user_id:123 或留空查询所有',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _queryController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _queryController.clear();
-                              _applyQuery();
-                            },
-                          )
-                        : null,
-                    border: const OutlineInputBorder(),
-                    helperText: '支持格式: user_id:123 id: shop_id:',
+    return CustomScrollView(
+      slivers: [
+        // 搜索栏（可滚动）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _queryController,
+                    decoration: InputDecoration(
+                      labelText: '查询参数 (q)',
+                      hintText: '例如: user_id:123 或留空查询所有',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _queryController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _queryController.clear();
+                                _applyQuery();
+                              },
+                            )
+                          : null,
+                      border: const OutlineInputBorder(),
+                      helperText: '支持格式: user_id:123 id: shop_id:',
+                    ),
+                    onSubmitted: (_) => _applyQuery(),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
                   ),
-                  onSubmitted: (_) => _applyQuery(),
-                  onChanged: (value) {
-                    setState(() {});
-                  },
                 ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _applyQuery,
-                icon: Icon(_queryController.text
-                    .trim()
-                    .isEmpty
-                    ? Icons.refresh
-                    : Icons.search),
-                label: Text(_queryController.text
-                    .trim()
-                    .isEmpty
-                    ? '全部'
-                    : '搜索'),
-              ),
-            ],
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: _applyQuery,
+                  icon: Icon(
+                    _queryController.text.trim().isEmpty
+                        ? Icons.refresh
+                        : Icons.search,
+                  ),
+                  label: Text(
+                    _queryController.text.trim().isEmpty ? '全部' : '搜索',
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        Expanded(
+
+        // 购买记录列表组件
+        SliverFillRemaining(
           child: BoughtRecordsListComponent(
             key: ValueKey(_queryString),
             q: _queryString,
