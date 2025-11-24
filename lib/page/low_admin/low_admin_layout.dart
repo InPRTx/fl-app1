@@ -137,11 +137,11 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
           }),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('返回主页'),
+            leading: const Icon(Icons.home),
+            title: const Text('返回首页'),
             onTap: () {
               Navigator.pop(context);
-              context.router.pushPath('/');
+              context.router.navigate(MyHomeRoute());
             },
           ),
         ],
@@ -179,9 +179,9 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
             padding: const EdgeInsets.only(bottom: 16),
             child: IconButton(
               icon: const Icon(Icons.home),
-              tooltip: '返回主页',
+              tooltip: '返回首页',
               onPressed: () {
-                context.router.pushPath('/');
+                context.router.navigate(MyHomeRoute());
               },
             ),
           ),
