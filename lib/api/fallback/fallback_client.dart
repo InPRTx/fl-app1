@@ -125,7 +125,7 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_ticket_view_formal_enum.dart';
+import '../models/web_sub_fastapi_routers_v_user_shop_index_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -562,7 +562,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Get Detect
@@ -578,7 +578,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Ticket.
@@ -603,7 +603,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -638,8 +638,8 @@ abstract class FallbackClient {
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
     @Query('format')
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
