@@ -9,7 +9,12 @@ import 'package:timezone/timezone.dart' as tz;
 
 @RoutePage()
 class LowAdminUserPayListPage extends StatefulWidget {
-  const LowAdminUserPayListPage({super.key});
+  const LowAdminUserPayListPage({
+    super.key,
+    @QueryParam('q') this.queryParam,
+  });
+
+  final String? queryParam;
 
   @override
   State<LowAdminUserPayListPage> createState() =>
@@ -36,24 +41,17 @@ class _LowAdminUserPayListPageState extends State<LowAdminUserPayListPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    // 延迟读取URL参数，确保路由已经初始化
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadQueryFromUrl();
-    });
-  }
 
-  void _loadQueryFromUrl() {
-    final uri = Uri.base;
-    final qParam = uri.queryParameters['q'];
-    if (qParam != null && qParam.isNotEmpty) {
-      _queryController.text = qParam;
-      setState(() {
-        _queryString = qParam;
-      });
-      _fetchRecords();
-    } else {
-      _fetchRecords();
+    // 从路由参数初始化查询字符串
+    if (widget.queryParam != null && widget.queryParam!.isNotEmpty) {
+      _queryController.text = widget.queryParam!;
+      _queryString = widget.queryParam;
     }
+
+    // 延迟执行首次加载，确保 UI 已构建完成
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchRecords();
+    });
   }
 
   @override

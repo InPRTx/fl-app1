@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class LowAdminUserBoughtListPage extends StatefulWidget {
-  const LowAdminUserBoughtListPage({super.key});
+  const LowAdminUserBoughtListPage({
+    super.key,
+    @QueryParam('q') this.queryParam,
+  });
+
+  final String? queryParam;
 
   @override
   State<LowAdminUserBoughtListPage> createState() =>
@@ -19,20 +24,10 @@ class _LowAdminUserBoughtListPageState
   @override
   void initState() {
     super.initState();
-    // 延迟读取URL参数，确保路由已经初始化
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadQueryFromUrl();
-    });
-  }
-
-  void _loadQueryFromUrl() {
-    final uri = Uri.base;
-    final qParam = uri.queryParameters['q'];
-    if (qParam != null && qParam.isNotEmpty) {
-      _queryController.text = qParam;
-      setState(() {
-        _queryString = qParam;
-      });
+    // 从路由参数初始化查询字符串
+    if (widget.queryParam != null && widget.queryParam!.isNotEmpty) {
+      _queryController.text = widget.queryParam!;
+      _queryString = widget.queryParam;
     }
   }
 

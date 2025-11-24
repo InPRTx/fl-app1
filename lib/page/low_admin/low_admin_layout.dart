@@ -33,12 +33,12 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
     NavigationItem(
       icon: Icons.shopping_bag,
       label: '购买记录',
-      route: const LowAdminUserBoughtListRoute(),
+      route: LowAdminUserBoughtListRoute(),
     ),
     NavigationItem(
       icon: Icons.account_balance_wallet,
       label: '充值记录',
-      route: const LowAdminUserPayListRoute(),
+      route: LowAdminUserPayListRoute(),
     ),
     NavigationItem(
       icon: Icons.shopping_cart,
