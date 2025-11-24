@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'ss_node_output.dart';
+import 'ss_node.dart';
 
 part 'get_ss_node_response.g.dart';
 
@@ -27,7 +27,7 @@ class GetSsNodeResponse {
 
   /// 节点信息
   @JsonKey(includeIfNull: false)
-  final SsNodeOutput? result;
+  final SsNode? result;
 
   Map<String, Object?> toJson() => _$GetSsNodeResponseToJson(this);
 }
