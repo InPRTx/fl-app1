@@ -25,7 +25,7 @@ jobs:
         run: flutter pub get
 
       - name: Build web
-        run: flutter build web --release --wasm
+        run: flutter build web --release --wasm --base-href "/v3/"
 
       - name: Setup SSH key
         run: |
@@ -53,6 +53,12 @@ jobs:
           git add .
           git diff --staged --quiet || git commit -m "Deploy from branch ${{ github.ref_name }} - commit ${{ github.sha }}"
           git push -f origin ${{ github.ref_name }}
+          
+          # 如果不是 main 分支，同时推送到 dev 分支
+          if [ "${{ github.ref_name }}" != "main" ]; then
+            git checkout -B dev
+            git push -f origin dev
+          fi
 
       - name: Cleanup SSH key
         if: always()
