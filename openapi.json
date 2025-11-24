@@ -3535,7 +3535,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SsNode-Output"
+                    "$ref": "#/components/schemas/SsNode"
                   },
                   "title": "Response Read Nodes Api V2 Admin Api Db Ss Node  Get"
                 }
@@ -6646,7 +6646,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NodeConfig"
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
               }
             }
           },
@@ -7778,6 +7778,48 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Post User Bought",
+        "description": "添加用户购买记录",
+        "operationId": "post_user_bought_api_v2_low_admin_api_user_bought__post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBought"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/low_admin_api/user_bought/{bought_id}": {
@@ -7850,7 +7892,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel"
+                "$ref": "#/components/schemas/UserBought"
               }
             }
           }
@@ -8157,7 +8199,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel"
+                "$ref": "#/components/schemas/PutParamsModel"
               }
             }
           }
@@ -8354,7 +8396,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SsNode-Input"
+                "$ref": "#/components/schemas/SsNodePydantic"
               }
             }
           }
@@ -8484,7 +8526,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SsNode-Input"
+                "$ref": "#/components/schemas/SsNodePydantic"
               }
             }
           }
@@ -10590,7 +10632,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/SsNode-Output"
+              "$ref": "#/components/schemas/SsNode"
             },
             "type": "array",
             "title": "Result List",
@@ -10617,7 +10659,7 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/SsNode-Output"
+                "$ref": "#/components/schemas/SsNode"
               },
               {
                 "type": "null"
@@ -11020,54 +11062,6 @@
           "content"
         ],
         "title": "Messages"
-      },
-      "NodeConfig": {
-        "properties": {
-          "host": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          },
-          "vmess_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/VmessConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "ssr_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SsrConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "NodeConfig"
       },
       "NodeInfo": {
         "properties": {
@@ -11774,6 +11768,66 @@
         ],
         "title": "PurchaseRecordsResult"
       },
+      "PutParamsModel": {
+        "properties": {
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount"
+          },
+          "is_finish": {
+            "type": "boolean",
+            "title": "Is Finish"
+          },
+          "trade_no": {
+            "type": "string",
+            "title": "Trade No"
+          },
+          "pay_method_id": {
+            "type": "integer",
+            "title": "Pay Method Id"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark"
+          }
+        },
+        "type": "object",
+        "required": [
+          "money_amount",
+          "is_finish",
+          "trade_no",
+          "pay_method_id",
+          "invoice_id",
+          "remark"
+        ],
+        "title": "PutParamsModel"
+      },
       "RechargeRecords": {
         "properties": {
           "id": {
@@ -12211,7 +12265,7 @@
         ],
         "title": "ShopTypeEnum"
       },
-      "SsNode-Input": {
+      "SsNode": {
         "properties": {
           "id": {
             "anyOf": [
@@ -12244,7 +12298,118 @@
             "title": "Node Name"
           },
           "node_config": {
-            "$ref": "#/components/schemas/NodeConfig"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "default": true
+          },
+          "iso3166_code": {
+            "$ref": "#/components/schemas/CountryCode",
+            "default": "AR"
+          },
+          "vpn_type": {
+            "$ref": "#/components/schemas/VpnTypeEnum",
+            "default": "vmess"
+          },
+          "node_rate": {
+            "type": "string",
+            "title": "Node Rate",
+            "default": "1.00"
+          },
+          "node_level": {
+            "type": "integer",
+            "title": "Node Level",
+            "default": 0
+          },
+          "node_info": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Info",
+            "description": "节点信息"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark",
+            "description": "节点备注 remark"
+          },
+          "node_speed_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speed Limit",
+            "description": "节点速度限制"
+          },
+          "user_group_host": {
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
+          },
+          "is_hide_node": {
+            "type": "boolean",
+            "title": "Is Hide Node",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "node_name",
+          "node_config"
+        ],
+        "title": "SsNode"
+      },
+      "SsNodePydantic": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority",
+            "default": 60000
+          },
+          "node_name": {
+            "type": "string",
+            "title": "Node Name"
+          },
+          "node_config": {
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
           },
           "is_enable": {
             "type": "boolean",
@@ -12316,7 +12481,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -12330,189 +12495,7 @@
           "node_name",
           "node_config"
         ],
-        "title": "SsNode"
-      },
-      "SsNode-Output": {
-        "properties": {
-          "id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Updated At"
-          },
-          "priority": {
-            "type": "integer",
-            "title": "Priority",
-            "default": 60000
-          },
-          "node_name": {
-            "type": "string",
-            "title": "Node Name"
-          },
-          "node_config": {
-            "$ref": "#/components/schemas/NodeConfig"
-          },
-          "is_enable": {
-            "type": "boolean",
-            "title": "Is Enable",
-            "default": true
-          },
-          "iso3166_code": {
-            "$ref": "#/components/schemas/CountryCode",
-            "default": "AR"
-          },
-          "vpn_type": {
-            "$ref": "#/components/schemas/VpnTypeEnum",
-            "default": "vmess"
-          },
-          "node_rate": {
-            "type": "string",
-            "title": "Node Rate",
-            "default": "1.00"
-          },
-          "node_level": {
-            "type": "integer",
-            "title": "Node Level",
-            "default": 0
-          },
-          "node_info": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Node Info",
-            "description": "节点信息"
-          },
-          "remark": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Remark",
-            "description": "节点备注 remark"
-          },
-          "node_speed_limit": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Node Speed Limit",
-            "description": "节点速度限制"
-          },
-          "user_group_host": {
-            "$ref": "#/components/schemas/UserGroupHost"
-          },
-          "is_hide_node": {
-            "type": "boolean",
-            "title": "Is Hide Node",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "node_name",
-          "node_config"
-        ],
-        "title": "SsNode"
-      },
-      "SsNodeUserGroupHostDict": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          }
-        },
-        "type": "object",
-        "required": [
-          "host"
-        ],
-        "title": "SsNodeUserGroupHostDict"
-      },
-      "SsrConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "password": {
-            "type": "string",
-            "title": "Password",
-            "default": ""
-          },
-          "method": {
-            "type": "string",
-            "title": "Method",
-            "default": "aes-256-cfb"
-          },
-          "protocol": {
-            "type": "string",
-            "title": "Protocol",
-            "default": "origin"
-          },
-          "protocol_param": {
-            "type": "string",
-            "title": "Protocol Param",
-            "default": ""
-          },
-          "obfs": {
-            "type": "string",
-            "title": "Obfs",
-            "default": "plain"
-          },
-          "obfs_param": {
-            "type": "string",
-            "title": "Obfs Param",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "title": "SsrConfig",
-        "description": "SSR配置"
+        "title": "SsNodePydantic"
       },
       "SubLinkClientTypeEnum": {
         "type": "string",
@@ -13203,6 +13186,92 @@
         ],
         "title": "UserAccountSecurityPostResponse"
       },
+      "UserBought": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "old_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Old Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id"
+          },
+          "coupon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coupon"
+          },
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount",
+            "default": "0.00"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "shop_id"
+        ],
+        "title": "UserBought"
+      },
       "UserDataHistory": {
         "properties": {
           "created_at": {
@@ -13273,20 +13342,6 @@
           "result_list"
         ],
         "title": "UserDataHistoryResponse"
-      },
-      "UserGroupHost": {
-        "properties": {
-          "user_group_host": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/SsNodeUserGroupHostDict"
-            },
-            "type": "object",
-            "title": "User Group Host",
-            "default": {}
-          }
-        },
-        "type": "object",
-        "title": "UserGroupHost"
       },
       "UserInfo": {
         "properties": {
@@ -14544,37 +14599,6 @@
         ],
         "title": "VersionResponseModel"
       },
-      "VmessConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "verify_cert": {
-            "type": "boolean",
-            "title": "Verify Cert",
-            "default": true
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "alter_id": {
-            "type": "integer",
-            "title": "Alter Id",
-            "default": 0
-          },
-          "net_type": {
-            "type": "string",
-            "title": "Net Type",
-            "default": "tcp"
-          }
-        },
-        "type": "object",
-        "title": "VmessConfig"
-      },
       "VpnTypeEnum": {
         "type": "string",
         "enum": [
@@ -14614,6 +14638,170 @@
           "id"
         ],
         "title": "Body_delete_bought_v1_user_bought_delete"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
+          },
+          "net_type": {
+            "type": "string",
+            "title": "Net Type",
+            "default": "tcp"
+          }
+        },
+        "type": "object",
+        "title": "VmessConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
+        "properties": {
+          "host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          },
+          "vmess_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssr_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "NodeConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "default": ""
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "aes-256-cfb"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "Protocol",
+            "default": "origin"
+          },
+          "protocol_param": {
+            "type": "string",
+            "title": "Protocol Param",
+            "default": ""
+          },
+          "obfs": {
+            "type": "string",
+            "title": "Obfs",
+            "default": "plain"
+          },
+          "obfs_param": {
+            "type": "string",
+            "title": "Obfs Param",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "SsrConfig",
+        "description": "SSR配置"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
+        "properties": {
+          "user_group_host": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict"
+            },
+            "type": "object",
+            "title": "User Group Host",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "UserGroupHost"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "host"
+        ],
+        "title": "SsNodeUserGroupHostDict"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -15080,37 +15268,6 @@
         ],
         "title": "ResultListData"
       },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel": {
-        "properties": {
-          "shop_id": {
-            "type": "integer",
-            "title": "Shop Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "money_amount": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "title": "Money Amount"
-          }
-        },
-        "type": "object",
-        "required": [
-          "shop_id",
-          "created_at",
-          "money_amount"
-        ],
-        "title": "PutParamsModel"
-      },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel": {
         "properties": {
           "money_amount_add": {
@@ -15203,66 +15360,6 @@
         },
         "type": "object",
         "title": "GetUserBoughtResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel": {
-        "properties": {
-          "money_amount": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "title": "Money Amount"
-          },
-          "is_finish": {
-            "type": "boolean",
-            "title": "Is Finish"
-          },
-          "trade_no": {
-            "type": "string",
-            "title": "Trade No"
-          },
-          "pay_method_id": {
-            "type": "integer",
-            "title": "Pay Method Id"
-          },
-          "invoice_id": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Invoice Id"
-          },
-          "remark": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Remark"
-          }
-        },
-        "type": "object",
-        "required": [
-          "money_amount",
-          "is_finish",
-          "trade_no",
-          "pay_method_id",
-          "invoice_id",
-          "remark"
-        ],
-        "title": "PutParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
         "properties": {

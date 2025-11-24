@@ -10,7 +10,7 @@ GetSsNodeResponse _$GetSsNodeResponseFromJson(Map<String, dynamic> json) =>
     GetSsNodeResponse(
       result: json['result'] == null
           ? null
-          : SsNodeOutput.fromJson(json['result'] as Map<String, dynamic>),
+          : SsNode.fromJson(json['result'] as Map<String, dynamic>),
       isSuccess: json['is_success'] as bool? ?? true,
       message: json['message'] as String? ?? '获取成功',
     );

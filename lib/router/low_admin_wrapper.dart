@@ -3,9 +3,14 @@ import 'package:fl_app1/page/low_admin/low_admin_layout.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class LowAdminWrapperPage extends StatelessWidget {
+class LowAdminWrapperPage extends StatefulWidget {
   const LowAdminWrapperPage({super.key});
 
+  @override
+  State<LowAdminWrapperPage> createState() => _LowAdminWrapperPageState();
+}
+
+class _LowAdminWrapperPageState extends State<LowAdminWrapperPage> {
   int _selectedIndexForLocation(String location) {
     // Default to dashboard index 0
     if (location.startsWith('/low_admin/users')) return 1;
@@ -17,14 +22,15 @@ class LowAdminWrapperPage extends StatelessWidget {
     if (location.startsWith('/low_admin/ss_node')) return 5;
     // Treat ticket detail pages as part of the Ticket section
     if (location.startsWith('/low_admin/ticket')) return 6;
-    if (location.startsWith('/low_admin/settings')) return 7;
     // exact /low_admin or others under low_admin default to 0
     return 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final router = AutoRouter.of(context);
+    // 在 build 方法中获取最新的路由状态
+    // StatefulWidget 会在路由变化时重新构建
+    final router = context.watchRouter;
     final currentPath = router.currentPath;
     final selectedIndex = _selectedIndexForLocation(currentPath);
 

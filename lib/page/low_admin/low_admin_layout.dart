@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:fl_app1/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 class LowAdminLayout extends StatefulWidget {
@@ -19,41 +20,40 @@ class LowAdminLayout extends StatefulWidget {
 
 class _LowAdminLayoutState extends State<LowAdminLayout> {
   final List<NavigationItem> _navItems = [
-    NavigationItem(icon: Icons.dashboard, label: '仪表盘', route: '/low_admin'),
+    NavigationItem(
+      icon: Icons.dashboard,
+      label: '仪表盘',
+      route: const LowAdminHomeRoute(),
+    ),
     NavigationItem(
       icon: Icons.people,
       label: '用户管理',
-      route: '/low_admin/users',
+      route: const LowAdminUsersListRoute(),
     ),
     NavigationItem(
       icon: Icons.shopping_bag,
       label: '购买记录',
-      route: '/low_admin/user_bought',
+      route: LowAdminUserBoughtListRoute(),
     ),
     NavigationItem(
       icon: Icons.account_balance_wallet,
       label: '充值记录',
-      route: '/low_admin/user_pay_list',
+      route: LowAdminUserPayListRoute(),
     ),
     NavigationItem(
       icon: Icons.shopping_cart,
       label: '旧版商品',
-      route: '/low_admin/old_service_shop',
+      route: const LowAdminOldServiceShopListRoute(),
     ),
     NavigationItem(
       icon: Icons.cloud,
       label: '节点管理',
-      route: '/low_admin/ss_node',
+      route: const LowAdminSsNodeRoute(),
     ),
     NavigationItem(
       icon: Icons.support_agent,
       label: '工单管理',
-      route: '/low_admin/ticket',
-    ),
-    NavigationItem(
-      icon: Icons.settings,
-      label: '设置',
-      route: '/low_admin/settings',
+      route: const LowAdminTicketListRoute(),
     ),
   ];
 
@@ -129,9 +129,9 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
               selected: widget.selectedIndex == index,
               onTap: () {
                 Navigator.pop(context);
-                if (item.route != null) {
-                  context.router.pushPath(item.route!);
-                }
+                // 在嵌套路由中，使用 innerRouterOf 获取父路由器
+                // 然后使用 navigate 进行同级路由切换
+                AutoRouter.of(context).navigate(item.route);
               },
             );
           }),
@@ -154,9 +154,8 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
       selectedIndex: widget.selectedIndex,
       onDestinationSelected: (index) {
         final item = _navItems[index];
-        if (item.route != null) {
-          context.router.pushPath(item.route!);
-        }
+        // 在嵌套路由中，使用 navigate 进行同级路由切换
+        AutoRouter.of(context).navigate(item.route);
       },
       labelType: NavigationRailLabelType.all,
       leading: Padding(
@@ -193,9 +192,13 @@ class _LowAdminLayoutState extends State<LowAdminLayout> {
 }
 
 class NavigationItem {
+  NavigationItem({
+    required this.icon,
+    required this.label,
+    required this.route,
+  });
+
   final IconData icon;
   final String label;
-  final String? route;
-
-  NavigationItem({required this.icon, required this.label, this.route});
+  final PageRouteInfo route;
 }

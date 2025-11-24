@@ -105,57 +105,7 @@ class _LowAdminOldServiceShopListPageState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    labelText: '查询参数 (q)',
-                    hintText: '例如: 商品名称 或留空查询所有',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        _loadShops();
-                      },
-                    )
-                        : null,
-                    border: const OutlineInputBorder(),
-                    helperText: '支持搜索商品名称或ID',
-                  ),
-                  onSubmitted: (_) => _loadShops(),
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _isLoading ? null : _loadShops,
-                icon: Icon(_searchController.text
-                    .trim()
-                    .isEmpty
-                    ? Icons.refresh
-                    : Icons.search),
-                label: Text(_searchController.text
-                    .trim()
-                    .isEmpty
-                    ? '全部'
-                    : '搜索'),
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: _buildContent()),
-      ],
-    );
+    return _buildContent();
   }
 
   Widget _buildContent() {
@@ -199,38 +149,84 @@ class _LowAdminOldServiceShopListPageState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.shopping_bag_outlined,
-              size: 80,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.shopping_cart_outlined, size: 80,
+                color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              '暂无商品数据',
+              '未找到商品',
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '输入查询参数搜索，支持搜索商品名称或ID',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadShops,
-      child: ListView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _shops.length,
-        itemBuilder: (context, index) {
-          final shop = _shops[index];
-          return _buildShopCard(shop);
-        },
-      ),
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        // 搜索栏（可滚动）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: '查询参数 (q)',
+                      hintText: '例如: 商品名称 或留空查询所有',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _searchController.text.isNotEmpty
+                          ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _loadShops();
+                        },
+                      )
+                          : null,
+                      border: const OutlineInputBorder(),
+                      helperText: '支持搜索商品名称或ID',
+                    ),
+                    onSubmitted: (_) => _loadShops(),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: _isLoading ? null : _loadShops,
+                  icon: Icon(
+                    _searchController.text
+                        .trim()
+                        .isEmpty
+                        ? Icons.refresh
+                        : Icons.search,
+                  ),
+                  label: Text(
+                    _searchController.text
+                        .trim()
+                        .isEmpty ? '全部' : '搜索',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // 商品列表
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) => _buildShopCard(_shops[index]),
+              childCount: _shops.length,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

@@ -42,7 +42,6 @@ import '../models/get_view_user_result.dart';
 import '../models/index_get_result_model.dart';
 import '../models/login_post_result_model.dart';
 import '../models/login_web_version_enum.dart';
-import '../models/node_config.dart';
 import '../models/old_service_shop_input.dart';
 import '../models/post_add_alive_ip_model.dart';
 import '../models/post_add_detect_log_model.dart';
@@ -50,12 +49,13 @@ import '../models/post_func_block_ip_model.dart';
 import '../models/post_login_old_v_result_model.dart';
 import '../models/post_traffic_model.dart';
 import '../models/purchase_records_result.dart';
+import '../models/put_params_model.dart';
 import '../models/refresh_post_result_model.dart';
 import '../models/replace_email_response.dart';
 import '../models/reply_params.dart';
 import '../models/request_email_code_params_model.dart';
-import '../models/ss_node_input.dart';
-import '../models/ss_node_output.dart';
+import '../models/ss_node.dart';
+import '../models/ss_node_pydantic.dart';
 import '../models/sub_link_client_type_enum.dart';
 import '../models/subscribe_type_enum.dart';
 import '../models/suffix_type_enum.dart';
@@ -78,6 +78,7 @@ import '../models/user_account_password_change_response.dart';
 import '../models/user_account_security_get_response.dart';
 import '../models/user_account_security_post_request.dart';
 import '../models/user_account_security_post_response.dart';
+import '../models/user_bought.dart';
 import '../models/user_data_history_response.dart';
 import '../models/user_invite_record_response.dart';
 import '../models/user_invite_response.dart';
@@ -113,15 +114,14 @@ import '../models/user_wallet_recharge_result.dart';
 import '../models/user_wallet_result.dart';
 import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
+import '../models/web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
@@ -725,7 +725,7 @@ abstract class FallbackClient {
 
   /// Read Nodes
   @GET('/api/v2/admin_api/db/ss_node/')
-  Future<List<SsNodeOutput>> readNodesApiV2AdminApiDbSsNodeGet({
+  Future<List<SsNode>> readNodesApiV2AdminApiDbSsNodeGet({
     @Query('order') required String order,
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit = 10000,
@@ -1222,7 +1222,9 @@ abstract class FallbackClient {
   /// Post Node Config
   @POST('/api/v2/tools/pydantic_check/ss_node/node_config')
   Future<void> postNodeConfigApiV2ToolsPydanticCheckSsNodeNodeConfigPost({
-    @Body() required NodeConfig body,
+    @Body()
+    required WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
+    body,
   });
 
   /// Get Search User
@@ -1353,6 +1355,14 @@ abstract class FallbackClient {
     @Query('to_iso') DateTime? toIso,
   });
 
+  /// Post User Bought.
+  ///
+  /// 添加用户购买记录.
+  @POST('/api/v2/low_admin_api/user_bought/')
+  Future<ErrorResponse> postUserBoughtApiV2LowAdminApiUserBoughtPost({
+    @Body() required UserBought body,
+  });
+
   /// Delete User Bought.
   ///
   /// 删除用户购买记录.
@@ -1368,8 +1378,7 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/user_bought/{bought_id}')
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     @Path('bought_id') required String boughtId,
-    @Body()
-    required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
+    @Body() required UserBought body,
   });
 
   /// Get User V2 By User Id
@@ -1418,8 +1427,7 @@ abstract class FallbackClient {
   Future<ErrorResponse>
   putUserPayListApiV2LowAdminApiUserPayListUserPayListIdPut({
     @Path('user_pay_list_id') required String userPayListId,
-    @Body()
-    required WebSubFastapiRoutersApiVLowAdminApiUserPayListPutParamsModel body,
+    @Body() required PutParamsModel body,
   });
 
   /// Admin Notify
@@ -1454,7 +1462,7 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/ss_node/{node_id}')
   Future<ErrorResponse> putSsNodeApiV2LowAdminApiSsNodeNodeIdPut({
     @Path('node_id') required int nodeId,
-    @Body() required SsNodeInput body,
+    @Body() required SsNodePydantic body,
   });
 
   /// Delete Ss Node.
@@ -1478,7 +1486,7 @@ abstract class FallbackClient {
   /// 创建新节点.
   @POST('/api/v2/low_admin_api/ss_node/')
   Future<ErrorResponse> postSsNodeApiV2LowAdminApiSsNodePost({
-    @Body() required SsNodeInput body,
+    @Body() required SsNodePydantic body,
   });
 
   /// Get Ss Node List.

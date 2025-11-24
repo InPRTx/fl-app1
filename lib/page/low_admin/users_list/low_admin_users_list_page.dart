@@ -130,57 +130,7 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    labelText: '查询参数 (q)',
-                    hintText: '例如: id:123, email:test@example.com 或留空查询所有',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        _applyQuery();
-                      },
-                    )
-                        : null,
-                    border: const OutlineInputBorder(),
-                    helperText: '支持格式: id:123, email:xxx, username:xxx',
-                  ),
-                  onSubmitted: (_) => _applyQuery(),
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: _applyQuery,
-                icon: Icon(_searchController.text
-                    .trim()
-                    .isEmpty
-                    ? Icons.refresh
-                    : Icons.search),
-                label: Text(_searchController.text
-                    .trim()
-                    .isEmpty
-                    ? '全部'
-                    : '搜索'),
-              ),
-            ],
-          ),
-        ),
-        Expanded(child: _buildContent()),
-      ],
-    );
+    return _buildContent();
   }
 
   Widget _buildContent() {
@@ -241,17 +191,78 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
       );
     }
 
-    return ListView.builder(
+    // 使用 CustomScrollView 让搜索框可滚动
+    return CustomScrollView(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16.0),
-      itemCount: _users.length + 1, // extra item for footer
-      itemBuilder: (context, index) {
-        if (index < _users.length) {
-          final user = _users[index];
-          return _buildUserCard(user);
-        }
-        return _buildListFooter();
-      },
+      slivers: [
+        // 搜索栏（可滚动）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: '查询参数 (q)',
+                      hintText: '例如: id:123, email:test@example.com 或留空查询所有',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _searchController.text.isNotEmpty
+                          ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _applyQuery();
+                        },
+                      )
+                          : null,
+                      border: const OutlineInputBorder(),
+                      helperText: '支持格式: id:123, email:xxx, username:xxx',
+                    ),
+                    onSubmitted: (_) => _applyQuery(),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton.icon(
+                  onPressed: _applyQuery,
+                  icon: Icon(
+                    _searchController.text
+                        .trim()
+                        .isEmpty
+                        ? Icons.refresh
+                        : Icons.search,
+                  ),
+                  label: Text(
+                    _searchController.text
+                        .trim()
+                        .isEmpty ? '全部' : '搜索',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // 用户列表
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                if (index < _users.length) {
+                  return _buildUserCard(_users[index]);
+                }
+                return _buildListFooter();
+              },
+              childCount: _users.length + 1,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

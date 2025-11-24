@@ -1,12 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ss_node.dart';
+part of 'ss_node_pydantic.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
+SsNodePydantic _$SsNodePydanticFromJson(
+  Map<String, dynamic> json,
+) => SsNodePydantic(
   id: (json['id'] as num?)?.toInt(),
   nodeName: json['node_name'] as String,
   nodeConfig:
@@ -21,7 +23,7 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
   vpnType:
       $enumDecodeNullable(_$VpnTypeEnumEnumMap, json['vpn_type']) ??
       VpnTypeEnum.vmess,
-  nodeRate: json['node_rate'] as String? ?? '1.00',
+  nodeRate: json['node_rate'] ?? 1.00,
   nodeLevel: (json['node_level'] as num?)?.toInt() ?? 0,
   isHideNode: json['is_hide_node'] as bool? ?? false,
   createdAt: json['created_at'] == null
@@ -32,7 +34,7 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
       : DateTime.parse(json['updated_at'] as String),
   nodeInfo: json['node_info'] as String?,
   remark: json['remark'] as String?,
-  nodeSpeedLimit: json['node_speed_limit'] as String?,
+  nodeSpeedLimit: json['node_speed_limit'],
   userGroupHost: json['user_group_host'] == null
       ? null
       : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost.fromJson(
@@ -40,24 +42,25 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
         ),
 );
 
-Map<String, dynamic> _$SsNodeToJson(SsNode instance) => <String, dynamic>{
-  'id': instance.id,
-  'created_at': ?instance.createdAt?.toIso8601String(),
-  'updated_at': ?instance.updatedAt?.toIso8601String(),
-  'priority': instance.priority,
-  'node_name': instance.nodeName,
-  'node_config': instance.nodeConfig,
-  'is_enable': instance.isEnable,
-  'iso3166_code': _$CountryCodeEnumMap[instance.iso3166Code]!,
-  'vpn_type': _$VpnTypeEnumEnumMap[instance.vpnType]!,
-  'node_rate': instance.nodeRate,
-  'node_level': instance.nodeLevel,
-  'node_info': ?instance.nodeInfo,
-  'remark': ?instance.remark,
-  'node_speed_limit': ?instance.nodeSpeedLimit,
-  'user_group_host': ?instance.userGroupHost,
-  'is_hide_node': instance.isHideNode,
-};
+Map<String, dynamic> _$SsNodePydanticToJson(SsNodePydantic instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'created_at': ?instance.createdAt?.toIso8601String(),
+      'updated_at': ?instance.updatedAt?.toIso8601String(),
+      'priority': instance.priority,
+      'node_name': instance.nodeName,
+      'node_config': instance.nodeConfig,
+      'is_enable': instance.isEnable,
+      'iso3166_code': _$CountryCodeEnumMap[instance.iso3166Code]!,
+      'vpn_type': _$VpnTypeEnumEnumMap[instance.vpnType]!,
+      'node_rate': instance.nodeRate,
+      'node_level': instance.nodeLevel,
+      'node_info': ?instance.nodeInfo,
+      'remark': ?instance.remark,
+      'node_speed_limit': ?instance.nodeSpeedLimit,
+      'user_group_host': ?instance.userGroupHost,
+      'is_hide_node': instance.isHideNode,
+    };
 
 const _$CountryCodeEnumMap = {
   CountryCode.af: 'AF',

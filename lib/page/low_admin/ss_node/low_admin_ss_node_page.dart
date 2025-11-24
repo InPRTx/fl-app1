@@ -21,7 +21,7 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
   final RestClient _restClient = createAuthenticatedClient();
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
-  List<SsNodeOutput> _nodes = <SsNodeOutput>[];
+  List<SsNode> _nodes = <SsNode>[];
   bool _isLoading = false;
   String? _errorMessage;
   static const double _tabletBreakpoint = 640;
@@ -65,21 +65,21 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
       setState(() {
         _isLoading = false;
         _errorMessage = error.message ?? '节点数据加载失败';
-        _nodes = <SsNodeOutput>[];
+        _nodes = <SsNode>[];
       });
     } catch (error) {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
         _errorMessage = error.toString();
-        _nodes = <SsNodeOutput>[];
+        _nodes = <SsNode>[];
       });
     }
   }
 
   bool _isTablet(double width) => width >= _tabletBreakpoint;
 
-  Future<void> _openNodeForm({SsNodeOutput? node}) async {
+  Future<void> _openNodeForm({SsNode? node}) async {
     final bool? updated = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -95,7 +95,7 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     }
   }
 
-  Future<void> _confirmDelete(SsNodeOutput node) async {
+  Future<void> _confirmDelete(SsNode node) async {
     final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -277,24 +277,43 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
 
           Widget child;
           if (isTablet) {
-            child = GridView.builder(
-              padding: const EdgeInsets.all(16),
+            child = CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 400,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                mainAxisExtent: 280,
-              ),
-              itemCount: _nodes.length,
-              itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
+              slivers: [
+                SliverToBoxAdapter(child: _buildFilterRow()),
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildNodeCard(_nodes[index]),
+                      childCount: _nodes.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 400,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          mainAxisExtent: 280,
+                        ),
+                  ),
+                ),
+              ],
             );
           } else {
-            child = ListView.builder(
-              padding: const EdgeInsets.all(16),
+            child = CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: _nodes.length,
-              itemBuilder: (context, index) => _buildNodeCard(_nodes[index]),
+              slivers: [
+                SliverToBoxAdapter(child: _buildFilterRow()),
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => _buildNodeCard(_nodes[index]),
+                      childCount: _nodes.length,
+                    ),
+                  ),
+                ),
+              ],
             );
           }
 
@@ -304,9 +323,9 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     );
   }
 
-  Widget _buildNodeCard(SsNodeOutput node) {
-    final VmessConfig? vmessConfig = node.nodeConfig.vmessConfig;
-    final SsrConfig? ssrConfig = node.nodeConfig.ssrConfig;
+  Widget _buildNodeCard(SsNode node) {
+    final vmessConfig = node.nodeConfig.vmessConfig;
+    final ssrConfig = node.nodeConfig.ssrConfig;
     return SizedBox(
       height: 280,
       child: Card(
@@ -479,7 +498,6 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Text('节点管理', style: Theme.of(context).textTheme.headlineSmall),
         ),
-        _buildFilterRow(),
         _buildContent(),
       ],
     );
@@ -490,7 +508,7 @@ class _SsNodeFormDialog extends StatefulWidget {
   const _SsNodeFormDialog({required this.restClient, this.node});
 
   final RestClient restClient;
-  final SsNodeOutput? node;
+  final SsNode? node;
 
   @override
   State<_SsNodeFormDialog> createState() => _SsNodeFormDialogState();
@@ -779,7 +797,8 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final String trimmed = _data.userGroupHostRaw.trim();
-    UserGroupHost? userGroupHost;
+    WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
+    userGroupHost;
     if (trimmed.isNotEmpty) {
       try {
         userGroupHost = _parseUserGroupHost(trimmed);
@@ -791,11 +810,13 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       }
     }
 
-    final NodeConfig nodeConfig = NodeConfig(
+    final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
+    nodeConfig =
+    WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig(
       host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
       vmessConfig: _isVmess
-          ? VmessConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig(
               host: _data.vmessHost,
               verifyCert: _data.vmessVerifyCert,
               port: _data.vmessPort,
@@ -804,7 +825,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             )
           : null,
       ssrConfig: _isSsr
-          ? SsrConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig(
               host: _data.ssrHost,
               port: _data.ssrPort,
               password: _data.ssrPassword,
@@ -817,7 +838,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
           : null,
     );
 
-    final SsNodeInput body = SsNodeInput(
+    final SsNodePydantic body = SsNodePydantic(
       id: _data.id,
       nodeName: _data.nodeName,
       nodeConfig: nodeConfig,
@@ -878,19 +899,29 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
   }
 
-  UserGroupHost _parseUserGroupHost(String raw) {
+  WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost
+  _parseUserGroupHost(String raw) {
     final dynamic decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
       throw const FormatException('必须是对象结构');
     }
 
-    final Map<String, SsNodeUserGroupHostDict> map = decoded.map((key, value) {
+    final Map<
+        String,
+        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict>
+    map = decoded.map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
-      return MapEntry(key, SsNodeUserGroupHostDict.fromJson(value));
+      return MapEntry(
+        key,
+        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict
+            .fromJson(value),
+      );
     });
-    return UserGroupHost(userGroupHost: map);
+    return WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost(
+      userGroupHost: map,
+    );
   }
 
   Widget _buildSectionTitle(String text) {
@@ -1161,7 +1192,7 @@ class _SsNodeFormData {
       ssrObfs = 'plain',
       ssrObfsParam = '';
 
-  _SsNodeFormData.fromOutput(SsNodeOutput node)
+  _SsNodeFormData.fromOutput(SsNode node)
     : id = node.id,
       nodeName = node.nodeName,
       host = node.nodeConfig.host ?? '',

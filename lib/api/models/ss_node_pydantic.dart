@@ -9,11 +9,11 @@ import 'vpn_type_enum.dart';
 import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
 import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_user_group_host.dart';
 
-part 'ss_node.g.dart';
+part 'ss_node_pydantic.g.dart';
 
 @JsonSerializable()
-class SsNode {
-  const SsNode({
+class SsNodePydantic {
+  const SsNodePydantic({
     required this.id,
     required this.nodeName,
     required this.nodeConfig,
@@ -21,7 +21,7 @@ class SsNode {
     this.isEnable = true,
     this.iso3166Code = CountryCode.ar,
     this.vpnType = VpnTypeEnum.vmess,
-    this.nodeRate = '1.00',
+    this.nodeRate = 1.00,
     this.nodeLevel = 0,
     this.isHideNode = false,
     this.createdAt,
@@ -32,7 +32,8 @@ class SsNode {
     this.userGroupHost,
   });
 
-  factory SsNode.fromJson(Map<String, Object?> json) => _$SsNodeFromJson(json);
+  factory SsNodePydantic.fromJson(Map<String, Object?> json) =>
+      _$SsNodePydanticFromJson(json);
 
   @JsonKey(includeIfNull: true)
   final int? id;
@@ -53,7 +54,7 @@ class SsNode {
   @JsonKey(name: 'vpn_type')
   final VpnTypeEnum vpnType;
   @JsonKey(name: 'node_rate')
-  final String nodeRate;
+  final dynamic nodeRate;
   @JsonKey(name: 'node_level')
   final int nodeLevel;
 
@@ -67,12 +68,12 @@ class SsNode {
 
   /// 节点速度限制
   @JsonKey(includeIfNull: false, name: 'node_speed_limit')
-  final String? nodeSpeedLimit;
+  final dynamic nodeSpeedLimit;
   @JsonKey(includeIfNull: false, name: 'user_group_host')
   final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
   userGroupHost;
   @JsonKey(name: 'is_hide_node')
   final bool isHideNode;
 
-  Map<String, Object?> toJson() => _$SsNodeToJson(this);
+  Map<String, Object?> toJson() => _$SsNodePydanticToJson(this);
 }

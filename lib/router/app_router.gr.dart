@@ -177,18 +177,62 @@ class LowAdminTicketListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LowAdminUserBoughtListPage]
-class LowAdminUserBoughtListRoute extends PageRouteInfo<void> {
-  const LowAdminUserBoughtListRoute({List<PageRouteInfo>? children})
-    : super(LowAdminUserBoughtListRoute.name, initialChildren: children);
+class LowAdminUserBoughtListRoute
+    extends PageRouteInfo<LowAdminUserBoughtListRouteArgs> {
+  LowAdminUserBoughtListRoute({
+    Key? key,
+    String? queryParam,
+    List<PageRouteInfo>? children,
+  }) : super(
+         LowAdminUserBoughtListRoute.name,
+         args: LowAdminUserBoughtListRouteArgs(
+           key: key,
+           queryParam: queryParam,
+         ),
+         rawQueryParams: {'q': queryParam},
+         initialChildren: children,
+       );
 
   static const String name = 'LowAdminUserBoughtListRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LowAdminUserBoughtListPage();
+      final queryParams = data.queryParams;
+      final args = data.argsAs<LowAdminUserBoughtListRouteArgs>(
+        orElse: () => LowAdminUserBoughtListRouteArgs(
+          queryParam: queryParams.optString('q'),
+        ),
+      );
+      return LowAdminUserBoughtListPage(
+        key: args.key,
+        queryParam: args.queryParam,
+      );
     },
   );
+}
+
+class LowAdminUserBoughtListRouteArgs {
+  const LowAdminUserBoughtListRouteArgs({this.key, this.queryParam});
+
+  final Key? key;
+
+  final String? queryParam;
+
+  @override
+  String toString() {
+    return 'LowAdminUserBoughtListRouteArgs{key: $key, queryParam: $queryParam}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LowAdminUserBoughtListRouteArgs) return false;
+    return key == other.key && queryParam == other.queryParam;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ queryParam.hashCode;
 }
 
 /// generated route for
@@ -246,18 +290,59 @@ class LowAdminUserDetailRouteArgs {
 
 /// generated route for
 /// [LowAdminUserPayListPage]
-class LowAdminUserPayListRoute extends PageRouteInfo<void> {
-  const LowAdminUserPayListRoute({List<PageRouteInfo>? children})
-    : super(LowAdminUserPayListRoute.name, initialChildren: children);
+class LowAdminUserPayListRoute
+    extends PageRouteInfo<LowAdminUserPayListRouteArgs> {
+  LowAdminUserPayListRoute({
+    Key? key,
+    String? queryParam,
+    List<PageRouteInfo>? children,
+  }) : super(
+         LowAdminUserPayListRoute.name,
+         args: LowAdminUserPayListRouteArgs(key: key, queryParam: queryParam),
+         rawQueryParams: {'q': queryParam},
+         initialChildren: children,
+       );
 
   static const String name = 'LowAdminUserPayListRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LowAdminUserPayListPage();
+      final queryParams = data.queryParams;
+      final args = data.argsAs<LowAdminUserPayListRouteArgs>(
+        orElse: () => LowAdminUserPayListRouteArgs(
+          queryParam: queryParams.optString('q'),
+        ),
+      );
+      return LowAdminUserPayListPage(
+        key: args.key,
+        queryParam: args.queryParam,
+      );
     },
   );
+}
+
+class LowAdminUserPayListRouteArgs {
+  const LowAdminUserPayListRouteArgs({this.key, this.queryParam});
+
+  final Key? key;
+
+  final String? queryParam;
+
+  @override
+  String toString() {
+    return 'LowAdminUserPayListRouteArgs{key: $key, queryParam: $queryParam}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LowAdminUserPayListRouteArgs) return false;
+    return key == other.key && queryParam == other.queryParam;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ queryParam.hashCode;
 }
 
 /// generated route for
