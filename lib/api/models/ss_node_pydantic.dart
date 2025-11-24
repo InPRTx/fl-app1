@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'country_code.dart';
 import 'vpn_type_enum.dart';
 import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
-import 'web_sub_fastapi_models_database_model_table_ss_node_ss_node_user_group_host.dart';
+import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_user_group_host.dart';
 
 part 'ss_node_pydantic.g.dart';
 
@@ -70,7 +70,7 @@ class SsNodePydantic {
   @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final dynamic nodeSpeedLimit;
   @JsonKey(includeIfNull: false, name: 'user_group_host')
-  final WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost?
+  final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
   userGroupHost;
   @JsonKey(name: 'is_hide_node')
   final bool isHideNode;

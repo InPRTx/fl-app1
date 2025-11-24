@@ -100,7 +100,10 @@ class _BoughtRecordFormDialogState extends State<BoughtRecordFormDialog> {
       _errorMessage = null;
     });
 
-    final body = WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel(
+    final body = UserBought(
+      userId: widget.record != null
+          ? widget.record!.userId
+          : int.parse(_userIdController.text),
       shopId: int.parse(_shopIdController.text),
       createdAt: _createdAt.toUtc(),
       moneyAmount: _moneyAmountController.text,

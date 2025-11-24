@@ -7778,6 +7778,48 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Post User Bought",
+        "description": "添加用户购买记录",
+        "operationId": "post_user_bought_api_v2_low_admin_api_user_bought__post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBought"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/low_admin_api/user_bought/{bought_id}": {
@@ -7850,7 +7892,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel"
+                "$ref": "#/components/schemas/UserBought"
               }
             }
           }
@@ -8157,7 +8199,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel"
+                "$ref": "#/components/schemas/PutParamsModel"
               }
             }
           }
@@ -11726,6 +11768,66 @@
         ],
         "title": "PurchaseRecordsResult"
       },
+      "PutParamsModel": {
+        "properties": {
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount"
+          },
+          "is_finish": {
+            "type": "boolean",
+            "title": "Is Finish"
+          },
+          "trade_no": {
+            "type": "string",
+            "title": "Trade No"
+          },
+          "pay_method_id": {
+            "type": "integer",
+            "title": "Pay Method Id"
+          },
+          "invoice_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Id"
+          },
+          "remark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remark"
+          }
+        },
+        "type": "object",
+        "required": [
+          "money_amount",
+          "is_finish",
+          "trade_no",
+          "pay_method_id",
+          "invoice_id",
+          "remark"
+        ],
+        "title": "PutParamsModel"
+      },
       "RechargeRecords": {
         "properties": {
           "id": {
@@ -12258,7 +12360,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -12379,7 +12481,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -13083,6 +13185,92 @@
           "message"
         ],
         "title": "UserAccountSecurityPostResponse"
+      },
+      "UserBought": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "old_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Old Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id"
+          },
+          "coupon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coupon"
+          },
+          "money_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Money Amount",
+            "default": "0.00"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "shop_id"
+        ],
+        "title": "UserBought"
       },
       "UserDataHistory": {
         "properties": {
@@ -14451,7 +14639,86 @@
         ],
         "title": "Body_delete_bought_v1_user_bought_delete"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__SsrConfig": {
+      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
+          },
+          "net_type": {
+            "type": "string",
+            "title": "Net Type",
+            "default": "tcp"
+          }
+        },
+        "type": "object",
+        "title": "VmessConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
+        "properties": {
+          "host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          },
+          "vmess_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssr_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "NodeConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig": {
         "properties": {
           "host": {
             "type": "string",
@@ -14498,7 +14765,7 @@
         "title": "SsrConfig",
         "description": "SSR配置"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost": {
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
         "properties": {
           "user_group_host": {
             "additionalProperties": {
@@ -14511,85 +14778,6 @@
         },
         "type": "object",
         "title": "UserGroupHost"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
-        "properties": {
-          "host": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          },
-          "vmess_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "ssr_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__SsrConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "NodeConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "verify_cert": {
-            "type": "boolean",
-            "title": "Verify Cert",
-            "default": true
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "alter_id": {
-            "type": "integer",
-            "title": "Alter Id",
-            "default": 0
-          },
-          "net_type": {
-            "type": "string",
-            "title": "Net Type",
-            "default": "tcp"
-          }
-        },
-        "type": "object",
-        "title": "VmessConfig"
       },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict": {
         "properties": {
@@ -15080,37 +15268,6 @@
         ],
         "title": "ResultListData"
       },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__PutParamsModel": {
-        "properties": {
-          "shop_id": {
-            "type": "integer",
-            "title": "Shop Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "money_amount": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "title": "Money Amount"
-          }
-        },
-        "type": "object",
-        "required": [
-          "shop_id",
-          "created_at",
-          "money_amount"
-        ],
-        "title": "PutParamsModel"
-      },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel": {
         "properties": {
           "money_amount_add": {
@@ -15203,66 +15360,6 @@
         },
         "type": "object",
         "title": "GetUserBoughtResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__PutParamsModel": {
-        "properties": {
-          "money_amount": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "title": "Money Amount"
-          },
-          "is_finish": {
-            "type": "boolean",
-            "title": "Is Finish"
-          },
-          "trade_no": {
-            "type": "string",
-            "title": "Trade No"
-          },
-          "pay_method_id": {
-            "type": "integer",
-            "title": "Pay Method Id"
-          },
-          "invoice_id": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Invoice Id"
-          },
-          "remark": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Remark"
-          }
-        },
-        "type": "object",
-        "required": [
-          "money_amount",
-          "is_finish",
-          "trade_no",
-          "pay_method_id",
-          "invoice_id",
-          "remark"
-        ],
-        "title": "PutParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
         "properties": {

@@ -49,6 +49,7 @@ import '../models/post_func_block_ip_model.dart';
 import '../models/post_login_old_v_result_model.dart';
 import '../models/post_traffic_model.dart';
 import '../models/purchase_records_result.dart';
+import '../models/put_params_model.dart';
 import '../models/refresh_post_result_model.dart';
 import '../models/replace_email_response.dart';
 import '../models/reply_params.dart';
@@ -77,6 +78,7 @@ import '../models/user_account_password_change_response.dart';
 import '../models/user_account_security_get_response.dart';
 import '../models/user_account_security_post_request.dart';
 import '../models/user_account_security_post_response.dart';
+import '../models/user_bought.dart';
 import '../models/user_data_history_response.dart';
 import '../models/user_invite_record_response.dart';
 import '../models/user_invite_response.dart';
@@ -117,11 +119,9 @@ import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_put_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
@@ -1355,6 +1355,14 @@ abstract class FallbackClient {
     @Query('to_iso') DateTime? toIso,
   });
 
+  /// Post User Bought.
+  ///
+  /// 添加用户购买记录.
+  @POST('/api/v2/low_admin_api/user_bought/')
+  Future<ErrorResponse> postUserBoughtApiV2LowAdminApiUserBoughtPost({
+    @Body() required UserBought body,
+  });
+
   /// Delete User Bought.
   ///
   /// 删除用户购买记录.
@@ -1370,8 +1378,7 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/user_bought/{bought_id}')
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     @Path('bought_id') required String boughtId,
-    @Body()
-    required WebSubFastapiRoutersApiVLowAdminApiUserBoughtPutParamsModel body,
+    @Body() required UserBought body,
   });
 
   /// Get User V2 By User Id
@@ -1420,8 +1427,7 @@ abstract class FallbackClient {
   Future<ErrorResponse>
   putUserPayListApiV2LowAdminApiUserPayListUserPayListIdPut({
     @Path('user_pay_list_id') required String userPayListId,
-    @Body()
-    required WebSubFastapiRoutersApiVLowAdminApiUserPayListPutParamsModel body,
+    @Body() required PutParamsModel body,
   });
 
   /// Admin Notify

@@ -324,10 +324,8 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
   }
 
   Widget _buildNodeCard(SsNode node) {
-    final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig?
-    vmessConfig = node.nodeConfig.vmessConfig;
-    final WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig?
-    ssrConfig = node.nodeConfig.ssrConfig;
+    final vmessConfig = node.nodeConfig.vmessConfig;
+    final ssrConfig = node.nodeConfig.ssrConfig;
     return SizedBox(
       height: 280,
       child: Card(
@@ -799,7 +797,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final String trimmed = _data.userGroupHostRaw.trim();
-    WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost?
+    WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
     userGroupHost;
     if (trimmed.isNotEmpty) {
       try {
@@ -818,7 +816,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
       vmessConfig: _isVmess
-          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig(
               host: _data.vmessHost,
               verifyCert: _data.vmessVerifyCert,
               port: _data.vmessPort,
@@ -827,7 +825,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             )
           : null,
       ssrConfig: _isSsr
-          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig(
               host: _data.ssrHost,
               port: _data.ssrPort,
               password: _data.ssrPassword,
@@ -901,7 +899,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
   }
 
-  WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost
+  WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost
   _parseUserGroupHost(String raw) {
     final dynamic decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
@@ -921,7 +919,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             .fromJson(value),
       );
     });
-    return WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost(
+    return WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost(
       userGroupHost: map,
     );
   }
