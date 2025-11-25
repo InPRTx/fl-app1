@@ -78,7 +78,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = VersionResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -755,7 +755,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -811,7 +811,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1207,7 +1207,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = SystemMetaDataAnnouncementModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1280,7 +1280,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1356,7 +1356,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1385,7 +1385,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1453,7 +1453,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1483,7 +1483,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -1595,7 +1595,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1661,7 +1661,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1750,7 +1750,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1894,8 +1894,8 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {
@@ -2222,7 +2222,7 @@ class _FallbackClient implements FallbackClient {
           .map((dynamic i) => SsNode.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2285,7 +2285,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2314,7 +2314,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = AnnouncementResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2346,7 +2346,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = AnnouncementUpdateResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2396,7 +2396,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = _result.data!;
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2432,7 +2432,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ReplaceEmailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2462,7 +2462,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = AuthRegisterResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2493,7 +2493,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2524,7 +2524,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2554,7 +2554,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2585,7 +2585,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2615,7 +2615,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = LoginPostResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2646,7 +2646,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = RefreshPostResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2677,7 +2677,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = PostLoginOldVResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2734,7 +2734,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = AnnouncementsGetResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2765,7 +2765,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = TicketVGetResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2795,7 +2795,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2825,7 +2825,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserTicketsTicketIdEditStatusResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2855,7 +2855,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserTicketsTicketIdMessagesGetResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2885,7 +2885,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserTicketsTicketIdMessagesPostResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2913,7 +2913,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountActivityResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2941,7 +2941,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountEditEmailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2969,7 +2969,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountEditPasswordResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -2997,7 +2997,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountEditProfileResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3025,7 +3025,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountLinkTelegramResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3053,7 +3053,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountLoginIpLogResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3080,7 +3080,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountMeResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3108,7 +3108,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountSecurityGetResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3139,7 +3139,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountSecurityPostResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3170,7 +3170,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountPasswordChangeResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3198,7 +3198,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserAccountLoginHistoryResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3225,7 +3225,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserInviteResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3253,7 +3253,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserInviteRecordResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3281,7 +3281,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesSsPasswordResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3309,7 +3309,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesSsPasswordResetResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3342,7 +3342,7 @@ class _FallbackClient implements FallbackClient {
         _result.data!,
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3379,7 +3379,7 @@ class _FallbackClient implements FallbackClient {
         _result.data!,
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3420,7 +3420,7 @@ class _FallbackClient implements FallbackClient {
         _result.data!,
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3448,7 +3448,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesAuditRecordResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3476,7 +3476,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesAuditRuleResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3504,7 +3504,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesLinkTokenResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3532,7 +3532,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesLinkTokenResetResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3560,7 +3560,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesNodesResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3590,7 +3590,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesNodesNodeIdResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3620,7 +3620,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesNodesNodeIdResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3648,7 +3648,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesShareAccountResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3676,7 +3676,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesOldBillResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3706,7 +3706,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesOldBillServiceIdResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3742,7 +3742,7 @@ class _FallbackClient implements FallbackClient {
         _result.data!,
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3770,7 +3770,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesOldCheckinGetResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3798,7 +3798,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesOldCheckinPostResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3826,7 +3826,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserServicesOldResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3853,7 +3853,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserShopOldResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3883,7 +3883,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserShopOldShopIdConfirmOrderResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3913,7 +3913,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserShopOldShopIdPreOrderResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3941,7 +3941,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserShopOldShopIdConfirmOrderResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -3976,7 +3976,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserWalletRechargeResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4006,7 +4006,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserWalletRechargeRechargeIdResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4034,7 +4034,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserWalletCdKeyResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4064,7 +4064,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserWalletCdKeyCdKeyResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4091,7 +4091,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserWalletResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4119,7 +4119,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = PurchaseRecordsResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4146,7 +4146,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetDashboardResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4173,7 +4173,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = IndexGetResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4200,7 +4200,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetMeGetResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4228,7 +4228,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetOldServiceResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4255,7 +4255,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = CrispDataResultModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4318,7 +4318,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetSearchUserResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4347,7 +4347,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetServiceOldShopResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4387,7 +4387,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetViewUserResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4428,7 +4428,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetViewUserBoughtResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4469,7 +4469,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = UserDataHistoryResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4566,7 +4566,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4608,7 +4608,7 @@ class _FallbackClient implements FallbackClient {
             _result.data!,
           );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4639,7 +4639,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4679,7 +4679,7 @@ class _FallbackClient implements FallbackClient {
             _result.data!,
           );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4719,7 +4719,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetSearchUserResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4770,7 +4770,7 @@ class _FallbackClient implements FallbackClient {
             _result.data!,
           );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4800,7 +4800,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4830,7 +4830,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4861,7 +4861,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4891,7 +4891,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetUserMoneyResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4925,7 +4925,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -4976,7 +4976,7 @@ class _FallbackClient implements FallbackClient {
             _result.data!,
           );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5006,7 +5006,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5038,7 +5038,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5068,7 +5068,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5100,7 +5100,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5130,7 +5130,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetOldServiceShopResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5161,7 +5161,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5190,7 +5190,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5219,7 +5219,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetSsNodeResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5249,7 +5249,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5289,7 +5289,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetSsNodeListResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5320,7 +5320,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetUsernamesResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5351,7 +5351,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetUserInfosResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5392,7 +5392,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetOldServiceShopListResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5432,7 +5432,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetTicketListResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5462,7 +5462,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetTicketDetailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5493,7 +5493,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = ErrorResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5524,7 +5524,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = CaptchaKeyModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5551,7 +5551,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetCsrfTokenResult.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;
@@ -5578,7 +5578,7 @@ class _FallbackClient implements FallbackClient {
     try {
       _value = GetVersionModel.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, _result);
       rethrow;
     }
     return _value;

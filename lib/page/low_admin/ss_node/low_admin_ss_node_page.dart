@@ -825,7 +825,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             )
           : null,
       ssrConfig: _isSsr
-          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig(
               host: _data.ssrHost,
               port: _data.ssrPort,
               password: _data.ssrPassword,
@@ -908,14 +908,14 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
 
     final Map<
         String,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict>
-    map = decoded.map((key, value) {
+        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict> map = decoded
+        .map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
       return MapEntry(
         key,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict
+        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict
             .fromJson(value),
       );
     });

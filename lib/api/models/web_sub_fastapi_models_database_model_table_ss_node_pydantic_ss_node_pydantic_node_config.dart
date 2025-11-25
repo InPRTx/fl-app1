@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config_ssr_config.dart';
+import 'web_sub_fastapi_models_database_model_table_ss_node_ss_node_node_config_ssr_config.dart';
 import 'web_sub_fastapi_models_database_model_table_ss_node_ss_node_node_config_vmess_config.dart';
 
 part 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.g.dart';
@@ -33,7 +33,7 @@ class WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfi
   final WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig?
   vmessConfig;
   @JsonKey(includeIfNull: false, name: 'ssr_config')
-  final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig?
+  final WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig?
   ssrConfig;
 
   Map<String, Object?> toJson() =>

@@ -24,8 +24,13 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build web
-        run: flutter build web --release --wasm
+      - name: Build web for CF Pages (default, with / base-href)
+        run: flutter build web --release --wasm --base-href "/"
+
+      - name: Build web for GitHub (with /v3/ base-href, only for dev/main-base)
+        if: github.ref == 'refs/heads/main' || github.ref != 'refs/heads/main'
+        run: flutter build web --release --wasm --dart-define=BASE_URL="" --base-href "/v3/" --output build/web-github
+
 
       - name: Setup SSH key
         run: |
@@ -40,19 +45,42 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git clone git@github.com:MaoMoLab/fl-app1-web.git target-repo
 
-      - name: Copy build files
+      - name: Copy build files (CF Pages version - default)
         run: |
           rm -rf target-repo/*
           cp -r build/web/* target-repo/
 
-      - name: Commit and push
+      - name: Commit and push (CF Pages version)
         run: |
           cd target-repo
-          # 切换到与源仓库同名的分支（如果不存在则创建）
+          # 部署到与源分支同名的分支
           git checkout -B ${{ github.ref_name }}
           git add .
-          git diff --staged --quiet || git commit -m "Deploy from branch ${{ github.ref_name }} - commit ${{ github.sha }}"
+          git diff --staged --quiet || git commit -m "Deploy CF Pages from branch ${{ github.ref_name }} - commit ${{ github.sha }}"
           git push -f origin ${{ github.ref_name }}
+
+      - name: Copy build files (GitHub version with /v3/)
+        run: |
+          rm -rf target-repo/*
+          cp -r build/web-github/* target-repo/
+
+      - name: Commit and push (GitHub version - dev branch)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          cd target-repo
+          git checkout -B dev
+          git add .
+          git diff --staged --quiet || git commit -m "Deploy GitHub version from branch ${{ github.ref_name }} - commit ${{ github.sha }}"
+          git push -f origin dev
+
+      - name: Commit and push (GitHub version - main-base branch)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd target-repo
+          git checkout -B main-base
+          git add .
+          git diff --staged --quiet || git commit -m "Deploy GitHub version from main - commit ${{ github.sha }}"
+          git push -f origin main-base
 
       - name: Cleanup SSH key
         if: always()

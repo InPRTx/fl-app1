@@ -19,7 +19,7 @@ _$WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigFro
         ),
   ssrConfig: json['ssr_config'] == null
       ? null
-      : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig.fromJson(
+      : WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig.fromJson(
           json['ssr_config'] as Map<String, dynamic>,
         ),
 );
