@@ -199,7 +199,7 @@ class _BoughtRecordsListComponentState
 
     if (result == null) return;
 
-    final body = UserBought(
+    final body = UserBoughtPydantic(
       userId: record.userId,
       shopId: result['shopId'] as int,
       createdAt: (result['createdAt'] as DateTime).toUtc(),

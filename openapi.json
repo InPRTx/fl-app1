@@ -3486,6 +3486,126 @@
         }
       }
     },
+    "/v1/crisp_plugin_view": {
+      "get": {
+        "summary": "Get Crisp Plugin View",
+        "description": "emby bot配合脚本",
+        "operationId": "get_crisp_plugin_view_v1_crisp_plugin_view_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Email"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Api Key"
+            }
+          },
+          {
+            "name": "website_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Website Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCrispPluginViewResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/crisp_plugin_view_html": {
+      "get": {
+        "summary": "Get Crisp Plugin View Html",
+        "description": "Crisp 客服插件用户信息视图（HTML 页面）",
+        "operationId": "get_crisp_plugin_view_html_v1_crisp_plugin_view_html_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Email"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Api Key"
+            }
+          },
+          {
+            "name": "website_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Website Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/admin_api/db/ss_node/": {
       "get": {
         "summary": "Read Nodes",
@@ -7793,7 +7913,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBought"
+                "$ref": "#/components/schemas/UserBoughtPydantic"
               }
             }
           }
@@ -7892,7 +8012,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBought"
+                "$ref": "#/components/schemas/UserBoughtPydantic"
               }
             }
           }
@@ -7904,6 +8024,55 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user_bought/reset_days/": {
+      "get": {
+        "summary": "Get User Bought Reset Days",
+        "description": "查询用户所有符合条件的套餐流量重置日\n\n条件:\n1. 套餐在生效时间内\n2. 套餐有流量重置周期配置",
+        "operationId": "get_user_bought_reset_days_api_v2_low_admin_api_user_bought_reset_days__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserBoughtResetDaysResult"
+                  },
+                  "title": "Response Get User Bought Reset Days Api V2 Low Admin Api User Bought Reset Days  Get"
                 }
               }
             }
@@ -10419,6 +10588,32 @@
         },
         "type": "object",
         "title": "ErrorResponse"
+      },
+      "GetCrispPluginViewResult": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "未找到用户"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__crisp_plugin_view__GetCrispPluginViewResult__Result"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "GetCrispPluginViewResult"
       },
       "GetCsrfTokenResult": {
         "properties": {
@@ -13186,7 +13381,7 @@
         ],
         "title": "UserAccountSecurityPostResponse"
       },
-      "UserBought": {
+      "UserBoughtPydantic": {
         "properties": {
           "id": {
             "anyOf": [
@@ -13261,16 +13456,150 @@
                 "type": "string"
               }
             ],
-            "title": "Money Amount",
-            "default": "0.00"
+            "title": "Money Amount"
           }
         },
         "type": "object",
         "required": [
           "user_id",
-          "shop_id"
+          "shop_id",
+          "money_amount"
         ],
-        "title": "UserBought"
+        "title": "UserBoughtPydantic"
+      },
+      "UserBoughtResetDaysResult": {
+        "properties": {
+          "bought_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Bought Id",
+            "description": "购买记录ID"
+          },
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id",
+            "description": "商品ID"
+          },
+          "shop_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shop Name",
+            "description": "商品名称"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "购买时间"
+          },
+          "expires_at": {
+            "type": "string",
+            "title": "Expires At",
+            "description": "过期时间"
+          },
+          "user_level_duration_days": {
+            "type": "integer",
+            "title": "User Level Duration Days",
+            "description": "套餐有效期(天)"
+          },
+          "ss_bandwidth_reset_interval_days": {
+            "type": "integer",
+            "title": "Ss Bandwidth Reset Interval Days",
+            "description": "流量重置周期(天)"
+          },
+          "days_since_purchase": {
+            "type": "integer",
+            "title": "Days Since Purchase",
+            "description": "购买后经过的天数（基于今天零点）"
+          },
+          "days_until_reset": {
+            "type": "integer",
+            "title": "Days Until Reset",
+            "description": "距离下次重置的天数"
+          },
+          "next_reset_date": {
+            "type": "string",
+            "title": "Next Reset Date",
+            "description": "下次流量重置日期（购买时间+N天）"
+          },
+          "is_reset_day_today": {
+            "type": "boolean",
+            "title": "Is Reset Day Today",
+            "description": "今天是否为重置日（daily_job 今天 00:00 是否执行重置）"
+          },
+          "total_reset_count": {
+            "type": "integer",
+            "title": "Total Reset Count",
+            "description": "已发生的重置次数（包括购买当天）"
+          },
+          "all_reset_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "All Reset Dates",
+            "description": "所有重置日期列表（购买时间+N*周期）"
+          },
+          "past_reset_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Past Reset Dates",
+            "description": "已经发生的重置日期"
+          },
+          "future_reset_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Future Reset Dates",
+            "description": "未来的重置日期（到过期为止）"
+          },
+          "past_actual_reset_execution_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Past Actual Reset Execution Dates",
+            "description": "daily_job 已执行的重置日期（每天 00:00）"
+          },
+          "future_actual_reset_execution_dates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Future Actual Reset Execution Dates",
+            "description": "daily_job 未来将执行的重置日期（每天 00:00）"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bought_id",
+          "shop_id",
+          "shop_name",
+          "created_at",
+          "expires_at",
+          "user_level_duration_days",
+          "ss_bandwidth_reset_interval_days",
+          "days_since_purchase",
+          "days_until_reset",
+          "next_reset_date",
+          "is_reset_day_today",
+          "total_reset_count",
+          "all_reset_dates",
+          "past_reset_dates",
+          "future_reset_dates",
+          "past_actual_reset_execution_dates",
+          "future_actual_reset_execution_dates"
+        ],
+        "title": "UserBoughtResetDaysResult",
+        "description": "套餐流量重置日信息"
       },
       "UserDataHistory": {
         "properties": {
@@ -14717,30 +15046,6 @@
         "type": "object",
         "title": "VmessConfig"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          }
-        },
-        "type": "object",
-        "required": [
-          "host"
-        ],
-        "title": "SsNodeUserGroupHostDict"
-      },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
         "properties": {
           "host": {
@@ -14793,7 +15098,7 @@
         "properties": {
           "user_group_host": {
             "additionalProperties": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict"
+              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict"
             },
             "type": "object",
             "title": "User Group Host",
@@ -14802,6 +15107,30 @@
         },
         "type": "object",
         "title": "UserGroupHost"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "host"
+        ],
+        "title": "SsNodeUserGroupHostDict"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -16009,6 +16338,132 @@
           "version"
         ],
         "title": "SqlTableEnum"
+      },
+      "web_sub3_fastapi__routers__v1__crisp_plugin_view__GetCrispPluginViewResult__Result": {
+        "properties": {
+          "data_created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Data Created At"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "ss_init_size": {
+            "type": "integer",
+            "title": "Ss Init Size",
+            "default": 0
+          },
+          "ss_init2_size": {
+            "type": "integer",
+            "title": "Ss Init2 Size",
+            "default": 0
+          },
+          "ss_tx_size": {
+            "type": "integer",
+            "title": "Ss Tx Size",
+            "description": "上传数量 u",
+            "default": 0
+          },
+          "ss_rx_size": {
+            "type": "integer",
+            "title": "Ss Rx Size",
+            "description": "下载数量 d",
+            "default": 0
+          },
+          "ss_yesterday_used_size": {
+            "type": "integer",
+            "title": "Ss Yesterday Used Size"
+          },
+          "is_enabled": {
+            "type": "boolean",
+            "title": "Is Enabled"
+          },
+          "user_remark": {
+            "type": "string",
+            "title": "User Remark",
+            "default": ""
+          },
+          "money_amount": {
+            "type": "string",
+            "title": "Money Amount"
+          },
+          "money_amount2": {
+            "type": "string",
+            "title": "Money Amount2"
+          },
+          "user_level_expire_in": {
+            "type": "string",
+            "format": "date-time",
+            "title": "User Level Expire In"
+          },
+          "user_account_expire_in": {
+            "type": "string",
+            "format": "date-time",
+            "title": "User Account Expire In"
+          },
+          "node_speedlimit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Speedlimit"
+          },
+          "node_connector": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Connector"
+          },
+          "tg_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tg Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "created_at",
+          "user_id",
+          "user_name",
+          "email",
+          "ss_yesterday_used_size",
+          "is_enabled",
+          "money_amount",
+          "money_amount2",
+          "user_level_expire_in",
+          "user_account_expire_in"
+        ],
+        "title": "Result"
       },
       "web_sub3_fastapi__routers__v1__emby_function__SqlTableEnum": {
         "type": "string",

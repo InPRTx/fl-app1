@@ -2191,6 +2191,76 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
+  Future<GetCrispPluginViewResult> getCrispPluginViewV1CrispPluginViewGet({
+    required String email,
+    required String apiKey,
+    required String websiteId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'email': email,
+      r'api_key': apiKey,
+      r'website_id': websiteId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetCrispPluginViewResult>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/crisp_plugin_view',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetCrispPluginViewResult _value;
+    try {
+      _value = GetCrispPluginViewResult.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<String> getCrispPluginViewHtmlV1CrispPluginViewHtmlGet({
+    required String email,
+    required String apiKey,
+    required String websiteId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'email': email,
+      r'api_key': apiKey,
+      r'website_id': websiteId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<String>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/crisp_plugin_view_html',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
+    try {
+      _value = _result.data!;
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<List<SsNode>> readNodesApiV2AdminApiDbSsNodeGet({
     required String order,
     int? offset = 0,
@@ -4778,7 +4848,7 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<ErrorResponse> postUserBoughtApiV2LowAdminApiUserBoughtPost({
-    required UserBought body,
+    required UserBoughtPydantic body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4839,7 +4909,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     required String boughtId,
-    required UserBought body,
+    required UserBoughtPydantic body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4860,6 +4930,41 @@ class _FallbackClient implements FallbackClient {
     late ErrorResponse _value;
     try {
       _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<UserBoughtResetDaysResult>>
+  getUserBoughtResetDaysApiV2LowAdminApiUserBoughtResetDaysGet({
+    required int userId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'user_id': userId};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<UserBoughtResetDaysResult>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user_bought/reset_days/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<UserBoughtResetDaysResult> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+            UserBoughtResetDaysResult.fromJson(i as Map<String, dynamic>),
+      )
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;

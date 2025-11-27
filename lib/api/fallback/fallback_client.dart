@@ -20,6 +20,7 @@ import '../models/check_invite_code_params_model.dart';
 import '../models/crisp_data_result_model.dart';
 import '../models/error_response.dart';
 import '../models/fastapi_compat_v_body_delete_bought_v_user_bought_delete.dart';
+import '../models/get_crisp_plugin_view_result.dart';
 import '../models/get_csrf_token_result.dart';
 import '../models/get_dashboard_result_model.dart';
 import '../models/get_me_get_result_model.dart';
@@ -78,7 +79,8 @@ import '../models/user_account_password_change_response.dart';
 import '../models/user_account_security_get_response.dart';
 import '../models/user_account_security_post_request.dart';
 import '../models/user_account_security_post_response.dart';
-import '../models/user_bought.dart';
+import '../models/user_bought_pydantic.dart';
+import '../models/user_bought_reset_days_result.dart';
 import '../models/user_data_history_response.dart';
 import '../models/user_invite_record_response.dart';
 import '../models/user_invite_response.dart';
@@ -723,6 +725,26 @@ abstract class FallbackClient {
   @GET('/v1/notice')
   Future<void> getDetectV1NoticeGet();
 
+  /// Get Crisp Plugin View.
+  ///
+  /// emby bot配合脚本.
+  @GET('/v1/crisp_plugin_view')
+  Future<GetCrispPluginViewResult> getCrispPluginViewV1CrispPluginViewGet({
+    @Query('email') required String email,
+    @Query('api_key') required String apiKey,
+    @Query('website_id') required String websiteId,
+  });
+
+  /// Get Crisp Plugin View Html.
+  ///
+  /// Crisp 客服插件用户信息视图（HTML 页面）.
+  @GET('/v1/crisp_plugin_view_html')
+  Future<String> getCrispPluginViewHtmlV1CrispPluginViewHtmlGet({
+    @Query('email') required String email,
+    @Query('api_key') required String apiKey,
+    @Query('website_id') required String websiteId,
+  });
+
   /// Read Nodes
   @GET('/api/v2/admin_api/db/ss_node/')
   Future<List<SsNode>> readNodesApiV2AdminApiDbSsNodeGet({
@@ -1360,7 +1382,7 @@ abstract class FallbackClient {
   /// 添加用户购买记录.
   @POST('/api/v2/low_admin_api/user_bought/')
   Future<ErrorResponse> postUserBoughtApiV2LowAdminApiUserBoughtPost({
-    @Body() required UserBought body,
+    @Body() required UserBoughtPydantic body,
   });
 
   /// Delete User Bought.
@@ -1378,7 +1400,20 @@ abstract class FallbackClient {
   @PUT('/api/v2/low_admin_api/user_bought/{bought_id}')
   Future<ErrorResponse> putUserBoughtApiV2LowAdminApiUserBoughtBoughtIdPut({
     @Path('bought_id') required String boughtId,
-    @Body() required UserBought body,
+    @Body() required UserBoughtPydantic body,
+  });
+
+  /// Get User Bought Reset Days.
+  ///
+  /// 查询用户所有符合条件的套餐流量重置日.
+  ///
+  /// 条件:.
+  /// 1. 套餐在生效时间内.
+  /// 2. 套餐有流量重置周期配置.
+  @GET('/api/v2/low_admin_api/user_bought/reset_days/')
+  Future<List<UserBoughtResetDaysResult>>
+  getUserBoughtResetDaysApiV2LowAdminApiUserBoughtResetDaysGet({
+    @Query('user_id') required int userId,
   });
 
   /// Get User V2 By User Id

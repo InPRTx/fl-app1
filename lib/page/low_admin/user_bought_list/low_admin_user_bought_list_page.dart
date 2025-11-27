@@ -222,7 +222,7 @@ class _AddBoughtRecordDialogState extends State<_AddBoughtRecordDialog> {
       _errorMessage = null;
     });
 
-    final body = UserBought(
+    final body = UserBoughtPydantic(
       userId: int.parse(_userIdController.text),
       shopId: int.parse(_shopIdController.text),
       createdAt: _createdAt.toUtc(),
