@@ -25,6 +25,41 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
   bool _isLoading = false;
   String? _errorMessage;
   static const double _tabletBreakpoint = 640;
+  OverlayEntry? _loadingOverlay;
+
+  void _showLoadingOverlay(String message) {
+    if (_loadingOverlay != null) return;
+    _loadingOverlay = OverlayEntry(
+      builder: (context) =>
+          Container(
+            color: Colors.black54,
+            child: Center(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 16),
+                      Text(
+                        message,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    Overlay.of(context).insert(_loadingOverlay!);
+  }
+
+  void _hideLoadingOverlay() {
+    _loadingOverlay?.remove();
+    _loadingOverlay = null;
+  }
 
   @override
   void initState() {
@@ -35,6 +70,7 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
   @override
   void dispose() {
     _searchController.dispose();
+    _hideLoadingOverlay();
     super.dispose();
   }
 
@@ -116,10 +152,14 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
     );
     if (confirm != true || node.id == null) return;
 
+    if (!mounted) return;
+    _showLoadingOverlay('正在删除节点...');
+
     try {
       final ErrorResponse response = await _restClient.fallback
           .deleteSsNodeApiV2LowAdminApiSsNodeNodeIdDelete(nodeId: node.id!);
       if (!mounted) return;
+      _hideLoadingOverlay();
       if (response.isSuccess) {
         ScaffoldMessenger.of(
           context,
@@ -132,11 +172,13 @@ class _LowAdminSsNodePageState extends State<LowAdminSsNodePage> {
       }
     } on DioException catch (error) {
       if (!mounted) return;
+      _hideLoadingOverlay();
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(error.message ?? '删除失败')));
     } catch (error) {
       if (!mounted) return;
+      _hideLoadingOverlay();
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(error.toString())));
@@ -519,6 +561,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
   late _SsNodeFormData _data;
   bool _isSubmitting = false;
   String? _errorMessage;
+  OverlayEntry? _loadingOverlay;
 
   bool get _isVmess => _data.vpnType == VpnTypeEnum.vmess;
 
@@ -526,12 +569,52 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       _data.vpnType == VpnTypeEnum.shadowsocks ||
       _data.vpnType == VpnTypeEnum.shadowsocksr;
 
+  void _showLoadingOverlay(String message) {
+    if (_loadingOverlay != null) return;
+    _loadingOverlay = OverlayEntry(
+      builder: (context) =>
+          Container(
+            color: Colors.black54,
+            child: Center(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 16),
+                      Text(
+                        message,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+    );
+    Overlay.of(context).insert(_loadingOverlay!);
+  }
+
+  void _hideLoadingOverlay() {
+    _loadingOverlay?.remove();
+    _loadingOverlay = null;
+  }
+
   @override
   void initState() {
     super.initState();
     _data = widget.node == null
         ? _SsNodeFormData()
         : _SsNodeFormData.fromOutput(widget.node!);
+  }
+
+  @override
+  void dispose() {
+    _hideLoadingOverlay();
+    super.dispose();
   }
 
   @override
@@ -862,6 +945,10 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       _errorMessage = null;
     });
 
+    if (!mounted) return;
+    _showLoadingOverlay(
+        widget.node == null ? '正在创建节点...' : '正在更新节点...');
+
     try {
       ErrorResponse response;
       if (widget.node == null) {
@@ -876,6 +963,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       }
 
       if (!mounted) return;
+      _hideLoadingOverlay();
       if (response.isSuccess) {
         Navigator.pop(context, true);
       } else {
@@ -886,12 +974,14 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       }
     } on DioException catch (error) {
       if (!mounted) return;
+      _hideLoadingOverlay();
       setState(() {
         _isSubmitting = false;
         _errorMessage = error.message ?? '保存失败';
       });
     } catch (error) {
       if (!mounted) return;
+      _hideLoadingOverlay();
       setState(() {
         _isSubmitting = false;
         _errorMessage = error.toString();
@@ -908,14 +998,14 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
 
     final Map<
         String,
-        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict> map = decoded
+        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict> map = decoded
         .map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
       return MapEntry(
         key,
-        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict
+        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict
             .fromJson(value),
       );
     });

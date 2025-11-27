@@ -100,7 +100,7 @@ class _BoughtRecordFormDialogState extends State<BoughtRecordFormDialog> {
       _errorMessage = null;
     });
 
-    final body = UserBought(
+    final body = UserBoughtPydantic(
       userId: widget.record != null
           ? widget.record!.userId
           : int.parse(_userIdController.text),

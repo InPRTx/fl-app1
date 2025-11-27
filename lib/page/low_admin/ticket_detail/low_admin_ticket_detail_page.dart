@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/export.dart';
+import 'package:fl_app1/router/app_router.dart';
 import 'package:fl_app1/store/service/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -300,7 +301,7 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
             Row(
               children: [
                 Expanded(
-                  child: Text(
+                  child: SelectableText(
                     _ticket!.title,
                     style: const TextStyle(
                       fontSize: 20,
@@ -340,7 +341,12 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                       Icons.person, color: Colors.grey[700]) : null,
                 ),
                 const SizedBox(width: 8),
-                Text(ownerName, style: const TextStyle(fontSize: 14)),
+                Expanded(
+                  child: SelectableText(
+                    ownerName,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -349,7 +355,18 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
               runSpacing: 8,
               children: [
                 _buildInfoChip(Icons.tag, 'ID: ${_ticket!.id}'),
-                _buildInfoChip(Icons.person, '用户ID: ${_ticket!.userId}'),
+                InkWell(
+                  onTap: () {
+                    context.router.push(
+                      LowAdminUserDetailRoute(userId: _ticket!.userId),
+                    );
+                  },
+                  child: _buildInfoChip(
+                    Icons.person,
+                    '用户ID: ${_ticket!.userId}',
+                    Colors.blue,
+                  ),
+                ),
                 if (_ticket!.isMarkdown)
                   _buildInfoChip(Icons.code, 'Markdown', Colors.blue),
               ],
@@ -418,7 +435,12 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Expanded(child: Text(value, style: const TextStyle(fontSize: 14))),
+        Expanded(
+          child: SelectableText(
+            value,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ),
       ],
     );
   }
@@ -518,25 +540,35 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            msgName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: isAdmin ? Colors.blue[700] : null,
+                          Flexible(
+                            child: SelectableText(
+                              msgName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: isAdmin ? Colors.blue[700] : null,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'ID: ${message.userId}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
+                          InkWell(
+                            onTap: () {
+                              context.router.push(
+                                LowAdminUserDetailRoute(userId: message.userId),
+                              );
+                            },
+                            child: Text(
+                              'ID: ${message.userId}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blue[700],
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 2),
-                      Text(
+                      SelectableText(
                         dateFormat.format(message.createdAt.toLocal()),
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
@@ -559,7 +591,7 @@ class _LowAdminTicketDetailPageState extends State<LowAdminTicketDetailPage> {
               ],
             ),
             const Divider(height: 24),
-            Text(
+            SelectableText(
               message.content,
               style: const TextStyle(fontSize: 14, height: 1.5),
             ),
