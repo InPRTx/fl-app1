@@ -2491,7 +2491,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2587,7 +2587,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2735,7 +2735,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2903,7 +2903,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
               "default": "json"
             }
           },
@@ -7935,7 +7935,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
+              "format": "uuid",
               "title": "Bought Id"
             }
           }
@@ -15027,7 +15028,7 @@
         "properties": {
           "user_group_host": {
             "additionalProperties": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict"
+              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict"
             },
             "type": "object",
             "title": "User Group Host",
@@ -15036,6 +15037,30 @@
         },
         "type": "object",
         "title": "UserGroupHost"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "host"
+        ],
+        "title": "SsNodeUserGroupHostDict"
       },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
         "properties": {
@@ -15084,30 +15109,6 @@
         },
         "type": "object",
         "title": "NodeConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          }
-        },
-        "type": "object",
-        "required": [
-          "host"
-        ],
-        "title": "SsNodeUserGroupHostDict"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -16451,7 +16452,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

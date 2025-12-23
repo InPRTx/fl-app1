@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+// 类型别名，简化超长的类型名
+typedef UserGroupHostDict = WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict;
+typedef UserGroupHost = WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost;
+
 @RoutePage()
 class LowAdminSsNodePage extends StatefulWidget {
   const LowAdminSsNodePage({super.key});
@@ -880,8 +884,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final String trimmed = _data.userGroupHostRaw.trim();
-    WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost?
-    userGroupHost;
+    UserGroupHost? userGroupHost;
     if (trimmed.isNotEmpty) {
       try {
         userGroupHost = _parseUserGroupHost(trimmed);
@@ -989,27 +992,22 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
   }
 
-  WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost
-  _parseUserGroupHost(String raw) {
+  UserGroupHost _parseUserGroupHost(String raw) {
     final dynamic decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
       throw const FormatException('必须是对象结构');
     }
 
-    final Map<
-        String,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict> map = decoded
-        .map((key, value) {
+    final Map<String, UserGroupHostDict> map = decoded.map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
       return MapEntry(
         key,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict
-            .fromJson(value),
+        UserGroupHostDict.fromJson(value),
       );
     });
-    return WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost(
+    return UserGroupHost(
       userGroupHost: map,
     );
   }
