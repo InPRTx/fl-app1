@@ -127,7 +127,7 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_shop_index_formal_enum.dart';
+import '../models/web_sub_fastapi_routers_v_user_ticket_view_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -214,11 +214,11 @@ abstract class FallbackClient {
     @Query('out_trade_no') required String outTradeNo,
   });
 
-  /// Cron Queue User Post.
+  /// Get Cron Queue User Post.
   ///
   /// 每分钟从队列中取出数据并处理.
   @GET('/v1/mod_mu/cron_queue_user_post')
-  Future<void> cronQueueUserPostV1ModMuCronQueueUserPostGet({
+  Future<void> getCronQueueUserPostV1ModMuCronQueueUserPostGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -333,14 +333,6 @@ abstract class FallbackClient {
   /// 每分钟执行一次的定时任务.
   @GET('/v1/mod_mu/cron_1min_task_all')
   Future<ErrorResponse> cron1minTaskAllV1ModMuCron1minTaskAllGet({
-    @Query('is_auto_trigger') bool? isAutoTrigger = false,
-  });
-
-  /// Check User Password.
-  ///
-  /// 每分钟从队列中取出数据并处理.
-  @GET('/v1/mod_mu/check_user_password')
-  Future<void> checkUserPasswordV1ModMuCheckUserPasswordGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -564,7 +556,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   });
 
   /// Get Detect
@@ -580,7 +572,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   });
 
   /// Post Ticket.
@@ -605,7 +597,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -640,8 +632,8 @@ abstract class FallbackClient {
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
     @Query('format')
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
+        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
@@ -666,6 +658,10 @@ abstract class FallbackClient {
   /// 官网充值.
   @POST('/v1/user/payment/purchase')
   Future<void> postPurchaseV1UserPaymentPurchasePost();
+
+  /// Get View Old Service
+  @GET('/v1/user/view_old_service')
+  Future<void> getViewOldServiceV1UserViewOldServiceGet();
 
   /// Post Reset
   @POST('/v1/password/reset')

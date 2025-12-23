@@ -880,7 +880,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final String trimmed = _data.userGroupHostRaw.trim();
-    WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
+    WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost?
     userGroupHost;
     if (trimmed.isNotEmpty) {
       try {
@@ -989,7 +989,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
   }
 
-  WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost
+  WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost
   _parseUserGroupHost(String raw) {
     final dynamic decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
@@ -1009,7 +1009,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             .fromJson(value),
       );
     });
-    return WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost(
+    return WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost(
       userGroupHost: map,
     );
   }

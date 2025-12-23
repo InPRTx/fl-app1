@@ -290,7 +290,7 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<void> cronQueueUserPostV1ModMuCronQueueUserPostGet({
+  Future<void> getCronQueueUserPostV1ModMuCronQueueUserPostGet({
     bool? isAutoTrigger = false,
   }) async {
     final _extra = <String, dynamic>{};
@@ -759,30 +759,6 @@ class _FallbackClient implements FallbackClient {
       rethrow;
     }
     return _value;
-  }
-
-  @override
-  Future<void> checkUserPasswordV1ModMuCheckUserPasswordGet({
-    bool? isAutoTrigger = false,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'is_auto_trigger': isAutoTrigger,
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-        _dio.options,
-        '/v1/mod_mu/check_user_password',
-        queryParameters: queryParameters,
-        data: _data,
-      )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -1595,7 +1571,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1661,7 +1637,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1750,7 +1726,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1894,8 +1870,8 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
+        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {
@@ -1997,6 +1973,25 @@ class _FallbackClient implements FallbackClient {
           .compose(
         _dio.options,
         '/v1/user/payment/purchase',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<void> getViewOldServiceV1UserViewOldServiceGet() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/user/view_old_service',
         queryParameters: queryParameters,
         data: _data,
       )
@@ -4962,7 +4957,7 @@ class _FallbackClient implements FallbackClient {
       _value = _result.data!
           .map(
             (dynamic i) =>
-            UserBoughtResetDaysResult.fromJson(i as Map<String, dynamic>),
+                UserBoughtResetDaysResult.fromJson(i as Map<String, dynamic>),
       )
           .toList();
     } on Object catch (e, s) {

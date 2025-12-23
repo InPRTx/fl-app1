@@ -37,7 +37,7 @@ SsNodePydantic _$SsNodePydanticFromJson(
   nodeSpeedLimit: json['node_speed_limit'],
   userGroupHost: json['user_group_host'] == null
       ? null
-      : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost.fromJson(
+      : WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost.fromJson(
           json['user_group_host'] as Map<String, dynamic>,
         ),
 );

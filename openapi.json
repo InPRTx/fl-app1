@@ -495,9 +495,9 @@
     },
     "/v1/mod_mu/cron_queue_user_post": {
       "get": {
-        "summary": "Cron Queue User Post",
+        "summary": "Get Cron Queue User Post",
         "description": "每分钟从队列中取出数据并处理",
-        "operationId": "cron_queue_user_post_v1_mod_mu_cron_queue_user_post_get",
+        "operationId": "get_cron_queue_user_post_v1_mod_mu_cron_queue_user_post_get",
         "parameters": [
           {
             "name": "is_auto_trigger",
@@ -1093,45 +1093,6 @@
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/mod_mu/check_user_password": {
-      "get": {
-        "summary": "Check User Password",
-        "description": "每分钟从队列中取出数据并处理",
-        "operationId": "check_user_password_v1_mod_mu_check_user_password_get",
-        "parameters": [
-          {
-            "name": "is_auto_trigger",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false,
-              "title": "Is Auto Trigger"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           },
@@ -2530,7 +2491,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2626,7 +2587,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2774,7 +2735,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2942,7 +2903,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum",
               "default": "json"
             }
           },
@@ -3058,6 +3019,22 @@
         "summary": "Post Purchase",
         "description": "官网充值",
         "operationId": "post_purchase_v1_user_payment_purchase_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/view_old_service": {
+      "get": {
+        "summary": "Get View Old Service",
+        "operationId": "get_view_old_service_v1_user_view_old_service_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -12555,7 +12532,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -12676,7 +12653,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -15046,6 +15023,20 @@
         "type": "object",
         "title": "VmessConfig"
       },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost": {
+        "properties": {
+          "user_group_host": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict"
+            },
+            "type": "object",
+            "title": "User Group Host",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "UserGroupHost"
+      },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
         "properties": {
           "host": {
@@ -15093,20 +15084,6 @@
         },
         "type": "object",
         "title": "NodeConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
-        "properties": {
-          "user_group_host": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict"
-            },
-            "type": "object",
-            "title": "User Group Host",
-            "default": {}
-          }
-        },
-        "type": "object",
-        "title": "UserGroupHost"
       },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost__SsNodeUserGroupHostDict": {
         "properties": {
@@ -16474,7 +16451,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum": {
         "type": "string",
         "enum": [
           "json"
