@@ -1571,7 +1571,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1637,7 +1637,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1726,7 +1726,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1870,8 +1870,8 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
+        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {

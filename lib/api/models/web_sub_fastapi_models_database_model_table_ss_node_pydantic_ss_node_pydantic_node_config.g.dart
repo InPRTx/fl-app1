@@ -14,7 +14,7 @@ _$WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigFro
   port: (json['port'] as num?)?.toInt(),
   vmessConfig: json['vmess_config'] == null
       ? null
-      : WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig.fromJson(
+      : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig.fromJson(
           json['vmess_config'] as Map<String, dynamic>,
         ),
   ssrConfig: json['ssr_config'] == null

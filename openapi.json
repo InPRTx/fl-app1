@@ -2491,7 +2491,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2587,7 +2587,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2735,7 +2735,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2903,7 +2903,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum",
               "default": "json"
             }
           },
@@ -12533,7 +12533,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -12654,7 +12654,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost"
+            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -14993,51 +14993,6 @@
         "title": "SsrConfig",
         "description": "SSR配置"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "verify_cert": {
-            "type": "boolean",
-            "title": "Verify Cert",
-            "default": true
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "alter_id": {
-            "type": "integer",
-            "title": "Alter Id",
-            "default": 0
-          },
-          "net_type": {
-            "type": "string",
-            "title": "Net Type",
-            "default": "tcp"
-          }
-        },
-        "type": "object",
-        "title": "VmessConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost": {
-        "properties": {
-          "user_group_host": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict"
-            },
-            "type": "object",
-            "title": "User Group Host",
-            "default": {}
-          }
-        },
-        "type": "object",
-        "title": "UserGroupHost"
-      },
       "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict": {
         "properties": {
           "host": {
@@ -15089,7 +15044,7 @@
           "vmess_config": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig"
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig"
               },
               {
                 "type": "null"
@@ -15109,6 +15064,51 @@
         },
         "type": "object",
         "title": "NodeConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
+          },
+          "net_type": {
+            "type": "string",
+            "title": "Net Type",
+            "default": "tcp"
+          }
+        },
+        "type": "object",
+        "title": "VmessConfig"
+      },
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
+        "properties": {
+          "user_group_host": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict"
+            },
+            "type": "object",
+            "title": "User Group Host",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "UserGroupHost"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -16452,7 +16452,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

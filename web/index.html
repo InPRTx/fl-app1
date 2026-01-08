@@ -63,8 +63,106 @@
             }
         }
     </script>
+    <style>
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .browser-warning {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .browser-warning a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .browser-warning a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        noscript .browser-warning {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+<noscript>
+    <div class="browser-warning">
+        <p lang="zh-Hans">
+            我们检测到您当前的浏览器不能正常显示我们的主页，请更新您的浏览器，并启用 Javascript。
+        </p>
+        <p lang="en">
+            We detected that your current browser cannot display our homepage properly. Please update your browser and
+            enable JavaScript.
+        </p>
+    </div>
+</noscript>
+<div class="loading-container" id="loading">
+    <div class="loading-text" lang="zh-Hans">页面正在加载中...</div>
+    <div class="loading-text" lang="en" style="font-size: 18px; opacity: 0.8;">Loading...</div>
+    <div class="loading-spinner"></div>
+</div>
 <script async src="flutter_bootstrap.js"></script>
+<script>
+    // Hide loading screen when Flutter app is ready
+    window.addEventListener('flutter-first-frame', function () {
+        var loadingElement = document.getElementById('loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>

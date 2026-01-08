@@ -10,7 +10,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 // 类型别名，简化超长的类型名
 typedef UserGroupHostDict = WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict;
-typedef UserGroupHost = WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHost;
+typedef UserGroupHost = WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost;
 
 @RoutePage()
 class LowAdminSsNodePage extends StatefulWidget {
@@ -902,7 +902,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
       vmessConfig: _isVmess
-          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig(
               host: _data.vmessHost,
               verifyCert: _data.vmessVerifyCert,
               port: _data.vmessPort,
