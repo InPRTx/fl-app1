@@ -43,6 +43,59 @@ class AuthSimpleLoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [AuthTokenRefreshPage]
+class AuthTokenRefreshRoute extends PageRouteInfo<AuthTokenRefreshRouteArgs> {
+  AuthTokenRefreshRoute({
+    Key? key,
+    String? returnPath,
+    List<PageRouteInfo>? children,
+  }) : super(
+         AuthTokenRefreshRoute.name,
+         args: AuthTokenRefreshRouteArgs(key: key, returnPath: returnPath),
+         rawQueryParams: {'returnPath': returnPath},
+         initialChildren: children,
+       );
+
+  static const String name = 'AuthTokenRefreshRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final queryParams = data.queryParams;
+      final args = data.argsAs<AuthTokenRefreshRouteArgs>(
+        orElse: () => AuthTokenRefreshRouteArgs(
+          returnPath: queryParams.optString('returnPath'),
+        ),
+      );
+      return AuthTokenRefreshPage(key: args.key, returnPath: args.returnPath);
+    },
+  );
+}
+
+class AuthTokenRefreshRouteArgs {
+  const AuthTokenRefreshRouteArgs({this.key, this.returnPath});
+
+  final Key? key;
+
+  final String? returnPath;
+
+  @override
+  String toString() {
+    return 'AuthTokenRefreshRouteArgs{key: $key, returnPath: $returnPath}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AuthTokenRefreshRouteArgs) return false;
+    return key == other.key && returnPath == other.returnPath;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ returnPath.hashCode;
+}
+
+/// generated route for
 /// [DebugVersionPage]
 class DebugVersionRoute extends PageRouteInfo<void> {
   const DebugVersionRoute({List<PageRouteInfo>? children})
