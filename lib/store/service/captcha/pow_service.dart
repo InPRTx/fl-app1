@@ -1,16 +1,22 @@
 import 'dart:convert';
-import 'dart:isolate';
 
 import 'package:crypto/crypto.dart';
+
+// 条件导入：只在非 Web 平台导入 isolate
+import 'pow_service_stub.dart'
+    if (dart.library.io) 'pow_service_io.dart'
+    if (dart.library.html) 'pow_service_web.dart'
+    as platform;
 
 /// POW验证码计算服务
 ///
 /// 使用SHA256工作量证明算法进行验证码计算
-/// 通过Isolate在后台线程执行，避免阻塞UI
+/// - 在移动/桌面平台：通过Isolate在后台线程执行，避免阻塞UI
+/// - 在Web平台：使用异步分片计算，避免长时间阻塞UI
 class POWService {
   POWService._();
 
-  /// 在独立isolate中计算POW解决方案
+  /// 计算POW解决方案
   ///
   /// [capId] 验证码UUID7
   /// [challengeCount] 挑战数量（默认80）
@@ -22,36 +28,33 @@ class POWService {
     required int challengeCount,
     required int difficulty,
   }) async {
-    final ReceivePort receivePort = ReceivePort();
-
-    await Isolate.spawn(
-      _computeInIsolate,
-      _POWParams(
-        sendPort: receivePort.sendPort,
-        capId: capId,
-        challengeCount: challengeCount,
-        difficulty: difficulty,
-      ),
+    // 根据平台选择不同的实现
+    return platform.computeSolutions(
+      capId: capId,
+      challengeCount: challengeCount,
+      difficulty: difficulty,
     );
-
-    return await receivePort.first as List<int>;
   }
 
-  /// Isolate计算函数
+  /// 核心计算逻辑（同步版本，供各平台实现调用）
   ///
   /// 对每个索引i (0 ~ challengeCount-1)：
   /// 1. 从solution = 0开始递增
   /// 2. 计算 SHA256("{i}{capId}{solution}")
   /// 3. 检查哈希值前difficulty位是否为0
   /// 4. 如果满足条件，记录该solution；否则继续递增
-  static void _computeInIsolate(_POWParams params) {
+  static List<int> computeSolutionsSync({
+    required String capId,
+    required int challengeCount,
+    required int difficulty,
+  }) {
     final List<int> solutions = <int>[];
-    final String target = '0' * params.difficulty;
+    final String target = '0' * difficulty;
 
-    for (int i = 0; i < params.challengeCount; i++) {
+    for (int i = 0; i < challengeCount; i++) {
       int solution = 0;
       while (true) {
-        final String data = '$i${params.capId}$solution';
+        final String data = '$i$capId$solution';
         final List<int> bytes = utf8.encode(data);
         final Digest hash = sha256.convert(bytes);
         final String hashStr = hash.toString();
@@ -64,21 +67,6 @@ class POWService {
       }
     }
 
-    params.sendPort.send(solutions);
+    return solutions;
   }
-}
-
-/// POW计算参数
-class _POWParams {
-  const _POWParams({
-    required this.sendPort,
-    required this.capId,
-    required this.challengeCount,
-    required this.difficulty,
-  });
-
-  final SendPort sendPort;
-  final String capId;
-  final int challengeCount;
-  final int difficulty;
 }
