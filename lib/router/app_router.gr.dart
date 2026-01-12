@@ -27,6 +27,55 @@ class AuthLoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [AuthRegisterPage]
+class AuthRegisterRoute extends PageRouteInfo<AuthRegisterRouteArgs> {
+  AuthRegisterRoute({
+    Key? key,
+    String? inviteCode,
+    List<PageRouteInfo>? children,
+  }) : super(
+         AuthRegisterRoute.name,
+         args: AuthRegisterRouteArgs(key: key, inviteCode: inviteCode),
+         initialChildren: children,
+       );
+
+  static const String name = 'AuthRegisterRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<AuthRegisterRouteArgs>(
+        orElse: () => const AuthRegisterRouteArgs(),
+      );
+      return AuthRegisterPage(key: args.key, inviteCode: args.inviteCode);
+    },
+  );
+}
+
+class AuthRegisterRouteArgs {
+  const AuthRegisterRouteArgs({this.key, this.inviteCode});
+
+  final Key? key;
+
+  final String? inviteCode;
+
+  @override
+  String toString() {
+    return 'AuthRegisterRouteArgs{key: $key, inviteCode: $inviteCode}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AuthRegisterRouteArgs) return false;
+    return key == other.key && inviteCode == other.inviteCode;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ inviteCode.hashCode;
+}
+
+/// generated route for
 /// [AuthTokenRefreshPage]
 class AuthTokenRefreshRoute extends PageRouteInfo<AuthTokenRefreshRouteArgs> {
   AuthTokenRefreshRoute({

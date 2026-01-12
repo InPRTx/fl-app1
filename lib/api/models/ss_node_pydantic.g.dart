@@ -6,41 +6,39 @@ part of 'ss_node_pydantic.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SsNodePydantic _$SsNodePydanticFromJson(
-  Map<String, dynamic> json,
-) => SsNodePydantic(
-  id: (json['id'] as num?)?.toInt(),
-  nodeName: json['node_name'] as String,
-  nodeConfig:
-      WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig.fromJson(
+SsNodePydantic _$SsNodePydanticFromJson(Map<String, dynamic> json) =>
+    SsNodePydantic(
+      id: (json['id'] as num?)?.toInt(),
+      nodeName: json['node_name'] as String,
+      nodeConfig: SsNodeNodeConfig.fromJson(
         json['node_config'] as Map<String, dynamic>,
       ),
-  priority: (json['priority'] as num?)?.toInt() ?? 60000,
-  isEnable: json['is_enable'] as bool? ?? true,
-  iso3166Code:
-      $enumDecodeNullable(_$CountryCodeEnumMap, json['iso3166_code']) ??
-      CountryCode.ar,
-  vpnType:
-      $enumDecodeNullable(_$VpnTypeEnumEnumMap, json['vpn_type']) ??
-      VpnTypeEnum.vmess,
-  nodeRate: json['node_rate'] ?? 1.00,
-  nodeLevel: (json['node_level'] as num?)?.toInt() ?? 0,
-  isHideNode: json['is_hide_node'] as bool? ?? false,
-  createdAt: json['created_at'] == null
-      ? null
-      : DateTime.parse(json['created_at'] as String),
-  updatedAt: json['updated_at'] == null
-      ? null
-      : DateTime.parse(json['updated_at'] as String),
-  nodeInfo: json['node_info'] as String?,
-  remark: json['remark'] as String?,
-  nodeSpeedLimit: json['node_speed_limit'],
-  userGroupHost: json['user_group_host'] == null
-      ? null
-      : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost.fromJson(
-          json['user_group_host'] as Map<String, dynamic>,
-        ),
-);
+      priority: (json['priority'] as num?)?.toInt() ?? 60000,
+      isEnable: json['is_enable'] as bool? ?? true,
+      iso3166Code:
+          $enumDecodeNullable(_$CountryCodeEnumMap, json['iso3166_code']) ??
+          CountryCode.ar,
+      vpnType:
+          $enumDecodeNullable(_$VpnTypeEnumEnumMap, json['vpn_type']) ??
+          VpnTypeEnum.vmess,
+      nodeRate: json['node_rate'] ?? 1.00,
+      nodeLevel: (json['node_level'] as num?)?.toInt() ?? 0,
+      isHideNode: json['is_hide_node'] as bool? ?? false,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] == null
+          ? null
+          : DateTime.parse(json['updated_at'] as String),
+      nodeInfo: json['node_info'] as String?,
+      remark: json['remark'] as String?,
+      nodeSpeedLimit: json['node_speed_limit'],
+      userGroupHost: json['user_group_host'] == null
+          ? null
+          : SsNodeUserGroupHost.fromJson(
+              json['user_group_host'] as Map<String, dynamic>,
+            ),
+    );
 
 Map<String, dynamic> _$SsNodePydanticToJson(SsNodePydantic instance) =>
     <String, dynamic>{

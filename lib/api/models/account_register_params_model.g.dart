@@ -15,7 +15,6 @@ AccountRegisterParamsModel _$AccountRegisterParamsModelFromJson(
   rePassword: json['re_password'] as String,
   inviteCode: json['invite_code'] as String?,
   emailCode: json['email_code'] as String?,
-  verifyToken: json['verify_token'] as String?,
 );
 
 Map<String, dynamic> _$AccountRegisterParamsModelToJson(
@@ -27,5 +26,4 @@ Map<String, dynamic> _$AccountRegisterParamsModelToJson(
   're_password': instance.rePassword,
   'invite_code': ?instance.inviteCode,
   'email_code': ?instance.emailCode,
-  'verify_token': ?instance.verifyToken,
 };

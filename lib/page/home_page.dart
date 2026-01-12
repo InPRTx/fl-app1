@@ -48,6 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SizedBox(height: 8),
           ElevatedButton(
+            onPressed: () => context.router.pushPath('/auth/register'),
+            child: const Text('打开注册页面'),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
             onPressed: () => context.router.pushPath('/user/dashboard'),
             child: const Text('前往用户首页'),
           ),

@@ -15,7 +15,6 @@ class AccountRegisterParamsModel {
     required this.rePassword,
     this.inviteCode,
     this.emailCode,
-    this.verifyToken,
   });
 
   factory AccountRegisterParamsModel.fromJson(Map<String, Object?> json) =>
@@ -41,10 +40,6 @@ class AccountRegisterParamsModel {
   /// 邮箱验证码
   @JsonKey(includeIfNull: false, name: 'email_code')
   final String? emailCode;
-
-  /// POW验证令牌
-  @JsonKey(includeIfNull: false, name: 'verify_token')
-  final String? verifyToken;
 
   Map<String, Object?> toJson() => _$AccountRegisterParamsModelToJson(this);
 }

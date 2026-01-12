@@ -2614,7 +2614,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2710,7 +2710,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2858,7 +2858,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -3026,7 +3026,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum",
               "default": "json"
             }
           },
@@ -6866,7 +6866,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
+                "$ref": "#/components/schemas/SsNodeNodeConfigSQLModel"
               }
             }
           },
@@ -9841,18 +9841,6 @@
             ],
             "title": "Email Code",
             "description": "邮箱验证码"
-          },
-          "verify_token": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Verify Token",
-            "description": "POW验证令牌"
           }
         },
         "type": "object",
@@ -9868,8 +9856,7 @@
         "invite_code": "INV123456",
         "name": "用户名",
         "password": "password123",
-        "re_password": "password123",
-        "verify_token": "01937a2e-1234-7abc-9def-0123456789ab:a1b2c3d4..."
+        "re_password": "password123"
       },
       "AccountResetPasswordParamsModel": {
         "properties": {
@@ -12590,21 +12577,15 @@
             "format": "email",
             "title": "Email"
           },
-          "captcha_key": {
+          "verify_token": {
             "type": "string",
-            "format": "uuid",
-            "title": "Captcha Key",
-            "description": "一次性校验"
-          },
-          "tiago2_cap_token": {
-            "type": "string",
-            "title": "Tiago2 Cap Token",
-            "description": "Tiago2的CAPTCHA令牌"
+            "title": "Verify Token",
+            "description": "POW验证令牌"
           }
         },
         "type": "object",
         "required": [
-          "tiago2_cap_token"
+          "verify_token"
         ],
         "title": "RequestEmailCodeParamsModel"
       },
@@ -12893,7 +12874,7 @@
             "title": "Node Name"
           },
           "node_config": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
+            "$ref": "#/components/schemas/SsNodeNodeConfigSQLModel"
           },
           "is_enable": {
             "type": "boolean",
@@ -12955,7 +12936,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
+            "$ref": "#/components/schemas/SsNodeUserGroupHostSQLModel"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -12970,6 +12951,104 @@
           "node_config"
         ],
         "title": "SsNode"
+      },
+      "SsNodeNodeConfig": {
+        "properties": {
+          "host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          },
+          "vmess_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SsNodeVmessConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssr_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SsNodeSsrConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "SsNodeNodeConfig",
+        "description": "节点配置"
+      },
+      "SsNodeNodeConfigSQLModel": {
+        "properties": {
+          "host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          },
+          "vmess_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SsNodeVmessConfigSQLModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssr_config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SsNodeSsrConfigSQLModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "SsNodeNodeConfigSQLModel",
+        "description": "节点配置（SQLModel 版本）"
       },
       "SsNodePydantic": {
         "properties": {
@@ -13004,7 +13083,7 @@
             "title": "Node Name"
           },
           "node_config": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig"
+            "$ref": "#/components/schemas/SsNodeNodeConfig"
           },
           "is_enable": {
             "type": "boolean",
@@ -13076,7 +13155,7 @@
             "description": "节点速度限制"
           },
           "user_group_host": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost"
+            "$ref": "#/components/schemas/SsNodeUserGroupHost"
           },
           "is_hide_node": {
             "type": "boolean",
@@ -13090,7 +13169,246 @@
           "node_name",
           "node_config"
         ],
-        "title": "SsNodePydantic"
+        "title": "SsNodePydantic",
+        "description": "节点 Pydantic 模型"
+      },
+      "SsNodeSsrConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "default": ""
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "aes-256-cfb"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "Protocol",
+            "default": "origin"
+          },
+          "protocol_param": {
+            "type": "string",
+            "title": "Protocol Param",
+            "default": ""
+          },
+          "obfs": {
+            "type": "string",
+            "title": "Obfs",
+            "default": "plain"
+          },
+          "obfs_param": {
+            "type": "string",
+            "title": "Obfs Param",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "SsNodeSsrConfig",
+        "description": "SSR 配置"
+      },
+      "SsNodeSsrConfigSQLModel": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+            "default": ""
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "aes-256-cfb"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "Protocol",
+            "default": "origin"
+          },
+          "protocol_param": {
+            "type": "string",
+            "title": "Protocol Param",
+            "default": ""
+          },
+          "obfs": {
+            "type": "string",
+            "title": "Obfs",
+            "default": "plain"
+          },
+          "obfs_param": {
+            "type": "string",
+            "title": "Obfs Param",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "SsNodeSsrConfigSQLModel",
+        "description": "SSR 配置（SQLModel 版本）"
+      },
+      "SsNodeUserGroupHost": {
+        "properties": {
+          "user_group_host": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SsNodeUserGroupHostDict"
+            },
+            "type": "object",
+            "title": "User Group Host",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "SsNodeUserGroupHost",
+        "description": "用户组主机映射"
+      },
+      "SsNodeUserGroupHostDict": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "host"
+        ],
+        "title": "SsNodeUserGroupHostDict",
+        "description": "用户组主机配置"
+      },
+      "SsNodeUserGroupHostDictSQLModel": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "host"
+        ],
+        "title": "SsNodeUserGroupHostDictSQLModel",
+        "description": "用户组主机配置（SQLModel 版本）"
+      },
+      "SsNodeUserGroupHostSQLModel": {
+        "properties": {
+          "user_group_host": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SsNodeUserGroupHostDictSQLModel"
+            },
+            "type": "object",
+            "title": "User Group Host",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "SsNodeUserGroupHostSQLModel",
+        "description": "用户组主机映射（SQLModel 版本）"
+      },
+      "SsNodeVmessConfig": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
+          },
+          "net_type": {
+            "type": "string",
+            "title": "Net Type",
+            "default": "tcp"
+          }
+        },
+        "type": "object",
+        "title": "SsNodeVmessConfig",
+        "description": "VMess 配置"
+      },
+      "SsNodeVmessConfigSQLModel": {
+        "properties": {
+          "host": {
+            "type": "string",
+            "title": "Host",
+            "default": ""
+          },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port",
+            "default": 443
+          },
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
+          },
+          "net_type": {
+            "type": "string",
+            "title": "Net Type",
+            "default": "tcp"
+          }
+        },
+        "type": "object",
+        "title": "SsNodeVmessConfigSQLModel",
+        "description": "VMess 配置（SQLModel 版本）"
       },
       "SubLinkClientTypeEnum": {
         "type": "string",
@@ -15368,170 +15686,6 @@
         ],
         "title": "Body_delete_bought_v1_user_bought_delete"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "verify_cert": {
-            "type": "boolean",
-            "title": "Verify Cert",
-            "default": true
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "alter_id": {
-            "type": "integer",
-            "title": "Alter Id",
-            "default": 0
-          },
-          "net_type": {
-            "type": "string",
-            "title": "Net Type",
-            "default": "tcp"
-          }
-        },
-        "type": "object",
-        "title": "VmessConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          }
-        },
-        "type": "object",
-        "required": [
-          "host"
-        ],
-        "title": "SsNodeUserGroupHostDict"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig": {
-        "properties": {
-          "host": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Host"
-          },
-          "port": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Port"
-          },
-          "vmess_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "ssr_config": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "NodeConfig"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig": {
-        "properties": {
-          "host": {
-            "type": "string",
-            "title": "Host",
-            "default": ""
-          },
-          "port": {
-            "type": "integer",
-            "title": "Port",
-            "default": 443
-          },
-          "password": {
-            "type": "string",
-            "title": "Password",
-            "default": ""
-          },
-          "method": {
-            "type": "string",
-            "title": "Method",
-            "default": "aes-256-cfb"
-          },
-          "protocol": {
-            "type": "string",
-            "title": "Protocol",
-            "default": "origin"
-          },
-          "protocol_param": {
-            "type": "string",
-            "title": "Protocol Param",
-            "default": ""
-          },
-          "obfs": {
-            "type": "string",
-            "title": "Obfs",
-            "default": "plain"
-          },
-          "obfs_param": {
-            "type": "string",
-            "title": "Obfs Param",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "title": "SsrConfig",
-        "description": "SSR配置"
-      },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
-        "properties": {
-          "user_group_host": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict"
-            },
-            "type": "object",
-            "title": "User Group Host",
-            "default": {}
-          }
-        },
-        "type": "object",
-        "title": "UserGroupHost"
-      },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
           "announcement_id": {
@@ -16894,7 +17048,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__ticket__view__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

@@ -61,6 +61,7 @@ import '../models/replace_email_response.dart';
 import '../models/reply_params.dart';
 import '../models/request_email_code_params_model.dart';
 import '../models/ss_node.dart';
+import '../models/ss_node_node_config_sql_model.dart';
 import '../models/ss_node_pydantic.dart';
 import '../models/sub_link_client_type_enum.dart';
 import '../models/subscribe_type_enum.dart';
@@ -121,7 +122,6 @@ import '../models/user_wallet_recharge_result.dart';
 import '../models/user_wallet_result.dart';
 import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
-import '../models/web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
@@ -132,7 +132,7 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_ticket_view_formal_enum.dart';
+import '../models/web_sub_fastapi_routers_v_user_ticket_index_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -600,7 +600,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
   });
 
   /// Get Detect
@@ -616,7 +616,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
   });
 
   /// Post Ticket.
@@ -641,7 +641,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -676,8 +676,8 @@ abstract class FallbackClient {
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
     @Query('format')
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserTicketIndexFormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
@@ -1284,9 +1284,7 @@ abstract class FallbackClient {
   /// Post Node Config
   @POST('/api/v2/tools/pydantic_check/ss_node/node_config')
   Future<void> postNodeConfigApiV2ToolsPydanticCheckSsNodeNodeConfigPost({
-    @Body()
-    required WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
-    body,
+    @Body() required SsNodeNodeConfigSqlModel body,
   });
 
   /// Get Search User

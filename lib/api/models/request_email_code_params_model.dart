@@ -8,11 +8,7 @@ part 'request_email_code_params_model.g.dart';
 
 @JsonSerializable()
 class RequestEmailCodeParamsModel {
-  const RequestEmailCodeParamsModel({
-    required this.tiago2CapToken,
-    this.email,
-    this.captchaKey,
-  });
+  const RequestEmailCodeParamsModel({required this.verifyToken, this.email});
 
   factory RequestEmailCodeParamsModel.fromJson(Map<String, Object?> json) =>
       _$RequestEmailCodeParamsModelFromJson(json);
@@ -20,13 +16,9 @@ class RequestEmailCodeParamsModel {
   @JsonKey(includeIfNull: false)
   final String? email;
 
-  /// 一次性校验
-  @JsonKey(includeIfNull: false, name: 'captcha_key')
-  final String? captchaKey;
-
-  /// Tiago2的CAPTCHA令牌
-  @JsonKey(name: 'tiago2_cap_token')
-  final String tiago2CapToken;
+  /// POW验证令牌
+  @JsonKey(name: 'verify_token')
+  final String verifyToken;
 
   Map<String, Object?> toJson() => _$RequestEmailCodeParamsModelToJson(this);
 }

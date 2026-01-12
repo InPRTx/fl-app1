@@ -9,10 +9,9 @@ part of 'ss_node.dart';
 SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
   id: (json['id'] as num?)?.toInt(),
   nodeName: json['node_name'] as String,
-  nodeConfig:
-      WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig.fromJson(
-        json['node_config'] as Map<String, dynamic>,
-      ),
+  nodeConfig: SsNodeNodeConfigSqlModel.fromJson(
+    json['node_config'] as Map<String, dynamic>,
+  ),
   priority: (json['priority'] as num?)?.toInt() ?? 60000,
   isEnable: json['is_enable'] as bool? ?? true,
   iso3166Code:
@@ -35,7 +34,7 @@ SsNode _$SsNodeFromJson(Map<String, dynamic> json) => SsNode(
   nodeSpeedLimit: json['node_speed_limit'] as String?,
   userGroupHost: json['user_group_host'] == null
       ? null
-      : WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost.fromJson(
+      : SsNodeUserGroupHostSqlModel.fromJson(
           json['user_group_host'] as Map<String, dynamic>,
         ),
 );

@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ss_node_user_group_host_dict.g.dart';
 
+/// 用户组主机配置
 @JsonSerializable()
 class SsNodeUserGroupHostDict {
   const SsNodeUserGroupHostDict({required this.host, this.port});

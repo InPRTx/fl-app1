@@ -519,14 +519,11 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           const Text('还没有账号？'),
                           TextButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('注册页面尚未实现')),
-                              );
-                            },
+                            onPressed: () =>
+                                context.router.pushPath('/auth/register'),
                             child: const Text('注册'),
                           ),
                         ],
