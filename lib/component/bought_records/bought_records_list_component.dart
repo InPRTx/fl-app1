@@ -137,7 +137,10 @@ class _BoughtRecordsListComponentState
     });
   }
 
-  Future<void> _deleteBoughtRecord(String boughtId) async {
+  Future<void> _deleteBoughtRecord(
+    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+    record,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -159,19 +162,9 @@ class _BoughtRecordsListComponentState
 
     if (confirmed != true) return;
 
-    final boughtIdInt = int.tryParse(boughtId);
-    if (boughtIdInt == null) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('无效的购买记录ID')));
-      }
-      return;
-    }
-
     final result = await _restClient.fallback
         .deleteUserBoughtApiV2LowAdminApiUserBoughtBoughtIdDelete(
-          boughtId: boughtIdInt,
+          boughtId: record.id,
         );
 
     if (mounted) {
@@ -467,7 +460,7 @@ class _BoughtRecordsListComponentState
                   ),
                   const SizedBox(width: 8),
                   OutlinedButton.icon(
-                    onPressed: () => _deleteBoughtRecord(record.id),
+                    onPressed: () => _deleteBoughtRecord(record),
                     icon: const Icon(Icons.delete, size: 18),
                     label: const Text('删除'),
                     style: OutlinedButton.styleFrom(

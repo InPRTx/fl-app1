@@ -65,13 +65,35 @@ void main() async {
     appRouter.pushPath('/auth/login');
   };
 
+  // 设置跳转到令牌刷新页回调
+  AuthStore().onNavigateToTokenRefresh = (String? returnPath) {
+    final path = returnPath ?? '/';
+    appRouter.pushPath(
+      '/auth/token_refresh?returnPath=${Uri.encodeComponent(path)}',
+    );
+  };
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    // 在首帧渲染后检查是否需要跳转到令牌刷新页面
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AuthStore().checkAndHandleStartupRefresh();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

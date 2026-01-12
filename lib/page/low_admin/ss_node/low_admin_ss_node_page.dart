@@ -3,10 +3,19 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/export.dart';
+import 'package:fl_app1/api/models/web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_user_group_host_ss_node_user_group_host_dict.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
+
+// 类型别名，简化超长的类型名
+// 用于读取的类型（从API获取）
+typedef UserGroupHostDictOutput = WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict;
+typedef UserGroupHostOutput = WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost;
+// 用于提交的类型（提交到API）
+typedef UserGroupHostDictInput = WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict;
+typedef UserGroupHostInput = WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost;
 
 @RoutePage()
 class LowAdminSsNodePage extends StatefulWidget {
@@ -880,8 +889,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
 
     final String trimmed = _data.userGroupHostRaw.trim();
-    WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
-    userGroupHost;
+    UserGroupHostInput? userGroupHost;
     if (trimmed.isNotEmpty) {
       try {
         userGroupHost = _parseUserGroupHost(trimmed);
@@ -899,7 +907,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
       vmessConfig: _isVmess
-          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig(
               host: _data.vmessHost,
               verifyCert: _data.vmessVerifyCert,
               port: _data.vmessPort,
@@ -989,27 +997,22 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
     }
   }
 
-  WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost
-  _parseUserGroupHost(String raw) {
+  UserGroupHostInput _parseUserGroupHost(String raw) {
     final dynamic decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
       throw const FormatException('必须是对象结构');
     }
 
-    final Map<
-        String,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict> map = decoded
-        .map((key, value) {
+    final Map<String, UserGroupHostDictInput> map = decoded.map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
       return MapEntry(
         key,
-        WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict
-            .fromJson(value),
+        UserGroupHostDictInput.fromJson(value),
       );
     });
-    return WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost(
+    return UserGroupHostInput(
       userGroupHost: map,
     );
   }

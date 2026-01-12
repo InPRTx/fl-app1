@@ -52,11 +52,29 @@ class AuthStore extends ChangeNotifier {
     await _refreshThisToken();
 
     if (_accessJWTToken == null && _refreshJWTToken != null) {
-      await apiRefreshToken();
+      debugPrint('🔄 应用启动时检测到需要刷新访问令牌');
+      final success = await apiRefreshToken(skipNavigation: true);
+
+      if (!success) {
+        debugPrint('⚠️ 应用启动时令牌刷新失败，标记需要跳转到刷新页面');
+        _needsTokenRefreshOnStart = true;
+      }
     }
 
     if (_accessJWTToken != null) {
       _startRefreshTokenTimer();
+    }
+  }
+
+  // 标记应用启动时是否需要跳转到令牌刷新页面
+  bool _needsTokenRefreshOnStart = false;
+
+  // 检查并处理启动时的令牌刷新需求
+  void checkAndHandleStartupRefresh() {
+    if (_needsTokenRefreshOnStart) {
+      debugPrint('🔄 处理应用启动时的令牌刷新失败，跳转到刷新页面');
+      _needsTokenRefreshOnStart = false;
+      _navigateToTokenRefresh();
     }
   }
 
@@ -74,7 +92,7 @@ class AuthStore extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> apiRefreshToken() async {
+  Future<bool> apiRefreshToken({bool skipNavigation = false}) async {
     debugPrint('🔄 apiRefreshToken 被调用');
     debugPrint(
       '🔍 当前 _refreshJWTToken: ${_refreshJWTToken != null ? "存在" : "null"}',
@@ -88,7 +106,9 @@ class AuthStore extends ChangeNotifier {
       if (_refreshJWTToken == null) {
         debugPrint('❌ 重新加载后仍然没有 refresh token，清除访问令牌并登出');
         await logout();
-        _navigateToLogin();
+        if (!skipNavigation) {
+          _navigateToLogin();
+        }
         return false;
       }
       debugPrint('✅ 重新加载后找到 refresh token');
@@ -115,9 +135,11 @@ class AuthStore extends ChangeNotifier {
         return true;
       } else {
         debugPrint('Token refresh failed: ${response.message}');
-        await logout();
-        _showErrorSnackBar('登录令牌已过期，请重新登录');
-        _navigateToLogin();
+        if (!skipNavigation) {
+          await logout();
+          _showErrorSnackBar('登录令牌已过期，请重新登录');
+          _navigateToLogin();
+        }
         return false;
       }
     } on DioException catch (e) {
@@ -127,24 +149,28 @@ class AuthStore extends ChangeNotifier {
       // 检查是否是 401 或 403 错误（刷新令牌无效）
       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
         debugPrint('❌ 刷新令牌无效（${e.response?.statusCode}），清除所有令牌');
-        await logout();
-        _showErrorSnackBar('登录令牌已过期，请重新登录');
-        _navigateToLogin();
+        if (!skipNavigation) {
+          await logout();
+          _showErrorSnackBar('登录令牌已过期，请重新登录');
+          _navigateToLogin();
+        }
         return false;
       }
 
-      // 其他网络错误
-      debugPrint('❌ 网络错误，清除令牌');
-      await logout();
-      _showErrorSnackBar('网络错误，请重新登录');
-      _navigateToLogin();
+      // 其他网络错误 - 不自动登出，让用户选择
+      debugPrint('❌ 网络错误，但不清除令牌');
+      if (!skipNavigation) {
+        _showErrorSnackBar('网络错误，请重试');
+      }
       return false;
     } catch (e, stackTrace) {
       debugPrint('❌ Token refresh unexpected error: $e');
       debugPrint('Stack trace: $stackTrace');
-      await logout();
-      _showErrorSnackBar('令牌刷新失败，请重新登录');
-      _navigateToLogin();
+      if (!skipNavigation) {
+        await logout();
+        _showErrorSnackBar('令牌刷新失败，请重新登录');
+        _navigateToLogin();
+      }
       return false;
     }
   }
@@ -156,6 +182,22 @@ class AuthStore extends ChangeNotifier {
     } else {
       debugPrint('⚠️ 无法跳转到登录页（回调未设置）');
     }
+  }
+
+  void _navigateToTokenRefresh() {
+    if (onNavigateToTokenRefresh != null) {
+      debugPrint('🔄 触发跳转到令牌刷新页');
+      onNavigateToTokenRefresh!(_savedReturnPath);
+    } else {
+      debugPrint('⚠️ 无法跳转到令牌刷新页（回调未设置）');
+      _navigateToLogin();
+    }
+  }
+
+  // 保存当前路径，用于刷新成功后返回
+  void saveCurrentPath(String path) {
+    _savedReturnPath = path;
+    debugPrint('💾 保存返回路径: $path');
   }
 
   void _showErrorSnackBar(String message) {
@@ -172,6 +214,12 @@ class AuthStore extends ChangeNotifier {
 
   // 跳转到登录页回调，由外部设置
   void Function()? onNavigateToLogin;
+
+  // 跳转到令牌刷新页回调，由外部设置
+  void Function(String? returnPath)? onNavigateToTokenRefresh;
+
+  // 保存当前路径，用于刷新成功后返回
+  String? _savedReturnPath;
 
   void _startRefreshTokenTimer() {
     _stopRefreshTokenTimer();
@@ -190,13 +238,14 @@ class AuthStore extends ChangeNotifier {
 
     if (timeout.isNegative || timeout.inMilliseconds <= 0) {
       debugPrint('Access token已过期，立即刷新');
-      apiRefreshToken().then((success) {
+      apiRefreshToken(skipNavigation: true).then((success) {
         if (success) {
           Future.delayed(const Duration(seconds: 1), () {
             _startRefreshTokenTimer();
           });
         } else {
-          debugPrint('❌ 访问令牌刷新失败，用户需要重新登录');
+          debugPrint('❌ 访问令牌刷新失败，跳转到令牌刷新页面');
+          _navigateToTokenRefresh();
         }
       });
     } else {
@@ -205,10 +254,13 @@ class AuthStore extends ChangeNotifier {
 
       _refreshTokenTimeout = Timer(timeout, () async {
         debugPrint('开始刷新访问令牌...');
-        final success = await apiRefreshToken();
+        final success = await apiRefreshToken(skipNavigation: true);
         if (success) {
           debugPrint('访问令牌刷新成功');
           _startRefreshTokenTimer();
+        } else {
+          debugPrint('❌ 访问令牌刷新失败，跳转到令牌刷新页面');
+          _navigateToTokenRefresh();
         }
       });
     }
