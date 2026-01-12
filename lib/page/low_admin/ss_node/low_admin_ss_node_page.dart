@@ -907,7 +907,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       host: _data.host.isEmpty ? null : _data.host,
       port: _data.port,
       vmessConfig: _isVmess
-          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigVmessConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigVmessConfig(
               host: _data.vmessHost,
               verifyCert: _data.vmessVerifyCert,
               port: _data.vmessPort,
@@ -916,7 +916,7 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
             )
           : null,
       ssrConfig: _isSsr
-          ? WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeNodeConfigSsrConfig(
+          ? WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfigSsrConfig(
               host: _data.ssrHost,
               port: _data.ssrPort,
               password: _data.ssrPassword,
@@ -1003,13 +1003,17 @@ class _SsNodeFormDialogState extends State<_SsNodeFormDialog> {
       throw const FormatException('必须是对象结构');
     }
 
-    final Map<String, UserGroupHostDictInput> map = decoded.map((key, value) {
+    final Map<
+        String,
+        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict> map = decoded
+        .map((key, value) {
       if (value is! Map<String, dynamic>) {
         throw const FormatException('每个用户组必须是对象');
       }
       return MapEntry(
         key,
-        UserGroupHostDictInput.fromJson(value),
+        WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict
+            .fromJson(value),
       );
     });
     return UserGroupHostInput(

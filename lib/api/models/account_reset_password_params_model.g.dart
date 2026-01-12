@@ -11,9 +11,8 @@ AccountResetPasswordParamsModel _$AccountResetPasswordParamsModelFromJson(
 ) => AccountResetPasswordParamsModel(
   emailCode: json['email_code'] as String,
   password: json['password'] as String,
-  tiago2CapToken: json['tiago2_cap_token'] as String,
   email: json['email'] as String?,
-  captchaKey: json['captcha_key'] as String?,
+  verifyToken: json['verify_token'] as String?,
 );
 
 Map<String, dynamic> _$AccountResetPasswordParamsModelToJson(
@@ -22,6 +21,5 @@ Map<String, dynamic> _$AccountResetPasswordParamsModelToJson(
   'email': ?instance.email,
   'email_code': instance.emailCode,
   'password': instance.password,
-  'captcha_key': ?instance.captchaKey,
-  'tiago2_cap_token': instance.tiago2CapToken,
+  'verify_token': ?instance.verifyToken,
 };

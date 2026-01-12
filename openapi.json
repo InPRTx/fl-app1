@@ -1109,6 +1109,88 @@
         }
       }
     },
+    "/v1/mod_mu/cron_1min_clickhouse_task_all": {
+      "get": {
+        "summary": "Cron 1Min Clickhouse Task All",
+        "description": "ClickHouse 数据导入整合任务\n包含:\n1. 用户活跃IP导入 (mod_mu_user_alive_ip)\n2. 流量原始数据导入 (user_traffic_raw)\n3. 用户历史数据导入 (user_data_history)\n4. 流量汇总数据导入 (user_traffic_log_total)",
+        "operationId": "cron_1min_clickhouse_task_all_v1_mod_mu_cron_1min_clickhouse_task_all_get",
+        "parameters": [
+          {
+            "name": "is_auto_trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Is Auto Trigger"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mod_mu/cron_refresh_materialized_views": {
+      "get": {
+        "summary": "Cron Refresh Materialized Views",
+        "description": "物化视图刷新任务\n刷新以下视图：\n1. user_login_ip_limit_view - 用户登录IP限制视图\n2. node_ip_mv - 节点IP物化视图\n3. mod_mu_user_alive_ip_5min - 用户5分钟活跃IP视图\n4. mod_mu_user_alive_ip_5min_ip_agg - 用户5分钟活跃IP聚合视图",
+        "operationId": "cron_refresh_materialized_views_v1_mod_mu_cron_refresh_materialized_views_get",
+        "parameters": [
+          {
+            "name": "is_auto_trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Is Auto Trigger"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/mod_mu/cron_ban_task": {
       "get": {
         "summary": "Get Cron Ban Task",
@@ -1374,6 +1456,47 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mod_mu/cron_traffic_speed_limit": {
+      "get": {
+        "summary": "Get Cron Traffic Speed Limit",
+        "description": "API 接口：手动触发流量限速检查\n\n注意：自动触发默认被禁用",
+        "operationId": "get_cron_traffic_speed_limit_v1_mod_mu_cron_traffic_speed_limit_get",
+        "parameters": [
+          {
+            "name": "is_auto_trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Is Auto Trigger"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           },
@@ -9270,6 +9393,103 @@
         }
       }
     },
+    "/api/v2/captcha-key-v2": {
+      "get": {
+        "summary": "Get Captcha Key V2",
+        "description": "获取一次性验证码\n\n返回验证码的ID和token，前端需要展示验证码并让用户完成验证",
+        "operationId": "get_captcha_key_v2_api_v2_captcha_key_v2_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCaptchaKeyModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/captcha-key-v2-verify": {
+      "post": {
+        "summary": "Post Captcha Key V2 Verify",
+        "description": "验证验证码\n\n用户完成SHA256 POW验证码挑战后，提交cap_id和solutions进行验证\n验证成功后返回verify_token，并设置verified_at时间戳\n\n验证算法:\n- 对于每个索引i (0 到 cap_challenge_count-1)\n- 计算 hash = SHA256(f\"{i}{cap_id}{solution[i]}\")\n- 验证hash前cap_difficulty位是否全为'0'",
+        "operationId": "post_captcha_key_v2_verify_api_v2_captcha_key_v2_verify_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostCaptchaKeyVerifyRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCaptchaKeyVerifyModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/captcha-key-v2-consume": {
+      "post": {
+        "summary": "Post Captcha Key V2 Consume",
+        "description": "消费验证令牌\n\n业务方使用verify_token进行最终验证并消费\n成功后设置consumed_at时间戳，令牌将无法再次使用",
+        "operationId": "post_captcha_key_v2_consume_api_v2_captcha_key_v2_consume_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsumeVerifyTokenRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsumeVerifyTokenModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/version": {
       "get": {
         "summary": "Get Version",
@@ -9621,6 +9841,18 @@
             ],
             "title": "Email Code",
             "description": "邮箱验证码"
+          },
+          "verify_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verify Token",
+            "description": "POW验证令牌"
           }
         },
         "type": "object",
@@ -9636,7 +9868,8 @@
         "invite_code": "INV123456",
         "name": "用户名",
         "password": "password123",
-        "re_password": "password123"
+        "re_password": "password123",
+        "verify_token": "01937a2e-1234-7abc-9def-0123456789ab:a1b2c3d4..."
       },
       "AccountResetPasswordParamsModel": {
         "properties": {
@@ -9656,23 +9889,23 @@
             "minLength": 6,
             "title": "Password"
           },
-          "captcha_key": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Captcha Key",
-            "description": "一次性校验"
-          },
-          "tiago2_cap_token": {
-            "type": "string",
-            "title": "Tiago2 Cap Token",
-            "description": "Tiago2的CAPTCHA令牌"
+          "verify_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verify Token",
+            "description": "POW验证令牌"
           }
         },
         "type": "object",
         "required": [
           "email_code",
-          "password",
-          "tiago2_cap_token"
+          "password"
         ],
         "title": "AccountResetPasswordParamsModel"
       },
@@ -10260,6 +10493,82 @@
         ],
         "title": "CaptchaKeyTypeEnum"
       },
+      "CaptchaKeyV2": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At",
+            "description": "验证通过时间"
+          },
+          "consumed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consumed At",
+            "description": "消费时间"
+          },
+          "request_ip": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "ipv4"
+              },
+              {
+                "type": "string",
+                "format": "ipv6"
+              }
+            ],
+            "title": "Request Ip"
+          },
+          "cap_challenge_count": {
+            "type": "integer",
+            "title": "Cap Challenge Count"
+          },
+          "cap_difficulty": {
+            "type": "integer",
+            "title": "Cap Difficulty"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "request_ip",
+          "cap_challenge_count",
+          "cap_difficulty"
+        ],
+        "title": "CaptchaKeyV2"
+      },
       "CheckInviteCodeParamsModel": {
         "properties": {
           "invite_code": {
@@ -10270,6 +10579,42 @@
         },
         "type": "object",
         "title": "CheckInviteCodeParamsModel"
+      },
+      "ConsumeVerifyTokenModel": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "消息提示"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "ConsumeVerifyTokenModel",
+        "description": "消费验证令牌响应模型"
+      },
+      "ConsumeVerifyTokenRequestModel": {
+        "properties": {
+          "verify_token": {
+            "type": "string",
+            "pattern": "^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}):([0-9a-f]{64})$",
+            "title": "Verify Token",
+            "description": "验证令牌（格式: cap_id:hash）"
+          }
+        },
+        "type": "object",
+        "required": [
+          "verify_token"
+        ],
+        "title": "ConsumeVerifyTokenRequestModel",
+        "description": "消费验证令牌请求模型"
       },
       "CountryCode": {
         "type": "string",
@@ -10566,6 +10911,29 @@
         },
         "type": "object",
         "title": "ErrorResponse"
+      },
+      "GetCaptchaKeyModel": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "消息提示"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CaptchaKeyV2"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "result"
+        ],
+        "title": "GetCaptchaKeyModel"
       },
       "GetCrispPluginViewResult": {
         "properties": {
@@ -11894,6 +12262,60 @@
           "data"
         ],
         "title": "POSTTrafficModel"
+      },
+      "PostCaptchaKeyVerifyModel": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": false
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "消息提示"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__captcha_key_v2__PostCaptchaKeyVerifyModel__Result"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "PostCaptchaKeyVerifyModel"
+      },
+      "PostCaptchaKeyVerifyRequestModel": {
+        "properties": {
+          "cap_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Cap Id",
+            "description": "验证码ID（UUID7格式）"
+          },
+          "solutions": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Solutions",
+            "description": "SHA256 POW验证码的解决方案数组"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cap_id",
+          "solutions"
+        ],
+        "title": "PostCaptchaKeyVerifyRequestModel",
+        "description": "验证码验证请求模型"
       },
       "PostLoginOldV1ResultModel": {
         "properties": {
@@ -14946,52 +15368,36 @@
         ],
         "title": "Body_delete_bought_v1_user_bought_delete"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__SsrConfig": {
+      "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig": {
         "properties": {
           "host": {
             "type": "string",
             "title": "Host",
             "default": ""
           },
+          "verify_cert": {
+            "type": "boolean",
+            "title": "Verify Cert",
+            "default": true
+          },
           "port": {
             "type": "integer",
             "title": "Port",
             "default": 443
           },
-          "password": {
-            "type": "string",
-            "title": "Password",
-            "default": ""
+          "alter_id": {
+            "type": "integer",
+            "title": "Alter Id",
+            "default": 0
           },
-          "method": {
+          "net_type": {
             "type": "string",
-            "title": "Method",
-            "default": "aes-256-cfb"
-          },
-          "protocol": {
-            "type": "string",
-            "title": "Protocol",
-            "default": "origin"
-          },
-          "protocol_param": {
-            "type": "string",
-            "title": "Protocol Param",
-            "default": ""
-          },
-          "obfs": {
-            "type": "string",
-            "title": "Obfs",
-            "default": "plain"
-          },
-          "obfs_param": {
-            "type": "string",
-            "title": "Obfs Param",
-            "default": ""
+            "title": "Net Type",
+            "default": "tcp"
           }
         },
         "type": "object",
-        "title": "SsrConfig",
-        "description": "SSR配置"
+        "title": "VmessConfig"
       },
       "web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__UserGroupHost__SsNodeUserGroupHostDict": {
         "properties": {
@@ -15044,7 +15450,7 @@
           "vmess_config": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig"
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__VmessConfig"
               },
               {
                 "type": "null"
@@ -15054,7 +15460,7 @@
           "ssr_config": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node__SsNode__NodeConfig__SsrConfig"
+                "$ref": "#/components/schemas/web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig"
               },
               {
                 "type": "null"
@@ -15065,36 +15471,52 @@
         "type": "object",
         "title": "NodeConfig"
       },
-      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__VmessConfig": {
+      "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__NodeConfig__SsrConfig": {
         "properties": {
           "host": {
             "type": "string",
             "title": "Host",
             "default": ""
           },
-          "verify_cert": {
-            "type": "boolean",
-            "title": "Verify Cert",
-            "default": true
-          },
           "port": {
             "type": "integer",
             "title": "Port",
             "default": 443
           },
-          "alter_id": {
-            "type": "integer",
-            "title": "Alter Id",
-            "default": 0
-          },
-          "net_type": {
+          "password": {
             "type": "string",
-            "title": "Net Type",
-            "default": "tcp"
+            "title": "Password",
+            "default": ""
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "aes-256-cfb"
+          },
+          "protocol": {
+            "type": "string",
+            "title": "Protocol",
+            "default": "origin"
+          },
+          "protocol_param": {
+            "type": "string",
+            "title": "Protocol Param",
+            "default": ""
+          },
+          "obfs": {
+            "type": "string",
+            "title": "Obfs",
+            "default": "plain"
+          },
+          "obfs_param": {
+            "type": "string",
+            "title": "Obfs Param",
+            "default": ""
           }
         },
         "type": "object",
-        "title": "VmessConfig"
+        "title": "SsrConfig",
+        "description": "SSR配置"
       },
       "web_sub3_fastapi__models__database2_model__table2__ss_node_pydantic__SsNodePydantic__UserGroupHost": {
         "properties": {
@@ -15258,31 +15680,30 @@
             "description": "如果是True，則refresh_token的有效期限為30天，否則為1小時",
             "default": false
           },
-          "captcha_key": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Captcha Key",
-            "description": "一次性鉴权校验"
-          },
-          "tiago2_cap_token": {
-            "type": "string",
-            "title": "Tiago2 Cap Token",
-            "description": "Tiago2的CAPTCHA令牌"
+          "verify_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verify Token",
+            "description": "POW验证令牌"
           }
         },
         "type": "object",
         "required": [
           "email",
-          "password",
-          "captcha_key",
-          "tiago2_cap_token"
+          "password"
         ],
         "title": "ParamsModel",
-        "captcha_key": "0196c7da-6049-79a7-bc82-712e546b9615",
         "email": "user@example.com",
         "is_remember_me": false,
         "password": "string",
-        "two_fa_code": "123456"
+        "two_fa_code": "123456",
+        "verify_token": "01937a2e-1234-7abc-9def-0123456789ab:a1b2c3d4..."
       },
       "web_sub3_fastapi__routers__api__v2__auth__account_register__index__AuthRegisterResponse__Result": {
         "properties": {
@@ -15398,6 +15819,27 @@
         },
         "type": "object",
         "title": "ParamsModel"
+      },
+      "web_sub3_fastapi__routers__api__v2__captcha_key_v2__PostCaptchaKeyVerifyModel__Result": {
+        "properties": {
+          "verify_token": {
+            "type": "string",
+            "title": "Verify Token",
+            "description": "验证成功后的令牌，用于后续业务消费"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At",
+            "description": "令牌过期时间"
+          }
+        },
+        "type": "object",
+        "required": [
+          "verify_token",
+          "expires_at"
+        ],
+        "title": "Result"
       },
       "web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData": {
         "properties": {

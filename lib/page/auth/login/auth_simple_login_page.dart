@@ -17,13 +17,12 @@ class AuthSimpleLoginPage extends StatefulWidget {
 }
 
 class _AuthSimpleLoginPageState extends State<AuthSimpleLoginPage> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthStore _authStore = AuthStore();
 
   bool _isLoading = false;
-  static const String _captchaKey = 'a9539556-9cbf-45e7-8ccd-db408ce6af33';
 
   @override
   void dispose() {
@@ -42,11 +41,10 @@ class _AuthSimpleLoginPageState extends State<AuthSimpleLoginPage> {
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
     final RestClient rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
 
-    final body = WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
-      email: _emailController.text.trim(),
+    final WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body =
+        WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
+          email: _emailController.text.trim(),
       password: _passwordController.text,
-      captchaKey: _captchaKey,
-      tiago2CapToken: 'auto_${DateTime.now().millisecondsSinceEpoch}',
       isRememberMe: true,
     );
 

@@ -11,10 +11,9 @@ class WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel {
   const WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel({
     required this.email,
     required this.password,
-    required this.captchaKey,
-    required this.tiago2CapToken,
     this.isRememberMe = false,
     this.twoFaCode,
+    this.verifyToken,
   });
 
   factory WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel.fromJson(
@@ -32,13 +31,9 @@ class WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel {
   @JsonKey(name: 'is_remember_me')
   final bool isRememberMe;
 
-  /// 一次性鉴权校验
-  @JsonKey(name: 'captcha_key')
-  final String captchaKey;
-
-  /// Tiago2的CAPTCHA令牌
-  @JsonKey(name: 'tiago2_cap_token')
-  final String tiago2CapToken;
+  /// POW验证令牌
+  @JsonKey(includeIfNull: false, name: 'verify_token')
+  final String? verifyToken;
 
   Map<String, Object?> toJson() =>
       _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelToJson(this);

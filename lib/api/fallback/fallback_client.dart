@@ -17,9 +17,12 @@ import '../models/auth_register_response.dart';
 import '../models/captcha_key_model.dart';
 import '../models/captcha_key_type_enum.dart';
 import '../models/check_invite_code_params_model.dart';
+import '../models/consume_verify_token_model.dart';
+import '../models/consume_verify_token_request_model.dart';
 import '../models/crisp_data_result_model.dart';
 import '../models/error_response.dart';
 import '../models/fastapi_compat_v_body_delete_bought_v_user_bought_delete.dart';
+import '../models/get_captcha_key_model.dart';
 import '../models/get_crisp_plugin_view_result.dart';
 import '../models/get_csrf_token_result.dart';
 import '../models/get_dashboard_result_model.dart';
@@ -46,6 +49,8 @@ import '../models/login_web_version_enum.dart';
 import '../models/old_service_shop_input.dart';
 import '../models/post_add_alive_ip_model.dart';
 import '../models/post_add_detect_log_model.dart';
+import '../models/post_captcha_key_verify_model.dart';
+import '../models/post_captcha_key_verify_request_model.dart';
 import '../models/post_func_block_ip_model.dart';
 import '../models/post_login_old_v_result_model.dart';
 import '../models/post_traffic_model.dart';
@@ -336,6 +341,34 @@ abstract class FallbackClient {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
+  /// Cron 1Min Clickhouse Task All.
+  ///
+  /// ClickHouse 数据导入整合任务.
+  /// 包含:.
+  /// 1. 用户活跃IP导入 (mod_mu_user_alive_ip).
+  /// 2. 流量原始数据导入 (user_traffic_raw).
+  /// 3. 用户历史数据导入 (user_data_history).
+  /// 4. 流量汇总数据导入 (user_traffic_log_total).
+  @GET('/v1/mod_mu/cron_1min_clickhouse_task_all')
+  Future<ErrorResponse>
+  cron1minClickhouseTaskAllV1ModMuCron1minClickhouseTaskAllGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
+  /// Cron Refresh Materialized Views.
+  ///
+  /// 物化视图刷新任务.
+  /// 刷新以下视图：.
+  /// 1. user_login_ip_limit_view - 用户登录IP限制视图.
+  /// 2. node_ip_mv - 节点IP物化视图.
+  /// 3. mod_mu_user_alive_ip_5min - 用户5分钟活跃IP视图.
+  /// 4. mod_mu_user_alive_ip_5min_ip_agg - 用户5分钟活跃IP聚合视图.
+  @GET('/v1/mod_mu/cron_refresh_materialized_views')
+  Future<ErrorResponse>
+  cronRefreshMaterializedViewsV1ModMuCronRefreshMaterializedViewsGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
   /// Get Cron Ban Task
   @GET('/v1/mod_mu/cron_ban_task')
   Future<ErrorResponse> getCronBanTaskV1ModMuCronBanTaskGet({
@@ -374,6 +407,17 @@ abstract class FallbackClient {
   @GET('/v1/mod_mu/clickhouse_import_user_traffic_log_total')
   Future<void>
   getClickhouseImportUserTrafficLogTotalV1ModMuClickhouseImportUserTrafficLogTotalGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
+  /// Get Cron Traffic Speed Limit.
+  ///
+  /// API 接口：手动触发流量限速检查.
+  ///
+  /// 注意：自动触发默认被禁用.
+  @GET('/v1/mod_mu/cron_traffic_speed_limit')
+  Future<ErrorResponse>
+  getCronTrafficSpeedLimitV1ModMuCronTrafficSpeedLimitGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -1615,6 +1659,43 @@ abstract class FallbackClient {
   /// Get Csrf Token
   @GET('/api/v2/csrf')
   Future<GetCsrfTokenResult> getCsrfTokenApiV2CsrfGet();
+
+  /// Get Captcha Key V2.
+  ///
+  /// 获取一次性验证码.
+  ///
+  /// 返回验证码的ID和token，前端需要展示验证码并让用户完成验证.
+  @GET('/api/v2/captcha-key-v2')
+  Future<GetCaptchaKeyModel> getCaptchaKeyV2ApiV2CaptchaKeyV2Get();
+
+  /// Post Captcha Key V2 Verify.
+  ///
+  /// 验证验证码.
+  ///
+  /// 用户完成SHA256 POW验证码挑战后，提交cap_id和solutions进行验证.
+  /// 验证成功后返回verify_token，并设置verified_at时间戳.
+  ///
+  /// 验证算法:.
+  /// - 对于每个索引i (0 到 cap_challenge_count-1).
+  /// - 计算 hash = SHA256(f"{i}{cap_id}{solution[i]}").
+  /// - 验证hash前cap_difficulty位是否全为'0'.
+  @POST('/api/v2/captcha-key-v2-verify')
+  Future<PostCaptchaKeyVerifyModel>
+  postCaptchaKeyV2VerifyApiV2CaptchaKeyV2VerifyPost({
+    @Body() required PostCaptchaKeyVerifyRequestModel body,
+  });
+
+  /// Post Captcha Key V2 Consume.
+  ///
+  /// 消费验证令牌.
+  ///
+  /// 业务方使用verify_token进行最终验证并消费.
+  /// 成功后设置consumed_at时间戳，令牌将无法再次使用.
+  @POST('/api/v2/captcha-key-v2-consume')
+  Future<ConsumeVerifyTokenModel>
+  postCaptchaKeyV2ConsumeApiV2CaptchaKeyV2ConsumePost({
+    @Body() required ConsumeVerifyTokenRequestModel body,
+  });
 
   /// Get Version
   @GET('/api/version')
