@@ -120,10 +120,19 @@ class _AuthLoginPageState extends State<AuthLoginPage>
 
       // Use API response to inform the user. If API reports failure, show its message.
       if (!result.isSuccess) {
-        final msg = result.message.isNotEmpty ? result.message : '登录失败，请稍后重试';
+        final String msg = result.message.isNotEmpty
+            ? result.message
+            : '登录失败，请稍后重试';
+
+        // 重置POW验证令牌，要求用户重新验证
+        setState(() {
+          _verifyToken = null;
+          _captchaError = null;
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(msg),
+            content: Text('$msg\n请重新进行POW验证'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),
@@ -158,17 +167,22 @@ class _AuthLoginPageState extends State<AuthLoginPage>
       // 跳转到用户仪表板
       context.router.pushPath('/user/dashboard');
     } on DioException catch (e) {
-      setState(() => _isLoggingIn = false);
+      setState(() {
+        _isLoggingIn = false;
+        // 重置POW验证令牌
+        _verifyToken = null;
+        _captchaError = null;
+      });
 
       // Show error similar to VersionPage for debugging
-      final req = e.requestOptions;
-      final uri = req.uri.toString();
-      final type = e.type.name;
+      final RequestOptions req = e.requestOptions;
+      final String uri = req.uri.toString();
+      final String type = e.type.name;
       String message = e.message ?? e.toString();
-      final resp = e.response;
+      final Response<dynamic>? resp = e.response;
       String respText = '';
       if (resp != null) {
-        final body = resp.data;
+        final dynamic body = resp.data;
         try {
           respText = body?.toString() ?? '<empty>';
         } catch (_) {
@@ -177,10 +191,11 @@ class _AuthLoginPageState extends State<AuthLoginPage>
         message = 'HTTP ${resp.statusCode}\n$respText';
       }
 
-      final sb = StringBuffer();
+      final StringBuffer sb = StringBuffer();
       sb.writeln('DioException: $type');
       sb.writeln('URI: $uri');
       sb.writeln('Message: $message');
+      sb.writeln('\n请重新进行POW验证');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -190,10 +205,16 @@ class _AuthLoginPageState extends State<AuthLoginPage>
         ),
       );
     } catch (e, st) {
-      setState(() => _isLoggingIn = false);
+      setState(() {
+        _isLoggingIn = false;
+        // 重置POW验证令牌
+        _verifyToken = null;
+        _captchaError = null;
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$e\n\n$st'),
+          content: Text('$e\n\n$st\n\n请重新进行POW验证'),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),

@@ -27,22 +27,6 @@ class AuthLoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [AuthSimpleLoginPage]
-class AuthSimpleLoginRoute extends PageRouteInfo<void> {
-  const AuthSimpleLoginRoute({List<PageRouteInfo>? children})
-    : super(AuthSimpleLoginRoute.name, initialChildren: children);
-
-  static const String name = 'AuthSimpleLoginRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const AuthSimpleLoginPage();
-    },
-  );
-}
-
-/// generated route for
 /// [AuthTokenRefreshPage]
 class AuthTokenRefreshRoute extends PageRouteInfo<AuthTokenRefreshRouteArgs> {
   AuthTokenRefreshRoute({
