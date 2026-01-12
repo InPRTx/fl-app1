@@ -378,17 +378,6 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
       return;
     }
 
-    if (_verifyToken == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('请先完成POW验证码验证'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      _triggerShake();
-      return;
-    }
-
     setState(() => _isRegistering = true);
 
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
@@ -417,15 +406,9 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
       if (result.isSuccess) {
         _showSuccessDialog();
       } else {
-        // 注册失败，重置POW验证令牌
-        setState(() {
-          _verifyToken = null;
-          _captchaError = null;
-        });
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${result.message}\n请重新进行POW验证'),
+            content: Text(result.message),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 4),
           ),
@@ -433,35 +416,27 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
         _triggerShake();
       }
     } on DioException catch (e) {
-      setState(() {
-        _isRegistering = false;
-        _verifyToken = null;
-        _captchaError = null;
-      });
+      setState(() => _isRegistering = false);
 
       if (!mounted) return;
 
       final String message = e.response?.data?['message'] ?? '注册失败，请稍后重试';
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$message\n请重新进行POW验证'),
+          content: Text(message),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
       );
       _triggerShake();
     } catch (e) {
-      setState(() {
-        _isRegistering = false;
-        _verifyToken = null;
-        _captchaError = null;
-      });
+      setState(() => _isRegistering = false);
 
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$e\n请重新进行POW验证'),
+          content: Text('注册失败: $e'),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
@@ -565,18 +540,22 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
                           controller: _emailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: '邮箱',
-                            prefixIcon: Icon(Icons.email),
-                            border: OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.email),
+                            border: const OutlineInputBorder(),
                             helperText: '支持主流邮箱服务商',
+                            helperMaxLines: 2,
                           ),
                           validator: (String? v) {
                             if (v == null || v.isEmpty) {
                               return '邮箱不能为空';
                             }
                             if (!_validateEmail(v)) {
-                              return '邮箱格式不正确或不在白名单内';
+                              final String domain = v.contains('@')
+                                  ? v.split('@')[1]
+                                  : '';
+                              return '邮箱格式不正确或后缀 @$domain 不在白名单内';
                             }
                             return null;
                           },
