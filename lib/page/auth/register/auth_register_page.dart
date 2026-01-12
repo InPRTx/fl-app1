@@ -42,6 +42,8 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
   String? _verifyToken;
   bool _isVerifying = false;
   String? _captchaError;
+  int _powProgress = 0;
+  int _powTotal = 0;
 
   InviteCodeState _inviteCodeState = InviteCodeState.unchecked;
   String _inviteCodeMessage = '';
@@ -173,6 +175,8 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
       _isVerifying = true;
       _captchaError = null;
       _verifyToken = null;
+      _powProgress = 0;
+      _powTotal = 0;
     });
 
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
@@ -180,11 +184,25 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
     final CaptchaService captchaService = CaptchaService.instance;
 
     final String verifyToken = await captchaService
-        .getVerifyToken(restClient: rest)
+        .getVerifyToken(
+      restClient: rest,
+      onProgress: (int current, int total) {
+        // 调试日志
+        print('POW Progress: $current / $total');
+        if (mounted) {
+          setState(() {
+            _powProgress = current;
+            _powTotal = total;
+          });
+        }
+      },
+    )
         .catchError((Object e) {
           setState(() {
             _captchaError = e.toString();
             _isVerifying = false;
+            _powProgress = 0;
+            _powTotal = 0;
           });
           return '';
         });
@@ -193,6 +211,8 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
       setState(() {
         _verifyToken = verifyToken;
         _isVerifying = false;
+        _powProgress = 0;
+        _powTotal = 0;
       });
 
       if (!mounted) return;
@@ -615,20 +635,48 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: Colors.blue),
                                 ),
-                                child: const Row(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
+                                    Row(
+                                      children: <Widget>[
+                                        const SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Text(
+                                            _powTotal > 0
+                                                ? '正在计算 POW 验证码... ${(_powProgress /
+                                                _powTotal * 100).toInt()}%'
+                                                : '正在计算 POW 验证码，请稍候...',
+                                            style: const TextStyle(
+                                                color: Colors.blue),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        '正在计算POW验证码，请稍候...',
-                                        style: TextStyle(color: Colors.blue),
+                                    const SizedBox(height: 8),
+                                    LinearProgressIndicator(
+                                      value: _powTotal > 0 ? _powProgress /
+                                          _powTotal : null,
+                                      backgroundColor: Colors.blue.withValues(
+                                          alpha: 0.2),
+                                      valueColor: const AlwaysStoppedAnimation<
+                                          Color>(Colors.blue),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      _powTotal > 0
+                                          ? '$_powProgress / $_powTotal'
+                                          : '准备中...',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.blue.shade700,
                                       ),
                                     ),
                                   ],

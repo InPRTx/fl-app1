@@ -7,6 +7,7 @@ Future<List<int>> computeSolutions({
   required String capId,
   required int challengeCount,
   required int difficulty,
+  void Function(int progress, int total)? onProgress,
 }) async {
   throw UnsupportedError('Platform not supported');
 }

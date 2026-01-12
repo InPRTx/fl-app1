@@ -21,18 +21,21 @@ class POWService {
   /// [capId] 验证码UUID7
   /// [challengeCount] 挑战数量（默认80）
   /// [difficulty] 难度级别（默认4，即前导4个0）
+  /// [onProgress] 进度回调 (当前进度, 总数)
   ///
   /// 返回计算出的solutions数组
   static Future<List<int>> computeSolutions({
     required String capId,
     required int challengeCount,
     required int difficulty,
+    void Function(int progress, int total)? onProgress,
   }) async {
     // 根据平台选择不同的实现
     return platform.computeSolutions(
       capId: capId,
       challengeCount: challengeCount,
       difficulty: difficulty,
+      onProgress: onProgress,
     );
   }
 

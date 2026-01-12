@@ -75,11 +75,12 @@ class CaptchaService {
       throw Exception('验证码ID为空');
     }
 
-    // 2. 计算解决方案（在isolate中）
+    // 2. 计算解决方案（带进度回调）
     final List<int> solutions = await POWService.computeSolutions(
       capId: capId,
       challengeCount: challengeCount,
       difficulty: difficulty,
+      onProgress: onProgress,
     );
 
     // 3. 提交验证
