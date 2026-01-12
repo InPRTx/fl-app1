@@ -2614,7 +2614,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2710,7 +2710,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2858,7 +2858,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
                 },
                 {
                   "type": "null"
@@ -3026,7 +3026,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum",
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
               "default": "json"
             }
           },
@@ -8543,6 +8543,309 @@
         }
       }
     },
+    "/api/v2/low_admin_api/user-speed-limit/": {
+      "post": {
+        "summary": "Create User Speed Limit",
+        "description": "创建用户限速/封禁记录\n\n参数：\n- user_id: 用户ID\n- start_at: 限速开始时间\n- end_at: 限速结束时间\n- speed_limit_mbps: 速度限制 (Mbps)，0 表示完全封禁\n- reason: 限速原因\n- remark: 备注信息\n\n注意：\n- start_at 必须小于 end_at\n- 同一用户的限速时间段不能重叠\n- speed_limit_mbps 必须 >= 0",
+        "operationId": "create_user_speed_limit_api_v2_low_admin_api_user_speed_limit__post",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSpeedLimitPydantic"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List User Speed Limits",
+        "description": "获取限速记录列表\n\n支持筛选：\n- user_id: 按用户ID筛选\n- is_active: 只显示当前生效的记录\n- is_banned: 只显示完全封禁的记录（speed_limit_mbps = 0）",
+        "operationId": "list_user_speed_limits_api_v2_low_admin_api_user_speed_limit__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "按用户ID筛选",
+              "title": "User Id"
+            },
+            "description": "按用户ID筛选"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "是否只显示当前生效的记录",
+              "title": "Is Active"
+            },
+            "description": "是否只显示当前生效的记录"
+          },
+          {
+            "name": "is_banned",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "是否只显示完全封禁的记录",
+              "title": "Is Banned"
+            },
+            "description": "是否只显示完全封禁的记录"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "偏移量",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "偏移量"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "每页数量",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "每页数量"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSpeedLimitListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user-speed-limit/{limit_id}": {
+      "get": {
+        "summary": "Get User Speed Limit",
+        "description": "获取单个限速记录详情",
+        "operationId": "get_user_speed_limit_api_v2_low_admin_api_user_speed_limit__limit_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Limit Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSpeedLimitResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update User Speed Limit",
+        "description": "更新限速记录（完全替换）\n\n注意：\n- 会检查更新后的时间段是否与其他记录重叠\n- 不能修改已经结束的记录",
+        "operationId": "update_user_speed_limit_api_v2_low_admin_api_user_speed_limit__limit_id__put",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Limit Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSpeedLimitPydantic"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete User Speed Limit",
+        "description": "删除限速记录\n\n注意：只能删除未开始或正在进行中的记录，已结束的记录不能删除",
+        "operationId": "delete_user_speed_limit_api_v2_low_admin_api_user_speed_limit__limit_id__delete",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Limit Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/low_admin_api/old_service_shop/{shop_id}": {
       "put": {
         "summary": "Put Old Service Shop",
@@ -9018,6 +9321,96 @@
             "JwtAccessBearer": []
           }
         ]
+      }
+    },
+    "/api/v2/low_admin_api/user-speed-limit/by-user/{user_id}": {
+      "get": {
+        "summary": "Get User Current Speed Limit",
+        "description": "获取用户当前生效的限速记录\n\n用于快速查询用户当前是否被限速/封禁",
+        "operationId": "get_user_current_speed_limit_api_v2_low_admin_api_user_speed_limit_by_user__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSpeedLimitResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/low_admin_api/user-speed-limit/check/{user_id}": {
+      "get": {
+        "summary": "Check User Speed Limit Status",
+        "description": "检查用户限速状态（简化版）\n\n返回：\n- is_limited: 是否被限速\n- is_banned: 是否被完全封禁\n- speed_limit_mbps: 当前限速值（如果有）\n- end_at: 限速结束时间（如果有）\n- reason: 限速原因（如果有）",
+        "operationId": "check_user_speed_limit_status_api_v2_low_admin_api_user_speed_limit_check__user_id__get",
+        "security": [
+          {
+            "JwtAccessBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/low_admin_api/old_service_shop/": {
@@ -9875,18 +10268,6 @@
             "maxLength": 32,
             "minLength": 6,
             "title": "Password"
-          },
-          "verify_token": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Verify Token",
-            "description": "POW验证令牌"
           }
         },
         "type": "object",
@@ -15134,6 +15515,191 @@
         ],
         "title": "UserShopOldShopIdPreOrderResponse"
       },
+      "UserSpeedLimit": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "description": "用户ID"
+          },
+          "start_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start At",
+            "description": "限速开始时间"
+          },
+          "end_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End At",
+            "description": "限速结束时间"
+          },
+          "speed_limit_mbps": {
+            "type": "string",
+            "title": "Speed Limit Mbps",
+            "description": "速度限制 (Mbps)，必须大于 0"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "限速原因",
+            "default": ""
+          },
+          "remark": {
+            "type": "string",
+            "title": "Remark",
+            "description": "备注信息",
+            "default": ""
+          },
+          "is_email_start_sent": {
+            "type": "boolean",
+            "title": "Is Email Start Sent",
+            "description": "是否已发送开始通知邮件（可选功能，默认不发送）",
+            "default": false
+          },
+          "is_email_end_sent": {
+            "type": "boolean",
+            "title": "Is Email End Sent",
+            "description": "是否已发送结束通知邮件（可选功能，默认不发送）",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "speed_limit_mbps"
+        ],
+        "title": "UserSpeedLimit",
+        "description": "用户限速/封禁记录表\n\n使用动态时间判断方式，通过排他约束确保同一用户的限速时间段不重叠。\n不使用 is_task_begin/is_task_finish 字段，而是通过实时查询 start_at 和 end_at 判断状态。\n\n查询用户当前限速状态示例：\n    SELECT speed_limit_mbps FROM user_speed_limit_raw\n    WHERE user_id = ? AND start_at <= NOW() AND end_at > NOW()\n    ORDER BY start_at DESC LIMIT 1"
+      },
+      "UserSpeedLimitListResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "获取成功"
+          },
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/UserSpeedLimit"
+            },
+            "type": "array",
+            "title": "Result",
+            "description": "限速记录列表"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "总记录数",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "UserSpeedLimitListResponse",
+        "description": "限速记录列表响应"
+      },
+      "UserSpeedLimitPydantic": {
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "description": "用户ID"
+          },
+          "start_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start At",
+            "description": "限速开始时间"
+          },
+          "end_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End At",
+            "description": "限速结束时间"
+          },
+          "speed_limit_mbps": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Speed Limit Mbps",
+            "description": "速度限制 (Mbps)，0 表示完全封禁"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "限速原因",
+            "default": ""
+          },
+          "remark": {
+            "type": "string",
+            "title": "Remark",
+            "description": "备注信息",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "start_at",
+          "end_at",
+          "speed_limit_mbps"
+        ],
+        "title": "UserSpeedLimitPydantic",
+        "description": "用户限速/封禁记录 Pydantic 模型"
+      },
+      "UserSpeedLimitResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "操作成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserSpeedLimit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "限速记录"
+          }
+        },
+        "type": "object",
+        "title": "UserSpeedLimitResponse",
+        "description": "单个限速记录响应"
+      },
       "UserTicket": {
         "properties": {
           "id": {
@@ -17048,7 +17614,7 @@
         ],
         "title": "SqlTableEnum"
       },
-      "web_sub3_fastapi__routers__v1__user__ticket__index__FormalEnum": {
+      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
         "type": "string",
         "enum": [
           "json"

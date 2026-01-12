@@ -12,7 +12,6 @@ class AccountResetPasswordParamsModel {
     required this.emailCode,
     required this.password,
     this.email,
-    this.verifyToken,
   });
 
   factory AccountResetPasswordParamsModel.fromJson(Map<String, Object?> json) =>
@@ -23,10 +22,6 @@ class AccountResetPasswordParamsModel {
   @JsonKey(name: 'email_code')
   final String emailCode;
   final String password;
-
-  /// POW验证令牌
-  @JsonKey(includeIfNull: false, name: 'verify_token')
-  final String? verifyToken;
 
   Map<String, Object?> toJson() =>
       _$AccountResetPasswordParamsModelToJson(this);

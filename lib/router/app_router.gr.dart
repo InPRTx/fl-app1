@@ -76,6 +76,22 @@ class AuthRegisterRouteArgs {
 }
 
 /// generated route for
+/// [AuthResetPasswordPage]
+class AuthResetPasswordRoute extends PageRouteInfo<void> {
+  const AuthResetPasswordRoute({List<PageRouteInfo>? children})
+    : super(AuthResetPasswordRoute.name, initialChildren: children);
+
+  static const String name = 'AuthResetPasswordRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AuthResetPasswordPage();
+    },
+  );
+}
+
+/// generated route for
 /// [AuthTokenRefreshPage]
 class AuthTokenRefreshRoute extends PageRouteInfo<AuthTokenRefreshRouteArgs> {
   AuthTokenRefreshRoute({

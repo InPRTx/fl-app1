@@ -12,7 +12,6 @@ AccountResetPasswordParamsModel _$AccountResetPasswordParamsModelFromJson(
   emailCode: json['email_code'] as String,
   password: json['password'] as String,
   email: json['email'] as String?,
-  verifyToken: json['verify_token'] as String?,
 );
 
 Map<String, dynamic> _$AccountResetPasswordParamsModelToJson(
@@ -21,5 +20,4 @@ Map<String, dynamic> _$AccountResetPasswordParamsModelToJson(
   'email': ?instance.email,
   'email_code': instance.emailCode,
   'password': instance.password,
-  'verify_token': ?instance.verifyToken,
 };

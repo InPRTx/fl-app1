@@ -508,12 +508,8 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                       ),
                       const SizedBox(height: 8),
                       TextButton(
-                        onPressed: () {
-                          // Navigate to forgot password - placeholder
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('忘记密码页面尚未实现')),
-                          );
-                        },
+                        onPressed: () =>
+                            context.router.pushPath('/auth/reset-password'),
                         child: const Text('忘记密码？'),
                       ),
                       const SizedBox(height: 8),

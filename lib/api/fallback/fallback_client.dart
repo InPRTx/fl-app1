@@ -112,6 +112,9 @@ import '../models/user_shop_old_result.dart';
 import '../models/user_shop_old_shop_id_confirm_order_response.dart';
 import '../models/user_shop_old_shop_id_confirm_order_result.dart';
 import '../models/user_shop_old_shop_id_pre_order_response.dart';
+import '../models/user_speed_limit_list_response.dart';
+import '../models/user_speed_limit_pydantic.dart';
+import '../models/user_speed_limit_response.dart';
 import '../models/user_tickets_ticket_id_edit_status_response.dart';
 import '../models/user_tickets_ticket_id_messages_get_response.dart';
 import '../models/user_tickets_ticket_id_messages_post_response.dart';
@@ -132,7 +135,7 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_ticket_index_formal_enum.dart';
+import '../models/web_sub_fastapi_routers_v_user_shop_index_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -600,7 +603,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Get Detect
@@ -616,7 +619,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Ticket.
@@ -641,7 +644,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserTicketIndexFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -676,8 +679,8 @@ abstract class FallbackClient {
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
     @Query('format')
-    WebSubFastapiRoutersVUserTicketIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketIndexFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
@@ -1512,6 +1515,89 @@ abstract class FallbackClient {
     @Path('user_pay_list_id') required String userPayListId,
   });
 
+  /// Create User Speed Limit.
+  ///
+  /// 创建用户限速/封禁记录.
+  ///
+  /// 参数：.
+  /// - user_id: 用户ID.
+  /// - start_at: 限速开始时间.
+  /// - end_at: 限速结束时间.
+  /// - speed_limit_mbps: 速度限制 (Mbps)，0 表示完全封禁.
+  /// - reason: 限速原因.
+  /// - remark: 备注信息.
+  ///
+  /// 注意：.
+  /// - start_at 必须小于 end_at.
+  /// - 同一用户的限速时间段不能重叠.
+  /// - speed_limit_mbps 必须 >= 0.
+  @POST('/api/v2/low_admin_api/user-speed-limit/')
+  Future<ErrorResponse> createUserSpeedLimitApiV2LowAdminApiUserSpeedLimitPost({
+    @Body() required UserSpeedLimitPydantic body,
+  });
+
+  /// List User Speed Limits.
+  ///
+  /// 获取限速记录列表.
+  ///
+  /// 支持筛选：.
+  /// - user_id: 按用户ID筛选.
+  /// - is_active: 只显示当前生效的记录.
+  /// - is_banned: 只显示完全封禁的记录（speed_limit_mbps = 0）.
+  ///
+  /// [userId] - 按用户ID筛选.
+  ///
+  /// [isActive] - 是否只显示当前生效的记录.
+  ///
+  /// [isBanned] - 是否只显示完全封禁的记录.
+  ///
+  /// [offset] - 偏移量.
+  ///
+  /// [limit] - 每页数量.
+  @GET('/api/v2/low_admin_api/user-speed-limit/')
+  Future<UserSpeedLimitListResponse>
+  listUserSpeedLimitsApiV2LowAdminApiUserSpeedLimitGet({
+    @Query('offset') int? offset = 0,
+    @Query('limit') int? limit = 50,
+    @Query('user_id') int? userId,
+    @Query('is_active') bool? isActive,
+    @Query('is_banned') bool? isBanned,
+  });
+
+  /// Get User Speed Limit.
+  ///
+  /// 获取单个限速记录详情.
+  @GET('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<UserSpeedLimitResponse>
+  getUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdGet({
+    @Path('limit_id') required String limitId,
+  });
+
+  /// Update User Speed Limit.
+  ///
+  /// 更新限速记录（完全替换）.
+  ///
+  /// 注意：.
+  /// - 会检查更新后的时间段是否与其他记录重叠.
+  /// - 不能修改已经结束的记录.
+  @PUT('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<ErrorResponse>
+  updateUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdPut({
+    @Path('limit_id') required String limitId,
+    @Body() required UserSpeedLimitPydantic body,
+  });
+
+  /// Delete User Speed Limit.
+  ///
+  /// 删除限速记录.
+  ///
+  /// 注意：只能删除未开始或正在进行中的记录，已结束的记录不能删除.
+  @DELETE('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<ErrorResponse>
+  deleteUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdDelete({
+    @Path('limit_id') required String limitId,
+  });
+
   /// Put Old Service Shop.
   ///
   /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
@@ -1602,6 +1688,33 @@ abstract class FallbackClient {
   Future<GetUserInfosResponse>
   getBatchUserInfosApiV2LowAdminApiUserV2BatchUserInfosPost({
     @Body() required GetUsernamesRequest body,
+  });
+
+  /// Get User Current Speed Limit.
+  ///
+  /// 获取用户当前生效的限速记录.
+  ///
+  /// 用于快速查询用户当前是否被限速/封禁.
+  @GET('/api/v2/low_admin_api/user-speed-limit/by-user/{user_id}')
+  Future<UserSpeedLimitResponse>
+  getUserCurrentSpeedLimitApiV2LowAdminApiUserSpeedLimitByUserUserIdGet({
+    @Path('user_id') required int userId,
+  });
+
+  /// Check User Speed Limit Status.
+  ///
+  /// 检查用户限速状态（简化版）.
+  ///
+  /// 返回：.
+  /// - is_limited: 是否被限速.
+  /// - is_banned: 是否被完全封禁.
+  /// - speed_limit_mbps: 当前限速值（如果有）.
+  /// - end_at: 限速结束时间（如果有）.
+  /// - reason: 限速原因（如果有）.
+  @GET('/api/v2/low_admin_api/user-speed-limit/check/{user_id}')
+  Future<ErrorResponse>
+  checkUserSpeedLimitStatusApiV2LowAdminApiUserSpeedLimitCheckUserIdGet({
+    @Path('user_id') required int userId,
   });
 
   /// Get Old Service Shop
