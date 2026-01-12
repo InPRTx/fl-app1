@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 
-// 条件导入：只在非 Web 平台导入 isolate
+// 条件导入：根据平台选择实现
+// dart.library.io - 移动端/桌面端
+// dart.library.js_interop - Web 平台（JS 和 WASM）
 import 'pow_service_stub.dart'
     if (dart.library.io) 'pow_service_io.dart'
-    if (dart.library.html) 'pow_service_web.dart'
+    if (dart.library.js_interop) 'pow_service_web.dart'
     as platform;
 
 /// POW验证码计算服务
