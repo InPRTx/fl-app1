@@ -13,7 +13,7 @@ _$WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost
   userGroupHost: (json['user_group_host'] as Map<String, dynamic>).map(
     (k, e) => MapEntry(
       k,
-      WebSubFastapiModelsDatabaseModelTableSsNodeSsNodeUserGroupHostSsNodeUserGroupHostDict.fromJson(
+      WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHostSsNodeUserGroupHostDict.fromJson(
         e as Map<String, dynamic>,
       ),
     ),
