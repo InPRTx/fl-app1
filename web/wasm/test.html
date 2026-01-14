@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>POW WASM 测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .info {
+            color: #60a5fa;
+        }
+
+        .progress {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #60a5fa);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🚀 POW WASM 模块测试</h1>
+
+    <div class="test-section">
+        <h2>模块状态</h2>
+        <div id="status">检查中...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>性能测试</h2>
+        <p>计算80个POW挑战（难度4）</p>
+        <button id="testBtn" onclick="runTest()">开始测试</button>
+        <div class="progress" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+        <div id="result"></div>
+    </div>
+</div>
+
+<script type="module">
+    import init, {POWSolver, get_version, verify_solution} from './pow_wasm.js';
+
+    let wasmReady = false;
+    const statusEl = document.getElementById('status');
+    const resultEl = document.getElementById('result');
+    const testBtn = document.getElementById('testBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+
+    // 初始化WASM
+    async function initWasm() {
+        try {
+            await init();
+            const version = get_version();
+            wasmReady = true;
+            statusEl.innerHTML = `<span class="success">✅ WASM模块已加载 (版本: ${version})</span>`;
+            testBtn.disabled = false;
+        } catch (e) {
+            statusEl.innerHTML = `<span class="error">❌ WASM加载失败: ${e.message}</span>`;
+            console.error(e);
+        }
+    }
+
+    // 运行测试
+    window.runTest = async function () {
+        if (!wasmReady) {
+            resultEl.innerHTML = '<span class="error">WASM未就绪</span>';
+            return;
+        }
+
+        testBtn.disabled = true;
+        resultEl.innerHTML = '<span class="info">🔄 测试进行中...</span>';
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressBar.textContent = '0%';
+
+        try {
+            const capId = '01942c5e-8e33-7c88-8888-888888888888';
+            const challengeCount = 80;
+            const difficulty = 4;
+
+            // 创建求解器
+            const solver = new POWSolver(capId, difficulty);
+
+            // 开始计时
+            const startTime = performance.now();
+
+            // 分批计算以显示进度
+            const batchSize = 10;
+            const allSolutions = [];
+
+            for (let i = 0; i < challengeCount; i += batchSize) {
+                const count = Math.min(batchSize, challengeCount - i);
+                const solutions = solver.solve_batch(i, count);
+
+                // 转换Uint32Array为普通数组
+                for (let j = 0; j < solutions.length; j++) {
+                    allSolutions.push(solutions[j]);
+                }
+
+                // 更新进度
+                const progress = Math.round(((i + count) / challengeCount) * 100);
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+
+                // 让出控制权
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
+
+            const endTime = performance.now();
+            const duration = ((endTime - startTime) / 1000).toFixed(3);
+
+            // 验证几个解决方案
+            let verifyResults = [];
+            for (let i = 0; i < Math.min(5, allSolutions.length); i++) {
+                const isValid = verify_solution(capId, i, allSolutions[i], difficulty);
+                verifyResults.push(`[${i}] solution=${allSolutions[i]} valid=${isValid}`);
+            }
+
+            resultEl.innerHTML = `
+<span class="success">✅ 测试完成！</span>
+
+<strong>性能统计:</strong>
+⏱️  总耗时: ${duration} 秒
+📊 挑战数: ${challengeCount}
+🎯 难度: ${difficulty}
+⚡ 平均速度: ${(challengeCount / parseFloat(duration)).toFixed(2)} 次/秒
+
+<strong>解决方案验证 (前5个):</strong>
+${verifyResults.join('\n')}
+
+<strong>完整解决方案数组:</strong>
+[${allSolutions.slice(0, 10).join(', ')}...] (共${allSolutions.length}个)
+                `;
+
+            console.log('所有解决方案:', allSolutions);
+
+        } catch (e) {
+            resultEl.innerHTML = `<span class="error">❌ 测试失败: ${e.message}</span>`;
+            console.error(e);
+        } finally {
+            testBtn.disabled = false;
+        }
+    };
+
+    // 页面加载时初始化
+    initWasm();
+</script>
+</body>
+</html>
+

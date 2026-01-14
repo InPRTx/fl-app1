@@ -1,0 +1,25 @@
+[package]
+name = "pow_wasm"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+sha2 = "0.10"
+hex = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+
+[profile.release]
+opt-level = 3          # 最高优化级别
+lto = true             # 链接时优化
+codegen-units = 1      # 单个代码生成单元（更好的优化）
+panic = "abort"        # 减小二进制大小
+strip = true           # 移除符号信息
+

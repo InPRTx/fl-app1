@@ -46,6 +46,7 @@ dependencies:
   jwt_decode: ^0.3.1
   timezone: ^0.9.0
   crypto: ^3.0.2
+  web: ^1.1.0
 
 dev_dependencies:
   flutter_test:

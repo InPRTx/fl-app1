@@ -31,6 +31,23 @@
 
     <title>fl_app1</title>
     <link href="manifest.json" rel="manifest">
+
+    <!-- POW WASM Module -->
+    <script type="module">
+        // 预加载 WASM 模块（异步，不阻塞页面加载）
+        (async () => {
+            try {
+                const {default: init} = await import('./wasm/pow_wasm.js');
+                await init();
+                console.log('✅ POW WASM module loaded');
+                window.__powWasmReady = true;
+            } catch (e) {
+                console.warn('⚠️  POW WASM module not available, will use fallback:', e);
+                window.__powWasmReady = false;
+            }
+        })();
+    </script>
+
     <!-- Crisp Chat Integration -->
     <script type="text/javascript">
         window.$crisp = [];
