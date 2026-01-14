@@ -37,15 +37,36 @@
         // 预加载 WASM 模块（异步，不阻塞页面加载）
         (async () => {
             try {
-                const {default: init} = await import('./wasm/pow_wasm.js');
-                await init();
-                console.log('✅ POW WASM module loaded');
+                const wasmModule = await import('./wasm/pow_wasm.js');
+                await wasmModule.default();
+
+                // 将WASM函数暴露到全局window对象
+                window.POWSolver = wasmModule.POWSolver;
+                window.compute_pow_solution = wasmModule.compute_pow_solution;
+                window.verify_solution = wasmModule.verify_solution;
+                window.get_version = wasmModule.get_version;
+
+                console.log('✅ POW WASM module loaded (version: ' + wasmModule.get_version() + ')');
                 window.__powWasmReady = true;
             } catch (e) {
                 console.warn('⚠️  POW WASM module not available, will use fallback:', e);
                 window.__powWasmReady = false;
             }
         })();
+
+        // 调试函数：检查当前POW计算模式
+        window.checkPOWMode = function () {
+            if (window.__powWasmReady && window.POWSolver) {
+                console.log('🚀 当前模式: WASM (高性能)');
+                console.log('📦 WASM版本:', window.get_version());
+                console.log('⚡ 预期性能: ~1-2秒 (80挑战)');
+                return 'WASM';
+            } else {
+                console.log('🐌 当前模式: 纯Dart (回退模式)');
+                console.log('⏱️ 预期性能: ~8-10秒 (80挑战)');
+                return 'Dart';
+            }
+        };
     </script>
 
     <!-- Crisp Chat Integration -->

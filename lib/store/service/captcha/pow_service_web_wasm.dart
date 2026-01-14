@@ -1,38 +1,21 @@
-@JS()
-library pow_service_web_wasm;
-
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:web/web.dart' as web;
 
 import 'pow_service_web.dart' as fallback;
 
-/// POW 计算服务 - Web 平台实现（WASM优化版）
+/// POW 计算服务 - Web 平台实现（WASM优化版 - 使用dart:js_interop_unsafe）
 ///
 /// 优先使用 WASM 模块进行高性能计算
 /// 如果 WASM 不可用，回退到纯 Dart 实现
 
-/// Window对象扩展，用于访问自定义属性
-extension type WindowExt._(JSObject _) implements JSObject {
-  external bool? get __powWasmReady;
-
-  external POWSolverJS? get POWSolver;
-}
-
-/// WASM POW求解器JS接口
-extension type POWSolverJS._(JSObject _) implements JSObject {
-  external POWSolverJS(JSString capId, JSNumber difficulty);
-
-  external JSArray<JSNumber> solve_all(JSNumber challengeCount);
-
-  external JSArray<JSNumber> solve_batch(JSNumber startIndex, JSNumber count);
-}
-
 /// 检查WASM是否已加载
 bool _isWasmLoaded() {
   try {
-    final WindowExt windowExt = web.window as WindowExt;
-    return windowExt.__powWasmReady == true;
+    final JSAny? ready = (web.window as JSObject).getProperty(
+        '__powWasmReady'.toJS);
+    return ready?.dartify() == true;
   } catch (e) {
     return false;
   }
@@ -48,6 +31,8 @@ Future<List<int>> computeSolutions({
   // 检查WASM是否可用
   if (_isWasmLoaded()) {
     try {
+      web.console.info('Attempting to use WASM implementation'.toJS);
+
       // 使用WASM计算
       return await _computeWithWasm(
         capId: capId,
@@ -55,10 +40,13 @@ Future<List<int>> computeSolutions({
         difficulty: difficulty,
         onProgress: onProgress,
       );
-    } catch (e) {
+    } catch (e, stack) {
       // WASM失败，回退到Dart
       web.console.warn('WASM computation failed: $e, using fallback'.toJS);
+      web.console.error('Stack: $stack'.toJS);
     }
+  } else {
+    web.console.info('WASM not loaded, using Dart fallback'.toJS);
   }
 
   // 使用纯Dart实现
@@ -77,19 +65,24 @@ Future<List<int>> _computeWithWasm({
   required int difficulty,
   void Function(int progress, int total)? onProgress,
 }) async {
-  final WindowExt windowExt = web.window as WindowExt;
-  final POWSolverJS? solverConstructor = windowExt.POWSolver;
+  // 获取POWSolver构造函数
+  final JSObject windowObj = web.window as JSObject;
+  final JSAny? solverConstructor = windowObj.getProperty('POWSolver'.toJS);
 
   if (solverConstructor == null) {
-    throw Exception('POWSolver not found in window');
+    throw Exception('POWSolver constructor not found in window');
   }
 
   // 创建WASM求解器实例
-  final POWSolverJS solver = POWSolverJS(capId.toJS, difficulty.toJS);
+  final JSObject solver = (solverConstructor as JSFunction).callAsConstructor(
+    capId.toJS,
+    difficulty.toJS,
+  ) as JSObject;
 
   // 如果没有进度回调，直接计算全部
   if (onProgress == null) {
-    final JSArray<JSNumber> result = solver.solve_all(challengeCount.toJS);
+    final JSAny result = solver.callMethod(
+        'solve_all'.toJS, challengeCount.toJS);
     return _convertJSArrayToList(result);
   }
 
@@ -104,7 +97,8 @@ Future<List<int>> _computeWithWasm({
         ? challengeCount - i
         : batchSize;
 
-    final JSArray<JSNumber> batchResult = solver.solve_batch(
+    final JSAny batchResult = solver.callMethod(
+      'solve_batch'.toJS,
       i.toJS,
       count.toJS,
     );
@@ -122,15 +116,17 @@ Future<List<int>> _computeWithWasm({
 }
 
 /// 转换JS数组为Dart List
-List<int> _convertJSArrayToList(JSArray<JSNumber> jsArray) {
+List<int> _convertJSArrayToList(JSAny jsArray) {
   final List<int> result = <int>[];
 
   try {
-    final int length = jsArray.length;
+    final JSObject arrayObj = jsArray as JSObject;
+    final int length = (arrayObj.getProperty('length'.toJS) as JSNumber)
+        .toDartInt;
 
     for (int i = 0; i < length; i++) {
-      final JSNumber? item = jsArray[i];
-      if (item != null) {
+      final JSAny? item = arrayObj.getProperty(i.toJS);
+      if (item != null && item is JSNumber) {
         result.add(item.toDartInt);
       }
     }
@@ -140,3 +136,4 @@ List<int> _convertJSArrayToList(JSArray<JSNumber> jsArray) {
 
   return result;
 }
+
