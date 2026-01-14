@@ -32,6 +32,8 @@ class _AuthLoginPageState extends State<AuthLoginPage>
   String? _captchaError;
   int _powProgress = 0;
   int _powTotal = 0;
+  DateTime? _verifyStartTime;
+  Duration? _verifyDuration;
 
   late final AnimationController _shakeController;
   late final Animation<double> _shakeAnim;
@@ -231,6 +233,8 @@ class _AuthLoginPageState extends State<AuthLoginPage>
       _verifyToken = null;
       _powProgress = 0;
       _powTotal = 0;
+      _verifyStartTime = DateTime.now();
+      _verifyDuration = null;
     });
 
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
@@ -256,23 +260,29 @@ class _AuthLoginPageState extends State<AuthLoginPage>
         _isVerifying = false;
         _powProgress = 0;
         _powTotal = 0;
+        _verifyStartTime = null;
+        _verifyDuration = null;
       });
       return '';
     });
 
     if (verifyToken.isNotEmpty) {
+      final Duration duration = DateTime.now().difference(_verifyStartTime!);
       setState(() {
         _verifyToken = verifyToken;
         _isVerifying = false;
         _powProgress = 0;
         _powTotal = 0;
+        _verifyDuration = duration;
       });
 
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('POW验证码验证成功'),
+        SnackBar(
+          content: Text(
+              'POW验证码验证成功 (用时: ${duration.inSeconds}.${(duration
+                  .inMilliseconds % 1000).toString().padLeft(3, '0')}秒)'),
           backgroundColor: Colors.green,
         ),
       );
@@ -437,11 +447,32 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                                         const Icon(Icons.check_circle,
                                             color: Colors.green),
                                         const SizedBox(width: 8),
-                                        const Expanded(
-                                          child: Text(
-                                            '验证成功',
-                                            style: TextStyle(
-                                                color: Colors.green),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: <Widget>[
+                                              const Text(
+                                                '验证成功',
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontWeight: FontWeight
+                                                        .bold),
+                                              ),
+                                              if (_verifyDuration != null)
+                                                Text(
+                                                  '用时: ${_verifyDuration!
+                                                      .inSeconds}.${(_verifyDuration!
+                                                      .inMilliseconds % 1000)
+                                                      .toString()
+                                                      .padLeft(3, '0')}秒',
+                                                  style: TextStyle(
+                                                    color: Colors.green
+                                                        .shade700,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ),
                                         IconButton(
@@ -450,6 +481,7 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                                             setState(() {
                                               _verifyToken = null;
                                               _captchaError = null;
+                                              _verifyDuration = null;
                                             });
                                           },
                                         ),
