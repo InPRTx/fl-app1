@@ -133,7 +133,7 @@ export class POWSolver {
      * @param {number} difficulty
      */
     constructor(cap_id, difficulty) {
-        const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export2, wasm.__wbindgen_export3);
+        const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export, wasm.__wbindgen_export2);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.powsolver_new(ptr0, len0, difficulty);
         this.__wbg_ptr = ret >>> 0;
@@ -151,6 +151,22 @@ export class POWSolver {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_powsolver_free(ptr, 0);
+    }
+
+    /**
+     * 计算单个挑战的解决方案
+     *
+     * # 参数
+     * - `index`: 挑战索引
+     *
+     * # 返回
+     * 找到的解决方案数值
+     * @param {number} index
+     * @returns {number}
+     */
+    solve_single(index) {
+        const ret = wasm.powsolver_solve_single(this.__wbg_ptr, index);
+        return ret >>> 0;
     }
 
     /**
@@ -173,27 +189,11 @@ export class POWSolver {
             var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
             var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
             var v1 = getArrayU32FromWasm0(r0, r1).slice();
-            wasm.__wbindgen_export(r0, r1 * 4, 4);
+            wasm.__wbindgen_export3(r0, r1 * 4, 4);
             return v1;
         } finally {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }
-    }
-
-    /**
-     * 计算单个挑战的解决方案
-     *
-     * # 参数
-     * - `index`: 挑战索引
-     *
-     * # 返回
-     * 找到的解决方案数值
-     * @param {number} index
-     * @returns {number}
-     */
-    solve_single(index) {
-        const ret = wasm.powsolver_solve_single(this.__wbg_ptr, index);
-        return ret >>> 0;
     }
 
     /**
@@ -214,7 +214,7 @@ export class POWSolver {
             var r0 = getDataViewMemory0().getInt32(retptr + 4 * 0, true);
             var r1 = getDataViewMemory0().getInt32(retptr + 4 * 1, true);
             var v1 = getArrayU32FromWasm0(r0, r1).slice();
-            wasm.__wbindgen_export(r0, r1 * 4, 4);
+            wasm.__wbindgen_export3(r0, r1 * 4, 4);
             return v1;
         } finally {
             wasm.__wbindgen_add_to_stack_pointer(16);
@@ -234,7 +234,7 @@ if (Symbol.dispose) POWSolver.prototype[Symbol.dispose] = POWSolver.prototype.fr
  * @returns {number}
  */
 export function compute_pow_solution(cap_id, index, difficulty) {
-    const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export2, wasm.__wbindgen_export3);
+    const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export, wasm.__wbindgen_export2);
     const len0 = WASM_VECTOR_LEN;
     const ret = wasm.compute_pow_solution(ptr0, len0, index, difficulty);
     return ret >>> 0;
@@ -257,7 +257,7 @@ export function get_version() {
         return getStringFromWasm0(r0, r1);
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
-        wasm.__wbindgen_export(deferred1_0, deferred1_1, 1);
+        wasm.__wbindgen_export3(deferred1_0, deferred1_1, 1);
     }
 }
 
@@ -270,7 +270,7 @@ export function get_version() {
  * @returns {boolean}
  */
 export function verify_solution(cap_id, index, solution, difficulty) {
-    const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export2, wasm.__wbindgen_export3);
+    const ptr0 = passStringToWasm0(cap_id, wasm.__wbindgen_export, wasm.__wbindgen_export2);
     const len0 = WASM_VECTOR_LEN;
     const ret = wasm.verify_solution(ptr0, len0, index, solution, difficulty);
     return ret !== 0;
