@@ -12,7 +12,10 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class AuthRegisterPage extends StatefulWidget {
-  const AuthRegisterPage({super.key, this.inviteCode});
+  const AuthRegisterPage({
+    super.key,
+    @QueryParam('invite_code') this.inviteCode,
+  });
 
   final String? inviteCode;
 
@@ -30,6 +33,7 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _inviteCodeController = TextEditingController();
+  final FocusNode _inviteCodeFocusNode = FocusNode();
 
   bool _isRegistering = false;
   bool _isSendingCode = false;
@@ -132,10 +136,36 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
       }
     });
 
-    // 如果有邀请码参数，设置并校验
+    // 监听邀请码输入框失焦事件
+    _inviteCodeFocusNode.addListener(() {
+      if (!_inviteCodeFocusNode.hasFocus) {
+        // 失焦时，如果有内容且未校验或状态为unchecked，则自动校验
+        final String code = _inviteCodeController.text.trim();
+        if (code.isNotEmpty && _inviteCodeState == InviteCodeState.unchecked) {
+          print('🔍 邀请码输入框失焦，自动校验: $code');
+          _checkInviteCode();
+        }
+      }
+    });
+
+    // 如果有邀请码参数（通过构造函数传入），设置并校验
     if (widget.inviteCode != null && widget.inviteCode!.isNotEmpty) {
-      _inviteCodeController.text = widget.inviteCode!;
-      Future<void>.delayed(const Duration(milliseconds: 500), _checkInviteCode);
+      print('📨 检测到URL邀请码参数: ${widget.inviteCode}');
+      // 使用WidgetsBinding确保在build完成后设置
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _inviteCodeController.text = widget.inviteCode!;
+        print('✅ 邀请码已填入输入框: ${_inviteCodeController.text}');
+        // 延迟500毫秒后自动校验邀请码
+        Future<void>.delayed(
+          const Duration(milliseconds: 500),
+              () {
+            print('🔍 开始自动校验邀请码...');
+            _checkInviteCode();
+          },
+        );
+      });
+    } else {
+      print('ℹ️ 未检测到URL邀请码参数');
     }
   }
 
@@ -149,6 +179,7 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _inviteCodeController.dispose();
+    _inviteCodeFocusNode.dispose();
     super.dispose();
   }
 
@@ -833,6 +864,7 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
                         // 邀请码
                         TextFormField(
                           controller: _inviteCodeController,
+                          focusNode: _inviteCodeFocusNode,
                           decoration: InputDecoration(
                             labelText: '邀请码（可选）',
                             prefixIcon: const Icon(Icons.card_giftcard),
@@ -864,6 +896,7 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
                                 : null,
                           ),
                           onChanged: (String v) {
+                            // 清空输入时重置状态
                             if (v.isEmpty) {
                               setState(() {
                                 _inviteCodeState = InviteCodeState.unchecked;
@@ -871,7 +904,16 @@ class _AuthRegisterPageState extends State<AuthRegisterPage>
                               });
                             }
                           },
+                          onEditingComplete: () {
+                            // 失焦时自动校验（如果有输入内容）
+                            if (_inviteCodeController.text
+                                .trim()
+                                .isNotEmpty) {
+                              _checkInviteCode();
+                            }
+                          },
                           onFieldSubmitted: (String v) {
+                            // 提交时校验（如果有输入内容）
                             if (v.isNotEmpty) {
                               _checkInviteCode();
                             }

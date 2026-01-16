@@ -52,6 +52,8 @@ class AppRouter extends RootStackRouter {
             AutoRoute(
               page: AuthRegisterRoute.page,
               path: 'auth/register',
+              // 支持查询参数
+              maintainState: true,
             ),
             AutoRoute(
               page: AuthResetPasswordRoute.page,

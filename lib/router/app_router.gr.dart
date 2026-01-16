@@ -36,6 +36,7 @@ class AuthRegisterRoute extends PageRouteInfo<AuthRegisterRouteArgs> {
   }) : super(
          AuthRegisterRoute.name,
          args: AuthRegisterRouteArgs(key: key, inviteCode: inviteCode),
+         rawQueryParams: {'invite_code': inviteCode},
          initialChildren: children,
        );
 
@@ -44,8 +45,11 @@ class AuthRegisterRoute extends PageRouteInfo<AuthRegisterRouteArgs> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
+      final queryParams = data.queryParams;
       final args = data.argsAs<AuthRegisterRouteArgs>(
-        orElse: () => const AuthRegisterRouteArgs(),
+        orElse: () => AuthRegisterRouteArgs(
+          inviteCode: queryParams.optString('invite_code'),
+        ),
       );
       return AuthRegisterPage(key: args.key, inviteCode: args.inviteCode);
     },
