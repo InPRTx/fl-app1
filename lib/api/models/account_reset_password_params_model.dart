@@ -11,9 +11,7 @@ class AccountResetPasswordParamsModel {
   const AccountResetPasswordParamsModel({
     required this.emailCode,
     required this.password,
-    required this.tiago2CapToken,
     this.email,
-    this.captchaKey,
   });
 
   factory AccountResetPasswordParamsModel.fromJson(Map<String, Object?> json) =>
@@ -24,14 +22,6 @@ class AccountResetPasswordParamsModel {
   @JsonKey(name: 'email_code')
   final String emailCode;
   final String password;
-
-  /// 一次性校验
-  @JsonKey(includeIfNull: false, name: 'captcha_key')
-  final String? captchaKey;
-
-  /// Tiago2的CAPTCHA令牌
-  @JsonKey(name: 'tiago2_cap_token')
-  final String tiago2CapToken;
 
   Map<String, Object?> toJson() =>
       _$AccountResetPasswordParamsModelToJson(this);

@@ -762,6 +762,72 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
+  Future<ErrorResponse>
+  cron1minClickhouseTaskAllV1ModMuCron1minClickhouseTaskAllGet({
+    bool? isAutoTrigger = false,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'is_auto_trigger': isAutoTrigger,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/mod_mu/cron_1min_clickhouse_task_all',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  cronRefreshMaterializedViewsV1ModMuCronRefreshMaterializedViewsGet({
+    bool? isAutoTrigger = false,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'is_auto_trigger': isAutoTrigger,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/mod_mu/cron_refresh_materialized_views',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ErrorResponse> getCronBanTaskV1ModMuCronBanTaskGet({
     bool? isAutoTrigger = false,
   }) async {
@@ -921,6 +987,39 @@ class _FallbackClient implements FallbackClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<ErrorResponse>
+  getCronTrafficSpeedLimitV1ModMuCronTrafficSpeedLimitGet({
+    bool? isAutoTrigger = false,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'is_auto_trigger': isAutoTrigger,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/mod_mu/cron_traffic_speed_limit',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -1571,7 +1670,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1637,7 +1736,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1726,7 +1825,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1870,8 +1969,8 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {
@@ -4328,8 +4427,7 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> postNodeConfigApiV2ToolsPydanticCheckSsNodeNodeConfigPost({
-    required WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
-    body,
+    required SsNodeNodeConfigSqlModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -5175,6 +5273,169 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
+  Future<ErrorResponse> createUserSpeedLimitApiV2LowAdminApiUserSpeedLimitPost({
+    required UserSpeedLimitPydantic body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<UserSpeedLimitListResponse>
+  listUserSpeedLimitsApiV2LowAdminApiUserSpeedLimitGet({
+    int? offset = 0,
+    int? limit = 50,
+    int? userId,
+    bool? isActive,
+    bool? isBanned,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'offset': offset,
+      r'limit': limit,
+      r'user_id': userId,
+      r'is_active': isActive,
+      r'is_banned': isBanned,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<UserSpeedLimitListResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late UserSpeedLimitListResponse _value;
+    try {
+      _value = UserSpeedLimitListResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<UserSpeedLimitResponse>
+  getUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdGet({
+    required String limitId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<UserSpeedLimitResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/${limitId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late UserSpeedLimitResponse _value;
+    try {
+      _value = UserSpeedLimitResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  updateUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdPut({
+    required String limitId,
+    required UserSpeedLimitPydantic body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'PUT', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/${limitId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  deleteUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdDelete({
+    required String limitId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/${limitId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ErrorResponse>
   putOldServiceShopApiV2LowAdminApiOldServiceShopShopIdPut({
     required int shopId,
@@ -5458,6 +5719,66 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
+  Future<UserSpeedLimitResponse>
+  getUserCurrentSpeedLimitApiV2LowAdminApiUserSpeedLimitByUserUserIdGet({
+    required int userId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<UserSpeedLimitResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/by-user/${userId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late UserSpeedLimitResponse _value;
+    try {
+      _value = UserSpeedLimitResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ErrorResponse>
+  checkUserSpeedLimitStatusApiV2LowAdminApiUserSpeedLimitCheckUserIdGet({
+    required int userId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/low_admin_api/user-speed-limit/check/${userId}',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<GetOldServiceShopListResponse>
   getOldServiceShopApiV2LowAdminApiOldServiceShopGet({
     int? offset = 0,
@@ -5650,6 +5971,95 @@ class _FallbackClient implements FallbackClient {
     late GetCsrfTokenResult _value;
     try {
       _value = GetCsrfTokenResult.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetCaptchaKeyModel> getCaptchaKeyV2ApiV2CaptchaKeyV2Get() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetCaptchaKeyModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/captcha-key-v2',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late GetCaptchaKeyModel _value;
+    try {
+      _value = GetCaptchaKeyModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<PostCaptchaKeyVerifyModel>
+  postCaptchaKeyV2VerifyApiV2CaptchaKeyV2VerifyPost({
+    required PostCaptchaKeyVerifyRequestModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<PostCaptchaKeyVerifyModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/captcha-key-v2-verify',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late PostCaptchaKeyVerifyModel _value;
+    try {
+      _value = PostCaptchaKeyVerifyModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ConsumeVerifyTokenModel>
+  postCaptchaKeyV2ConsumeApiV2CaptchaKeyV2ConsumePost({
+    required ConsumeVerifyTokenRequestModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ConsumeVerifyTokenModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/api/v2/captcha-key-v2-consume',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ConsumeVerifyTokenModel _value;
+    try {
+      _value = ConsumeVerifyTokenModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;

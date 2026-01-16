@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/page/auth/login/auth_login_page.dart';
-import 'package:fl_app1/page/auth/login/auth_simple_login_page.dart';
+import 'package:fl_app1/page/auth/register/auth_register_page.dart';
+import 'package:fl_app1/page/auth/reset_password/auth_reset_password_page.dart';
 import 'package:fl_app1/page/auth/token_refresh/auth_token_refresh_page.dart';
 import 'package:fl_app1/page/debug/version/debug_version_page.dart';
 import 'package:fl_app1/page/home_page.dart';
@@ -49,8 +50,14 @@ class AppRouter extends RootStackRouter {
               path: 'auth/login',
             ),
             AutoRoute(
-              page: AuthSimpleLoginRoute.page,
-              path: 'auth/simple_login',
+              page: AuthRegisterRoute.page,
+              path: 'auth/register',
+              // 支持查询参数
+              maintainState: true,
+            ),
+            AutoRoute(
+              page: AuthResetPasswordRoute.page,
+              path: 'auth/reset-password',
             ),
             AutoRoute(
               page: AuthTokenRefreshRoute.page,

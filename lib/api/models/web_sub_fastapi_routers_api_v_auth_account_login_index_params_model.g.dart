@@ -12,10 +12,9 @@ _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelFromJson(
 ) => WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
   email: json['email'] as String,
   password: json['password'] as String,
-  captchaKey: json['captcha_key'] as String,
-  tiago2CapToken: json['tiago2_cap_token'] as String,
   isRememberMe: json['is_remember_me'] as bool? ?? false,
   twoFaCode: json['two_fa_code'] as String?,
+  verifyToken: json['verify_token'] as String?,
 );
 
 Map<String, dynamic>
@@ -26,6 +25,5 @@ _$WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModelToJson(
   'password': instance.password,
   'two_fa_code': ?instance.twoFaCode,
   'is_remember_me': instance.isRememberMe,
-  'captcha_key': instance.captchaKey,
-  'tiago2_cap_token': instance.tiago2CapToken,
+  'verify_token': ?instance.verifyToken,
 };

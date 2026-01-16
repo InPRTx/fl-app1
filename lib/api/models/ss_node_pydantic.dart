@@ -5,12 +5,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'country_code.dart';
+import 'ss_node_node_config.dart';
+import 'ss_node_user_group_host.dart';
 import 'vpn_type_enum.dart';
-import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
-import 'web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_user_group_host.dart';
 
 part 'ss_node_pydantic.g.dart';
 
+/// 节点 Pydantic 模型
 @JsonSerializable()
 class SsNodePydantic {
   const SsNodePydantic({
@@ -45,8 +46,7 @@ class SsNodePydantic {
   @JsonKey(name: 'node_name')
   final String nodeName;
   @JsonKey(name: 'node_config')
-  final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
-  nodeConfig;
+  final SsNodeNodeConfig nodeConfig;
   @JsonKey(name: 'is_enable')
   final bool isEnable;
   @JsonKey(name: 'iso3166_code')
@@ -70,8 +70,7 @@ class SsNodePydantic {
   @JsonKey(includeIfNull: false, name: 'node_speed_limit')
   final dynamic nodeSpeedLimit;
   @JsonKey(includeIfNull: false, name: 'user_group_host')
-  final WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticUserGroupHost?
-  userGroupHost;
+  final SsNodeUserGroupHost? userGroupHost;
   @JsonKey(name: 'is_hide_node')
   final bool isHideNode;
 

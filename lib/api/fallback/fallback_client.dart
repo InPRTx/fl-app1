@@ -17,9 +17,12 @@ import '../models/auth_register_response.dart';
 import '../models/captcha_key_model.dart';
 import '../models/captcha_key_type_enum.dart';
 import '../models/check_invite_code_params_model.dart';
+import '../models/consume_verify_token_model.dart';
+import '../models/consume_verify_token_request_model.dart';
 import '../models/crisp_data_result_model.dart';
 import '../models/error_response.dart';
 import '../models/fastapi_compat_v_body_delete_bought_v_user_bought_delete.dart';
+import '../models/get_captcha_key_model.dart';
 import '../models/get_crisp_plugin_view_result.dart';
 import '../models/get_csrf_token_result.dart';
 import '../models/get_dashboard_result_model.dart';
@@ -46,6 +49,8 @@ import '../models/login_web_version_enum.dart';
 import '../models/old_service_shop_input.dart';
 import '../models/post_add_alive_ip_model.dart';
 import '../models/post_add_detect_log_model.dart';
+import '../models/post_captcha_key_verify_model.dart';
+import '../models/post_captcha_key_verify_request_model.dart';
 import '../models/post_func_block_ip_model.dart';
 import '../models/post_login_old_v_result_model.dart';
 import '../models/post_traffic_model.dart';
@@ -56,6 +61,7 @@ import '../models/replace_email_response.dart';
 import '../models/reply_params.dart';
 import '../models/request_email_code_params_model.dart';
 import '../models/ss_node.dart';
+import '../models/ss_node_node_config_sql_model.dart';
 import '../models/ss_node_pydantic.dart';
 import '../models/sub_link_client_type_enum.dart';
 import '../models/subscribe_type_enum.dart';
@@ -106,6 +112,9 @@ import '../models/user_shop_old_result.dart';
 import '../models/user_shop_old_shop_id_confirm_order_response.dart';
 import '../models/user_shop_old_shop_id_confirm_order_result.dart';
 import '../models/user_shop_old_shop_id_pre_order_response.dart';
+import '../models/user_speed_limit_list_response.dart';
+import '../models/user_speed_limit_pydantic.dart';
+import '../models/user_speed_limit_response.dart';
 import '../models/user_tickets_ticket_id_edit_status_response.dart';
 import '../models/user_tickets_ticket_id_messages_get_response.dart';
 import '../models/user_tickets_ticket_id_messages_post_response.dart';
@@ -116,7 +125,6 @@ import '../models/user_wallet_recharge_result.dart';
 import '../models/user_wallet_result.dart';
 import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
-import '../models/web_sub_fastapi_models_database_model_table_ss_node_pydantic_ss_node_pydantic_node_config.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
@@ -127,7 +135,7 @@ import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_ticket_view_formal_enum.dart';
+import '../models/web_sub_fastapi_routers_v_user_shop_index_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -336,6 +344,34 @@ abstract class FallbackClient {
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
+  /// Cron 1Min Clickhouse Task All.
+  ///
+  /// ClickHouse 数据导入整合任务.
+  /// 包含:.
+  /// 1. 用户活跃IP导入 (mod_mu_user_alive_ip).
+  /// 2. 流量原始数据导入 (user_traffic_raw).
+  /// 3. 用户历史数据导入 (user_data_history).
+  /// 4. 流量汇总数据导入 (user_traffic_log_total).
+  @GET('/v1/mod_mu/cron_1min_clickhouse_task_all')
+  Future<ErrorResponse>
+  cron1minClickhouseTaskAllV1ModMuCron1minClickhouseTaskAllGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
+  /// Cron Refresh Materialized Views.
+  ///
+  /// 物化视图刷新任务.
+  /// 刷新以下视图：.
+  /// 1. user_login_ip_limit_view - 用户登录IP限制视图.
+  /// 2. node_ip_mv - 节点IP物化视图.
+  /// 3. mod_mu_user_alive_ip_5min - 用户5分钟活跃IP视图.
+  /// 4. mod_mu_user_alive_ip_5min_ip_agg - 用户5分钟活跃IP聚合视图.
+  @GET('/v1/mod_mu/cron_refresh_materialized_views')
+  Future<ErrorResponse>
+  cronRefreshMaterializedViewsV1ModMuCronRefreshMaterializedViewsGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
   /// Get Cron Ban Task
   @GET('/v1/mod_mu/cron_ban_task')
   Future<ErrorResponse> getCronBanTaskV1ModMuCronBanTaskGet({
@@ -374,6 +410,17 @@ abstract class FallbackClient {
   @GET('/v1/mod_mu/clickhouse_import_user_traffic_log_total')
   Future<void>
   getClickhouseImportUserTrafficLogTotalV1ModMuClickhouseImportUserTrafficLogTotalGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
+  /// Get Cron Traffic Speed Limit.
+  ///
+  /// API 接口：手动触发流量限速检查.
+  ///
+  /// 注意：自动触发默认被禁用.
+  @GET('/v1/mod_mu/cron_traffic_speed_limit')
+  Future<ErrorResponse>
+  getCronTrafficSpeedLimitV1ModMuCronTrafficSpeedLimitGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -556,7 +603,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Get Detect
@@ -572,7 +619,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Ticket.
@@ -597,7 +644,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserTicketViewFormalEnum? format,
+    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -632,8 +679,8 @@ abstract class FallbackClient {
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
     @Query('format')
-    WebSubFastapiRoutersVUserTicketViewFormalEnum? format =
-        WebSubFastapiRoutersVUserTicketViewFormalEnum.valueJson,
+    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
+        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
@@ -1240,9 +1287,7 @@ abstract class FallbackClient {
   /// Post Node Config
   @POST('/api/v2/tools/pydantic_check/ss_node/node_config')
   Future<void> postNodeConfigApiV2ToolsPydanticCheckSsNodeNodeConfigPost({
-    @Body()
-    required WebSubFastapiModelsDatabaseModelTableSsNodePydanticSsNodePydanticNodeConfig
-    body,
+    @Body() required SsNodeNodeConfigSqlModel body,
   });
 
   /// Get Search User
@@ -1470,6 +1515,89 @@ abstract class FallbackClient {
     @Path('user_pay_list_id') required String userPayListId,
   });
 
+  /// Create User Speed Limit.
+  ///
+  /// 创建用户限速/封禁记录.
+  ///
+  /// 参数：.
+  /// - user_id: 用户ID.
+  /// - start_at: 限速开始时间.
+  /// - end_at: 限速结束时间.
+  /// - speed_limit_mbps: 速度限制 (Mbps)，0 表示完全封禁.
+  /// - reason: 限速原因.
+  /// - remark: 备注信息.
+  ///
+  /// 注意：.
+  /// - start_at 必须小于 end_at.
+  /// - 同一用户的限速时间段不能重叠.
+  /// - speed_limit_mbps 必须 >= 0.
+  @POST('/api/v2/low_admin_api/user-speed-limit/')
+  Future<ErrorResponse> createUserSpeedLimitApiV2LowAdminApiUserSpeedLimitPost({
+    @Body() required UserSpeedLimitPydantic body,
+  });
+
+  /// List User Speed Limits.
+  ///
+  /// 获取限速记录列表.
+  ///
+  /// 支持筛选：.
+  /// - user_id: 按用户ID筛选.
+  /// - is_active: 只显示当前生效的记录.
+  /// - is_banned: 只显示完全封禁的记录（speed_limit_mbps = 0）.
+  ///
+  /// [userId] - 按用户ID筛选.
+  ///
+  /// [isActive] - 是否只显示当前生效的记录.
+  ///
+  /// [isBanned] - 是否只显示完全封禁的记录.
+  ///
+  /// [offset] - 偏移量.
+  ///
+  /// [limit] - 每页数量.
+  @GET('/api/v2/low_admin_api/user-speed-limit/')
+  Future<UserSpeedLimitListResponse>
+  listUserSpeedLimitsApiV2LowAdminApiUserSpeedLimitGet({
+    @Query('offset') int? offset = 0,
+    @Query('limit') int? limit = 50,
+    @Query('user_id') int? userId,
+    @Query('is_active') bool? isActive,
+    @Query('is_banned') bool? isBanned,
+  });
+
+  /// Get User Speed Limit.
+  ///
+  /// 获取单个限速记录详情.
+  @GET('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<UserSpeedLimitResponse>
+  getUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdGet({
+    @Path('limit_id') required String limitId,
+  });
+
+  /// Update User Speed Limit.
+  ///
+  /// 更新限速记录（完全替换）.
+  ///
+  /// 注意：.
+  /// - 会检查更新后的时间段是否与其他记录重叠.
+  /// - 不能修改已经结束的记录.
+  @PUT('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<ErrorResponse>
+  updateUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdPut({
+    @Path('limit_id') required String limitId,
+    @Body() required UserSpeedLimitPydantic body,
+  });
+
+  /// Delete User Speed Limit.
+  ///
+  /// 删除限速记录.
+  ///
+  /// 注意：只能删除未开始或正在进行中的记录，已结束的记录不能删除.
+  @DELETE('/api/v2/low_admin_api/user-speed-limit/{limit_id}')
+  Future<ErrorResponse>
+  deleteUserSpeedLimitApiV2LowAdminApiUserSpeedLimitLimitIdDelete({
+    @Path('limit_id') required String limitId,
+  });
+
   /// Put Old Service Shop.
   ///
   /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
@@ -1562,6 +1690,33 @@ abstract class FallbackClient {
     @Body() required GetUsernamesRequest body,
   });
 
+  /// Get User Current Speed Limit.
+  ///
+  /// 获取用户当前生效的限速记录.
+  ///
+  /// 用于快速查询用户当前是否被限速/封禁.
+  @GET('/api/v2/low_admin_api/user-speed-limit/by-user/{user_id}')
+  Future<UserSpeedLimitResponse>
+  getUserCurrentSpeedLimitApiV2LowAdminApiUserSpeedLimitByUserUserIdGet({
+    @Path('user_id') required int userId,
+  });
+
+  /// Check User Speed Limit Status.
+  ///
+  /// 检查用户限速状态（简化版）.
+  ///
+  /// 返回：.
+  /// - is_limited: 是否被限速.
+  /// - is_banned: 是否被完全封禁.
+  /// - speed_limit_mbps: 当前限速值（如果有）.
+  /// - end_at: 限速结束时间（如果有）.
+  /// - reason: 限速原因（如果有）.
+  @GET('/api/v2/low_admin_api/user-speed-limit/check/{user_id}')
+  Future<ErrorResponse>
+  checkUserSpeedLimitStatusApiV2LowAdminApiUserSpeedLimitCheckUserIdGet({
+    @Path('user_id') required int userId,
+  });
+
   /// Get Old Service Shop
   @GET('/api/v2/low_admin_api/old_service_shop/')
   Future<GetOldServiceShopListResponse>
@@ -1615,6 +1770,43 @@ abstract class FallbackClient {
   /// Get Csrf Token
   @GET('/api/v2/csrf')
   Future<GetCsrfTokenResult> getCsrfTokenApiV2CsrfGet();
+
+  /// Get Captcha Key V2.
+  ///
+  /// 获取一次性验证码.
+  ///
+  /// 返回验证码的ID和token，前端需要展示验证码并让用户完成验证.
+  @GET('/api/v2/captcha-key-v2')
+  Future<GetCaptchaKeyModel> getCaptchaKeyV2ApiV2CaptchaKeyV2Get();
+
+  /// Post Captcha Key V2 Verify.
+  ///
+  /// 验证验证码.
+  ///
+  /// 用户完成SHA256 POW验证码挑战后，提交cap_id和solutions进行验证.
+  /// 验证成功后返回verify_token，并设置verified_at时间戳.
+  ///
+  /// 验证算法:.
+  /// - 对于每个索引i (0 到 cap_challenge_count-1).
+  /// - 计算 hash = SHA256(f"{i}{cap_id}{solution[i]}").
+  /// - 验证hash前cap_difficulty位是否全为'0'.
+  @POST('/api/v2/captcha-key-v2-verify')
+  Future<PostCaptchaKeyVerifyModel>
+  postCaptchaKeyV2VerifyApiV2CaptchaKeyV2VerifyPost({
+    @Body() required PostCaptchaKeyVerifyRequestModel body,
+  });
+
+  /// Post Captcha Key V2 Consume.
+  ///
+  /// 消费验证令牌.
+  ///
+  /// 业务方使用verify_token进行最终验证并消费.
+  /// 成功后设置consumed_at时间戳，令牌将无法再次使用.
+  @POST('/api/v2/captcha-key-v2-consume')
+  Future<ConsumeVerifyTokenModel>
+  postCaptchaKeyV2ConsumeApiV2CaptchaKeyV2ConsumePost({
+    @Body() required ConsumeVerifyTokenRequestModel body,
+  });
 
   /// Get Version
   @GET('/api/version')

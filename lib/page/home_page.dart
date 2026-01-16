@@ -43,13 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
           const AuthStatusComponent(),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.router.pushPath('/auth/simple_login'),
-            child: const Text('简洁登录'),
+            onPressed: () => context.router.pushPath('/auth/login'),
+            child: const Text('打开登录页面'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => context.router.pushPath('/auth/login'),
-            child: const Text('打开登录页面'),
+            onPressed: () => context.router.pushPath('/auth/register'),
+            child: const Text('打开注册页面'),
           ),
           const SizedBox(height: 8),
           ElevatedButton(

@@ -27,17 +27,70 @@ class AuthLoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [AuthSimpleLoginPage]
-class AuthSimpleLoginRoute extends PageRouteInfo<void> {
-  const AuthSimpleLoginRoute({List<PageRouteInfo>? children})
-    : super(AuthSimpleLoginRoute.name, initialChildren: children);
+/// [AuthRegisterPage]
+class AuthRegisterRoute extends PageRouteInfo<AuthRegisterRouteArgs> {
+  AuthRegisterRoute({
+    Key? key,
+    String? inviteCode,
+    List<PageRouteInfo>? children,
+  }) : super(
+         AuthRegisterRoute.name,
+         args: AuthRegisterRouteArgs(key: key, inviteCode: inviteCode),
+         rawQueryParams: {'invite_code': inviteCode},
+         initialChildren: children,
+       );
 
-  static const String name = 'AuthSimpleLoginRoute';
+  static const String name = 'AuthRegisterRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const AuthSimpleLoginPage();
+      final queryParams = data.queryParams;
+      final args = data.argsAs<AuthRegisterRouteArgs>(
+        orElse: () => AuthRegisterRouteArgs(
+          inviteCode: queryParams.optString('invite_code'),
+        ),
+      );
+      return AuthRegisterPage(key: args.key, inviteCode: args.inviteCode);
+    },
+  );
+}
+
+class AuthRegisterRouteArgs {
+  const AuthRegisterRouteArgs({this.key, this.inviteCode});
+
+  final Key? key;
+
+  final String? inviteCode;
+
+  @override
+  String toString() {
+    return 'AuthRegisterRouteArgs{key: $key, inviteCode: $inviteCode}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! AuthRegisterRouteArgs) return false;
+    return key == other.key && inviteCode == other.inviteCode;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ inviteCode.hashCode;
+}
+
+/// generated route for
+/// [AuthResetPasswordPage]
+class AuthResetPasswordRoute extends PageRouteInfo<void> {
+  const AuthResetPasswordRoute({List<PageRouteInfo>? children})
+    : super(AuthResetPasswordRoute.name, initialChildren: children);
+
+  static const String name = 'AuthResetPasswordRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AuthResetPasswordPage();
     },
   );
 }

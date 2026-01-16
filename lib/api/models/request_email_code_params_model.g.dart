@@ -9,15 +9,13 @@ part of 'request_email_code_params_model.dart';
 RequestEmailCodeParamsModel _$RequestEmailCodeParamsModelFromJson(
   Map<String, dynamic> json,
 ) => RequestEmailCodeParamsModel(
-  tiago2CapToken: json['tiago2_cap_token'] as String,
+  verifyToken: json['verify_token'] as String,
   email: json['email'] as String?,
-  captchaKey: json['captcha_key'] as String?,
 );
 
 Map<String, dynamic> _$RequestEmailCodeParamsModelToJson(
   RequestEmailCodeParamsModel instance,
 ) => <String, dynamic>{
   'email': ?instance.email,
-  'captcha_key': ?instance.captchaKey,
-  'tiago2_cap_token': instance.tiago2CapToken,
+  'verify_token': instance.verifyToken,
 };

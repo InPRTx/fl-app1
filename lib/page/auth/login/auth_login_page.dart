@@ -5,6 +5,7 @@ import 'package:fl_app1/api/models/login_post_result_model.dart';
 import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
+import 'package:fl_app1/store/service/captcha/captcha_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,7 +19,7 @@ class AuthLoginPage extends StatefulWidget {
 
 class _AuthLoginPageState extends State<AuthLoginPage>
     with SingleTickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _twoFaController = TextEditingController();
@@ -26,14 +27,17 @@ class _AuthLoginPageState extends State<AuthLoginPage>
 
   bool _rememberMe = false;
   bool _isLoggingIn = false;
-  String? _captchaToken;
-  int _captchaKeyCounter = 0;
+  String? _verifyToken;
+  bool _isVerifying = false;
+  String? _captchaError;
+  int _powProgress = 0;
+  int _powTotal = 0;
+  DateTime? _verifyStartTime;
+  Duration? _verifyDuration;
 
   late final AnimationController _shakeController;
   late final Animation<double> _shakeAnim;
 
-  // Fixed captcha_key as requested
-  static const String _fixedCaptchaKey = 'a9539556-9cbf-45e7-8ccd-db408ce6af33';
 
   @override
   void initState() {
@@ -80,11 +84,11 @@ class _AuthLoginPageState extends State<AuthLoginPage>
   Future<void> _handleSubmit() async {
     final FormState? form = _formKey.currentState;
     final bool isValid = form?.validate() ?? false;
-    if (!isValid || _captchaToken == null) {
-      if (_captchaToken == null) {
+    if (!isValid || _verifyToken == null) {
+      if (_verifyToken == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('请先完成验证码验证'),
+            content: Text('请先完成POW验证码验证'),
             backgroundColor: Colors.red,
           ),
         );
@@ -97,13 +101,13 @@ class _AuthLoginPageState extends State<AuthLoginPage>
 
     // Default base URL - match VersionPage default
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
-    final rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
+    final RestClient rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
 
-    final body = WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
+    final WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body =
+    WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
       email: _emailController.text.trim(),
       password: _passwordController.text,
-      captchaKey: _fixedCaptchaKey,
-      tiago2CapToken: _captchaToken!,
+      verifyToken: _verifyToken,
       isRememberMe: _rememberMe,
       twoFaCode: _twoFaController.text.isEmpty
           ? null
@@ -120,10 +124,19 @@ class _AuthLoginPageState extends State<AuthLoginPage>
 
       // Use API response to inform the user. If API reports failure, show its message.
       if (!result.isSuccess) {
-        final msg = result.message.isNotEmpty ? result.message : '登录失败，请稍后重试';
+        final String msg = result.message.isNotEmpty
+            ? result.message
+            : '登录失败，请稍后重试';
+
+        // 重置POW验证令牌，要求用户重新验证
+        setState(() {
+          _verifyToken = null;
+          _captchaError = null;
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(msg),
+            content: Text('$msg\n请重新进行POW验证'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),
@@ -158,17 +171,22 @@ class _AuthLoginPageState extends State<AuthLoginPage>
       // 跳转到用户仪表板
       context.router.pushPath('/user/dashboard');
     } on DioException catch (e) {
-      setState(() => _isLoggingIn = false);
+      setState(() {
+        _isLoggingIn = false;
+        // 重置POW验证令牌
+        _verifyToken = null;
+        _captchaError = null;
+      });
 
       // Show error similar to VersionPage for debugging
-      final req = e.requestOptions;
-      final uri = req.uri.toString();
-      final type = e.type.name;
+      final RequestOptions req = e.requestOptions;
+      final String uri = req.uri.toString();
+      final String type = e.type.name;
       String message = e.message ?? e.toString();
-      final resp = e.response;
+      final Response<dynamic>? resp = e.response;
       String respText = '';
       if (resp != null) {
-        final body = resp.data;
+        final dynamic body = resp.data;
         try {
           respText = body?.toString() ?? '<empty>';
         } catch (_) {
@@ -177,10 +195,11 @@ class _AuthLoginPageState extends State<AuthLoginPage>
         message = 'HTTP ${resp.statusCode}\n$respText';
       }
 
-      final sb = StringBuffer();
+      final StringBuffer sb = StringBuffer();
       sb.writeln('DioException: $type');
       sb.writeln('URI: $uri');
       sb.writeln('Message: $message');
+      sb.writeln('\n请重新进行POW验证');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -190,10 +209,16 @@ class _AuthLoginPageState extends State<AuthLoginPage>
         ),
       );
     } catch (e, st) {
-      setState(() => _isLoggingIn = false);
+      setState(() {
+        _isLoggingIn = false;
+        // 重置POW验证令牌
+        _verifyToken = null;
+        _captchaError = null;
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$e\n\n$st'),
+          content: Text('$e\n\n$st\n\n请重新进行POW验证'),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
@@ -201,16 +226,67 @@ class _AuthLoginPageState extends State<AuthLoginPage>
     }
   }
 
-  void _toggleCaptcha() {
+  Future<void> _handlePOWVerify() async {
     setState(() {
-      if (_captchaToken == null) {
-        final int timestamp = DateTime.now().millisecondsSinceEpoch;
-        _captchaToken = 'token_$timestamp';
-      } else {
-        _captchaToken = null;
-      }
-      _captchaKeyCounter++;
+      _isVerifying = true;
+      _captchaError = null;
+      _verifyToken = null;
+      _powProgress = 0;
+      _powTotal = 0;
+      _verifyStartTime = DateTime.now();
+      _verifyDuration = null;
     });
+
+    final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
+    final RestClient rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
+    final CaptchaService captchaService = CaptchaService.instance;
+
+    final String verifyToken = await captchaService
+        .getVerifyToken(
+      restClient: rest,
+      onProgress: (int current, int total) {
+        print('POW Progress: $current / $total');
+        if (mounted) {
+          setState(() {
+            _powProgress = current;
+            _powTotal = total;
+          });
+        }
+      },
+    )
+        .catchError((Object e) {
+      setState(() {
+        _captchaError = e.toString();
+        _isVerifying = false;
+        _powProgress = 0;
+        _powTotal = 0;
+        _verifyStartTime = null;
+        _verifyDuration = null;
+      });
+      return '';
+    });
+
+    if (verifyToken.isNotEmpty) {
+      final Duration duration = DateTime.now().difference(_verifyStartTime!);
+      setState(() {
+        _verifyToken = verifyToken;
+        _isVerifying = false;
+        _powProgress = 0;
+        _powTotal = 0;
+        _verifyDuration = duration;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'POW验证码验证成功 (用时: ${duration.inSeconds}.${(duration
+                  .inMilliseconds % 1000).toString().padLeft(3, '0')}秒)'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
   }
 
   @override
@@ -345,53 +421,149 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                               ],
                             ),
                             const SizedBox(height: 8),
-                            // Captcha placeholder
+                              // POW验证码
                             Column(
-                              children: [
-                                const Text('👇👇点击下方验证以完成验证码'),
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                const Text(
+                                  'POW验证码验证',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
-                                GestureDetector(
-                                  onTap: _toggleCaptcha,
-                                  child: Container(
-                                    key: ValueKey<int>(_captchaKeyCounter),
-                                    width: double.infinity,
-                                    height: 56,
+                                if (_verifyToken != null)
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: _captchaToken == null
-                                          ? Colors.white
-                                          : Colors.green.shade50,
+                                      color: Colors.green.withValues(
+                                          alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.green),
                                     ),
-                                    alignment: Alignment.center,
-                                    child: _captchaToken == null
-                                        ? const Text(
-                                            '点击此处进行验证码验证',
-                                            style: TextStyle(
-                                              color: Colors.black54,
-                                            ),
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green,
-                                              ),
-                                              const SizedBox(width: 8),
+                                    child: Row(
+                                      children: <Widget>[
+                                        const Icon(Icons.check_circle,
+                                            color: Colors.green),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: <Widget>[
                                               const Text(
-                                                '已通过验证',
+                                                '验证成功',
                                                 style: TextStyle(
-                                                  color: Colors.green,
+                                                    color: Colors.green,
+                                                    fontWeight: FontWeight
+                                                        .bold),
+                                              ),
+                                              if (_verifyDuration != null)
+                                                Text(
+                                                  '用时: ${_verifyDuration!
+                                                      .inSeconds}.${(_verifyDuration!
+                                                      .inMilliseconds % 1000)
+                                                      .toString()
+                                                      .padLeft(3, '0')}秒',
+                                                  style: TextStyle(
+                                                    color: Colors.green
+                                                        .shade700,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.refresh),
+                                          onPressed: () {
+                                            setState(() {
+                                              _verifyToken = null;
+                                              _captchaError = null;
+                                              _verifyDuration = null;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                else
+                                  if (_isVerifying)
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withValues(
+                                            alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(color: Colors.blue),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              const SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child: CircularProgressIndicator(
+                                                    strokeWidth: 2),
+                                              ),
+                                              const SizedBox(width: 12),
+                                              Expanded(
+                                                child: Text(
+                                                  _powTotal > 0
+                                                      ? '正在计算 POW 验证码... ${(_powProgress /
+                                                      _powTotal * 100)
+                                                      .toInt()}%'
+                                                      : '正在计算 POW 验证码，请稍候...',
+                                                  style: const TextStyle(
+                                                      color: Colors.blue),
                                                 ),
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 8),
+                                          LinearProgressIndicator(
+                                            value: _powTotal > 0
+                                                ? _powProgress / _powTotal
+                                                : null,
+                                            backgroundColor: Colors.blue
+                                                .withValues(alpha: 0.2),
+                                            valueColor: const AlwaysStoppedAnimation<
+                                                Color>(Colors.blue),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            _powTotal > 0
+                                                ? '$_powProgress / $_powTotal'
+                                                : '准备中...',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.blue.shade700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  else
+                                    ElevatedButton.icon(
+                                      onPressed: _handlePOWVerify,
+                                      icon: const Icon(Icons.security),
+                                      label: const Text('获取POW验证'),
                                   ),
-                                ),
+                                if (_captchaError != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      _captchaError!,
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                             const SizedBox(height: 12),
@@ -417,25 +589,18 @@ class _AuthLoginPageState extends State<AuthLoginPage>
                       ),
                       const SizedBox(height: 8),
                       TextButton(
-                        onPressed: () {
-                          // Navigate to forgot password - placeholder
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('忘记密码页面尚未实现')),
-                          );
-                        },
+                        onPressed: () =>
+                            context.router.pushPath('/auth/reset-password'),
                         child: const Text('忘记密码？'),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           const Text('还没有账号？'),
                           TextButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('注册页面尚未实现')),
-                              );
-                            },
+                            onPressed: () =>
+                                context.router.pushPath('/auth/register'),
                             child: const Text('注册'),
                           ),
                         ],
