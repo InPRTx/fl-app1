@@ -138,6 +138,12 @@ class _EditableUserOldServiceCardComponentState
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(localDateTime);
   }
 
+  int _calculateTodayUsedTraffic(AdminOldServiceOutput service) {
+    final totalUsed = service.ssUploadSize + service.ssDownloadSize;
+    final todayUsed = totalUsed - service.ssBandwidthYesterdayUsedSize;
+    return todayUsed >= 0 ? todayUsed : 0;
+  }
+
   void _syncTrafficControllers(
     TextEditingController humanController,
     TextEditingController rawController,
@@ -468,6 +474,11 @@ class _EditableUserOldServiceCardComponentState
           Icons.history,
           '昨日使用',
           formatBytes(service.ssBandwidthYesterdayUsedSize),
+        ),
+        _buildInfoRow(
+          Icons.today,
+          '今日流量',
+          formatBytes(_calculateTodayUsedTraffic(service)),
         ),
         const Divider(height: 24),
         _buildInfoRow(Icons.star, '用户等级', service.userLevel.toString()),

@@ -31,6 +31,15 @@ class UserOldServiceCardComponent extends StatelessWidget {
     return (used / serviceData!.ssBandwidthTotalSize).clamp(0.0, 1.0);
   }
 
+  int _calculateTodayUsedTraffic() {
+    if (serviceData == null) {
+      return 0;
+    }
+    final totalUsed = serviceData!.ssUploadSize + serviceData!.ssDownloadSize;
+    final todayUsed = totalUsed - serviceData!.ssBandwidthYesterdayUsedSize;
+    return todayUsed >= 0 ? todayUsed : 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (serviceData == null) {
@@ -133,6 +142,10 @@ class UserOldServiceCardComponent extends StatelessWidget {
             _buildInfoRow(
               '昨日使用',
               _formatBytes(service.ssBandwidthYesterdayUsedSize),
+            ),
+            _buildInfoRow(
+              '今日流量',
+              _formatBytes(_calculateTodayUsedTraffic()),
             ),
             _buildInfoRow('用户等级', 'Level ${service.userLevel}'),
             _buildInfoRow(
