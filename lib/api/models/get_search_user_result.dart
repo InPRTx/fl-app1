@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
+import 'result_list_data.dart';
 
 part 'get_search_user_result.g.dart';
 
@@ -27,10 +27,7 @@ class GetSearchUserResult {
 
   /// 旧版商店信息
   @JsonKey(name: 'result_list')
-  final List<
-    WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
-  >
-  resultList;
+  final List<ResultListData> resultList;
 
   Map<String, Object?> toJson() => _$GetSearchUserResultToJson(this);
 }

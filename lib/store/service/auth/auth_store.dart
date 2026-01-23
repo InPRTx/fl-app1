@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/base_url.dart';
-import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
+import 'package:fl_app1/api/models/params_model.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/model/jwt_token_model.dart';
 import 'package:fl_app1/store/service/auth/auth_constants.dart';
@@ -117,7 +117,7 @@ class AuthStore extends ChangeNotifier {
     final dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
     final rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
 
-    final body = WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel(
+    final body = ParamsModel(
       refreshToken: _refreshJWTToken!,
     );
 

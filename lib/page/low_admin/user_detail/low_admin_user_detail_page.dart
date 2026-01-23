@@ -55,8 +55,7 @@ class _LowAdminUserDetailPageState extends State<LowAdminUserDetailPage> {
     setState(() {
       _isLoading = false;
       _userV2Data =
-          (results[0]
-                  as WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse)
+          (results[0] as GetUserOldServiceResponse)
               .result;
       _userOldServiceData =
           (results[1]

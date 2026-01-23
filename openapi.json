@@ -155,7 +155,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__casino_function__SqlTableEnum"
+              "$ref": "#/components/schemas/SqlTableEnum"
             }
           },
           {
@@ -976,6 +976,47 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mod_mu/settlement_queue": {
+      "get": {
+        "summary": "Trigger Settlement Queue",
+        "description": "手动触发或定时触发支付清算队列处理\n\nArgs:\n    db2_ses: 数据库会话\n    is_auto_trigger: 是否为自动触发（定时任务）",
+        "operationId": "trigger_settlement_queue_v1_mod_mu_settlement_queue_get",
+        "parameters": [
+          {
+            "name": "is_auto_trigger",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Is Auto Trigger"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           },
@@ -2614,7 +2655,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2710,7 +2751,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/FormalEnum"
                 },
                 {
                   "type": "null"
@@ -2858,7 +2899,7 @@
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum"
+                  "$ref": "#/components/schemas/FormalEnum"
                 },
                 {
                   "type": "null"
@@ -3026,7 +3067,7 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum",
+              "$ref": "#/components/schemas/FormalEnum",
               "default": "json"
             }
           },
@@ -3080,7 +3121,7 @@
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/fastapi___compat__v2__Body_delete_bought_v1_user_bought_delete"
+                "$ref": "#/components/schemas/Body_delete_bought_v1_user_bought_delete"
               }
             }
           }
@@ -3868,7 +3909,8 @@
                   "type": "number"
                 },
                 {
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
                 }
               ],
               "title": "Money Amount"
@@ -4503,7 +4545,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__ParamsModel"
+                "$ref": "#/components/schemas/ParamsModel"
               }
             }
           },
@@ -7765,7 +7807,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse"
+                  "$ref": "#/components/schemas/GetUserOldServiceResponse"
                 }
               }
             }
@@ -7982,7 +8024,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse"
+                  "$ref": "#/components/schemas/GetUserBoughtResponse"
                 }
               }
             }
@@ -10370,7 +10412,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -10410,7 +10453,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -10494,7 +10538,8 @@
           "node_speed_limit": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -10531,7 +10576,8 @@
           "auto_reset_bandwidth": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -10572,10 +10618,12 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "money_amount_ref": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount Ref",
             "default": "0.00"
           },
@@ -10815,6 +10863,19 @@
           "result"
         ],
         "title": "AuthRegisterResponse"
+      },
+      "Body_delete_bought_v1_user_bought_delete": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "Body_delete_bought_v1_user_bought_delete"
       },
       "CaptchaKeyModel": {
         "properties": {
@@ -11280,6 +11341,13 @@
         "type": "object",
         "title": "ErrorResponse"
       },
+      "FormalEnum": {
+        "type": "string",
+        "enum": [
+          "json"
+        ],
+        "title": "FormalEnum"
+      },
       "GetCaptchaKeyModel": {
         "properties": {
           "is_success": {
@@ -11489,7 +11557,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData"
+              "$ref": "#/components/schemas/ResultListData"
             },
             "type": "array",
             "title": "Result List",
@@ -11634,6 +11702,32 @@
         "type": "object",
         "title": "GetTicketListResponse"
       },
+      "GetUserBoughtResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "GetUserBoughtResponse"
+      },
       "GetUserInfosResponse": {
         "properties": {
           "is_success": {
@@ -11686,6 +11780,34 @@
         },
         "type": "object",
         "title": "GetUserMoneyResponse"
+      },
+      "GetUserOldServiceResponse": {
+        "properties": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AdminUserV2"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "管理员用户信息"
+          }
+        },
+        "type": "object",
+        "title": "GetUserOldServiceResponse"
       },
       "GetUsernamesRequest": {
         "properties": {
@@ -11855,6 +11977,7 @@
           },
           "commission_earned": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Commission Earned",
             "description": "获得佣金"
           },
@@ -12213,7 +12336,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,8}|(?=[\\d.]{1,11}0*$)\\d{0,8}\\.\\d{0,2}0*$)"
               }
             ],
             "title": "Money Amount"
@@ -12371,6 +12495,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,8}|(?=[\\d.]{1,11}0*$)\\d{0,8}\\.\\d{0,2}0*$)",
             "title": "Money Amount"
           },
           "ss_bandwidth_total_size": {
@@ -12631,6 +12756,20 @@
         ],
         "title": "POSTTrafficModel"
       },
+      "ParamsModel": {
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token",
+            "description": "刷新令牌"
+          }
+        },
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "title": "ParamsModel"
+      },
       "PostCaptchaKeyVerifyModel": {
         "properties": {
           "is_success": {
@@ -12739,7 +12878,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
             "title": "Money Amount"
@@ -12818,6 +12958,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount",
             "description": "交易金额"
           },
@@ -12959,16 +13100,48 @@
             "title": "Email"
           },
           "verify_token": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Verify Token",
             "description": "POW验证令牌"
           }
         },
         "type": "object",
-        "required": [
-          "verify_token"
-        ],
         "title": "RequestEmailCodeParamsModel"
+      },
+      "Result": {
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "创建时间，查询的时间"
+          },
+          "wallet_balance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Wallet Balance",
+            "description": "钱包余额"
+          },
+          "invite_balance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Invite Balance",
+            "description": "邀请余额",
+            "default": "0.00"
+          }
+        },
+        "type": "object",
+        "required": [
+          "wallet_balance"
+        ],
+        "title": "Result"
       },
       "ResultBought": {
         "properties": {
@@ -13004,6 +13177,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           }
         },
@@ -13017,6 +13191,52 @@
         ],
         "title": "ResultBought"
       },
+      "ResultListData": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "用户ID"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "description": "用户名",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "用户邮箱",
+            "default": ""
+          },
+          "money_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Money Amount",
+            "description": "用户余额",
+            "default": "0.00"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "注册时间"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "description": "用户是否启用",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at"
+        ],
+        "title": "ResultListData"
+      },
       "ResultShop": {
         "properties": {
           "id": {
@@ -13029,6 +13249,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "human_read_text": {
@@ -13222,6 +13443,14 @@
         ],
         "title": "ShopTypeEnum"
       },
+      "SqlTableEnum": {
+        "type": "string",
+        "enum": [
+          "user",
+          "version"
+        ],
+        "title": "SqlTableEnum"
+      },
       "SsNode": {
         "properties": {
           "id": {
@@ -13272,6 +13501,7 @@
           },
           "node_rate": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Node Rate",
             "default": "1.00"
           },
@@ -13307,7 +13537,8 @@
           "node_speed_limit": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -13485,7 +13716,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
             "title": "Node Rate",
@@ -13526,7 +13758,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -14552,7 +14785,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
             "title": "Money Amount"
@@ -14725,6 +14959,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "user_level_expire_in": {
@@ -14911,6 +15146,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "is_finish": {
@@ -15551,6 +15787,7 @@
           },
           "speed_limit_mbps": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Speed Limit Mbps",
             "description": "速度限制 (Mbps)，必须大于 0"
           },
@@ -15643,7 +15880,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
             "title": "Speed Limit Mbps",
@@ -15965,6 +16203,7 @@
           },
           "node_rate": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Node Rate",
             "description": "节点倍率"
           },
@@ -16156,7 +16395,7 @@
             "default": "获取成功"
           },
           "result": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__user__wallet__index__UserWalletResult__Result",
+            "$ref": "#/components/schemas/Result",
             "description": "用户钱包信息"
           }
         },
@@ -16238,19 +16477,6 @@
           "ssr_vmess"
         ],
         "title": "VpnTypeListEnum"
-      },
-      "fastapi___compat__v2__Body_delete_bought_v1_user_bought_delete": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "Body_delete_bought_v1_user_bought_delete"
       },
       "web_sub3_fastapi__routers__api__v2__admin_api__announcement__AnnouncementResponse__Result": {
         "properties": {
@@ -16464,20 +16690,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__ParamsModel": {
-        "properties": {
-          "refresh_token": {
-            "type": "string",
-            "title": "Refresh Token",
-            "description": "刷新令牌"
-          }
-        },
-        "type": "object",
-        "required": [
-          "refresh_token"
-        ],
-        "title": "ParamsModel"
-      },
       "web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__RefreshPostResultModel__Result": {
         "properties": {
           "access_token": {
@@ -16561,51 +16773,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData": {
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "Id",
-            "description": "用户ID"
-          },
-          "user_name": {
-            "type": "string",
-            "title": "User Name",
-            "description": "用户名",
-            "default": ""
-          },
-          "email": {
-            "type": "string",
-            "title": "Email",
-            "description": "用户邮箱",
-            "default": ""
-          },
-          "money_amount": {
-            "type": "string",
-            "title": "Money Amount",
-            "description": "用户余额",
-            "default": "0.00"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "注册时间"
-          },
-          "is_enable": {
-            "type": "boolean",
-            "title": "Is Enable",
-            "description": "用户是否启用",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "created_at"
-        ],
-        "title": "ResultListData"
-      },
       "web_sub3_fastapi__routers__api__v2__grafana_admin_view__user_data_history_ch__UserDataHistoryResponse__Result": {
         "properties": {
           "user_id": {
@@ -16659,32 +16826,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse": {
-        "properties": {
-          "is_success": {
-            "type": "boolean",
-            "title": "Is Success",
-            "default": true
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "获取结果",
-            "default": "获取成功"
-          },
-          "result_list": {
-            "items": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
-            },
-            "type": "array",
-            "title": "Result List",
-            "description": "管理员用户信息",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "GetUserBoughtResponse"
-      },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData": {
         "properties": {
           "id": {
@@ -16723,6 +16864,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           }
         },
@@ -16745,7 +16887,8 @@
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
             "title": "Money Amount Add",
@@ -16829,34 +16972,6 @@
         },
         "type": "object",
         "title": "GetUserBoughtResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
-        "properties": {
-          "is_success": {
-            "type": "boolean",
-            "title": "Is Success",
-            "default": true
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "获取结果",
-            "default": "获取成功"
-          },
-          "result": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/AdminUserV2"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "管理员用户信息"
-          }
-        },
-        "type": "object",
-        "title": "GetUserOldServiceResponse"
       },
       "web_sub3_fastapi__routers__api__v2__user__account__activity__UserAccountActivityResponse__Result": {
         "properties": {
@@ -17020,6 +17135,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount",
             "description": "用户余额，直接输出余额"
           },
@@ -17213,11 +17329,13 @@
           },
           "total_commission": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Total Commission",
             "description": "总佣金收入"
           },
           "commission_rate": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Commission Rate",
             "description": "佣金比例"
           },
@@ -17375,32 +17493,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__user__wallet__index__UserWalletResult__Result": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "创建时间，查询的时间"
-          },
-          "wallet_balance": {
-            "type": "string",
-            "title": "Wallet Balance",
-            "description": "钱包余额"
-          },
-          "invite_balance": {
-            "type": "string",
-            "title": "Invite Balance",
-            "description": "邀请余额",
-            "default": "0.00"
-          }
-        },
-        "type": "object",
-        "required": [
-          "wallet_balance"
-        ],
-        "title": "Result"
-      },
       "web_sub3_fastapi__routers__api__v2__user__wallet__purchase_records_old__PurchaseRecordsResult__Result": {
         "properties": {
           "id": {
@@ -17422,6 +17514,7 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "renew_at": {
@@ -17470,14 +17563,6 @@
           "recharge_records"
         ],
         "title": "Result"
-      },
-      "web_sub3_fastapi__routers__v1__casino_function__SqlTableEnum": {
-        "type": "string",
-        "enum": [
-          "user",
-          "version"
-        ],
-        "title": "SqlTableEnum"
       },
       "web_sub3_fastapi__routers__v1__crisp_plugin_view__GetCrispPluginViewResult__Result": {
         "properties": {
@@ -17540,10 +17625,12 @@
           },
           "money_amount": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount"
           },
           "money_amount2": {
             "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Money Amount2"
           },
           "user_level_expire_in": {
@@ -17559,7 +17646,8 @@
           "node_speedlimit": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               },
               {
                 "type": "null"
@@ -17613,13 +17701,6 @@
           "version"
         ],
         "title": "SqlTableEnum"
-      },
-      "web_sub3_fastapi__routers__v1__user__shop__index__FormalEnum": {
-        "type": "string",
-        "enum": [
-          "json"
-        ],
-        "title": "FormalEnum"
       }
     },
     "securitySchemes": {

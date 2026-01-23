@@ -8,7 +8,7 @@ part 'request_email_code_params_model.g.dart';
 
 @JsonSerializable()
 class RequestEmailCodeParamsModel {
-  const RequestEmailCodeParamsModel({required this.verifyToken, this.email});
+  const RequestEmailCodeParamsModel({this.email, this.verifyToken});
 
   factory RequestEmailCodeParamsModel.fromJson(Map<String, Object?> json) =>
       _$RequestEmailCodeParamsModelFromJson(json);
@@ -17,8 +17,8 @@ class RequestEmailCodeParamsModel {
   final String? email;
 
   /// POW验证令牌
-  @JsonKey(name: 'verify_token')
-  final String verifyToken;
+  @JsonKey(includeIfNull: false, name: 'verify_token')
+  final String? verifyToken;
 
   Map<String, Object?> toJson() => _$RequestEmailCodeParamsModelToJson(this);
 }

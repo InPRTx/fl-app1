@@ -14,6 +14,7 @@ import '../models/announcement_response.dart';
 import '../models/announcement_update_response.dart';
 import '../models/announcements_get_result_model.dart';
 import '../models/auth_register_response.dart';
+import '../models/body_delete_bought_v_user_bought_delete.dart';
 import '../models/captcha_key_model.dart';
 import '../models/captcha_key_type_enum.dart';
 import '../models/check_invite_code_params_model.dart';
@@ -21,7 +22,7 @@ import '../models/consume_verify_token_model.dart';
 import '../models/consume_verify_token_request_model.dart';
 import '../models/crisp_data_result_model.dart';
 import '../models/error_response.dart';
-import '../models/fastapi_compat_v_body_delete_bought_v_user_bought_delete.dart';
+import '../models/formal_enum.dart';
 import '../models/get_captcha_key_model.dart';
 import '../models/get_crisp_plugin_view_result.dart';
 import '../models/get_csrf_token_result.dart';
@@ -36,8 +37,10 @@ import '../models/get_ss_node_list_response.dart';
 import '../models/get_ss_node_response.dart';
 import '../models/get_ticket_detail_response.dart';
 import '../models/get_ticket_list_response.dart';
+import '../models/get_user_bought_response.dart';
 import '../models/get_user_infos_response.dart';
 import '../models/get_user_money_response.dart';
+import '../models/get_user_old_service_response.dart';
 import '../models/get_usernames_request.dart';
 import '../models/get_usernames_response.dart';
 import '../models/get_version_model.dart';
@@ -47,6 +50,7 @@ import '../models/index_get_result_model.dart';
 import '../models/login_post_result_model.dart';
 import '../models/login_web_version_enum.dart';
 import '../models/old_service_shop_input.dart';
+import '../models/params_model.dart';
 import '../models/post_add_alive_ip_model.dart';
 import '../models/post_add_detect_log_model.dart';
 import '../models/post_captcha_key_verify_model.dart';
@@ -60,6 +64,7 @@ import '../models/refresh_post_result_model.dart';
 import '../models/replace_email_response.dart';
 import '../models/reply_params.dart';
 import '../models/request_email_code_params_model.dart';
+import '../models/sql_table_enum.dart';
 import '../models/ss_node.dart';
 import '../models/ss_node_node_config_sql_model.dart';
 import '../models/ss_node_pydantic.dart';
@@ -126,16 +131,11 @@ import '../models/user_wallet_result.dart';
 import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
-import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
-import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
-import '../models/web_sub_fastapi_routers_v_user_shop_index_formal_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -173,8 +173,7 @@ abstract class FallbackClient {
   @GET('/v1/casino_function')
   Future<void> casinoFunctionV1CasinoFunctionGet({
     @Query('api_key') required String apiKey,
-    @Query('sql_table')
-    required WebSubFastapiRoutersVCasinoFunctionSqlTableEnum sqlTable,
+    @Query('sql_table') required SqlTableEnum sqlTable,
     @Query('sql_table_telegram_id') int? sqlTableTelegramId,
     @Query('sql_table_add_transfer_enable') int? sqlTableAddTransferEnable,
     @Query('type_mode') TypeModeEnum? typeMode,
@@ -319,6 +318,18 @@ abstract class FallbackClient {
   /// 每分钟从队列中取出数据并处理.
   @GET('/v1/mod_mu/active_check_paylist')
   Future<void> activeCheckPaylistV1ModMuActiveCheckPaylistGet({
+    @Query('is_auto_trigger') bool? isAutoTrigger = false,
+  });
+
+  /// Trigger Settlement Queue.
+  ///
+  /// 手动触发或定时触发支付清算队列处理.
+  ///
+  /// Args:.
+  ///     db2_ses: 数据库会话.
+  ///     is_auto_trigger: 是否为自动触发（定时任务）.
+  @GET('/v1/mod_mu/settlement_queue')
+  Future<ErrorResponse> triggerSettlementQueueV1ModMuSettlementQueueGet({
     @Query('is_auto_trigger') bool? isAutoTrigger = false,
   });
 
@@ -603,7 +614,7 @@ abstract class FallbackClient {
   Future<void> getShopV1UserShopGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') FormalEnum? format,
   });
 
   /// Get Detect
@@ -619,7 +630,7 @@ abstract class FallbackClient {
   Future<void> ticketV1UserTicketGet({
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') FormalEnum? format,
   });
 
   /// Post Ticket.
@@ -644,7 +655,7 @@ abstract class FallbackClient {
     @Path('ticket_id') required int ticketId,
     @Query('page') int? page = 1,
     @Query('size') int? size = 5,
-    @Query('format') WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    @Query('format') FormalEnum? format,
   });
 
   /// Post Buy Pre.
@@ -678,9 +689,7 @@ abstract class FallbackClient {
   /// Bought
   @GET('/v1/user/bought')
   Future<void> boughtV1UserBoughtGet({
-    @Query('format')
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
+    @Query('format') FormalEnum? format = FormalEnum.valueJson,
     @Query('page') int? page = 1,
     @Query('size') int? size = 15,
   });
@@ -689,7 +698,7 @@ abstract class FallbackClient {
   @FormUrlEncoded()
   @DELETE('/v1/user/bought')
   Future<void> deleteBoughtV1UserBoughtDelete({
-    @Body() required FastapiCompatVBodyDeleteBoughtVUserBoughtDelete body,
+    @Body() required BodyDeleteBoughtVUserBoughtDelete body,
   });
 
   /// Checkin
@@ -903,8 +912,7 @@ abstract class FallbackClient {
   @POST('/api/v2/auth/jwt_token/jwt_access_refresh')
   Future<RefreshPostResultModel>
   postJwtAccessRefreshApiV2AuthJwtTokenJwtAccessRefreshPost({
-    @Body()
-    required WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel body,
+    @Body() required ParamsModel body,
   });
 
   /// Post Login Old V1
@@ -1390,7 +1398,7 @@ abstract class FallbackClient {
 
   /// Get User V2 By User Id
   @GET('/api/v2/low_admin_api/user_v2/{user_id}')
-  Future<WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse>
+  Future<GetUserOldServiceResponse>
   getUserV2ByUserIdApiV2LowAdminApiUserV2UserIdGet({
     @Path('user_id') required int userId,
   });
@@ -1409,8 +1417,7 @@ abstract class FallbackClient {
   ///
   /// 查询用户购买记录，可按用户ID过滤，或按ID模糊搜索.
   @GET('/api/v2/low_admin_api/user_bought/')
-  Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
-  getUserBoughtApiV2LowAdminApiUserBoughtGet({
+  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit = 3000,
     @Query('q') String? q,

@@ -117,7 +117,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<void> casinoFunctionV1CasinoFunctionGet({
     required String apiKey,
-    required WebSubFastapiRoutersVCasinoFunctionSqlTableEnum sqlTable,
+    required SqlTableEnum sqlTable,
     int? sqlTableTelegramId,
     int? sqlTableAddTransferEnable,
     TypeModeEnum? typeMode,
@@ -677,6 +677,38 @@ class _FallbackClient implements FallbackClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<ErrorResponse> triggerSettlementQueueV1ModMuSettlementQueueGet({
+    bool? isAutoTrigger = false,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'is_auto_trigger': isAutoTrigger,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ErrorResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+        _dio.options,
+        '/v1/mod_mu/settlement_queue',
+        queryParameters: queryParameters,
+        data: _data,
+      )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late ErrorResponse _value;
+    try {
+      _value = ErrorResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -1670,7 +1702,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> getShopV1UserShopGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    FormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1736,7 +1768,7 @@ class _FallbackClient implements FallbackClient {
   Future<void> ticketV1UserTicketGet({
     int? page = 1,
     int? size = 15,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    FormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1825,7 +1857,7 @@ class _FallbackClient implements FallbackClient {
     required int ticketId,
     int? page = 1,
     int? size = 5,
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format,
+    FormalEnum? format,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -1969,8 +2001,7 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> boughtV1UserBoughtGet({
-    WebSubFastapiRoutersVUserShopIndexFormalEnum? format =
-        WebSubFastapiRoutersVUserShopIndexFormalEnum.valueJson,
+    FormalEnum? format = FormalEnum.valueJson,
     int? page = 1,
     int? size = 15,
   }) async {
@@ -1998,7 +2029,7 @@ class _FallbackClient implements FallbackClient {
 
   @override
   Future<void> deleteBoughtV1UserBoughtDelete({
-    required FastapiCompatVBodyDeleteBoughtVUserBoughtDelete body,
+    required BodyDeleteBoughtVUserBoughtDelete body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2788,7 +2819,7 @@ class _FallbackClient implements FallbackClient {
   @override
   Future<RefreshPostResultModel>
   postJwtAccessRefreshApiV2AuthJwtTokenJwtAccessRefreshPost({
-    required WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel body,
+    required ParamsModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4809,7 +4840,7 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse>
+  Future<GetUserOldServiceResponse>
   getUserV2ByUserIdApiV2LowAdminApiUserV2UserIdGet({
     required int userId,
   }) async {
@@ -4817,10 +4848,7 @@ class _FallbackClient implements FallbackClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-    _setStreamType<
-        WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
-    >(
+    final _options = _setStreamType<GetUserOldServiceResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -4828,19 +4856,12 @@ class _FallbackClient implements FallbackClient {
         queryParameters: queryParameters,
         data: _data,
       )
-          .copyWith(
-        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-      ),
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
-    _value;
+    late GetUserOldServiceResponse _value;
     try {
-      _value =
-          WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse
-              .fromJson(
-            _result.data!,
-          );
+      _value = GetUserOldServiceResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;
@@ -4889,8 +4910,7 @@ class _FallbackClient implements FallbackClient {
   }
 
   @override
-  Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
-  getUserBoughtApiV2LowAdminApiUserBoughtGet({
+  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
     int? offset = 0,
     int? limit = 3000,
     String? q,
@@ -4908,10 +4928,7 @@ class _FallbackClient implements FallbackClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-    _setStreamType<
-        WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
-    >(
+    final _options = _setStreamType<GetUserBoughtResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
         _dio.options,
@@ -4919,19 +4936,12 @@ class _FallbackClient implements FallbackClient {
         queryParameters: queryParameters,
         data: _data,
       )
-          .copyWith(
-        baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-      ),
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
-    _value;
+    late GetUserBoughtResponse _value;
     try {
-      _value =
-          WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse
-              .fromJson(
-            _result.data!,
-          );
+      _value = GetUserBoughtResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;

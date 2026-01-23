@@ -6,22 +6,16 @@ part of 'get_search_user_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetSearchUserResult _$GetSearchUserResultFromJson(
-  Map<String, dynamic> json,
-) => GetSearchUserResult(
-  isSuccess: json['is_success'] as bool? ?? true,
-  message: json['message'] as String? ?? '获取成功',
-  resultList:
-      (json['result_list'] as List<dynamic>?)
-          ?.map(
-            (e) =>
-                WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData.fromJson(
-                  e as Map<String, dynamic>,
-                ),
-          )
-          .toList() ??
-      const [],
-);
+GetSearchUserResult _$GetSearchUserResultFromJson(Map<String, dynamic> json) =>
+    GetSearchUserResult(
+      isSuccess: json['is_success'] as bool? ?? true,
+      message: json['message'] as String? ?? '获取成功',
+      resultList:
+          (json['result_list'] as List<dynamic>?)
+              ?.map((e) => ResultListData.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
 
 Map<String, dynamic> _$GetSearchUserResultToJson(
   GetSearchUserResult instance,
