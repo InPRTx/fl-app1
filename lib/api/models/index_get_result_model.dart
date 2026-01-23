@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'web_sub_fastapi_routers_api_v_user_index_index_get_result_model_result.dart';
+import 'result.dart';
 
 part 'index_get_result_model.g.dart';
 
@@ -26,7 +26,7 @@ class IndexGetResultModel {
   final String message;
 
   /// 用户令牌信息
-  final WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResult result;
+  final Result result;
 
   Map<String, Object?> toJson() => _$IndexGetResultModelToJson(this);
 }

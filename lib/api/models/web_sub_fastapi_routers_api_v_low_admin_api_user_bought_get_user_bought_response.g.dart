@@ -14,12 +14,7 @@ _$WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseFromJson(
   message: json['message'] as String? ?? '获取成功',
   resultList:
       (json['result_list'] as List<dynamic>?)
-          ?.map(
-            (e) =>
-                WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData.fromJson(
-                  e as Map<String, dynamic>,
-                ),
-          )
+          ?.map((e) => ResultListData.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
 );

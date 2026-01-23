@@ -9,24 +9,34 @@ part 'result.g.dart';
 @JsonSerializable()
 class Result {
   const Result({
-    required this.walletBalance,
-    this.inviteBalance = '0.00',
-    this.createdAt,
+    required this.userId,
+    required this.accessType,
+    required this.tokenType,
+    required this.issuedAt,
+    required this.expiresAt,
   });
 
   factory Result.fromJson(Map<String, Object?> json) => _$ResultFromJson(json);
 
-  /// 创建时间，查询的时间
-  @JsonKey(includeIfNull: false, name: 'created_at')
-  final DateTime? createdAt;
+  /// 用户ID
+  @JsonKey(name: 'user_id')
+  final int userId;
 
-  /// 钱包余额
-  @JsonKey(name: 'wallet_balance')
-  final String walletBalance;
+  /// 访问类型
+  @JsonKey(name: 'access_type')
+  final String accessType;
 
-  /// 邀请余额
-  @JsonKey(name: 'invite_balance')
-  final String inviteBalance;
+  /// 令牌类型
+  @JsonKey(name: 'token_type')
+  final String tokenType;
+
+  /// 签发时间戳
+  @JsonKey(name: 'issued_at')
+  final int issuedAt;
+
+  /// 过期时间戳
+  @JsonKey(name: 'expires_at')
+  final int expiresAt;
 
   Map<String, Object?> toJson() => _$ResultToJson(this);
 }

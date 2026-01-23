@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'result.dart';
+import 'web_sub_fastapi_routers_api_v_user_wallet_index_user_wallet_result_result.dart';
 
 part 'user_wallet_result.g.dart';
 
@@ -26,7 +26,7 @@ class UserWalletResult {
   final String message;
 
   /// 用户钱包信息
-  final Result result;
+  final WebSubFastapiRoutersApiVUserWalletIndexUserWalletResultResult result;
 
   Map<String, Object?> toJson() => _$UserWalletResultToJson(this);
 }

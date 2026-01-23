@@ -130,12 +130,12 @@ import '../models/user_wallet_recharge_result.dart';
 import '../models/user_wallet_result.dart';
 import '../models/version_response_model.dart';
 import '../models/vpn_type_list_enum.dart';
-import '../models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
+import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_access_refresh_params_model.dart';
 import '../models/web_sub_fastapi_routers_api_v_auth_jwt_token_login_old_v_params_model.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response.dart';
 import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_money_money_recharge_it_params_model.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_old_service_get_user_old_service_response.dart';
-import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_pay_list_get_user_bought_response.dart';
-import '../models/web_sub_fastapi_routers_v_emby_function_sql_table_enum.dart';
+import '../models/web_sub_fastapi_routers_api_v_low_admin_api_user_v_get_user_old_service_response.dart';
+import '../models/web_sub_fastapi_routers_v_casino_function_sql_table_enum.dart';
 
 part 'fallback_client.g.dart';
 
@@ -161,8 +161,7 @@ abstract class FallbackClient {
   @GET('/v1/emby_function')
   Future<void> embyFunctionV1EmbyFunctionGet({
     @Query('api_key') required String apiKey,
-    @Query('sql_table')
-    required WebSubFastapiRoutersVEmbyFunctionSqlTableEnum sqlTable,
+    @Query('sql_table') required SqlTableEnum sqlTable,
     @Query('sql_table_user_id') int? sqlTableUserId,
     @Query('sql_table_link_token') String? sqlTableLinkToken,
   });
@@ -173,7 +172,8 @@ abstract class FallbackClient {
   @GET('/v1/casino_function')
   Future<void> casinoFunctionV1CasinoFunctionGet({
     @Query('api_key') required String apiKey,
-    @Query('sql_table') required SqlTableEnum sqlTable,
+    @Query('sql_table')
+    required WebSubFastapiRoutersVCasinoFunctionSqlTableEnum sqlTable,
     @Query('sql_table_telegram_id') int? sqlTableTelegramId,
     @Query('sql_table_add_transfer_enable') int? sqlTableAddTransferEnable,
     @Query('type_mode') TypeModeEnum? typeMode,
@@ -598,7 +598,7 @@ abstract class FallbackClient {
   @GET('/v1/user/shop/getplaninfo')
   Future<void> getPlanInfoV1UserShopGetplaninfoGet({
     @Query('time') String? time,
-    @Query('num') String? num,
+    @Query('num') String? numValue,
   });
 
   /// Get Plan Time.
@@ -606,7 +606,7 @@ abstract class FallbackClient {
   /// 获取可购买的套餐时间.
   @GET('/v1/user/shop/getplantime')
   Future<void> getPlanTimeV1UserShopGetplantimeGet({
-    @Query('num') required String? num,
+    @Query('num') required String? numValue,
   });
 
   /// Get Shop
@@ -904,15 +904,15 @@ abstract class FallbackClient {
   /// Login Post
   @POST('/api/v2/auth/account_login/login')
   Future<LoginPostResultModel> loginPostApiV2AuthAccountLoginLoginPost({
-    @Body()
-    required WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body,
+    @Body() required ParamsModel body,
   });
 
   /// Post Jwt Access Refresh
   @POST('/api/v2/auth/jwt_token/jwt_access_refresh')
   Future<RefreshPostResultModel>
   postJwtAccessRefreshApiV2AuthJwtTokenJwtAccessRefreshPost({
-    @Body() required ParamsModel body,
+    @Body()
+    required WebSubFastapiRoutersApiVAuthJwtTokenAccessRefreshParamsModel body,
   });
 
   /// Post Login Old V1
@@ -1380,9 +1380,7 @@ abstract class FallbackClient {
 
   /// Get User Old Service
   @GET('/api/v2/low_admin_api/user_old_service/{user_id}')
-  Future<
-    WebSubFastapiRoutersApiVLowAdminApiUserOldServiceGetUserOldServiceResponse
-  >
+  Future<GetUserOldServiceResponse>
   getUserOldServiceApiV2LowAdminApiUserOldServiceUserIdGet({
     @Path('user_id') required int userId,
   });
@@ -1398,7 +1396,7 @@ abstract class FallbackClient {
 
   /// Get User V2 By User Id
   @GET('/api/v2/low_admin_api/user_v2/{user_id}')
-  Future<GetUserOldServiceResponse>
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserVGetUserOldServiceResponse>
   getUserV2ByUserIdApiV2LowAdminApiUserV2UserIdGet({
     @Path('user_id') required int userId,
   });
@@ -1417,7 +1415,8 @@ abstract class FallbackClient {
   ///
   /// 查询用户购买记录，可按用户ID过滤，或按ID模糊搜索.
   @GET('/api/v2/low_admin_api/user_bought/')
-  Future<GetUserBoughtResponse> getUserBoughtApiV2LowAdminApiUserBoughtGet({
+  Future<WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponse>
+  getUserBoughtApiV2LowAdminApiUserBoughtGet({
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit = 3000,
     @Query('q') String? q,
@@ -1485,8 +1484,7 @@ abstract class FallbackClient {
   ///
   /// 更新用户信息 - 需要提供所有必填字段（完全替换）.
   @GET('/api/v2/low_admin_api/user_pay_list/')
-  Future<WebSubFastapiRoutersApiVLowAdminApiUserPayListGetUserBoughtResponse>
-  getUserPayListApiV2LowAdminApiUserPayListGet({
+  Future<GetUserBoughtResponse> getUserPayListApiV2LowAdminApiUserPayListGet({
     @Query('offset') int? offset = 0,
     @Query('limit') int? limit = 3000,
     @Query('q') String? q,

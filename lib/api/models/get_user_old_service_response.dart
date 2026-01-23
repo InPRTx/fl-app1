@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'admin_user_v.dart';
+import 'admin_old_service_output.dart';
 
 part 'get_user_old_service_response.g.dart';
 
@@ -25,9 +25,9 @@ class GetUserOldServiceResponse {
   /// 获取结果
   final String message;
 
-  /// 管理员用户信息
+  /// 公告内容
   @JsonKey(includeIfNull: false)
-  final AdminUserV? result;
+  final AdminOldServiceOutput? result;
 
   Map<String, Object?> toJson() => _$GetUserOldServiceResponseToJson(this);
 }

@@ -8,10 +8,7 @@ part of 'index_get_result_model.dart';
 
 IndexGetResultModel _$IndexGetResultModelFromJson(Map<String, dynamic> json) =>
     IndexGetResultModel(
-      result:
-          WebSubFastapiRoutersApiVUserIndexIndexGetResultModelResult.fromJson(
-            json['result'] as Map<String, dynamic>,
-          ),
+      result: Result.fromJson(json['result'] as Map<String, dynamic>),
       isSuccess: json['is_success'] as bool? ?? true,
       message: json['message'] as String? ?? '获取成功',
     );

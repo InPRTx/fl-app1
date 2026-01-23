@@ -11,36 +11,29 @@ class ResultListData {
   const ResultListData({
     required this.id,
     required this.createdAt,
-    this.userName = '',
-    this.email = '',
-    this.moneyAmount = '0.00',
-    this.isEnable = true,
+    required this.userId,
+    required this.shopId,
+    required this.shopName,
+    required this.moneyAmount,
+    this.expireAt,
   });
 
   factory ResultListData.fromJson(Map<String, Object?> json) =>
       _$ResultListDataFromJson(json);
 
-  /// 用户ID
-  final int id;
-
-  /// 用户名
-  @JsonKey(name: 'user_name')
-  final String userName;
-
-  /// 用户邮箱
-  final String email;
-
-  /// 用户余额
-  @JsonKey(name: 'money_amount')
-  final String moneyAmount;
-
-  /// 注册时间
+  final String id;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
-
-  /// 用户是否启用
-  @JsonKey(name: 'is_enable')
-  final bool isEnable;
+  @JsonKey(includeIfNull: false, name: 'expire_at')
+  final DateTime? expireAt;
+  @JsonKey(name: 'user_id')
+  final int userId;
+  @JsonKey(name: 'shop_id')
+  final int shopId;
+  @JsonKey(name: 'shop_name')
+  final String shopName;
+  @JsonKey(name: 'money_amount')
+  final String moneyAmount;
 
   Map<String, Object?> toJson() => _$ResultListDataToJson(this);
 }

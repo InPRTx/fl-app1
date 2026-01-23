@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_app1/api/base_url.dart';
 import 'package:fl_app1/api/models/login_post_result_model.dart';
-import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_auth_account_login_index_params_model.dart';
+import 'package:fl_app1/api/models/params_model.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_store.dart';
 import 'package:fl_app1/store/service/captcha/captcha_export.dart';
@@ -103,8 +103,7 @@ class _AuthLoginPageState extends State<AuthLoginPage>
     final Dio dio = Dio(BaseOptions(baseUrl: kDefaultBaseUrl));
     final RestClient rest = RestClient(dio, baseUrl: kDefaultBaseUrl);
 
-    final WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel body =
-    WebSubFastapiRoutersApiVAuthAccountLoginIndexParamsModel(
+    final ParamsModel body = ParamsModel(
       email: _emailController.text.trim(),
       password: _passwordController.text,
       verifyToken: _verifyToken,

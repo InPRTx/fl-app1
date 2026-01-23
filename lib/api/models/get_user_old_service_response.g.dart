@@ -11,7 +11,7 @@ GetUserOldServiceResponse _$GetUserOldServiceResponseFromJson(
 ) => GetUserOldServiceResponse(
   result: json['result'] == null
       ? null
-      : AdminUserV.fromJson(json['result'] as Map<String, dynamic>),
+      : AdminOldServiceOutput.fromJson(json['result'] as Map<String, dynamic>),
   isSuccess: json['is_success'] as bool? ?? true,
   message: json['message'] as String? ?? '获取成功',
 );

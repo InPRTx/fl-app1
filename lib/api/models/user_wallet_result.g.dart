@@ -6,12 +6,16 @@ part of 'user_wallet_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserWalletResult _$UserWalletResultFromJson(Map<String, dynamic> json) =>
-    UserWalletResult(
-      result: Result.fromJson(json['result'] as Map<String, dynamic>),
-      isSuccess: json['is_success'] as bool? ?? true,
-      message: json['message'] as String? ?? '获取成功',
-    );
+UserWalletResult _$UserWalletResultFromJson(
+  Map<String, dynamic> json,
+) => UserWalletResult(
+  result:
+      WebSubFastapiRoutersApiVUserWalletIndexUserWalletResultResult.fromJson(
+        json['result'] as Map<String, dynamic>,
+      ),
+  isSuccess: json['is_success'] as bool? ?? true,
+  message: json['message'] as String? ?? '获取成功',
+);
 
 Map<String, dynamic> _$UserWalletResultToJson(UserWalletResult instance) =>
     <String, dynamic>{

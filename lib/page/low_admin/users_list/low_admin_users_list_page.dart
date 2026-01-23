@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_app1/api/models/get_search_user_result.dart';
-import 'package:fl_app1/api/models/result_list_data.dart';
+import 'package:fl_app1/api/models/web_sub_fastapi_routers_api_v_grafana_admin_view_search_user_get_search_user_result_result_list_data.dart';
 import 'package:fl_app1/api/rest_client.dart';
 import 'package:fl_app1/store/service/auth/auth_export.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,9 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
   final TextEditingController _searchController = TextEditingController();
   late final RestClient _restClient = createAuthenticatedClient();
 
-  List<ResultListData> _users = [];
+  List<
+      WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+  > _users = [];
   bool _isLoading = false;
   bool _isLoadingMore = false;
   String? _errorMessage;
@@ -84,10 +86,14 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
       }
 
       if (result.isSuccess) {
-        final List<ResultListData> fetched = result.resultList;
+        final List<
+            WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+        > fetched = result.resultList;
 
         if (isLoadMore) {
-          _users = List<ResultListData>.from(_users)
+          _users = List<
+              WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData
+          >.from(_users)
             ..addAll(fetched);
         } else {
           _users = fetched;
@@ -261,7 +267,8 @@ class _LowAdminUsersListPageState extends State<LowAdminUsersListPage> {
     );
   }
 
-  Widget _buildUserCard(ResultListData user) {
+  Widget _buildUserCard(
+      WebSubFastapiRoutersApiVGrafanaAdminViewSearchUserGetSearchUserResultResultListData user,) {
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
     return Card(

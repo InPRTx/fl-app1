@@ -76,7 +76,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__emby_function__SqlTableEnum"
+              "$ref": "#/components/schemas/SqlTableEnum"
             }
           },
           {
@@ -155,7 +155,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/SqlTableEnum"
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__v1__casino_function__SqlTableEnum"
             }
           },
           {
@@ -4497,7 +4497,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__auth__account_login__index__ParamsModel"
+                "$ref": "#/components/schemas/ParamsModel"
               }
             }
           },
@@ -4545,7 +4545,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ParamsModel"
+                "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__ParamsModel"
               }
             }
           },
@@ -7710,7 +7710,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__GetUserOldServiceResponse"
+                  "$ref": "#/components/schemas/GetUserOldServiceResponse"
                 }
               }
             }
@@ -7807,7 +7807,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetUserOldServiceResponse"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse"
                 }
               }
             }
@@ -8024,7 +8024,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetUserBoughtResponse"
+                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse"
                 }
               }
             }
@@ -8422,7 +8422,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__GetUserBoughtResponse"
+                  "$ref": "#/components/schemas/GetUserBoughtResponse"
                 }
               }
             }
@@ -11557,7 +11557,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/ResultListData"
+              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData"
             },
             "type": "array",
             "title": "Result List",
@@ -11717,7 +11717,7 @@
           },
           "result_list": {
             "items": {
-              "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData"
+              "$ref": "#/components/schemas/UserPayList"
             },
             "type": "array",
             "title": "Result List",
@@ -11797,13 +11797,13 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/AdminUserV2"
+                "$ref": "#/components/schemas/AdminOldService-Output"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "管理员用户信息"
+            "description": "公告内容"
           }
         },
         "type": "object",
@@ -11947,7 +11947,7 @@
             "default": "获取成功"
           },
           "result": {
-            "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__user__index__IndexGetResultModel__Result",
+            "$ref": "#/components/schemas/Result",
             "description": "用户令牌信息"
           }
         },
@@ -12758,17 +12758,58 @@
       },
       "ParamsModel": {
         "properties": {
-          "refresh_token": {
+          "email": {
             "type": "string",
-            "title": "Refresh Token",
-            "description": "刷新令牌"
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "two_fa_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{6}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Two Fa Code",
+            "description": "二次验证代码，如果没有则不传"
+          },
+          "is_remember_me": {
+            "type": "boolean",
+            "title": "Is Remember Me",
+            "description": "如果是True，則refresh_token的有效期限為30天，否則為1小時",
+            "default": false
+          },
+          "verify_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verify Token",
+            "description": "POW验证令牌"
           }
         },
         "type": "object",
         "required": [
-          "refresh_token"
+          "email",
+          "password"
         ],
-        "title": "ParamsModel"
+        "title": "ParamsModel",
+        "email": "user@example.com",
+        "is_remember_me": false,
+        "password": "string",
+        "two_fa_code": "123456",
+        "verify_token": "01937a2e-1234-7abc-9def-0123456789ab:a1b2c3d4..."
       },
       "PostCaptchaKeyVerifyModel": {
         "properties": {
@@ -13117,29 +13158,39 @@
       },
       "Result": {
         "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "创建时间，查询的时间"
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "description": "用户ID"
           },
-          "wallet_balance": {
+          "access_type": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-            "title": "Wallet Balance",
-            "description": "钱包余额"
+            "title": "Access Type",
+            "description": "访问类型"
           },
-          "invite_balance": {
+          "token_type": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-            "title": "Invite Balance",
-            "description": "邀请余额",
-            "default": "0.00"
+            "title": "Token Type",
+            "description": "令牌类型"
+          },
+          "issued_at": {
+            "type": "integer",
+            "title": "Issued At",
+            "description": "签发时间戳"
+          },
+          "expires_at": {
+            "type": "integer",
+            "title": "Expires At",
+            "description": "过期时间戳"
           }
         },
         "type": "object",
         "required": [
-          "wallet_balance"
+          "user_id",
+          "access_type",
+          "token_type",
+          "issued_at",
+          "expires_at"
         ],
         "title": "Result"
       },
@@ -13194,46 +13245,53 @@
       "ResultListData": {
         "properties": {
           "id": {
-            "type": "integer",
-            "title": "Id",
-            "description": "用户ID"
-          },
-          "user_name": {
             "type": "string",
-            "title": "User Name",
-            "description": "用户名",
-            "default": ""
-          },
-          "email": {
-            "type": "string",
-            "title": "Email",
-            "description": "用户邮箱",
-            "default": ""
-          },
-          "money_amount": {
-            "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-            "title": "Money Amount",
-            "description": "用户余额",
-            "default": "0.00"
+            "format": "uuid",
+            "title": "Id"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "title": "Created At",
-            "description": "注册时间"
+            "title": "Created At"
           },
-          "is_enable": {
-            "type": "boolean",
-            "title": "Is Enable",
-            "description": "用户是否启用",
-            "default": true
+          "expire_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expire At"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "shop_id": {
+            "type": "integer",
+            "title": "Shop Id"
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop Name"
+          },
+          "money_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Money Amount"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "created_at"
+          "created_at",
+          "user_id",
+          "shop_id",
+          "shop_name",
+          "money_amount"
         ],
         "title": "ResultListData"
       },
@@ -13446,6 +13504,7 @@
       "SqlTableEnum": {
         "type": "string",
         "enum": [
+          "link",
           "user",
           "version"
         ],
@@ -16395,7 +16454,7 @@
             "default": "获取成功"
           },
           "result": {
-            "$ref": "#/components/schemas/Result",
+            "$ref": "#/components/schemas/web_sub3_fastapi__routers__api__v2__user__wallet__index__UserWalletResult__Result",
             "description": "用户钱包信息"
           }
         },
@@ -16596,61 +16655,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__auth__account_login__index__ParamsModel": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "two_fa_code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "^\\d{6}$"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Two Fa Code",
-            "description": "二次验证代码，如果没有则不传"
-          },
-          "is_remember_me": {
-            "type": "boolean",
-            "title": "Is Remember Me",
-            "description": "如果是True，則refresh_token的有效期限為30天，否則為1小時",
-            "default": false
-          },
-          "verify_token": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Verify Token",
-            "description": "POW验证令牌"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
-        "title": "ParamsModel",
-        "email": "user@example.com",
-        "is_remember_me": false,
-        "password": "string",
-        "two_fa_code": "123456",
-        "verify_token": "01937a2e-1234-7abc-9def-0123456789ab:a1b2c3d4..."
-      },
       "web_sub3_fastapi__routers__api__v2__auth__account_register__index__AuthRegisterResponse__Result": {
         "properties": {
           "access_token": {
@@ -16689,6 +16693,20 @@
           "email"
         ],
         "title": "Result"
+      },
+      "web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__ParamsModel": {
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token",
+            "description": "刷新令牌"
+          }
+        },
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "title": "ParamsModel"
       },
       "web_sub3_fastapi__routers__api__v2__auth__jwt_token__access_refresh__RefreshPostResultModel__Result": {
         "properties": {
@@ -16773,6 +16791,52 @@
         ],
         "title": "Result"
       },
+      "web_sub3_fastapi__routers__api__v2__grafana_admin_view__search_user__GetSearchUserResult__ResultListData": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "用户ID"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "description": "用户名",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "用户邮箱",
+            "default": ""
+          },
+          "money_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Money Amount",
+            "description": "用户余额",
+            "default": "0.00"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "注册时间"
+          },
+          "is_enable": {
+            "type": "boolean",
+            "title": "Is Enable",
+            "description": "用户是否启用",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at"
+        ],
+        "title": "ResultListData"
+      },
       "web_sub3_fastapi__routers__api__v2__grafana_admin_view__user_data_history_ch__UserDataHistoryResponse__Result": {
         "properties": {
           "user_id": {
@@ -16826,58 +16890,31 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse__ResultListData": {
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_bought__GetUserBoughtResponse": {
         "properties": {
-          "id": {
+          "is_success": {
+            "type": "boolean",
+            "title": "Is Success",
+            "default": true
+          },
+          "message": {
             "type": "string",
-            "format": "uuid",
-            "title": "Id"
+            "title": "Message",
+            "description": "获取结果",
+            "default": "获取成功"
           },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "expire_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Expire At"
-          },
-          "user_id": {
-            "type": "integer",
-            "title": "User Id"
-          },
-          "shop_id": {
-            "type": "integer",
-            "title": "Shop Id"
-          },
-          "shop_name": {
-            "type": "string",
-            "title": "Shop Name"
-          },
-          "money_amount": {
-            "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-            "title": "Money Amount"
+          "result_list": {
+            "items": {
+              "$ref": "#/components/schemas/ResultListData"
+            },
+            "type": "array",
+            "title": "Result List",
+            "description": "管理员用户信息",
+            "default": []
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "user_id",
-          "shop_id",
-          "shop_name",
-          "money_amount"
-        ],
-        "title": "ResultListData"
+        "title": "GetUserBoughtResponse"
       },
       "web_sub3_fastapi__routers__api__v2__low_admin_api__user_money_money_recharge_it__ParamsModel": {
         "properties": {
@@ -16919,7 +16956,7 @@
         ],
         "title": "ParamsModel"
       },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_old_service__GetUserOldServiceResponse": {
+      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_v2__GetUserOldServiceResponse": {
         "properties": {
           "is_success": {
             "type": "boolean",
@@ -16935,43 +16972,17 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/AdminOldService-Output"
+                "$ref": "#/components/schemas/AdminUserV2"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "公告内容"
+            "description": "管理员用户信息"
           }
         },
         "type": "object",
         "title": "GetUserOldServiceResponse"
-      },
-      "web_sub3_fastapi__routers__api__v2__low_admin_api__user_pay_list__GetUserBoughtResponse": {
-        "properties": {
-          "is_success": {
-            "type": "boolean",
-            "title": "Is Success",
-            "default": true
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "获取结果",
-            "default": "获取成功"
-          },
-          "result_list": {
-            "items": {
-              "$ref": "#/components/schemas/UserPayList"
-            },
-            "type": "array",
-            "title": "Result List",
-            "description": "管理员用户信息",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "GetUserBoughtResponse"
       },
       "web_sub3_fastapi__routers__api__v2__user__account__activity__UserAccountActivityResponse__Result": {
         "properties": {
@@ -17272,44 +17283,6 @@
         ],
         "title": "Result"
       },
-      "web_sub3_fastapi__routers__api__v2__user__index__IndexGetResultModel__Result": {
-        "properties": {
-          "user_id": {
-            "type": "integer",
-            "title": "User Id",
-            "description": "用户ID"
-          },
-          "access_type": {
-            "type": "string",
-            "title": "Access Type",
-            "description": "访问类型"
-          },
-          "token_type": {
-            "type": "string",
-            "title": "Token Type",
-            "description": "令牌类型"
-          },
-          "issued_at": {
-            "type": "integer",
-            "title": "Issued At",
-            "description": "签发时间戳"
-          },
-          "expires_at": {
-            "type": "integer",
-            "title": "Expires At",
-            "description": "过期时间戳"
-          }
-        },
-        "type": "object",
-        "required": [
-          "user_id",
-          "access_type",
-          "token_type",
-          "issued_at",
-          "expires_at"
-        ],
-        "title": "Result"
-      },
       "web_sub3_fastapi__routers__api__v2__user__invite__index__UserInviteResponse__Result": {
         "properties": {
           "invite_code": {
@@ -17493,6 +17466,34 @@
         ],
         "title": "Result"
       },
+      "web_sub3_fastapi__routers__api__v2__user__wallet__index__UserWalletResult__Result": {
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "创建时间，查询的时间"
+          },
+          "wallet_balance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Wallet Balance",
+            "description": "钱包余额"
+          },
+          "invite_balance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Invite Balance",
+            "description": "邀请余额",
+            "default": "0.00"
+          }
+        },
+        "type": "object",
+        "required": [
+          "wallet_balance"
+        ],
+        "title": "Result"
+      },
       "web_sub3_fastapi__routers__api__v2__user__wallet__purchase_records_old__PurchaseRecordsResult__Result": {
         "properties": {
           "id": {
@@ -17563,6 +17564,14 @@
           "recharge_records"
         ],
         "title": "Result"
+      },
+      "web_sub3_fastapi__routers__v1__casino_function__SqlTableEnum": {
+        "type": "string",
+        "enum": [
+          "user",
+          "version"
+        ],
+        "title": "SqlTableEnum"
       },
       "web_sub3_fastapi__routers__v1__crisp_plugin_view__GetCrispPluginViewResult__Result": {
         "properties": {
@@ -17692,15 +17701,6 @@
           "user_account_expire_in"
         ],
         "title": "Result"
-      },
-      "web_sub3_fastapi__routers__v1__emby_function__SqlTableEnum": {
-        "type": "string",
-        "enum": [
-          "link",
-          "user",
-          "version"
-        ],
-        "title": "SqlTableEnum"
       }
     },
     "securitySchemes": {

@@ -6,6 +6,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonEnum()
 enum SqlTableEnum {
+  @JsonValue('link')
+  link,
   @JsonValue('user')
   user,
   @JsonValue('version')

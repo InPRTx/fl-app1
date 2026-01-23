@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'web_sub_fastapi_routers_api_v_low_admin_api_user_bought_get_user_bought_response_result_list_data.dart';
+import 'user_pay_list.dart';
 
 part 'get_user_bought_response.g.dart';
 
@@ -27,10 +27,7 @@ class GetUserBoughtResponse {
 
   /// 管理员用户信息
   @JsonKey(name: 'result_list')
-  final List<
-    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
-  >
-  resultList;
+  final List<UserPayList> resultList;
 
   Map<String, Object?> toJson() => _$GetUserBoughtResponseToJson(this);
 }

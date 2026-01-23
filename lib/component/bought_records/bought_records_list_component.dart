@@ -42,7 +42,7 @@ class _BoughtRecordsListComponentState
   bool _isLoading = false;
   bool _isLoadingMore = false;
   List<
-    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+      ResultListData
   >
   _boughtRecords = [];
   String? _errorMessage;
@@ -137,8 +137,7 @@ class _BoughtRecordsListComponentState
     });
   }
 
-  Future<void> _deleteBoughtRecord(
-    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+  Future<void> _deleteBoughtRecord(ResultListData
     record,
   ) async {
     final confirmed = await showDialog<bool>(
@@ -181,8 +180,7 @@ class _BoughtRecordsListComponentState
     }
   }
 
-  Future<void> _editBoughtRecord(
-    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+  Future<void> _editBoughtRecord(ResultListData
     record,
   ) async {
     final result = await showDialog<Map<String, dynamic>>(
@@ -282,8 +280,7 @@ class _BoughtRecordsListComponentState
     );
   }
 
-  Widget _buildBoughtCard(
-    WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
+  Widget _buildBoughtCard(ResultListData
     record,
   ) {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
@@ -546,8 +543,7 @@ class _BoughtRecordsListComponentState
 }
 
 class _EditBoughtRecordDialog extends StatefulWidget {
-  final WebSubFastapiRoutersApiVLowAdminApiUserBoughtGetUserBoughtResponseResultListData
-  record;
+  final ResultListData record;
 
   const _EditBoughtRecordDialog({required this.record});
 
