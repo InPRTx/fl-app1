@@ -49,14 +49,40 @@
                 console.log('✅ POW WASM module loaded (version: ' + wasmModule.get_version() + ')');
                 window.__powWasmReady = true;
             } catch (e) {
-                console.warn('⚠️  POW WASM module not available, will use fallback:', e);
+                console.warn('⚠️  POW WASM module not available:', e);
                 window.__powWasmReady = false;
+
+                // 判断是否是浏览器兼容性问题
+                const isCompatError = e.message && (
+                    e.message.includes('references are not enabled') ||
+                    e.message.includes("doesn't parse") ||
+                    e.message.includes('WebAssembly.Module')
+                );
+
+                if (isCompatError) {
+                    console.error('❌ 浏览器不兼容 WebAssembly');
+                    console.error('请使用以下浏览器之一:');
+                    console.error('  - Chrome 70+ (2018年10月)');
+                    console.error('  - Firefox 70+ (2019年10月)');
+                    console.error('  - Safari 13+ (2019年9月)');
+                    console.error('  - Edge 79+ (2020年1月)');
+                    console.error('');
+                    console.error('如果您使用的是国产浏览器，请更新到最新版本或切换到上述浏览器。');
+
+                    window.__powWasmCompatError = true;
+                } else {
+                    console.error('WASM加载失败，将使用纯Dart回退实现');
+                }
             }
         })();
 
         // 调试函数：检查当前POW计算模式
         window.checkPOWMode = function () {
-            if (window.__powWasmReady && window.POWSolver) {
+            if (window.__powWasmCompatError) {
+                console.log('❌ 浏览器不兼容 WebAssembly');
+                console.log('建议升级浏览器到 Chrome 70+, Firefox 70+, Safari 13+ 或 Edge 79+');
+                return 'INCOMPATIBLE';
+            } else if (window.__powWasmReady && window.POWSolver) {
                 console.log('🚀 当前模式: WASM (高性能)');
                 console.log('📦 WASM版本:', window.get_version());
                 console.log('⚡ 预期性能: ~1-2秒 (80挑战)');
